@@ -20,18 +20,21 @@ namespace FromLocalsToLocals.Controllers
 
         public IActionResult Index()
         {
-            var listOfVendors = new List<Vendor>
+            return View();
+        }
+
+        public IActionResult Map()
+        {
+            var listOfVendors = new List<Vendor>();
+            var lat = 55.428075;
+            var lng = 22.9676068;
+            var rnd = new Random();
+
+            for (int i = 0; i < 100; i++)
             {
-                new Vendor(56.428075, 22.9676068),
-                new Vendor(56.428075, 22.9676068),
-                new Vendor(56.428075, 22.9676068),
-                new Vendor(56.428075, 22.9676068),
-                new Vendor(56.428075, 22.9676068),
-                new Vendor(56.428075, 22.9676068),
-                new Vendor(56.428075, 22.9676068),
-                new Vendor(56.428075, 22.9676068),
-                new Vendor(56.428075, 22.9676068)
-            };
+                listOfVendors.Add(new Vendor(lat + rnd.NextDouble(), lng + rnd.NextDouble()));
+            }
+
 
             ViewBag.listas = listOfVendors;
 

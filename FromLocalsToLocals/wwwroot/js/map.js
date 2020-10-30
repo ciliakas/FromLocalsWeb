@@ -32,28 +32,6 @@ var markers = L.markerClusterGroup({
     removeOutsideVisibleBounds: true
 });
 
-markers.addLayer(L.marker([55.428075, 22.5676068]));
-markers.addLayer(L.marker([56.428075, 22.5676068]));
-markers.addLayer(L.marker([55.428075, 22.5676068]));
-markers.addLayer(L.marker([55.428075, 24.5676068]));
-markers.addLayer(L.marker([55.428075, 24.5676068]));
-markers.addLayer(L.marker([55.428075, 22.5676068]));
-markers.addLayer(L.marker([56.428075, 22.5676068]));
-markers.addLayer(L.marker([55.428075, 22.5676068]));
-markers.addLayer(L.marker([55.428075, 24.5676068]));
-markers.addLayer(L.marker([55.428075, 24.5676068]));
-markers.addLayer(L.marker([55.428075, 22.5676068]));
-markers.addLayer(L.marker([56.428075, 22.5676068]));
-markers.addLayer(L.marker([55.428075, 22.5676068]));
-markers.addLayer(L.marker([55.428075, 24.5676068]));
-markers.addLayer(L.marker([55.428075, 24.5676068]));
-var marker1 = new L.marker(new L.LatLng(55.428075, 23)).addTo(markers);
-var marker2 = new L.marker(new L.LatLng(55.438075, 23)).addTo(markers);
-var marker3 = new L.marker(new L.LatLng(55.428075, 23)).addTo(markers);
-var marker4 = new L.marker(new L.LatLng(55.438075, 23)).addTo(markers);
-var marker5 = new L.marker(new L.LatLng(55.428075, 23)).addTo(markers);
-var marker6 = new L.marker(new L.LatLng(55.438075, 23)).addTo(markers);
-
 
 for (var i = 0; i < arrayOfArrays.length; i++) {
     markers.addLayer(L.marker([arrayOfArrays[i].Location.lat, arrayOfArrays[i].Location.lng])).addTo(markers);
