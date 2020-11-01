@@ -1,6 +1,8 @@
-﻿using Geocoding;
+﻿using FromLocalsToLocals.Utilities;
+using Geocoding;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -10,12 +12,6 @@ namespace FromLocalsToLocals.Models
 {
     public class Vendor : IEquatable<Vendor>, IComparable<Vendor>
     {
-
-        public Vendor(double lat, double lng)
-        {
-            Location = new Location(lat, lng);
-        }
-
 
         public List<Review> Reviews = new List<Review>();
 
@@ -28,19 +24,30 @@ namespace FromLocalsToLocals.Models
         public int ID { get; set; }
 
         [Required] public int UserID { get; set; }
-
-        [Required] public string Title { get; set; }
+          
+        [Required] 
+        public string Title { get; set; }
 
         public string About { get; set; }
 
-        [Required] public string Address { get; set; }
+        [Required] 
+        public string Address { get; set; }
 
         [Required] public double Latitude { get; set; }
 
         [Required] public double Longitude { get; set; }
 
-        [Required] public string VendorType { get; set; }
 
+        [Column("VendorType")]
+        [DisplayName("Vendor Type")]
+        public string VendorTypeDb
+        {
+            get => VendorType.ToString();
+            private set { VendorType = value.ParseEnum<VendorType>(); }
+        }
+
+        [NotMapped]
+        public VendorType VendorType { get; set; }
 
         #region IComparable
 
@@ -88,38 +95,6 @@ namespace FromLocalsToLocals.Models
 
         #endregion
 
-        /*
-        public void UpdateReviewsCount()
-        {
-            using var db = new AppDbContext();
-            var reviews = (from r in db.Reviews
-                           where r.VendorID == ID
-                           select r).ToList();
-
-            for (var i = 0; i < 6; i++)
-            {
-                ReviewsCount[i] = 0;
-            }
-
-            reviews.ForEach(x => ReviewsCount[x.Stars]++);
-        }
-
-        public double Average()
-        {
-            UpdateReviewsCount();
-            var sum = 0;
-            for (var i = 0; i < 6; i++)
-            {
-                sum += ReviewsCount[i] * i;
-            }
-
-            if (ReviewsCount.Sum() == 0)
-            {
-                return 0;
-            }
-
-            return sum / (double)ReviewsCount.Sum();
-        }*/
 
     }
 }
