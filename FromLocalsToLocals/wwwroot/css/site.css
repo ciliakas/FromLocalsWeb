@@ -69,3 +69,32 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+/*Leaflet marker custom popup*/
+.leaflet-popup-content-wrapper {
+    background: #f2e1e1 !important;
+    color: #d99898;
+    font-size: 16px;
+    line-height: 24px;
+    border: 2px solid black;
+    max-width: 150px;
+    max-height: 200px;
+}
+
+.leaflet-popup-content-wrapper a {
+    color: rgba(255,255,255,0.5);
+}
+
+
+.leaflet-popup-tip {
+    background: black !important;
+    width: 17px;
+    height: 17px;
+    padding: 1px;
+    margin: -10px auto 0;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

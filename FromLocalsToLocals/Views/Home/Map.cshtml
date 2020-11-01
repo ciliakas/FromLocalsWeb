@@ -22,6 +22,6 @@
 <div id="mapid" style="width: 650px; height: 400px; position: relative; outline: none;"></div>
 
 <script type="text/javascript">
-    var arrayOfArrays = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+    var allVendors = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
 </script>
 <script src="~/js/map.js"></script>

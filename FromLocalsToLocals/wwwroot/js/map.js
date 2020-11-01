@@ -33,22 +33,19 @@ var markers = L.markerClusterGroup({
 });
 
 
-for (var i = 0; i < arrayOfArrays.length; i++) {
-    markers.addLayer(L.marker([arrayOfArrays[i].Latitude, arrayOfArrays[i].Longitude])).addTo(markers);
+for (var i = 0; i < allVendors.length; i++) {
+    var customPopup = `<div ><img src='/../Assets/appLogo.png' width='100%'/><div><div style="width: 100%">${allVendors[i].Title}</div><a href='/Vendors/Details/${allVendors[i].ID}'>Read More</a>`;
+
+    markers.addLayer(L.marker([allVendors[i].Latitude, allVendors[i].Longitude], {
+        title: allVendors[i].Title,
+        id: allVendors[i].ID
+    }).bindTooltip(allVendors[i].Title).bindPopup(customPopup)).addTo(markers);
+    console.log(allVendors[i].Title);
 };
 
 
+
 var map = L.map('mapid', {
-    maxBounds: [
-        //south
-        [53.5, 23],
-        //west
-        [55, 20],
-        //north
-        [57, 24],
-        //east
-        [55, 27],
-    ],
     maxZoom: 16,
     minZoom: 6,
     layers: [streets,markers]
