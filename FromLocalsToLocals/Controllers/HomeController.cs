@@ -9,13 +9,18 @@ using FromLocalsToLocals.Models;
 using FromLocalsToLocals.Database;
 using Microsoft.EntityFrameworkCore;
 using SuppLocals;
+using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Controllers
 {
+
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
+
+
 
         public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
@@ -31,11 +36,6 @@ namespace FromLocalsToLocals.Controllers
         public async Task<IActionResult> Map()
         {
             return View(await _context.Vendors.ToListAsync());
-        }
-
-        public IActionResult Create()
-        {
-            return View();
         }
 
         public IActionResult Privacy()
@@ -63,6 +63,7 @@ namespace FromLocalsToLocals.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
 
 
     }

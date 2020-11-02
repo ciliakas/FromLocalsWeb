@@ -9,9 +9,10 @@ namespace SuppLocals
     {
         public static async Task<Tuple<double,double>> ConvertAddressToLocationAsync(string address)
         {
+            Console.WriteLine(address);
             try
             {
-                var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" +
+                var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "&language=lt&key=" +
                           Config.Google_Api_Key;
 
                 var client = new HttpClient();
