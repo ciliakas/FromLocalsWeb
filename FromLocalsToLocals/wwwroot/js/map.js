@@ -4,10 +4,10 @@ var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_
 var grayscale = L.tileLayer(mapboxUrl, { id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution });
 var streets = L.tileLayer(mapboxUrl, {id: 'mapbox/streets-v11',tileSize: 512,zoomOffset: -1,attribution: mapboxAttribution});
 
-//var vendorIcon = L.Icon.extend({options: {iconSize: [30, 30],iconAnchor: [15, 30],popupAnchor: [-3, -76]}});
-//var foodIcon = new vendorIcon({ iconUrl: '/../Assets/food.png'}),
-//    carrepairIcon = new vendorIcon({ iconUrl: '/../Assets/carrepair.png' }),
-//    otherIcon = new vendorIcon({ iconUrl: '/../Assets/other.png' });
+var vendorIcon = L.Icon.extend({options: {iconSize: [30, 30],iconAnchor: [15, 30],popupAnchor: [-3, -76]}});
+var foodIcon = new vendorIcon({ iconUrl: '/../Assets/food.png'}),
+    carrepairIcon = new vendorIcon({ iconUrl: '/../Assets/carrepair.png' }),
+    otherIcon = new vendorIcon({ iconUrl: '/../Assets/other.png' });
 
 var markers = L.markerClusterGroup({
     spiderfyShapePositions: function (count, centerPt) {
@@ -36,7 +36,8 @@ var markers = L.markerClusterGroup({
 for (var i = 0; i < allVendors.length; i++) {
     var newMarker = L.marker([allVendors[i].Latitude, allVendors[i].Longitude], {
         title: allVendors[i].Title,
-        id: allVendors[i].ID
+        id: allVendors[i].ID,
+        icon: new vendorIcon({ iconUrl: `/../Assets/${allVendors[i].VendorTypeDb}.png` })
     }).bindTooltip(allVendors[i].Title).on('click', function onClick(e) {
         info.update(e.target.options);
     });
