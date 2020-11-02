@@ -5,6 +5,7 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  
 }
 
 /* Provide sufficient contrast against white background */
@@ -22,6 +23,11 @@ a {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+p {
+    margin-right: 20px;
+    text-align: justify;
 }
 
 /* Sticky footer styles
@@ -59,8 +65,9 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: whitesmoke;
 }
 .footer {
   position: absolute;
