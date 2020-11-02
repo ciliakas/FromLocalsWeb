@@ -18,9 +18,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
-
-<div id="mapid" style="width: 650px; height: 400px; position: relative; outline: none;"></div>
-
+<div class="container">
+    <div id="mapid" style="height: 400px; position: relative; outline: none;"></div>
+</div>
 <script type="text/javascript">
     var allVendors = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
 </script>

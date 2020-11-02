@@ -34,16 +34,17 @@ var markers = L.markerClusterGroup({
 
 
 for (var i = 0; i < allVendors.length; i++) {
-    var customPopup = `<div ><img src='/../Assets/appLogo.png' width='100%'/><div><div style="width: 100%">${allVendors[i].Title}</div><a href='/Vendors/Details/${allVendors[i].ID}'>Read More</a>`;
-
-    markers.addLayer(L.marker([allVendors[i].Latitude, allVendors[i].Longitude], {
+    var newMarker = L.marker([allVendors[i].Latitude, allVendors[i].Longitude], {
         title: allVendors[i].Title,
         id: allVendors[i].ID
-    }).bindTooltip(allVendors[i].Title).bindPopup(customPopup)).addTo(markers);
-    console.log(allVendors[i].Title);
+    }).bindTooltip(allVendors[i].Title).on('click', function onClick(e) {
+        info.update(e.target.options);
+    });
+
+    markers.addLayer(newMarker).addTo(markers);
 };
 
-
+//Map
 
 var map = L.map('mapid', {
     maxZoom: 16,
@@ -51,9 +52,33 @@ var map = L.map('mapid', {
     layers: [streets,markers]
 }).setView([55.303468, 23.9609414], 6.4);
 
+
 var baseMaps = {
     "<span style='color: gray'>Grayscale</span>": grayscale,
     "Streets": streets
 };
 
 L.control.layers(baseMaps).addTo(map);
+
+//Popup stuff
+
+var info = L.control({ position: 'bottomleft'});
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = props ? (`<div ><button type = 'button' id='mygtukas' class='boxclose' onClick='closeInfoTab()'></button><img src='/../Assets/appLogo.png' width='100%'/><div><hr>
+                                <h4>${props.title}</h4><br><a href='/Vendors/Details/${props.id}'>Read More</a>`) : '<span style="color:#916814">Select vendor</span>';   
+};
+
+info.addTo(map);
+
+
+function closeInfoTab() {
+    info.update();
+}

@@ -71,30 +71,39 @@ body {
 }
 
 
-/*Leaflet marker custom popup*/
-.leaflet-popup-content-wrapper {
-    background: #f2e1e1 !important;
-    color: #d99898;
-    font-size: 16px;
-    line-height: 24px;
-    border: 2px solid black;
-    max-width: 150px;
-    max-height: 200px;
+/*Leaflet marker custom control ("popup")*/
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    width:200px;
 }
 
-.leaflet-popup-content-wrapper a {
-    color: rgba(255,255,255,0.5);
+.info h4 {
+    margin: 0 0 5px;
+    color: #916814;
+    font-weight:bolder;
 }
 
+/*Close button */
+button.boxclose {
+    float: right;
+    cursor: pointer;
+    color: #fff;
+    margin: 2px;
+    border: 1px solid #AEAEAE;
+    border-radius: 30px;
+    background: #4a1515;
+    font-size: 31px;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 0px;
+    padding: 11px 3px;
+}
 
-.leaflet-popup-tip {
-    background: black !important;
-    width: 17px;
-    height: 17px;
-    padding: 1px;
-    margin: -10px auto 0;
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+.boxclose:before {
+    content: "×";
+    color: white;
 }
