@@ -1,0 +1,56 @@
+@model FromLocalsToLocals.Models.User
+
+@{
+    ViewData["Title"] = "Signup";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<head>
+    <style>
+        #login-form {
+            position: absolute;
+            top: auto;
+            left: auto;
+            border: 1px solid;
+            padding: 10px 10px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="login-form">
+        @using (Html.BeginForm("AddUser", "Home", FormMethod.Post))
+        {
+            <table>
+                @Html.Label("Write your email:")
+                <p>
+                    @Html.TextBox("Email")
+                </p>
+
+                @Html.Label("Write your username:")
+                <p>
+                    @Html.TextBox("Username")
+                </p>
+
+                @Html.Label("Write your Password:")
+                <p>
+                    @Html.Password("Password")
+                </p>
+
+                @Html.Label("Confirm Password:")
+                <p>
+                    @Html.Password("confPassword")
+                </p>
+
+
+            </table>
+            <form asp-action="AddUser">
+                <input type="submit" value="AddUser" class="btn btn-danger" /> |
+
+            </form>
+        }
+    </div>
+</body>

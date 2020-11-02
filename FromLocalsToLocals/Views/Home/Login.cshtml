@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Login";
+}
+<h1>@ViewData["Title"]</h1>
+
+<head>
+    <style>
+        #login-form{
+            position: absolute;
+            top: auto;
+            left: auto;
+            border: 1px solid;
+            padding: 10px 10px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="login-form">
+        @using (Html.BeginForm("LoginUser", "Home", FormMethod.Post))
+        {
+            <table>
+                <p>
+                    Username
+                    @Html.TextBox("UsernameLogin")
+                </p>
+
+                <p>
+                    Password
+                    @Html.Password("PasswordLogin")
+                </p>
+
+                
+            </table>
+            <form asp-action="LoginUser">
+                <input type="submit" value="Confirm" class="btn btn-danger" /> 
+
+            </form>
+        }
+    </div>
+</body>
