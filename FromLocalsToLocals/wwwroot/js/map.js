@@ -32,25 +32,12 @@ var markers = L.markerClusterGroup({
     removeOutsideVisibleBounds: true
 });
 
-
-for (var i = 0; i < allVendors.length; i++) {
-    var newMarker = L.marker([allVendors[i].Latitude, allVendors[i].Longitude], {
-        title: allVendors[i].Title,
-        id: allVendors[i].ID,
-        icon: new vendorIcon({ iconUrl: `/../Assets/${allVendors[i].VendorTypeDb}.png` })
-    }).bindTooltip(allVendors[i].Title).on('click', function onClick(e) {
-        info.update(e.target.options);
-    });
-
-    markers.addLayer(newMarker).addTo(markers);
-};
-
 //Map
 
 var map = L.map('mapid', {
     maxZoom: 16,
     minZoom: 6,
-    layers: [streets,markers]
+    layers: [streets, markers]
 }).setView([55.303468, 23.9609414], 6.4);
 
 
@@ -60,6 +47,13 @@ var baseMaps = {
 };
 
 L.control.layers(baseMaps).addTo(map);
+
+
+$(document).ready(function () {
+    addMarkers();
+});
+
+
 
 //Popup stuff
 
@@ -82,4 +76,38 @@ info.addTo(map);
 
 function closeInfoTab() {
     info.update();
+}
+
+
+//Filtering
+
+function vendorTypeOnChange(e) {
+    if (e.checked) {
+        vendorTypes.push(e.id);
+    } else {
+        vendorTypes = vendorTypes.filter(x => x != e.id);
+    }
+    map.removeLayer(markers);
+    addMarkers();
+}
+
+//Updating markers
+function addMarkers() {
+    markers.clearLayers();
+
+    for (var i = 0; i < allVendors.length; i++) {
+
+        if (vendorTypes.includes(allVendors[i].VendorTypeDb)) {
+            var newMarker = L.marker([allVendors[i].Latitude, allVendors[i].Longitude], {
+                title: allVendors[i].Title,
+                id: allVendors[i].ID,
+                icon: new vendorIcon({ iconUrl: `/../Assets/${allVendors[i].VendorTypeDb}.png` })
+            }).bindTooltip(allVendors[i].Title).on('click', function onClick(e) {
+                info.update(e.target.options);
+            });
+
+            markers.addLayer(newMarker);
+        }
+    };
+    markers.addTo(map);
 }
