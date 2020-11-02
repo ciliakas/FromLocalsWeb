@@ -29,9 +29,17 @@
             <div class="collapse" id="vendorTypeCollapse">
                 @foreach (var x in ViewBag.vendorTypes)
                 {
-                    <input type="checkbox" id=@x value=@x checked onchange="vendorTypeOnChange(this)"/>
+                    <input type="checkbox" id=@x value=@x checked onchange="vendorTypeOnChange(this)" />
                     <label for="vehicle1">@x</label><br>
                 }
+            </div><br />
+            <div>
+                <p>
+                    <input type="checkbox" id="useDistanceFilter" onchange="useDistanceFilterChange(this)" />
+                    <label for="useDistanceFilter">Use distance filter</label>
+                </p>
+                <p id="locError" style="display:none"></p>
+                <input id="distanceSlider" type="range" min="1" max="200" value="100" style="display:none" oninput="drawCircle(this.value)"/>
             </div>
         </div>
     </div>

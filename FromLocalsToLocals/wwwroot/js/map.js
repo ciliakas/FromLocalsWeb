@@ -5,9 +5,14 @@ var grayscale = L.tileLayer(mapboxUrl, { id: 'mapbox/light-v9', tileSize: 512, z
 var streets = L.tileLayer(mapboxUrl, {id: 'mapbox/streets-v11',tileSize: 512,zoomOffset: -1,attribution: mapboxAttribution});
 
 var vendorIcon = L.Icon.extend({options: {iconSize: [30, 30],iconAnchor: [15, 30],popupAnchor: [-3, -76]}});
-var foodIcon = new vendorIcon({ iconUrl: '/../Assets/food.png'}),
-    carrepairIcon = new vendorIcon({ iconUrl: '/../Assets/carrepair.png' }),
-    otherIcon = new vendorIcon({ iconUrl: '/../Assets/other.png' });
+var userMapLoc = new vendorIcon({ iconUrl: '/../Assets/userLoc.png' });
+
+var userLocation;
+var distanceCirle = L.featureGroup();
+var useDistanceFilter = document.getElementById('useDistanceFilter');
+var locError = document.getElementById('locError');
+var distanceSlider = document.getElementById('distanceSlider');
+
 
 var markers = L.markerClusterGroup({
     spiderfyShapePositions: function (count, centerPt) {
@@ -56,7 +61,6 @@ $(document).ready(function () {
 
 
 //Popup stuff
-
 var info = L.control({ position: 'bottomleft'});
 
 info.onAdd = function (map) {
@@ -73,14 +77,11 @@ info.update = function (props) {
 
 info.addTo(map);
 
-
 function closeInfoTab() {
     info.update();
 }
 
-
-//Filtering
-
+//Filters
 function vendorTypeOnChange(e) {
     if (e.checked) {
         vendorTypes.push(e.id);
@@ -91,13 +92,85 @@ function vendorTypeOnChange(e) {
     addMarkers();
 }
 
+
+//Get live location
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition,showError);
+    } else {
+        locError.innerHTML = "Geolocation is not supported by this browser.";
+        locError.style.display = "block";
+        distanceSlider.style.display = "none";
+    }
+}
+
+function showPosition(position) {
+    userLocation = L.latLng(position.coords.latitude, position.coords.longitude);
+    var userMarker = L.marker(userLocation, {
+        icon: userMapLoc
+    });
+    userMarker.addTo(map);
+    locError.style.display = "none";
+    distanceSlider.style.display = "block";
+    drawCircle(distanceSlider.value);
+}
+
+function showError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            locError.innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            locError.innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            locError.innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            locError.innerHTML = "An unknown error occurred."
+            break;
+    }
+    locError.style.display = "block";
+    distanceSlider.style.display = "none";
+}
+
+function useDistanceFilterChange(e) {
+    if (e.checked) {
+        getLocation();
+    } else {
+        map.removeLayer(distanceCirle);
+        distanceCirle.clearLayers();
+        locError.style.display = "none";
+        distanceSlider.style.display = "none";
+        map.removeLayer(markers);
+        addMarkers();
+
+    }
+}
+
+function drawCircle(e) {
+    map.removeLayer(distanceCirle);
+    distanceCirle.clearLayers();
+    map.removeLayer(markers);
+    addMarkers();
+
+    distanceCirle.addLayer(L.circle(userLocation, {
+        color: 'black',
+        fillColor: '#F0F8FF',
+        fillOpacity: 0.4,
+        radius: (1000 * e)
+    })).addTo(map);
+
+}
+
 //Updating markers
 function addMarkers() {
     markers.clearLayers();
 
     for (var i = 0; i < allVendors.length; i++) {
 
-        if (vendorTypes.includes(allVendors[i].VendorTypeDb)) {
+        if (vendorTypes.includes(allVendors[i].VendorTypeDb) && (!useDistanceFilter.checked
+            || (useDistanceFilter.checked && userLocation.distanceTo(L.latLng(allVendors[i].Latitude, allVendors[i].Longitude)) <= (distanceSlider.value*1000) ))) {
             var newMarker = L.marker([allVendors[i].Latitude, allVendors[i].Longitude], {
                 title: allVendors[i].Title,
                 id: allVendors[i].ID,
@@ -111,3 +184,5 @@ function addMarkers() {
     };
     markers.addTo(map);
 }
+
+
