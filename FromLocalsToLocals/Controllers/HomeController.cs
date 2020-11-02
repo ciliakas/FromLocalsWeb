@@ -6,16 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Database;
+using Microsoft.EntityFrameworkCore;
+using SuppLocals;
 
 namespace FromLocalsToLocals.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -23,23 +28,14 @@ namespace FromLocalsToLocals.Controllers
             return View();
         }
 
-        public IActionResult Map()
+        public async Task<IActionResult> Map()
         {
-            var listOfVendors = new List<Vendor>();
-            var lat = 55.428075;
-            var lng = 22.9676068;
-            var rnd = new Random();
+            return View(await _context.Vendors.ToListAsync());
+        }
 
-            for (int i = 0; i < 100; i++)
-            {
-                listOfVendors.Add(new Vendor(lat + rnd.NextDouble(), lng + rnd.NextDouble()));
-            }
-
-
-            ViewBag.listas = listOfVendors;
-
-
-            return View(listOfVendors);
+        public IActionResult Create()
+        {
+            return View();
         }
 
         public IActionResult Privacy()
@@ -67,5 +63,7 @@ namespace FromLocalsToLocals.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }
