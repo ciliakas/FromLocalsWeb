@@ -175,7 +175,7 @@ function addMarkers() {
                 title: allVendors[i].Title,
                 id: allVendors[i].ID,
                 icon: new vendorIcon({ iconUrl: `/../Assets/${allVendors[i].VendorTypeDb}.png` })
-            }).bindTooltip(allVendors[i].Title).on('click', function onClick(e) {
+            }).on('click', function onClick(e) {
                 info.update(e.target.options);
             });
 

@@ -5,57 +5,56 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+@*!--LeafLet CSS and Script-->*@
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
 
-<div>
-    <h4>Vendor</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.About)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.About)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Latitude)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Latitude)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Longitude)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Longitude)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.VendorTypeDb)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.VendorTypeDb)
-        </dd>
-    </dl>
+@*<!--LeafLet.MarkerCluster CSS and Script-->*@
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <img src="~/Assets/title2.png" style="width:inherit" />
+    </div>
+    <div class="col-sm-6">
+        <h1>@Model.Title</h1>
+        <hr />
+        <p>
+            @Model.About
+
+        </p>
+
+        <hr />
+        <div class="row" style="height:200px;">
+            <p><b>Address: </b> @Model.Address</p>
+            <div id="mapid" style="width:100%;height:inherit"></div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<script>
+    var vendor = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+
+    var mapboxAccessToken = "pk.eyJ1IjoiaGFiYWhhYmEwNSIsImEiOiJja2d1a3Q5bHcwdXFoMnJtajc2cWF6dThmIn0.CI3ewBXairOZLqVCecvPEg";
+    var mapboxAttribution = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+    var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken;
+    var streets = L.tileLayer(mapboxUrl, { id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution });
+
+    var map = L.map('mapid', {
+        maxZoom: 16,
+        minZoom: 6,
+        layers: [streets]
+    }).setView([vendor.Latitude,vendor.Longitude], 13);
+
+    var marker = L.marker([vendor.Latitude, vendor.Longitude]);
+    marker.addTo(map);
+
+</script>
+
