@@ -36,21 +36,5 @@ namespace FromLocalsToLocals.Models
             return (Username == other.Username);
         }
 
-        /*
-        public BitmapImage GetProfileImage()
-        {
-            if (Image == null)
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Assets/profile.png"));
-            }
-
-            var bi = new BitmapImage();
-            bi.BeginInit();
-            bi.StreamSource = new MemoryStream(Image);
-            bi.EndInit();
-
-            return bi;
-        }
-        */
     }
 }

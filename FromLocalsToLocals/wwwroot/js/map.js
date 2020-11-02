@@ -34,7 +34,7 @@ var markers = L.markerClusterGroup({
 
 
 for (var i = 0; i < arrayOfArrays.length; i++) {
-    markers.addLayer(L.marker([arrayOfArrays[i].Location.lat, arrayOfArrays[i].Location.lng])).addTo(markers);
+    markers.addLayer(L.marker([arrayOfArrays[i].Latitude, arrayOfArrays[i].Longitude])).addTo(markers);
 };
 
 

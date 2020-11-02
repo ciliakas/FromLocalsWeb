@@ -1,0 +1,126 @@
+﻿@model FromLocalsToLocals.Models.Vendor
+
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCPxOjZ_WSRa0zBceLwlDmTfLoJha8MYYg"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+<div class="row">
+    <div class="col-sm">
+        <form asp-action="@Html.ViewContext.RouteData.Values["action"]">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="About" class="control-label"></label>
+                <textarea asp-for="About" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="About" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <div>
+                    <div class="input-group">
+                        <input asp-for="Address" class="form-control" id="search_input" placeholder="Type address..." runat="server">
+                        <button type="button" class="btn btn-info" onclick="convertAddressToLatLng()">Show in the map</button>
+                    </div>
+                </div>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VendorType" class="control-label"></label>
+                @Html.DropDownListFor(m => m.VendorType,
+                     new SelectList(Enum.GetValues(typeof(FromLocalsToLocals.Utilities.VendorType))))
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Confirm" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+    <div class="col-sm">
+        <div id="mapid" style="width:inherit;min-height:400px; position: relative; outline: none;"></div>
+        <button style="width:inherit;margin-top:5px;" type="button" class="btn btn-success" onclick="convertLatLngToAddress()"> Confirm Location </button>
+    </div>
+</div>
+
+
+<script>
+
+    var mapboxAccessToken = "pk.eyJ1IjoiaGFiYWhhYmEwNSIsImEiOiJja2d1a3Q5bHcwdXFoMnJtajc2cWF6dThmIn0.CI3ewBXairOZLqVCecvPEg";
+    var mapboxAttribution = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+    var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken;
+    var streets = L.tileLayer(mapboxUrl, { id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution });
+
+    var map = L.map('mapid', {
+        maxZoom: 16,
+        minZoom: 6,
+        layers: [streets]
+    }).setView([55.303468, 23.9609414], 6.4);
+
+    var marker = new L.marker(5, 5);
+
+    map.on('click', function (e) {
+        map.removeLayer(marker);
+        marker = new L.marker(e.latlng, { draggable: true });
+        map.addLayer(marker);
+    });
+
+    var geocoder = new google.maps.Geocoder();
+
+    function convertAddressToLatLng() {
+        var address = document.getElementById('search_input').value;
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == 'OK') {
+                var coord = JSON.stringify(results[0].geometry.location);
+                var obj = JSON.parse(coord);
+                map.removeLayer(marker);
+                marker = new L.marker([obj.lat, obj.lng], { draggable: true });
+                map.addLayer(marker);
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
+    function convertLatLngToAddress() {
+        geocoder.geocode({ location: marker.getLatLng() }, (results, status) => {
+            if (status === "OK") {
+                if (results[0]) {
+                    var address = results[0].formatted_address;
+                    document.getElementById('search_input').value = address;
+                } else {
+                    alert("No results found");
+                }
+            } else {
+                alert("Geocoder failed due to: " + status);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById('search_input')), {
+            types: ['geocode'],
+            componentRestrictions: {
+                country: "lt"
+            }
+        });
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var near_place = autocomplete.getPlace();
+        });
+    });
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

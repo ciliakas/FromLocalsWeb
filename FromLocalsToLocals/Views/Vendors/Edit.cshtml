@@ -1,0 +1,20 @@
+﻿@model FromLocalsToLocals.Models.Vendor
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Vendor</h4>
+<hr />
+
+<div class="container">
+    @Html.Partial("_ServiceAddEdit", Model)
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
