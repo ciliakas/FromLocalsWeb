@@ -6,7 +6,10 @@ using Microsoft.Extensions.Logging;
 using FromLocalsToLocals.Models;
 using FromLocalsToLocals.Database;
 using Microsoft.EntityFrameworkCore;
-
+using System.Reflection.Emit;
+using BC = BCrypt.Net.BCrypt;
+using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -57,8 +60,10 @@ namespace FromLocalsToLocals.Controllers
         {
             var email = Request.Form["Email"];
             var username = Request.Form["Username"];
-            var password = Request.Form["Password"];
+            string password = Request.Form["Password"];
             var confpassword = Request.Form["confPassword"];
+
+            var hashedPassword = new PasswordHasher<object?>().HashPassword(null, password);
 
             using var db = _context;
 
@@ -71,7 +76,7 @@ namespace FromLocalsToLocals.Controllers
             var newUser = new User()
             {
                 Username = username,
-                HashedPsw = password,
+                HashedPsw = hashedPassword,
                 VendorsCount = 0,
                 Email = email
             };
@@ -88,16 +93,30 @@ namespace FromLocalsToLocals.Controllers
             using var db = _context;
 
             var username = Request.Form["UsernameLogin"];
-            var password = Request.Form["PasswordLogin"];
+            string password = Request.Form["PasswordLogin"];
 
+            var hashedPassword = new PasswordHasher<object?>().HashPassword(null, password);
+            var isPasswordHashGood = false;
+
+            var passwordVerificationResult = new PasswordHasher<object?>().VerifyHashedPassword(null, hashedPassword, password);
+            isPasswordHashGood = passwordVerificationResult switch
+            {
+                PasswordVerificationResult.Failed => false,
+                PasswordVerificationResult.Success => true,
+                PasswordVerificationResult.SuccessRehashNeeded => true,
+                _ => throw new ArgumentOutOfRangeException(),
+            };
 
             var usersList = db.Users.ToList();
-            var user = usersList.SingleOrDefault(x => (x.Username == username) & (x.HashedPsw == password));
+            var user = usersList.SingleOrDefault(x => (x.Username == username) & isPasswordHashGood);
+
             if (user == null)
             {
                 return RedirectToAction("Privacy");
             }
 
+
+            
             return RedirectToAction("Map");
         }
 
