@@ -43,6 +43,21 @@ namespace FromLocalsToLocals.Controllers
             return View();
         }
 
+        public IActionResult FAQ()
+        {
+            return View();
+        }
+
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
+        public IActionResult Reviews()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
