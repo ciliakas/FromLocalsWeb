@@ -35,18 +35,28 @@ namespace FromLocalsToLocals.Controllers
             var email = user.Email;
             var username = user.Username;
             var password = user.HashedPsw;
-
             var confpassword = Request.Form["confPassword"];
-
             var hashedPassword = new PasswordHasher<object?>().HashPassword(null, password);
 
             using var db = _context;
 
-            var usersList = db.Users.ToList();
-            if (usersList.FirstOrDefault(x => x.Username == user.Username) != null || user.Username == "Anonimas")
+            if (password != confpassword)
             {
                 return View("ErrorView");
             }
+
+
+            // Go through database to see if username or email is already taken
+            var usersList = db.Users.ToList();
+            if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
+            {
+                return View("ErrorView");
+            }
+            else if (usersList.FirstOrDefault(x => x.Email == email) != null)
+            {
+                return View("ErrorView");
+            }
+
 
             var newUser = new User()
             {
