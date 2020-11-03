@@ -1,10 +1,4 @@
-﻿var mapboxAccessToken = "pk.eyJ1IjoiaGFiYWhhYmEwNSIsImEiOiJja2d1a3Q5bHcwdXFoMnJtajc2cWF6dThmIn0.CI3ewBXairOZLqVCecvPEg";
-var mapboxAttribution = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
-var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken;
-var grayscale = L.tileLayer(mapboxUrl, { id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution });
-var streets = L.tileLayer(mapboxUrl, {id: 'mapbox/streets-v11',tileSize: 512,zoomOffset: -1,attribution: mapboxAttribution});
-
-var vendorIcon = L.Icon.extend({options: {iconSize: [30, 30],iconAnchor: [15, 30],popupAnchor: [-3, -76]}});
+﻿var vendorIcon = L.Icon.extend({options: {iconSize: [30, 30],iconAnchor: [15, 30],popupAnchor: [-3, -76]}});
 var userMapLoc = new vendorIcon({ iconUrl: '/../Assets/userLoc.png' });
 
 var userLocation;
@@ -13,6 +7,9 @@ var useDistanceFilter = document.getElementById('useDistanceFilter');
 var locError = document.getElementById('locError');
 var distanceSlider = document.getElementById('distanceSlider');
 
+$(document).ready(function () {
+    addMarkers();
+});
 
 var markers = L.markerClusterGroup({
     spiderfyShapePositions: function (count, centerPt) {
@@ -37,28 +34,12 @@ var markers = L.markerClusterGroup({
     removeOutsideVisibleBounds: true
 });
 
-//Map
-
-var map = L.map('mapid', {
-    maxZoom: 16,
-    minZoom: 6,
-    layers: [streets, markers]
-}).setView([55.303468, 23.9609414], 6.4);
-
-
 var baseMaps = {
     "<span style='color: gray'>Grayscale</span>": grayscale,
     "Streets": streets
 };
 
 L.control.layers(baseMaps).addTo(map);
-
-
-$(document).ready(function () {
-    addMarkers();
-});
-
-
 
 //Popup stuff
 var info = L.control({ position: 'bottomleft'});
@@ -175,7 +156,7 @@ function addMarkers() {
                 title: allVendors[i].Title,
                 id: allVendors[i].ID,
                 icon: new vendorIcon({ iconUrl: `/../Assets/${allVendors[i].VendorTypeDb}.png` })
-            }).bindTooltip(allVendors[i].Title).on('click', function onClick(e) {
+            }).on('click', function onClick(e) {
                 info.update(e.target.options);
             });
 
