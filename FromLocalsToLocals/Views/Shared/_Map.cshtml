@@ -5,11 +5,11 @@
 }
 
 
-<div class="row" style="height: 400px; width:100%">
+<div class="row" style="width:100%">
     <div class="col-sm-9">
         <div id="mapid" style="height: 400px;position: relative; outline: none;"></div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3 mt-2">
         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#vendorTypeCollapse" aria-expanded="false" aria-controls="vendorTypeCollapse">Vendor Types</button>
         <div class="collapse" id="vendorTypeCollapse">
             @foreach (var x in ViewBag.vendorTypes)
@@ -25,6 +25,14 @@
             </p>
             <p id="locError" style="display:none"></p>
             <input id="distanceSlider" type="range" min="1" max="200" value="100" style="display:none" oninput="drawCircle(this.value)" />
+        </div>
+        <div>
+            <form asp-controller="Home" asp-action="Index">
+                <div>
+                    <input type="text" name="SearchString" placeholder="Type service title...">
+                    <input type="submit" value="Filter"  class="btn-success"/>
+                </div>
+            </form>
         </div>
     </div>
 </div>
