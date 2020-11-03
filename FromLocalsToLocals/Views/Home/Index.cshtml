@@ -1,4 +1,7 @@
-﻿@{
+﻿@model IEnumerable<FromLocalsToLocals.Models.Vendor>
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 <div class="row" style="background-color: #C0C0C0; background: url(/Assets/vendorMix.png);">
@@ -18,6 +21,10 @@
     </div>
 </div>
 <p class="text-center font-weight-bold mb-3 mt-lg-5" style="font-size: 20px;">Experience all the finest products around you.</p>
+<div class="row mt-3">
+    @Html.Partial("_Map", Model)
+</div>
+<hr />
 <div class="container w-50">
     <div class="row">
         <div class="col">

@@ -28,12 +28,7 @@ namespace FromLocalsToLocals.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> Map()
+        public async Task<IActionResult> Index()
         {
             return View(await _context.Vendors.ToListAsync());
         }
