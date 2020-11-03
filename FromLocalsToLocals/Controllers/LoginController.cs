@@ -30,11 +30,12 @@ namespace FromLocalsToLocals.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddUser()
+        public IActionResult AddUser(User user)
         {
-            var email = Request.Form["Email"];
-            var username = Request.Form["Username"];
-            string password = Request.Form["Password"];
+            var email = user.Email;
+            var username = user.Username;
+            var password = user.HashedPsw;
+
             var confpassword = Request.Form["confPassword"];
 
             var hashedPassword = new PasswordHasher<object?>().HashPassword(null, password);
@@ -42,7 +43,7 @@ namespace FromLocalsToLocals.Controllers
             using var db = _context;
 
             var usersList = db.Users.ToList();
-            if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
+            if (usersList.FirstOrDefault(x => x.Username == user.Username) != null || user.Username == "Anonimas")
             {
                 return View("ErrorView");
             }
@@ -62,12 +63,12 @@ namespace FromLocalsToLocals.Controllers
         }
 
         [HttpPost]
-        public IActionResult LoginUser()
+        public IActionResult LoginUser(User user)
         {
             using var db = _context;
 
-            var username = Request.Form["UsernameLogin"];
-            string password = Request.Form["PasswordLogin"];
+            var username = user.Username;
+            var password = user.HashedPsw;
 
             var hashedPassword = new PasswordHasher<object?>().HashPassword(null, password);
             var isPasswordHashGood = false;
@@ -82,9 +83,9 @@ namespace FromLocalsToLocals.Controllers
             };
 
             var usersList = db.Users.ToList();
-            var user = usersList.SingleOrDefault(x => (x.Username == username) & isPasswordHashGood);
+            var tempUser = usersList.SingleOrDefault(x => (x.Username == username) & isPasswordHashGood);
 
-            if (user == null)
+            if (tempUser == null)
             {
                 return View("ErrorView");
             }
