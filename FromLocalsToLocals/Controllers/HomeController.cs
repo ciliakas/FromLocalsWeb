@@ -28,9 +28,17 @@ namespace FromLocalsToLocals.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Vendors.ToListAsync());
+            var vendors = from v in _context.Vendors
+                         select v;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vendors = vendors.Where(s => s.Title.Contains(searchString));
+            }
+
+            return View(await vendors.ToListAsync());
         }
 
         public IActionResult Privacy()
