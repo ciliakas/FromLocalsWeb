@@ -1,0 +1,41 @@
+﻿@model IEnumerable<FromLocalsToLocals.Models.Vendor>
+
+@{
+    ViewBag.vendorTypes = Enum.GetNames(typeof(FromLocalsToLocals.Utilities.VendorType));
+}
+
+
+<div class="row" style="height: 400px; width:100%">
+    <div class="col-sm-9">
+        <div id="mapid" style="height: 400px;position: relative; outline: none;"></div>
+    </div>
+    <div class="col-sm-3">
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#vendorTypeCollapse" aria-expanded="false" aria-controls="vendorTypeCollapse">Vendor Types</button>
+        <div class="collapse" id="vendorTypeCollapse">
+            @foreach (var x in ViewBag.vendorTypes)
+            {
+                <input type="checkbox" id=@x value=@x checked onchange="vendorTypeOnChange(this)" />
+                <label for="vehicle1">@x</label><br>
+            }
+        </div><br />
+        <div>
+            <p>
+                <input type="checkbox" id="useDistanceFilter" onchange="useDistanceFilterChange(this)" />
+                <label for="useDistanceFilter">Use distance filter</label>
+            </p>
+            <p id="locError" style="display:none"></p>
+            <input id="distanceSlider" type="range" min="1" max="200" value="100" style="display:none" oninput="drawCircle(this.value)" />
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    var allVendors = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+    var vendorTypes = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.vendorTypes));
+    var center = [55.385550, 24.046824];
+    var zoom = 6.4;
+</script>
+<script src="~/js/createMap.js"></script>
+<script src="~/js/map.js"></script>
