@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<FromLocalsToLocals.Models.Vendor>
 
 @{
-    ViewData["Title"] = "Map Page";
     ViewBag.vendorTypes = Enum.GetNames(typeof(FromLocalsToLocals.Utilities.VendorType));
 }
 
 
-<div class="row" style="height: 400px;">
+<div class="row" style="height: 400px; width:100%">
     <div class="col-sm-9">
         <div id="mapid" style="height: 400px;position: relative; outline: none;"></div>
     </div>
