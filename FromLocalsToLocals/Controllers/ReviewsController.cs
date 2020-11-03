@@ -36,7 +36,7 @@ namespace FromLocalsToLocals.Controllers
         [HttpPost]
         public JsonResult PostReview(Comment comment)
         {
-            JsonResult result = new JsonResult();
+            JsonResult result = new JsonResult(comment);
 
             try
             {
@@ -45,7 +45,7 @@ namespace FromLocalsToLocals.Controllers
                 //review.SenderID = comment.SenderID;
                 review.Date = DateTime.Now.Date.ToString("yyyy/MM/dd");
 
-                result.Value = new { Success = }
+                //result.Value = new { Success = }
             }
             catch (Exception e)
             {
