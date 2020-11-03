@@ -16,9 +16,12 @@ namespace FromLocalsToLocals.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [Required] public string Username { get; set; }
 
-        [Required] public string HashedPsw { get; set; }
+        [Required(ErrorMessage = "This field can not be empty")] 
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "This field can not be empty")] 
+        public string HashedPsw { get; set; }
 
         [Required] public string Email { get; set; }
 
