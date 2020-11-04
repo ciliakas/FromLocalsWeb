@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
 using SuppLocals;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -42,6 +43,7 @@ namespace FromLocalsToLocals.Controllers
         }
 
         // GET: Vendors/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -51,6 +53,7 @@ namespace FromLocalsToLocals.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Vendor vendor)
         {

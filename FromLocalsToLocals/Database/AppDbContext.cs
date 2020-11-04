@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FromLocalsToLocals.Database
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
     
         public AppDbContext(DbContextOptions<AppDbContext> options)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Models;
 using FromLocalsToLocals.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,10 @@ namespace FromLocalsToLocals.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager , SignInManager<IdentityUser> signInManager )
+        public AccountController(UserManager<AppUser> userManager , SignInManager<AppUser> signInManager )
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -37,7 +38,7 @@ namespace FromLocalsToLocals.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new AppUser
                 {
                     Email = model.Email,
                     UserName = model.Username
