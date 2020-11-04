@@ -30,7 +30,7 @@ namespace FromLocalsToLocals
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddDbContextPool<AppDbContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>

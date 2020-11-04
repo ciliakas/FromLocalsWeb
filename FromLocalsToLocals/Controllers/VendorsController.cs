@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using FromLocalsToLocals.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Policy;
+using System;
+using System.Diagnostics;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -30,6 +32,13 @@ namespace FromLocalsToLocals.Controllers
         public async Task<IActionResult> AllVendors()
         {
             return View(await _context.Vendors.ToListAsync());
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> MyVendors()
+        {
+            return View(await _context.Vendors.Where(x => x.UserID == _userManager.GetUserId(User)).ToListAsync());
         }
 
         [HttpGet]
@@ -61,7 +70,8 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Vendor model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
+                ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
             {
                 var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
 
@@ -75,7 +85,7 @@ namespace FromLocalsToLocals.Controllers
                     _context.Vendors.Add(model);
                     _context.SaveChanges();
 
-                    return RedirectToAction("AllVendors");
+                    return RedirectToAction("MyVendors");
                 }
             }
 
@@ -113,12 +123,16 @@ namespace FromLocalsToLocals.Controllers
             {
                 return NotFound();
             }
-            if (model.UserID != _userManager.GetUserId(User))
+
+            var vendor = _context.Vendors.Single(x => x.ID == id);
+
+            if (!ValidUser(vendor.UserID))
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
+                ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
             {
                 try
                 {
@@ -130,10 +144,14 @@ namespace FromLocalsToLocals.Controllers
                         return View(model);
                     }
 
-                    model.Latitude = latLng.Item1;
-                    model.Longitude = latLng.Item2;
+                    vendor.Title = model.Title;
+                    vendor.About = model.About;
+                    vendor.Address = model.Address;
+                    vendor.Latitude = latLng.Item1;
+                    vendor.Longitude = latLng.Item2;
+                    vendor.VendorType = model.VendorType;
 
-                    _context.Update(model);
+                    _context.Update(vendor);
                     await _context.SaveChangesAsync();
 
                 }
@@ -148,8 +166,9 @@ namespace FromLocalsToLocals.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(AllVendors));
+                return RedirectToAction(nameof(MyVendors));
             }
+
             return View(model);
         }
 
@@ -189,9 +208,12 @@ namespace FromLocalsToLocals.Controllers
 
             _context.Vendors.Remove(vendor);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(AllVendors));
+            return RedirectToAction(nameof(MyVendors));
         }
 
+        
+
+        #region Helpers
         private bool VendorExists(int id)
         {
             return _context.Vendors.Any(e => e.ID == id);
@@ -201,5 +223,7 @@ namespace FromLocalsToLocals.Controllers
         {
             return id == _userManager.GetUserId(User);
         }
+
+        #endregion
     }
 }

@@ -56,9 +56,12 @@
                         </li>
                         @if (signInManager.IsSignedIn(User))
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="Create">Add Service</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="MyVendors">My Services</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="Create">Add Service</a>
+                            </li>
                         }
                     </ul>
                     <ul class="navbar-nav">
