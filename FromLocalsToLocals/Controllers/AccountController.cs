@@ -11,19 +11,19 @@ namespace FromLocalsToLocals.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
         public AccountController(UserManager<AppUser> userManager , SignInManager<AppUser> signInManager )
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
@@ -44,11 +44,11 @@ namespace FromLocalsToLocals.Controllers
                     UserName = model.Username
                 };
 
-                var result = await userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, isPersistent:false);
+                    await _signInManager.SignInAsync(user, isPersistent:false);
                     return RedirectToAction("index", "home");
                 }
 
@@ -73,7 +73,7 @@ namespace FromLocalsToLocals.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded)
                 {

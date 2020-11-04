@@ -52,11 +52,14 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Reviews">Reviews</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="Index">All Services</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="AllVendors">All Services</a>
                         </li>
+                        @if (signInManager.IsSignedIn(User))
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="Create">Add Service</a>
                         </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         @if (signInManager.IsSignedIn(User))
