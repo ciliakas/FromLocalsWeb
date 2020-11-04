@@ -13,13 +13,10 @@ using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Controllers
 {
-
-
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
-
 
 
         public HomeController(ILogger<HomeController> logger, AppDbContext context)
@@ -30,7 +27,8 @@ namespace FromLocalsToLocals.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Vendors.ToListAsync());
+            //return View(await _context.Vendors.ToListAsync());
+            return View();
         }
 
         public IActionResult Privacy()
@@ -50,6 +48,10 @@ namespace FromLocalsToLocals.Controllers
 
         public IActionResult Reviews()
         {
+            IEnumerable<Review> review = _context.Reviews;
+
+
+
             return View();
         }
 

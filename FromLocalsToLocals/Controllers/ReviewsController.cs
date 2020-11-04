@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System;
 using Microsoft.VisualBasic;
+using System.Collections.Generic;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -33,6 +34,9 @@ namespace FromLocalsToLocals.Controllers
             public string Response { get; set; }
         }
 
+        private IEnumerable<Review> reviews { get; set; }
+        //private readonly List<string> _stars = new List<string> { "☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★" };
+
         [HttpPost]
         public JsonResult PostReview(Comment comment)
         {
@@ -45,7 +49,7 @@ namespace FromLocalsToLocals.Controllers
                 //review.SenderID = comment.SenderID;
                 review.Date = DateTime.Now.Date.ToString("yyyy/MM/dd");
 
-                //result.Value = new { Success = }
+                
             }
             catch (Exception e)
             {

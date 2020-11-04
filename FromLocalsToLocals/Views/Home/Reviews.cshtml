@@ -2,130 +2,134 @@
 @{
     ViewData["Title"] = "Reviews";
 }
+<body>
+    <h1>Reviews</h1>
+    <hr />
 
-<h1>Reviews</h1>
-<hr />
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<div class="container-fluid">
-    <div class="row align-content-lg-start">
-        <div class="col-8">
-            <div class="row">
-                <div class="card form-group">
-                    <div class="card-body">
-                        <p class="font-italic">No reviews</p>
-                        <hr />
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-10">
-                <hr />
-            </div>
-
-            <div class="row align-bottom">
-                <div class="col-9">
-                    <div class="form-group">
-                        <textarea class="form-control" id="userComment" rows="3" placeholder="Your comment"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="row align-bottom">
-                <button type="submit" class="btn btn-success" id="postComment">Post review</button>
-            </div>
-        </div>
-
-        <div class="col float-lg-right">
-            <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center;">Overall</h6>
-                        <p class="average">4.8 <span class="five">/5</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row w-100">
-                <div class="card border rounded" style="width: 15rem;">
-                    <!-- Total reviews-->
-                    <div class="card-header">
-                        1003 reviews
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <!-- 5 star reviews-->
-                        <li class="list-group-item">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-
-                            0 review(s)
-                        </li>
-                        <!-- 4 star reviews-->
-                        <li class="list-group-item">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-
-                            0 review(s)
-                        </li>
-                        <!-- 3 star reviews-->
-                        <li class="list-group-item">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-
-                            0 review(s)
-                        </li>
-                        <!-- 2 star reviews-->
-                        <li class="list-group-item">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-
-                            0 review(s)
-                        </li>
-                        <!-- 1 star reviews-->
-                        <li class="list-group-item">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-
-                            0 review(s)
+    <div class="container-fluid">
+        <div class="row align-content-lg-start">
+            <div class="col-8">
+                <div class="row">
+                    <ul id="allReviews">
+                        <li class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small>3 days ago</small>
+                            </div>
+                            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
                         </li>
                     </ul>
+                </div>
+                <div class="col-10">
+                    <hr />
+                </div>
+                <div class="col-10 form-group">
+                    <textarea class="form-control mb-3" id="userComment" rows="3" placeholder="Your comment" type="text" onkeyup="success()"></textarea>
+                    <button class="btn btn-success" onclick="handlePost()" id="postComment" disabled>Post Review</button>
+                </div>
+            </div>
+
+            <div class="col float-lg-right">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted" style="text-align: center;">Overall</h6>
+                            <p class="average">4.8 <span class="five">/5</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row w-100">
+                    <div class="card border rounded" style="width: 15rem;">
+                        <!-- Total reviews-->
+                        <div class="card-header">
+                            1003 reviews
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <!-- 5 star reviews-->
+                            <li class="list-group-item">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+
+                                0 review(s)
+                            </li>
+                            <!-- 4 star reviews-->
+                            <li class="list-group-item">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+
+                                0 review(s)
+                            </li>
+                            <!-- 3 star reviews-->
+                            <li class="list-group-item">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+
+                                0 review(s)
+                            </li>
+                            <!-- 2 star reviews-->
+                            <li class="list-group-item">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+
+                                0 review(s)
+                            </li>
+                            <!-- 1 star reviews-->
+                            <li class="list-group-item">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+
+                                0 review(s)
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <script>
+        function handlePost() {
+
+            var text = document.getElementById("userComment").value;
+            var li = '<li class="list-group-item list-group-item-action flex-column align-items-start">'+'<div class="d-flex w-100 justify-content-between"><h5 class="mb-1">List group item heading</h5><small>3 days ago</small></div><p class="mb-1">' + text + '</p></li>';
 
 
-<script>
-    var button = document.getElementById("postComment");
-    var input = document.getElementById("userComment");
-    var ul = document.getElementById("Reviews");
-
-    button.addEventListener("click", function () {
-        var li = document.createElement("li");
-        li.className = 'list-group-item';
-        li.textContent = input.value;
-        ul.appendChild(li);
+            document.getElementById("allReviews").innerHTML += li;
+            document.getElementById("userComment").value = "";
 
 
-    })
-</script>
+            //document.getElementById("#allReviews").appendChild(<li>comment</li>);
+        }
+
+        // needs fixing
+        function success() {
+            if (document.getElementById("userComment").value == "") {
+                document.getElementById("postComment").disabled = true;
+            } else {
+                document.getElementById("postComment").disabled = false;
+            }
+        }
+    </script>
+</body>
 
 
 <div class="container">
