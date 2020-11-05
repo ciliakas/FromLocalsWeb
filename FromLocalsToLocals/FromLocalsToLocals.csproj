@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201104122210_Extend_IdentityUser.cs" />
+    <Compile Remove="Migrations\20201104122210_Extend_IdentityUser.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\Assets\carrepair.png" />
     <None Include="wwwroot\Assets\food.png" />
     <None Include="wwwroot\Assets\other.png" />
@@ -14,6 +19,7 @@
     <PackageReference Include="BCrypt.Net-Next" Version="3.5.0" />
     <PackageReference Include="Geocoding.net" Version="3.6.1" />
     <PackageReference Include="GMap.NET.Core" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">

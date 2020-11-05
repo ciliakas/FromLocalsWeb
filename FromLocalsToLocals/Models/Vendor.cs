@@ -23,7 +23,7 @@ namespace FromLocalsToLocals.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [Required] public int UserID { get; set; }
+        [Required] public string UserID { get; set; }
           
         [Required] 
         public string Title { get; set; }
