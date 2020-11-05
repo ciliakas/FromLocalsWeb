@@ -13,15 +13,17 @@
         <div class="row align-content-lg-start">
             <div class="col-8">
                 <div class="row">
-                    <ul id="allReviews">
-                        <li class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">List group item heading</h5>
-                                <small>3 days ago</small>
-                            </div>
-                            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        </li>
-                    </ul>
+                    <div class="card" id="reviewsDisplay">
+                        <ul class="list-group list-group-flush" id="allReviews">
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">List group item heading</h5>
+                                    <small>3 days ago</small>
+                                </div>
+                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-10">
                     <hr />
@@ -110,11 +112,13 @@
         function handlePost() {
 
             var text = document.getElementById("userComment").value;
-            var li = '<li class="list-group-item list-group-item-action flex-column align-items-start">'+'<div class="d-flex w-100 justify-content-between"><h5 class="mb-1">List group item heading</h5><small>3 days ago</small></div><p class="mb-1">' + text + '</p></li>';
+            var li = '<li class="list-group-item list-group-item-action flex-column align-items-start">' +'<div class="d-flex w-100 justify-content-between"><h5 class="mb-1">List group item heading</h5><small>3 days ago</small></div><p class="mb-1" style="max-width: 800px;">' + text + '</p></li>';
 
 
             document.getElementById("allReviews").innerHTML += li;
             document.getElementById("userComment").value = "";
+
+            document.getElementById("postComment").disabled = true;
 
 
             //document.getElementById("#allReviews").appendChild(<li>comment</li>);

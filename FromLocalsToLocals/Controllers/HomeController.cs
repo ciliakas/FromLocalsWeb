@@ -38,7 +38,7 @@ namespace FromLocalsToLocals.Controllers
                 vendors = vendors.Where(s => s.Title.Contains(searchString));
             }
 
-            return View(await vendors.ToListAsync());
+            return View();
         }
 
         public IActionResult Privacy()

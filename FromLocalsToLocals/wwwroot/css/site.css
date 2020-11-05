@@ -41,6 +41,11 @@ span.five {
     font-size: 65px;
 }
 
+card.reviewsDisplay {
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
 .checked {
     color: orange;
 }
