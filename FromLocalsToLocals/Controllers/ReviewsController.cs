@@ -1,64 +1,73 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
-using SuppLocals;
-using Newtonsoft.Json.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System;
 using Microsoft.VisualBasic;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
+using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace FromLocalsToLocals.Controllers
 {
     public class ReviewsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly Vendor _vendor;
+        private readonly UserManager<AppUser> _userManager;
+
+        public ReviewsController(AppDbContext context, UserManager<AppUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
         public ActionResult Index()
         {
             return View();
         }
 
-        public ReviewsController(AppDbContext context)
+        [HttpGet]
+        public async Task<IActionResult> Reviews(Review review, int id)
         {
-            _context = context;
+            return View(await _context.Reviews.Where(x => x.VendorID == id).ToListAsync());
         }
 
-        public class Comment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Reviews(Review review, int? id)
         {
-            public string Text { get; set; }
-            public string SenderID { get; set; }
-            public string Date { get; set; }
-            public string Response { get; set; }
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var vendor =  _context.Vendors
+                .FirstOrDefault(m => m.ID == id);
+            if (vendor == null)
+            {
+                return NotFound();
+            }
+
+
+            
+
+            return View(_context.Reviews.Where(x => x.VendorID == id).ToList());
         }
+
+        private bool VendorExists(int id)
+        {
+            return _context.Vendors.Any(e => e.ID == id);
+        }
+
 
         private IEnumerable<Review> reviews { get; set; }
         //private readonly List<string> _stars = new List<string> { "☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★" };
 
-        [HttpPost]
-        public JsonResult PostReview(Comment comment)
-        {
-            JsonResult result = new JsonResult(comment);
-
-            try
-            {
-                var review = new Comment();
-                review.Text = comment.Text;
-                //review.SenderID = comment.SenderID;
-                review.Date = DateTime.Now.Date.ToString("yyyy/MM/dd");
-
-                
-            }
-            catch (Exception e)
-            {
-
-            }
-          
-
-            return result;
-        }
 
 
         /*

@@ -5,22 +5,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-sm-6">
-        <img src="~/Assets/appLogo.png" style="width:inherit" />
-    </div>
-    <div class="col-sm-6">
-        <h1>@Model.Title</h1>
-        <hr />
-        <p>
-            @Model.About
+<div class="container w-75">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>@Model.Title</h1>
 
-        </p>
-
-        <hr />
-        <div class="row" style="height:200px;">
-            <p><b>Address: </b> @Model.Address</p>
-            <div id="mapid" style="width:100%;height:inherit"></div>
+            @if (string.IsNullOrEmpty(@Model.About))
+            {
+                <p class="font-italic">No description provided</p>
+                <hr />
+            }
+            else
+            {
+                <p class="font-italic">@Model.About</p>
+                <hr />
+            }
+            <div class="row" style="height:200px;">
+                <p><b>Address: </b> @Model.Address</p>
+                <div id="mapid" style="width:100%; height:inherit;"></div>
+            </div>
+        </div>
+        <div class="col-sm-6 d-flex flex-column justify-content-between">
+            <img src="~/Assets/appLogo.png" style="width: inherit;" />
+            <a class="btn btn-outline-secondary w-25" style="align-self: center;" asp-route-id="@Model.ID" asp-controller="Reviews" asp-action="Reviews">Reviews</a>
         </div>
     </div>
 </div>

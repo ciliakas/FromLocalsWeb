@@ -13,38 +13,64 @@
         <div class="row align-content-lg-start">
             <div class="col-8">
                 <div class="row">
-                    <div class="card" id="reviewsDisplay">
+                    <div class="card w-100 mr-4 ml-2" id="reviewsDisplay">
                         <ul class="list-group list-group-flush" id="allReviews">
-                            <li class="list-group-item">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">List group item heading</h5>
-                                    <small>3 days ago</small>
-                                </div>
-                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                            </li>
+                            @if (Model.Count() == 0)
+                            {
+                                <li class="list-group-item">
+                                    No reviews
+                                </li>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model)
+                                {
+
+                                    <li class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <div class="d-flex">
+                                                <img src="~/Assets/profile.png" class="mr-3" style="width: 32px; height: 32px;" />
+                                                <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.SenderUsername)</h5>
+                                            </div>
+                                        </div>
+                                        <p class="mb-1"> @Html.DisplayFor(modelItem => item.Text)</p>
+                                        <small>@Html.DisplayFor(modelItem => item.Date)</small>
+                                        <button class="btn btn-outline-secondary float-right mt-4">Reply</button>
+                                    </li>
+                                }
+                            }
                         </ul>
                     </div>
+
                 </div>
                 <div class="col-10">
                     <hr />
                 </div>
-                <div class="col-10 form-group">
-                    <textarea class="form-control mb-3" id="userComment" rows="3" placeholder="Your comment" type="text" onkeyup="success()"></textarea>
-                    <button class="btn btn-success" onclick="handlePost()" id="postComment" disabled>Post Review</button>
-                </div>
+                <form method="post">
+                    <div class="col-10 form-group">
+                        <div class="stars" data-rating="0">
+                            <span class="star"></span>
+                            <span class="star"></span>
+                            <span class="star"></span>
+                            <span class="star"></span>
+                            <span class="star"></span>
+                        </div>
+                        <textarea name="reply" class="form-control mb-3 mt-3" onkeyup="toggle()" id="userComment"></textarea>
+                        <button type="submit" class="btn btn-success" id="postComment" onclick="handlePost()" disabled>Post Review</button>
+                    </div>
+                </form>
             </div>
 
             <div class="col float-lg-right">
-                <div class="row">
+                <div class="row float-lg-right">
                     <div class="card">
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2 text-muted" style="text-align: center;">Overall</h6>
                             <p class="average">4.8 <span class="five">/5</span></p>
                         </div>
                     </div>
-                </div>
 
-                <div class="row w-100">
+
                     <div class="card border rounded" style="width: 15rem;">
                         <!-- Total reviews-->
                         <div class="card-header">
@@ -112,35 +138,54 @@
         function handlePost() {
 
             var text = document.getElementById("userComment").value;
-            var li = '<li class="list-group-item list-group-item-action flex-column align-items-start">' +'<div class="d-flex w-100 justify-content-between"><h5 class="mb-1">List group item heading</h5><small>3 days ago</small></div><p class="mb-1" style="max-width: 800px;">' + text + '</p></li>';
-
+            var li = '<li class="list-group-item list-group-item-action flex-column align-items-start">' + '<div class="d-flex w-100 justify-content-between"><h5 class="mb-1">List group item heading</h5><small>3 days ago</small></div><p class="mb-1" style="max-width: 800px;">' + text + '</p></li>';
 
             document.getElementById("allReviews").innerHTML += li;
-            document.getElementById("userComment").value = "";
+            //document.getElementById("userComment").value = "";
 
-            document.getElementById("postComment").disabled = true;
-
-
-            //document.getElementById("#allReviews").appendChild(<li>comment</li>);
+            document.getElementById("postComment").disabled = false;
         }
 
-        // needs fixing
-        function success() {
+        function toggle() {
             if (document.getElementById("userComment").value == "") {
                 document.getElementById("postComment").disabled = true;
             } else {
                 document.getElementById("postComment").disabled = false;
             }
         }
+
+
+        //initial setup
+        document.addEventListener('DOMContentLoaded', function () {
+            let stars = document.querySelectorAll('.star');
+            stars.forEach(function (star) {
+                star.addEventListener('click', setRating);
+            });
+
+            let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+            let target = stars[rating - 1];
+            target.dispatchEvent(new MouseEvent('click'));
+        });
+
+        function setRating(ev) {
+            let span = ev.currentTarget;
+            let stars = document.querySelectorAll('.star');
+            let match = false;
+            let num = 0;
+            stars.forEach(function (star, index) {
+                if (match) {
+                    star.classList.remove('rated');
+                } else {
+                    star.classList.add('rated');
+                }
+                //are we currently looking at the span that was clicked
+                if (star === span) {
+                    match = true;
+                    num = index + 1;
+                }
+            });
+            document.querySelector('.stars').setAttribute('data-rating', num);
+        }
     </script>
 </body>
-
-
-<div class="container">
-
-    <span id="rateMe1"></span>
-</div>
-
-<!-- rating.js file -->
-<script src="js/addons/rating.js"></script>
 
