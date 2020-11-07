@@ -53,6 +53,7 @@ namespace FromLocalsToLocals.Controllers
 
             model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
             model.Vendor = vendor;
+            model.UserManager = _userManager;
 
             if (vendor == null)
             {
