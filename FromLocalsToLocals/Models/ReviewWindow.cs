@@ -10,8 +10,6 @@ namespace FromLocalsToLocals.Models
     {
         public Vendor Vendor {get; set;}
         public IEnumerable<Review> Reviews { get; set; }
-
         public UserManager<AppUser> UserManager { get; set; }
-
     }
 }
