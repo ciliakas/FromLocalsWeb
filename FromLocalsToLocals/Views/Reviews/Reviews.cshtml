@@ -1,9 +1,12 @@
-﻿@model IEnumerable<FromLocalsToLocals.Models.Review>
+﻿@model FromLocalsToLocals.Models.ReviewWindow
+
 @{
     ViewData["Title"] = "Reviews";
 }
+
 <body>
-    <h1>Reviews</h1>
+    <h2>Reviews about @Model.Vendor.Title</h2>
+
     <hr />
 
     <!-- Add icon library -->
@@ -15,27 +18,84 @@
                 <div class="row">
                     <div class="card w-100 mr-4 ml-2" id="reviewsDisplay">
                         <ul class="list-group list-group-flush" id="allReviews">
-                            @if (Model.Count() == 0)
+
+                            @if (Model.Reviews.Count() == 0)
                             {
-                                <li class="list-group-item">
+                                <li class="list-group-item font-italic">
                                     No reviews
                                 </li>
                             }
                             else
                             {
-                                @foreach (var item in Model)
+                                @foreach (var item in Model.Reviews)
                                 {
-
                                     <li class="list-group-item">
                                         <div class="d-flex w-100 justify-content-between">
                                             <div class="d-flex">
                                                 <img src="~/Assets/profile.png" class="mr-3" style="width: 32px; height: 32px;" />
                                                 <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.SenderUsername)</h5>
+                                                @switch (item.Stars)
+                                                {
+                                                    case 5:
+                                                        <p class="ml-3">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                        </p>
+                                                        break;
+                                                    case 4:
+                                                        <p class="ml-3">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star"></span>
+                                                        </p>
+                                                        break;
+                                                    case 3:
+                                                        <p class="ml-3">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                        </p>
+                                                        break;
+                                                    case 2:
+                                                        <p class="ml-3">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                        </p>
+                                                        break;
+                                                    default:
+                                                        <p class="ml-3"> <p class="ml-3">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                        </p></p>
+                                                        break;
+                                                }
                                             </div>
                                         </div>
                                         <p class="mb-1"> @Html.DisplayFor(modelItem => item.Text)</p>
-                                        <small>@Html.DisplayFor(modelItem => item.Date)</small>
-                                        <button class="btn btn-outline-secondary float-right mt-4">Reply</button>
+                                        <small>Posted on @Html.DisplayFor(modelItem => item.Date)</small>
+                                        @if (Model.UserManager.GetUserId(User) == Model.Vendor.UserID)
+                                        {
+                                            <div class="input-group mt-3" style="margin-left: 20%; width: 80%;">
+
+                                                <textarea class="form-control mr-3" placeholder="Write a reply..."></textarea>
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text mb-4 btn btn-outline-secondary">Post</span>
+                                                </div>
+                                            </div>
+                                        }
                                     </li>
                                 }
                             }
@@ -46,146 +106,94 @@
                 <div class="col-10">
                     <hr />
                 </div>
-                <form method="post">
-                    <div class="col-10 form-group">
-                        <div class="stars" data-rating="0">
-                            <span class="star"></span>
-                            <span class="star"></span>
-                            <span class="star"></span>
-                            <span class="star"></span>
-                            <span class="star"></span>
+
+                @if (!(Model.UserManager.GetUserId(User) == Model.Vendor.UserID))
+                {
+                    <form method="post">
+                        <p class="text-center mt-3 mb-3">Leave a review</p>
+                        <div class="col-10 form-group">
+                            <div class="stars" data-rating="0">
+                                <span class="star"></span>
+                                <span class="star"></span>
+                                <span class="star"></span>
+                                <span class="star"></span>
+                                <span class="star"></span>
+                            </div>
+                            <textarea name="starRating" id="starCount" hidden></textarea>
+                            <textarea name="comment" class="form-control mb-3 mt-3" onkeyup="toggle()" id="userComment"></textarea>
+                            <button type="submit" class="btn btn-success" id="postComment" onclick="handlePost()">Comment</button>
                         </div>
-                        <textarea name="reply" class="form-control mb-3 mt-3" onkeyup="toggle()" id="userComment"></textarea>
-                        <button type="submit" class="btn btn-success" id="postComment" onclick="handlePost()" disabled>Post Review</button>
-                    </div>
-                </form>
+                    </form>
+                }
             </div>
 
             <div class="col float-lg-right">
                 <div class="row float-lg-right">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-subtitle mb-2 text-muted" style="text-align: center;">Overall</h6>
-                            <p class="average">4.8 <span class="five">/5</span></p>
+                    <div class="container float-lg-right">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted" style="text-align: center; font-size: 25px;">Overall</h6>
+                                <p class="average" id="average">@Model.Vendor.Average().ToString("0.0")<span class="five">/5</span></p>
+                            </div>
+
+                            <!-- Total reviews-->
+                            <div class="card-header">
+                                Based on @Model.Vendor.ReviewsCount.Sum() reviews
+                            </div>
+                            <ul class="list-group list-group-flush" onload="updateRatingCounts()">
+                                <!-- 5 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[4]) review(s)
+                                </li>
+                                <!-- 4 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[3]) review(s)
+                                </li>
+                                <!-- 3 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[2]) review(s)
+                                </li>
+                                <!-- 2 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[1]) review(s)
+                                </li>
+                                <!-- 1 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[0]) review(s)
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-
-
-                    <div class="card border rounded" style="width: 15rem;">
-                        <!-- Total reviews-->
-                        <div class="card-header">
-                            1003 reviews
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <!-- 5 star reviews-->
-                            <li class="list-group-item">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-
-                                0 review(s)
-                            </li>
-                            <!-- 4 star reviews-->
-                            <li class="list-group-item">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-
-                                0 review(s)
-                            </li>
-                            <!-- 3 star reviews-->
-                            <li class="list-group-item">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-
-                                0 review(s)
-                            </li>
-                            <!-- 2 star reviews-->
-                            <li class="list-group-item">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-
-                                0 review(s)
-                            </li>
-                            <!-- 1 star reviews-->
-                            <li class="list-group-item">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-
-                                0 review(s)
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function handlePost() {
-
-            var text = document.getElementById("userComment").value;
-            var li = '<li class="list-group-item list-group-item-action flex-column align-items-start">' + '<div class="d-flex w-100 justify-content-between"><h5 class="mb-1">List group item heading</h5><small>3 days ago</small></div><p class="mb-1" style="max-width: 800px;">' + text + '</p></li>';
-
-            document.getElementById("allReviews").innerHTML += li;
-            //document.getElementById("userComment").value = "";
-
-            document.getElementById("postComment").disabled = false;
-        }
-
-        function toggle() {
-            if (document.getElementById("userComment").value == "") {
-                document.getElementById("postComment").disabled = true;
-            } else {
-                document.getElementById("postComment").disabled = false;
-            }
-        }
-
-
-        //initial setup
-        document.addEventListener('DOMContentLoaded', function () {
-            let stars = document.querySelectorAll('.star');
-            stars.forEach(function (star) {
-                star.addEventListener('click', setRating);
-            });
-
-            let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
-            let target = stars[rating - 1];
-            target.dispatchEvent(new MouseEvent('click'));
-        });
-
-        function setRating(ev) {
-            let span = ev.currentTarget;
-            let stars = document.querySelectorAll('.star');
-            let match = false;
-            let num = 0;
-            stars.forEach(function (star, index) {
-                if (match) {
-                    star.classList.remove('rated');
-                } else {
-                    star.classList.add('rated');
-                }
-                //are we currently looking at the span that was clicked
-                if (star === span) {
-                    match = true;
-                    num = index + 1;
-                }
-            });
-            document.querySelector('.stars').setAttribute('data-rating', num);
-        }
-    </script>
+    <script src="~/js/reviewWindow.js"></script>
 </body>
 
