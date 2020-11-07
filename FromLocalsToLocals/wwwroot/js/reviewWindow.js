@@ -4,10 +4,12 @@
 
 // needs fixing (kind of)
 function toggle() {
-    if (document.getElementById("userComment").value == "" || parseInt(document.getElementById("starRating").getAttribute("data-rating")) == 0) {
+    if (document.getElementById("userComment").value == "") {
+        document.getElementById("postComment").disabled = true;
+    } 
+    else if (parseInt(document.querySelector('.stars').getAttribute('data-rating')) == 0){
         document.getElementById("postComment").disabled = true;
     }
-
     else {
         document.getElementById("postComment").disabled = false;
     }
