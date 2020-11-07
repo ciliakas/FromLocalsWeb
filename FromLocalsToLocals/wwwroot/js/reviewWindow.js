@@ -1,18 +1,19 @@
 ﻿function handlePost() {
     document.getElementById("starCount").value = document.querySelector('.stars').getAttribute('data-rating');
-}
 
-// needs fixing (kind of)
-function toggle() {
-    if (document.getElementById("userComment").value == "") {
-        document.getElementById("postComment").disabled = true;
-    } 
-    else if (parseInt(document.querySelector('.stars').getAttribute('data-rating')) == 0){
+    if ((document.getElementById("starCount").value == 0) || (isEmptyOrSpaces(document.getElementById("userComment").value))) {
         document.getElementById("postComment").disabled = true;
     }
     else {
-        document.getElementById("postComment").disabled = false;
+         document.getElementById("postComment").disabled = false;
     }
+}
+function toggle() {
+    document.getElementById("postComment").disabled = false;
+}
+
+function isEmptyOrSpaces(str) {
+    return str === null || str.match(/^\s*$/) !== null || srt.match(/\r\n |\r |\n/) !== null;
 }
 
 

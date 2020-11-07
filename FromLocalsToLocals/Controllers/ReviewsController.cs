@@ -60,7 +60,7 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            if (!string.IsNullOrEmpty(Request.Form["comment"]))
+            if (!string.IsNullOrWhiteSpace(Request.Form["comment"]))
             {
                 var review = new Review();
                 review.VendorID = id;
