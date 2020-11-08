@@ -1,4 +1,5 @@
-﻿using FromLocalsToLocals.Utilities;
+﻿using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Utilities;
 using Geocoding;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,11 @@ namespace FromLocalsToLocals.Models
 {
     public class Vendor : IEquatable<Vendor>, IComparable<Vendor>
     {
-
         public List<Review> Reviews = new List<Review>();
 
         [NotMapped] public Location Location { get; set; }
 
-        public int[] ReviewsCount = { 0, 0, 0, 0, 0, 0 };
+        public int[] ReviewsCount = {0, 0, 0, 0, 0};
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -95,6 +95,34 @@ namespace FromLocalsToLocals.Models
 
         #endregion
 
+        public void UpdateReviewsCount(AppDbContext context)
+        {
+            var reviews = (from r in context.Reviews
+                           where r.VendorID == ID
+                           select r).ToList();
 
+            for (var i = 0; i < 5; i++)
+            {
+                ReviewsCount[i] = 0;
+            }
+
+            reviews.ForEach(x => ReviewsCount[x.Stars - 1]++);
+        }
+
+        public double Average()
+        {
+            var sum = 0;
+            for (var i = 0; i < 5; i++)
+            {
+                sum += ReviewsCount[i] * (i+1);
+            }
+
+            if (ReviewsCount.Sum() == 0)
+            {
+                return 0;
+            }
+
+            return sum / (double)ReviewsCount.Sum();
+        }
     }
 }

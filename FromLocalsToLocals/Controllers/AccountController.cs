@@ -56,9 +56,7 @@ namespace FromLocalsToLocals.Controllers
                 {
                     ModelState.AddModelError("", error.Description);
                 }
-
             }
-
             return View(model);
         }
 
@@ -81,11 +79,9 @@ namespace FromLocalsToLocals.Controllers
                 }
 
                 ModelState.AddModelError(string.Empty,"Invalid Login Attempt");
-               
             }
 
             return View(model);
         }
-
     }
 }

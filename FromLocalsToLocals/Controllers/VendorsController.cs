@@ -6,11 +6,7 @@ using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
 using SuppLocals;
 using Microsoft.AspNetCore.Authorization;
-using FromLocalsToLocals.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Policy;
-using System;
-using System.Diagnostics;
 
 namespace FromLocalsToLocals.Controllers
 {
