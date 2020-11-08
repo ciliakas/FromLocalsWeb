@@ -29,15 +29,13 @@ namespace FromLocalsToLocals.Controllers
         [HttpGet]
         public async Task<IActionResult> Reviews()
         {
-            int id = GetID();
+            int id = GetVendorID();
             var model = new ReviewWindow();
             
             model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
-            model.UserManager = _userManager;
 
             var vendor = await _context.Vendors.FindAsync(id);
             vendor.UpdateReviewsCount(_context);
-
             model.Vendor = vendor;
 
             return View(model);
@@ -47,13 +45,12 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reviews(ReviewWindow model)
         {
-            int id = GetID();
+            int id = GetVendorID();
             var vendor = await _context.Vendors.FindAsync(id);
             var userLoggedIn = _signInManager.IsSignedIn(User);
 
             model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
             model.Vendor = vendor;
-            model.UserManager = _userManager;
 
             if (vendor == null)
             {
@@ -89,14 +86,13 @@ namespace FromLocalsToLocals.Controllers
 
                 model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
                 model.Vendor = vendor;
-                model.UserManager = _userManager;
 
                 return View(model);
             }
             return View(model);
         }
 
-        private int GetID()
+        private int GetVendorID()
         {
             string path = HttpContext.Request.Path.Value;
             return int.Parse(path.Remove(0, 52));
