@@ -6,7 +6,7 @@
 }
 
 <body>
-    <h2 class="text-center">Reviews about @Model.Vendor.Title</h2>
+    <h2 class="text-center mt-4">Reviews about @Model.Vendor.Title</h2>
 
     <hr />
 
@@ -102,7 +102,7 @@
                         </ul>
                     </div>
                 </div>
-                <hr class="mr-3"/>
+                <hr class="mr-3" />
                 @if (!(userManager.GetUserId(User) == Model.Vendor.UserID))
                 {
                     <form method="post">
@@ -116,6 +116,7 @@
                                 <span class="star"></span>
                             </div>
                             <textarea name="starRating" id="starCount" hidden></textarea>
+                            <textarea name="listItemCount" id="listItemCount" hidden></textarea>
                             <textarea name="comment" class="form-control mb-3 mt-3" rows="3" onkeyup="toggle()" id="userComment"></textarea>
                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Cannot post an empty review!">
                                 <button type="submit" class="btn btn-success" id="postComment" onclick="handlePost()" disabled>Comment</button>
@@ -193,5 +194,19 @@
     </div>
 
     <script src="~/js/reviewWindow.js"></script>
+    <script>
+
+    function handlePost() {
+    document.getElementById("starCount").value = document.querySelector('.stars').getAttribute('data-rating');
+    document.getElementById("listItemCount").value = @Model.Reviews.Count();
+
+    if ((document.getElementById("starCount").value == 0) || (isEmptyOrSpaces(document.getElementById("userComment").value))) {
+        document.getElementById("postComment").disabled = true;
+    }
+    else {
+         document.getElementById("postComment").disabled = false;
+    }
+}
+    </script>
 </body>
 

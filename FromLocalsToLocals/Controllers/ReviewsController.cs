@@ -61,7 +61,7 @@ namespace FromLocalsToLocals.Controllers
             {
                 var review = new Review();
                 review.VendorID = id;
-                review.CommentID = 1;
+                review.CommentID = int.Parse(Request.Form["listItemCount"]);
 
                 if (userLoggedIn)
                 {

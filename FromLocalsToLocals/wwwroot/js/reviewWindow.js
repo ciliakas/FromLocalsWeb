@@ -1,14 +1,4 @@
-﻿function handlePost() {
-    document.getElementById("starCount").value = document.querySelector('.stars').getAttribute('data-rating');
-
-    if ((document.getElementById("starCount").value == 0) || (isEmptyOrSpaces(document.getElementById("userComment").value))) {
-        document.getElementById("postComment").disabled = true;
-    }
-    else {
-         document.getElementById("postComment").disabled = false;
-    }
-}
-function toggle() {
+﻿function toggle() {
     document.getElementById("postComment").disabled = false;
 }
 
