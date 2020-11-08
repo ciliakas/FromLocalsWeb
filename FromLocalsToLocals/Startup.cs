@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NToastNotify;
 
 namespace FromLocalsToLocals
 {
@@ -40,8 +41,15 @@ namespace FromLocalsToLocals
                     options.Password.RequireUppercase = false;
                 }).AddEntityFrameworkStores<AppDbContext>();
 
-          
+            services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
+            {
+                ProgressBar = false,
+                PositionClass = ToastPositions.BottomCenter
+            });
+
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -63,6 +71,8 @@ namespace FromLocalsToLocals
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseNToastNotify();
 
             app.UseEndpoints(endpoints =>
             {

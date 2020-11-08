@@ -66,34 +66,33 @@
                         }
                     </ul>
                     <ul class="navbar-nav">
-                        @if (signInManager.IsSignedIn(User))
-                        {
-                            
-                            <li class="nav-item">
-                                <form method="post" asp-action="Index" asp-controller="Manage">
-                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto;">
-                                        Hello @User.Identity.Name !
-                                    </button>
-                                </form>
-                            </li>
+                        <li class="nav-item">
+                        <li>
+                            <label> Hello </label> @User.Identity.Name
+                        </li>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user-tie"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @if (signInManager.IsSignedIn(User))
+                                    {
+                                        <form method="post" asp-action="logout" asp-controller="Account">
+                                            <button type="submit" class="nav-link btn btn-link py-0" style="width:auto;">
+                                                <i class="fas fa-sign-out-alt"></i> Logout
+                                            </button>
+                                        </form>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="fas fa-user-cog"></i> Profile</a>
 
-                            <li class="nav-item">
-                                <form method="post" asp-action="logout" asp-controller="Account">
-                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto;">
-                                        Logout
-                                    </button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="login">Log In</a>
-                            </li>
-                        }
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Log In</a>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Register"><i class="far fa-registered"></i>Register</a>
+                                    }
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
