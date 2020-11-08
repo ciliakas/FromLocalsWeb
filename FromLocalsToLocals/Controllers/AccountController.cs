@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Models;
 using FromLocalsToLocals.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -19,6 +21,12 @@ namespace FromLocalsToLocals.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Logout()
@@ -86,6 +94,7 @@ namespace FromLocalsToLocals.Controllers
 
             return View(model);
         }
+
 
     }
 }

@@ -18,4 +18,12 @@ namespace FromLocalsToLocals.ViewModels
         [Display(Name ="Remember be")]
         public bool RememberMe { get; set; }
     }
+
+    public class ForgotPasswordViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+    }
 }
