@@ -13,6 +13,7 @@
     <None Include="wwwroot\Assets\carrepair.png" />
     <None Include="wwwroot\Assets\food.png" />
     <None Include="wwwroot\Assets\other.png" />
+    <None Include="wwwroot\css\revealEye.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Content\" />
   </ItemGroup>
 
 </Project>
