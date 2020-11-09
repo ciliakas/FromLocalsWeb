@@ -21,7 +21,6 @@
                 "<h3>Notifications (<span class='notiCounterOnHead'>0</span>)</h3>" +
                 "<div class='ikrNotificationItems'>" +
                 "</div>" +
-                "<div class='ikrSeeAll'><a href='#'>See All</a></div>" +
                 "</div>");
 
             $('#' + parentId + ' .ikrNoti_Counter')
@@ -89,9 +88,8 @@
                     var sNotiFromPropName = $.trim(defaultSettings.NotiFromPropName) == "" ? "" : item[ikrLowerFirstLetter(defaultSettings.NotiFromPropName)];
                     $("#" + parentId + " .ikrNotificationItems").append("<div class='ikrSingleNotiDiv" + className + "' notiId=" + item.notiId + ">" +
                         "<h4 class='ikrNotiFromPropName'>" + sNotiFromPropName + "</h4>" +
-                        "<h5 class='ikrNotificationTitle'>" + item[ikrLowerFirstLetter(defaultSettings.ListTitlePropName)] + "</h5>" +
                             "<div class='ikrNotificationBody'>" + item[ikrLowerFirstLetter(defaultSettings.ListBodyPropName)] + "</div>" +
-                        "<div class='ikrNofiCreatedDate'>" + item.createdDateSt + "</div>" +
+                        "<div class='ikrNofiCreatedDate'>" + formatDate(item[ikrLowerFirstLetter(defaultSettings.Date)]) + "</div>" +
                         "</div>");
                     $("#" + parentId + " .ikrNotificationItems .ikrSingleNotiDiv[notiId=" + item.notiId + "]").click(function () {
                         if ($.trim(item.url) != "") {
@@ -103,6 +101,20 @@
         }
     };
 }(jQuery));
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
 function ikrLowerFirstLetter(value) {
     return value.charAt(0).toLowerCase() + value.slice(1);

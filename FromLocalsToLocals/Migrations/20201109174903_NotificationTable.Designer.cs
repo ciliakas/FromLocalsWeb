@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FromLocalsToLocals.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201109082037_NotificationTable")]
+    [Migration("20201109174903_NotificationTable")]
     partial class NotificationTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,9 @@ namespace FromLocalsToLocals.Migrations
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
+
+                    b.Property<string>("NotiBody")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(max)");

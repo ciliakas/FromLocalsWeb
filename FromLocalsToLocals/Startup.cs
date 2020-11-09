@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -41,7 +42,8 @@ namespace FromLocalsToLocals
                 }).AddEntityFrameworkStores<AppDbContext>();
 
             services.AddScoped<INotificationService, NotificationService>();
-          
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +72,7 @@ namespace FromLocalsToLocals
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<NotificationHub>("/notificationHub");
             });
         }
     }

@@ -100,6 +100,7 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/notification/ikr.notificationPlugin.js"></script>
 
@@ -108,9 +109,8 @@
 </html>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#noti_Container").ikrNotificationSetup();
 
+    function getNotifications() {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -121,17 +121,32 @@
                 var notifications = data;
                 $("#noti_Container").ikrNotificationCount({
                     NotificationList: notifications,
-                    ListTitlePropName: "NotiHeader",
                     ListBodyPropName: "NotiBody",
                     ControllerName: "Notifications",
-                    ActionName: "AllNotifications"
+                    ActionName: "AllNotifications",
+                    Date: "CreatedDate"
                 });
             },
             error: function (xhr, status, error) {
 
             }
         });
+    }
 
+    $(document).ready(function () {
+        $("#noti_Container").ikrNotificationSetup();
+        getNotifications();
     })
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
+
+    connection.on("displayNotification", () => {
+        var elem = document.getElementById("noti_Container");
+        elem.innerHTML = "";
+        $("#noti_Container").ikrNotificationSetup();
+        getNotifications();
+    });
+
+    connection.start();
 
 </script>

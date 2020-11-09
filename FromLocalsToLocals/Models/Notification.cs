@@ -14,14 +14,9 @@ namespace FromLocalsToLocals.Models
         public int NotiId { get; set; }
         public string OwnerId { get; set; }
         public int VendorId { get; set; }
-        public bool IsRead { get; set; } = false;
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-
-
-        [NotMapped]
-        public string NotiHeader { get; set; }
-        [NotMapped]
+        public bool IsRead { get; set; }
+        public DateTime CreatedDate { get; set; }
         public string NotiBody { get; set; }
-        
+
     }
 }

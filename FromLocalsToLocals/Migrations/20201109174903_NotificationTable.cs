@@ -16,7 +16,8 @@ namespace FromLocalsToLocals.Migrations
                     OwnerId = table.Column<string>(nullable: true),
                     VendorId = table.Column<int>(nullable: false),
                     IsRead = table.Column<bool>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false)
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    NotiBody = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

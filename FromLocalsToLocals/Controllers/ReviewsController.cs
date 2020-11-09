@@ -6,6 +6,8 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -14,12 +16,14 @@ namespace FromLocalsToLocals.Controllers
         private readonly AppDbContext _context;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotificationHub> hubContext)
         {
             _context = context;
             _signInManager = signInManager;
             _userManager = userManager;
+            _hubContext = hubContext;
         }
         public ActionResult Index()
         {
@@ -79,14 +83,12 @@ namespace FromLocalsToLocals.Controllers
                 review.Date = DateTime.Now.ToString("yyyy-MM-dd");
                 review.Reply = "";
 
-
                 _context.Reviews.Add(review);
                 _context.SaveChanges();
                 vendor.UpdateReviewsCount(_context);
 
                 model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
                 model.Vendor = vendor;
-
 
                 //Notify vendor owner that someone commented on his shop
                 var notification = new Notification
@@ -95,12 +97,13 @@ namespace FromLocalsToLocals.Controllers
                     VendorId = id,
                     IsRead = false,
                     CreatedDate = DateTime.Now,
-                    NotiBody = "Kazkas pakomentavo",
-                    NotiHeader = "Blabla"
+                    NotiBody = $"{review.SenderUsername} left a review about '{vendor.Title}'."
                 };
 
                 _context.Notifications.Add(notification);
                 _context.SaveChanges();
+
+                await _hubContext.Clients.All.SendAsync("displayNotification", "");
 
                 return View(model);
             }
