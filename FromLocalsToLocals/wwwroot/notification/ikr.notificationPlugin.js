@@ -87,11 +87,11 @@
                     var className = item.isRead ? "" : " ikrSingleNotiDivUnReadColor";
                     var sNotiFromPropName = $.trim(defaultSettings.NotiFromPropName) == "" ? "" : item[ikrLowerFirstLetter(defaultSettings.NotiFromPropName)];
                     $("#" + parentId + " .ikrNotificationItems").append("<div class='ikrSingleNotiDiv" + className + "' notiId=" + item.notiId + ">" +
-                        "<h4 class='ikrNotiFromPropName'>" + sNotiFromPropName + "</h4>" +
-                            "<div class='ikrNotificationBody'>" + item[ikrLowerFirstLetter(defaultSettings.ListBodyPropName)] + "</div>" +
+                        "<h4 class='ikrNotiFromPropName'>" + sNotiFromPropName + "</h4><a href='#'><span onclick='hide(this); return false' class='close'>X</span></a>" +
+                        "<div class='ikrNotificationBody'>" + item[ikrLowerFirstLetter(defaultSettings.ListBodyPropName)] + "</div>" +
                         "<div class='ikrNofiCreatedDate'>" + formatDate(item[ikrLowerFirstLetter(defaultSettings.Date)]) + "</div>" +
                         "</div>");
-                    $("#" + parentId + " .ikrNotificationItems .ikrSingleNotiDiv[notiId=" + item.notiId + "]").click(function () {
+                    $(".ikrNotificationBody").click(function () {
                         if ($.trim(item.url) != "") {
                             window.location.href = item.url;
                         }
@@ -101,6 +101,7 @@
         }
     };
 }(jQuery));
+
 
 function formatDate(date) {
     var d = new Date(date),

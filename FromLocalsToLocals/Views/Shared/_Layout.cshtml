@@ -110,6 +110,30 @@
 
 <script type="text/javascript">
 
+
+    function hide(e) {
+
+        e.parentElement.parentElement.style.display = 'none';
+        var notiId = e.parentElement.parentElement.getAttribute("notiId");
+       
+        $.ajax({
+            type: "POST",
+            url: '/Notification/DeleteItem/' + notiId,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                var elem = document.getElementById("noti_Container");
+                elem.innerHTML = "";
+                $("#noti_Container").ikrNotificationSetup();
+                getNotifications();
+            },
+            error: function (e) {
+                alert("Couldn't delete notification");
+            }
+        });
+        
+    };
+
     function getNotifications() {
         $.ajax({
             type: "GET",

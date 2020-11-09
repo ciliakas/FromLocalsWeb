@@ -15,6 +15,7 @@ namespace FromLocalsToLocals.Models
         public string OwnerId { get; set; }
         public int VendorId { get; set; }
         public bool IsRead { get; set; }
+        public string Url { get; set; } = "";
         public DateTime CreatedDate { get; set; }
         public string NotiBody { get; set; }
 
