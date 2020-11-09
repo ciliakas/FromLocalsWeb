@@ -95,7 +95,7 @@ namespace FromLocalsToLocals.Controllers
         private int GetVendorID()
         {
             string path = HttpContext.Request.Path.Value;
-            return int.Parse(path.Remove(0, 52));
+            return int.Parse(path.Remove(0, 26));
         }
 
         /* STILL NEEDED
