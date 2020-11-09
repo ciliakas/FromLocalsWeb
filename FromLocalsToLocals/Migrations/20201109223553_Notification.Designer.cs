@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FromLocalsToLocals.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201109184734_NotificationAddUrl")]
-    partial class NotificationAddUrl
+    [Migration("20201109223553_Notification")]
+    partial class Notification
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

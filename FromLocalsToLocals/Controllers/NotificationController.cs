@@ -19,13 +19,17 @@ namespace FromLocalsToLocals.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
 
-        List<Notification> notifications = new List<Notification>();
-
         public NotificationController(INotificationService notificationService, UserManager<AppUser> userManager, AppDbContext context)
         {
             _context = context;
             _notificationService = notificationService;
             _userManager = userManager;
+        }
+
+        public JsonResult GetNotifications()
+        {
+            var userId = _userManager.GetUserId(User);
+            return Json(_notificationService.GetNotifications(userId));
         }
 
         [HttpPost]
@@ -49,18 +53,17 @@ namespace FromLocalsToLocals.Controllers
                 return Json(new { success = false });
             }
 
-            _context.Notifications.Remove(noti);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _notificationService.DeleteNotificationAsync(noti);
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+            
             return Json(new { success = true });
         }
 
-
-        public JsonResult GetNotifications(bool getOnlyUnread = false)
-        {
-            var userId = _userManager.GetUserId(User);
-            notifications = new List<Notification>();
-            notifications = _notificationService.GetNotifications(userId, getOnlyUnread);
-            return Json(notifications);
-        }
     }
 }

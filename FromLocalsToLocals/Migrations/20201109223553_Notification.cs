@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FromLocalsToLocals.Migrations
 {
-    public partial class NotificationTable : Migration
+    public partial class Notification : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,6 +16,7 @@ namespace FromLocalsToLocals.Migrations
                     OwnerId = table.Column<string>(nullable: true),
                     VendorId = table.Column<int>(nullable: false),
                     IsRead = table.Column<bool>(nullable: false),
+                    Url = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     NotiBody = table.Column<string>(nullable: true)
                 },

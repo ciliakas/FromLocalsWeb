@@ -101,6 +101,8 @@ namespace FromLocalsToLocals.Controllers
                     Url = HttpContext.Request.Path.Value
                 };
 
+
+
                 _context.Notifications.Add(notification);
                 _context.SaveChanges();
 
