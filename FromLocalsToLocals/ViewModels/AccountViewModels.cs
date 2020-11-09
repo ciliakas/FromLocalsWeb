@@ -90,6 +90,7 @@ namespace FromLocalsToLocals.ViewModels
         [Display(Name = "Confirm new password")]
         public string ConfirmPassword { get; set; }
 
+
         public string Code { get; set; }
     }
 

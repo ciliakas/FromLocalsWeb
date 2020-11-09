@@ -38,18 +38,23 @@ namespace FromLocalsToLocals
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
 
+
+
             services.AddIdentity<AppUser, IdentityRole>(options =>
                 {
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireDigit = false;
                     options.Password.RequireUppercase = false;
-                }).AddEntityFrameworkStores<AppDbContext>();
+                    options.SignIn.RequireConfirmedEmail = false;
+                }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
 
             services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
             {
                 ProgressBar = false,
                 PositionClass = ToastPositions.BottomCenter
             });
+
 
         }
 

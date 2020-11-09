@@ -36,6 +36,7 @@ namespace FromLocalsToLocals.Controllers
             _toastNotification = toastNotification;
         }
 
+  
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -245,7 +246,7 @@ namespace FromLocalsToLocals.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("Error") : View();
+            return code == null ? View("Register") : View();
         }
 
         //
@@ -260,13 +261,13 @@ namespace FromLocalsToLocals.Controllers
             {
                 return View(model);
             }
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                return RedirectToAction("Register", "Account");
             }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            var result = await _userManager.ResetPasswordAsync(user, model.Code , model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
@@ -282,24 +283,22 @@ namespace FromLocalsToLocals.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-
+               
 
                 if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("Register");
                 }
-
-
-                //Code for sending email
-
+                
+          
                 Execute().Wait();
-                _toastNotification.AddSuccessToastMessage("Email sent");
                 return View("ForgotPasswordConfirmation");
             }
 
             async Task Execute()
             {
+                var user = await _userManager.FindByEmailAsync(model.Email);
                 var key = Config.Send_Grid_Key;
                 var client = new SendGridClient(key);
 
@@ -308,11 +307,18 @@ namespace FromLocalsToLocals.Controllers
                 var to = new EmailAddress(model.Email, "Dear User");
                 var plainTextContent = "";
 
-              
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user); 
+               
+
+
+                var callbackUrl = Url.Action("ResetPassword", "Account",
+                new { user = user , code = code }, protocol: Request.Scheme); 
+
+
 
                 var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" +
-                                  "<label>Please confirm your account by clicking this link: " +
-                                  "</label><a href=\"https://localhost:44373/Account/ResetPassword\">Here</a></body></html>";
+                                  "Please confirm your account by clicking this link: <a href =\""
+                                                 + callbackUrl + "\">link</a> </body></html>";
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
                 var response = await client.SendEmailAsync(msg);
             }
