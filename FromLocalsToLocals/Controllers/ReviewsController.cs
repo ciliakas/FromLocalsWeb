@@ -87,6 +87,21 @@ namespace FromLocalsToLocals.Controllers
                 model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
                 model.Vendor = vendor;
 
+
+                //Notify vendor owner that someone commented on his shop
+                var notification = new Notification
+                {
+                    OwnerId = _context.Vendors.Single(v => v.ID == GetVendorID()).UserID,
+                    VendorId = id,
+                    IsRead = false,
+                    CreatedDate = DateTime.Now,
+                    NotiBody = "Kazkas pakomentavo",
+                    NotiHeader = "Blabla"
+                };
+
+                _context.Notifications.Add(notification);
+                _context.SaveChanges();
+
                 return View(model);
             }
             return View(model);

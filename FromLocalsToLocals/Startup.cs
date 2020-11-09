@@ -40,6 +40,7 @@ namespace FromLocalsToLocals
                     options.Password.RequireUppercase = false;
                 }).AddEntityFrameworkStores<AppDbContext>();
 
+            services.AddScoped<INotificationService, NotificationService>();
           
         }
 

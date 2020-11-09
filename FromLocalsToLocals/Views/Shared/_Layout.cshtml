@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/notification/ikr.notification.css" rel="stylesheet" />
 
     @*!--LeafLet CSS and Script-->*@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -61,6 +62,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    <div id="noti_Container"></div>
                     @if (signInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
@@ -99,7 +101,37 @@
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/notification/ikr.notificationPlugin.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#noti_Container").ikrNotificationSetup();
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/Notification/GetNotifications",
+            traditional: true,
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                var notifications = data;
+                $("#noti_Container").ikrNotificationCount({
+                    NotificationList: notifications,
+                    ListTitlePropName: "NotiHeader",
+                    ListBodyPropName: "NotiBody",
+                    ControllerName: "Notifications",
+                    ActionName: "AllNotifications"
+                });
+            },
+            error: function (xhr, status, error) {
+
+            }
+        });
+
+    })
+
+</script>
