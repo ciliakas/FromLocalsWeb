@@ -73,9 +73,7 @@ namespace FromLocalsToLocals.Controllers
                 {
                     ModelState.AddModelError("", error.Description);
                 }
-
             }
-
             return View(model);
         }
 
@@ -97,7 +95,8 @@ namespace FromLocalsToLocals.Controllers
                     return RedirectToAction("index", "home");
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+
+                ModelState.AddModelError(string.Empty,"Invalid Login Attempt");
 
             }
 
@@ -347,6 +346,7 @@ namespace FromLocalsToLocals.Controllers
             return new ProfileVM(user.Email, user.UserName, user.Image);
         }
         #endregion
+
 
 
     }
