@@ -10,8 +10,11 @@ using Geocoding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using SuppLocals;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -231,28 +234,87 @@ namespace FromLocalsToLocals.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
+        //
+        // GET: /Account/ResetPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        //
+        // POST: /Account/ResetPassword
         [HttpPost]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
+        {
+   
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
+
+
                 if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    return View("Register");
                 }
+
 
                 //Code for sending email
 
+                Execute().Wait();
                 _toastNotification.AddSuccessToastMessage("Email sent");
-                return RedirectToPage("./ForgotPasswordConfirmation");
+                return View("ForgotPasswordConfirmation");
+            }
+
+            async Task Execute()
+            {
+                var key = Config.Send_Grid_Key;
+                var client = new SendGridClient(key);
+
+                var from = new EmailAddress("fromlocalstolocals@gmail.com", "Example User");
+                var subject = "Forgot Password Confirmation";
+                var to = new EmailAddress(model.Email, "Dear User");
+                var plainTextContent = "";
+
+              
+
+                var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" +
+                                  "<label>Please confirm your account by clicking this link: " +
+                                  "</label><a href=\"https://localhost:44373/Account/ResetPassword\">Here</a></body></html>";
+                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                var response = await client.SendEmailAsync(msg);
             }
 
             return View();
@@ -279,6 +341,7 @@ namespace FromLocalsToLocals.Controllers
             return new ProfileVM(user.Email, user.UserName, user.Image);
         }
         #endregion
+
 
     }
 }

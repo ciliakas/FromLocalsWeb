@@ -77,11 +77,20 @@ namespace FromLocalsToLocals.ViewModels
         public string ConfirmPassword { get; set; }
     }
 
-    public class ForgotPasswordVM
+    public class ResetPasswordVM
     {
-        [Required]
-        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "New password")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new password")]
+        public string ConfirmPassword { get; set; }
+
+        public string Code { get; set; }
     }
 
 }
