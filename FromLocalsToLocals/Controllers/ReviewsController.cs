@@ -33,7 +33,7 @@ namespace FromLocalsToLocals.Controllers
         [HttpGet]
         public async Task<IActionResult> Reviews()
         {
-            int id = GetVendorID();
+            var id = GetVendorID();
             var model = new ReviewWindow();
             
             model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
@@ -49,7 +49,7 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reviews(ReviewWindow model)
         {
-            int id = GetVendorID();
+            var id = GetVendorID();
             var vendor = await _context.Vendors.FindAsync(id);
             var userLoggedIn = _signInManager.IsSignedIn(User);
 
@@ -116,7 +116,7 @@ namespace FromLocalsToLocals.Controllers
         private int GetVendorID()
         {
             string path = HttpContext.Request.Path.Value;
-            return int.Parse(path.Remove(0, 52));
+            return int.Parse(path.Remove(0, 26));
         }
 
         /* STILL NEEDED

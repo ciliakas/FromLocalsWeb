@@ -7,13 +7,31 @@
 
 <body>
     <h2 class="text-center mt-4">Reviews about @Model.Vendor.Title</h2>
-
     <hr />
+
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <div class="container-fluid">
         <div class="row align-content-lg-start">
             <div class="col-8">
                 <div class="row">
+                    @if (Model.Reviews.Count() != 0)
+                    {
+                        <p>
+                            <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#sortOptions" aria-expanded="false" aria-controls="sortOptions">
+                                Sort By
+                            </button>
+                            <div class="collapse" id="sortOptions">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(0)">Best reviewed</button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(1)">Newest</button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(2)">Oldest</button>
+                                </div>
+                            </div>
+                        </p>
+                    }
+
                     <div class="card w-100 mr-4 ml-2" id="reviewsDisplay">
                         <ul class="list-group list-group-flush" id="allReviews">
                             @if (Model.Reviews.Count() == 0)
@@ -70,13 +88,13 @@
                                                         </p>
                                                         break;
                                                     default:
-                                                        <p class="ml-3"> <p class="ml-3">
+                                                        <p class="ml-3">
                                                             <span class="fa fa-star checked"></span>
                                                             <span class="fa fa-star"></span>
                                                             <span class="fa fa-star"></span>
                                                             <span class="fa fa-star"></span>
                                                             <span class="fa fa-star"></span>
-                                                        </p></p>
+                                                        </p>
                                                         break;
                                                 }
                                             </div>
@@ -189,10 +207,9 @@
             </div>
         </div>
     </div>
-
-    <script src="~/js/reviewWindow.js"></script>
-    <script>
-
+</body>
+<script src="~/js/reviewWindow.js"></script>
+<script>
     function handlePost() {
     document.getElementById("starCount").value = document.querySelector('.stars').getAttribute('data-rating');
     document.getElementById("listItemCount").value = @Model.Reviews.Count();
@@ -203,7 +220,7 @@
     else {
          document.getElementById("postComment").disabled = false;
     }
-}
-    </script>
-</body>
+    }
+</script>
+
 
