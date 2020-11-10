@@ -4,6 +4,11 @@
     ViewBag.Title = "User Registration";
 }
 
+<head>
+    <link href="~/css/revealEye.css" rel="stylesheet" type="text/css">
+</head>
+
+
 
 <div class="d-flex justify-content-center mt-5">
     <div class="card text-center" style="width: 30%; background-color:lightgray;">
@@ -21,14 +26,13 @@
                     <input asp-for="Username" class="form-control" />
                     <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-
+                <div class="form-group, wrapper">
                     <label asp-for="Password"></label>
                     <input asp-for="Password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group, wrapper">
                     <label asp-for="ConfirmPassword"></label>
                     <input asp-for="ConfirmPassword" class="form-control" />
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
@@ -41,49 +45,4 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
-    function checkShowPasswordVisibility() {
-        var $revealEye = $(this).parent().find(".reveal-eye");
-        if (this.value) {
-            $revealEye.addClass("is-visible");
-        } else {
-            $revealEye.removeClass("is-visible");
-        }
-    }
-
-    $(document).ready(function ()
-    {
-        var txtPassword = document.getElementById('Password');
-        var $revealEye = $('<span class="reveal-eye"></span>')
-
-        $(txtPassword).parent().append($revealEye);
-        $(txtPassword).on("keyup", checkShowPasswordVisibility)
-
-
-
-        $revealEye.on({
-            mousedown: function () { txtPassword.setAttribute("type", "text") },
-            mouseup: function () { txtPassword.setAttribute("type", "password") },
-            mouseout: function () { txtPassword.setAttribute("type", "password") },
-
-        });
-    })
-
-    $(document).ready(function () {
-        var txtPassword = document.getElementById('ConfirmPassword');
-        var $revealEye = $('<span class="reveal-eye"></span>')
-
-        $(txtPassword).parent().append($revealEye);
-        $(txtPassword).on("keyup", checkShowPasswordVisibility)
-
-
-
-        $revealEye.on({
-            mousedown: function () { txtPassword.setAttribute("type", "text") },
-            mouseup: function () { txtPassword.setAttribute("type", "password") },
-            mouseout: function () { txtPassword.setAttribute("type", "password") },
-
-        });
-    })
-
-</script>
+<script src="~/js/revealEye.js"></script>

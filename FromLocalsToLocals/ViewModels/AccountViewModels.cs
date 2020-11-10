@@ -66,7 +66,7 @@ namespace FromLocalsToLocals.ViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
-        public string OldPassword { get; set; }
+        public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "New password")]

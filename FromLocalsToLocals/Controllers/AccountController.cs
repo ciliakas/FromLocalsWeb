@@ -206,7 +206,7 @@ namespace FromLocalsToLocals.Controllers
         }
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
-            if (string.IsNullOrWhiteSpace(model.OldPassword) || string.IsNullOrWhiteSpace(model.NewPassword) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
+            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.NewPassword) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
             {
                 ModelState.AddModelError("", "Please, fill all fields");
                 return Profile();
@@ -225,7 +225,7 @@ namespace FromLocalsToLocals.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)
