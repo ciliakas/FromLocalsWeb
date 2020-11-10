@@ -26,7 +26,7 @@
     width: 170px;
     position: absolute;
     top: 30px;
-    left: -60px;
+    left: -130px;
     background: #fff;
     border: solid 1px rgba(100,100,100,.2);
     -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.2);
@@ -42,7 +42,7 @@
         border: 10px solid #ccc;
         border-color: transparent transparent #fff;
         margin-top: -20px;
-        margin-left: 68px;
+        margin-left: 140px;
     }
 
     .ikrNotifications h3 {
