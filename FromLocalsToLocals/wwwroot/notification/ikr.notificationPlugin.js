@@ -16,7 +16,7 @@
         var parentId = $(this).attr("id");
         if ($.trim(parentId) != "" && parentId.length > 0) {
             $("#" + parentId).append("<div class='ikrNoti_Counter'></div>" +
-                "<div class='ikrNoti_Button'></div>" +
+                "<div class='ikrNoti_Button'><img src='/Assets/bell.png' style='width:inherit; height:inherit' /></div>" +
                 "<div class='ikrNotifications'>" +
                 "<h3>Notifications (<span class='notiCounterOnHead'>0</span>)</h3>" +
                 "<div class='ikrNotificationItems'>" +
@@ -32,9 +32,7 @@
             $('#' + parentId + ' .ikrNoti_Button').click(function () {
                 $('#' + parentId + ' .ikrNotifications').fadeToggle('fast', 'linear', function () {
                     if ($('#' + parentId + ' .ikrNotifications').is(':hidden')) {
-                        $('#' + parentId + ' .ikrNoti_Button').css('background-color', defaultSettings.AfterSeenColor);
                     }
-                    else $('#' + parentId + ' .ikrNoti_Button').css('background-color', defaultSettings.BeforeSeenColor);
                 });
                 $('#' + parentId + ' .ikrNoti_Counter').fadeOut('slow');
                 return false;
@@ -42,7 +40,6 @@
             $(document).click(function () {
                 $('#' + parentId + ' .ikrNotifications').hide();
                 if ($('#' + parentId + ' .ikrNoti_Counter').is(':hidden')) {
-                    $('#' + parentId + ' .ikrNoti_Button').css('background-color', defaultSettings.AfterSeenColor);
                 }
             });
             $('#' + parentId + ' .ikrNotifications').click(function () {
