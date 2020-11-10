@@ -17,20 +17,19 @@
                 <div class="row">
                     @if (Model.Reviews.Count() != 0)
                     {
-                        <p>
-                            <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#sortOptions" aria-expanded="false" aria-controls="sortOptions">
-                                Sort By
-                            </button>
-                            <div class="collapse" id="sortOptions">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(0)">Best reviewed</button>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(1)">Newest</button>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(2)">Oldest</button>
-                                </div>
+                    <p>
+                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#sortOptions" aria-expanded="false" aria-controls="sortOptions">
+                            Sort By
+                        </button>
+                        <div class="collapse" id="sortOptions">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-outline-secondary" onclick="sortList(0)">Best reviewed</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="sortList(1)">Newest</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="sortList(2)">Oldest</button>
                             </div>
-                        </p>
+                        </div>
+                    </p>
                     }
-
                     <div class="card w-100 mr-4 ml-2" id="reviewsDisplay">
                         <ul class="list-group list-group-flush" id="allReviews">
                             @if (Model.Reviews.Count() == 0)
