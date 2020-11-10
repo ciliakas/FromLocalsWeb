@@ -7,6 +7,12 @@ using FromLocalsToLocals.Models;
 using SuppLocals;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Policy;
+using System;
+using System.Diagnostics;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -25,9 +31,26 @@ namespace FromLocalsToLocals.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllVendors()
+        public async Task<IActionResult> AllVendors(string vendorType, string searchString)
         {
-            return View(await _context.Vendors.ToListAsync());
+            List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
+
+            var vendors = from m in _context.Vendors
+                        select m;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                vendors = vendors.Where(s => s.Title.Contains(searchString));
+            }
+            if (!string.IsNullOrEmpty(vendorType))
+            {
+                vendors = vendors.Where(x => x.VendorTypeDb == vendorType);
+            }
+            var vendorTypeVM = new VendorTypeViewModel
+            {
+                Types = new SelectList(typesOfVendors),
+                Vendors = await vendors.ToListAsync()
+            };
+            return View(vendorTypeVM);
         }
 
         [HttpGet]

@@ -6,6 +6,6 @@ namespace FromLocalsToLocals.Utilities
         
         Food,           
         CarRepair,          
-        Other               
+        Other
     }
 }

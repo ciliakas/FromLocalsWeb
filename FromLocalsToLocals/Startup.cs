@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
 using Microsoft.AspNet.Identity;
+using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -56,6 +57,11 @@ namespace FromLocalsToLocals
             });
 
 
+
+            services.AddScoped<INotificationService, NotificationService>();
+
+            services.AddSignalR();
+
         }
 
 
@@ -88,6 +94,7 @@ namespace FromLocalsToLocals
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<NotificationHub>("/notificationHub");
             });
         }
 

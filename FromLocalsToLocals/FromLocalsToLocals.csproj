@@ -7,6 +7,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20201104122210_Extend_IdentityUser.cs" />
     <Compile Remove="Migrations\20201104122210_Extend_IdentityUser.Designer.cs" />
+    <Compile Remove="Migrations\20201108234544_NotificationTable.cs" />
+    <Compile Remove="Migrations\20201108234544_NotificationTable.Designer.cs" />
+    <Compile Remove="Migrations\20201109081856_NotificationTable.cs" />
+    <Compile Remove="Migrations\20201109081856_NotificationTable.Designer.cs" />
+    <Compile Remove="Migrations\20201109223455_Notification.cs" />
+    <Compile Remove="Migrations\20201109223455_Notification.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +28,7 @@
     <PackageReference Include="GMap.NET.Core" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">

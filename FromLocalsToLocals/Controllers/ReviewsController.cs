@@ -6,6 +6,8 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -14,12 +16,14 @@ namespace FromLocalsToLocals.Controllers
         private readonly AppDbContext _context;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotificationHub> hubContext)
         {
             _context = context;
             _signInManager = signInManager;
             _userManager = userManager;
+            _hubContext = hubContext;
         }
         public ActionResult Index()
         {
@@ -29,7 +33,7 @@ namespace FromLocalsToLocals.Controllers
         [HttpGet]
         public async Task<IActionResult> Reviews()
         {
-            int id = GetVendorID();
+            var id = GetVendorID();
             var model = new ReviewWindow();
             
             model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
@@ -45,7 +49,7 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reviews(ReviewWindow model)
         {
-            int id = GetVendorID();
+            var id = GetVendorID();
             var vendor = await _context.Vendors.FindAsync(id);
             var userLoggedIn = _signInManager.IsSignedIn(User);
 
@@ -79,13 +83,30 @@ namespace FromLocalsToLocals.Controllers
                 review.Date = DateTime.Now.ToString("yyyy-MM-dd");
                 review.Reply = "";
 
-
                 _context.Reviews.Add(review);
                 _context.SaveChanges();
                 vendor.UpdateReviewsCount(_context);
 
                 model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
                 model.Vendor = vendor;
+
+                //Notify vendor owner that someone commented on his shop
+                var notification = new Notification
+                {
+                    OwnerId = _context.Vendors.Single(v => v.ID == GetVendorID()).UserID,
+                    VendorId = id,
+                    IsRead = false,
+                    CreatedDate = DateTime.Now,
+                    NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendor.Title}'.",
+                    Url = HttpContext.Request.Path.Value
+                };
+
+
+
+                _context.Notifications.Add(notification);
+                _context.SaveChanges();
+
+                await _hubContext.Clients.All.SendAsync("displayNotification", "");
 
                 return View(model);
             }
@@ -95,7 +116,7 @@ namespace FromLocalsToLocals.Controllers
         private int GetVendorID()
         {
             string path = HttpContext.Request.Path.Value;
-            return int.Parse(path.Remove(0, 52));
+            return int.Parse(path.Remove(0, 26));
         }
 
         /* STILL NEEDED

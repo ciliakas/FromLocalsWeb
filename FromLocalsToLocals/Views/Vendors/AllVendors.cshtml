@@ -1,43 +1,53 @@
-﻿@model IEnumerable<FromLocalsToLocals.Models.Vendor>
+﻿@model FromLocalsToLocals.Models.VendorTypeViewModel
+
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "All Services";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="mt-4" style="text-align: center;">All Services</h1>
-
+<h1>All Vendors</h1>
+<form asp-action="AllVendors" method="get">
+    <p>
+        <select asp-for="VendorType" asp-items="Model.Types">
+            <option value="">All</option>
+        </select>
+        Title: <input type="text" name="searchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.Vendors[0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.Vendors[0].Address)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.VendorTypeDb)
+                @Html.DisplayNameFor(model => model.Vendors[0].VendorTypeDb)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VendorTypeDb)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Vendors)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VendorTypeDb)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
