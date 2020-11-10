@@ -56,8 +56,6 @@ namespace FromLocalsToLocals
                 PositionClass = ToastPositions.BottomCenter
             });
 
-
-
             services.AddScoped<INotificationService, NotificationService>();
 
             services.AddSignalR();
