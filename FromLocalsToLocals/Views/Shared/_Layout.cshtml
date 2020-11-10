@@ -29,68 +29,64 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background-color: whitesmoke; text-size-adjust: 70%;">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/Assets/appLogo.png" width="90" height="40" />
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav mr-auto">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background-color: #CCBA8B; font-size: 17px;">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/Assets/appLogo.png" width="90" height="40" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="AllVendors">All Services</a>
+                    </li>
+                    @if (signInManager.IsSignedIn(User))
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="MyVendors">My Services</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="Create">Add Service</a>
                         </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="FAQ">FAQ</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    @if (signInManager.IsSignedIn(User))
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="FAQ">FAQ</a>
+                            <form method="post" asp-action="logout" asp-controller="Account">
+                                <button type="submit" class="nav-link btn btn-link py-0" style="width:auto;">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
                         </li>
+                    }
+                    else
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Reviews">Reviews</a>
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
                         </li>
+                        <li class="nav-item mt-2">|</li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="AllVendors">All Services</a>
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="login">Log In</a>
                         </li>
-                        @if (signInManager.IsSignedIn(User))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="MyVendors">My Services</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="Create">Add Service</a>
-                            </li>
-                        }
-                    </ul>
-                    <ul class="navbar-nav">
-                        @if (signInManager.IsSignedIn(User))
-                        {
-                            <li class="nav-item">
-                                <form method="post" asp-action="logout" asp-controller="Account">
-                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto;">
-                                        Logout @User.Identity.Name
-                                    </button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+                    }
+                </ul>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
