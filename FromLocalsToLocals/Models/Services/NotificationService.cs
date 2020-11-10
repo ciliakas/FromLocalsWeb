@@ -48,7 +48,7 @@ namespace FromLocalsToLocals.Models
         {
             try
             {
-                _context.Notifications.Remove(_context.Notifications.Single(n => n.NotiId == notificationId));
+                _context.Notifications.Remove(_context.Notifications.FirstOrDefault(n => n.NotiId == notificationId));
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
