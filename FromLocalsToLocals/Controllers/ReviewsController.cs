@@ -97,7 +97,7 @@ namespace FromLocalsToLocals.Controllers
                     VendorId = id,
                     IsRead = false,
                     CreatedDate = DateTime.Now,
-                    NotiBody = $"{review.SenderUsername} gave {review.Stars} starts to '{vendor.Title}'.",
+                    NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendor.Title}'.",
                     Url = HttpContext.Request.Path.Value
                 };
 
