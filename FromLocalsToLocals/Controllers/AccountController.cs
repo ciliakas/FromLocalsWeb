@@ -50,6 +50,12 @@ namespace FromLocalsToLocals.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
@@ -131,7 +137,7 @@ namespace FromLocalsToLocals.Controllers
         private async Task<IActionResult> PicNameChange(ProfileVM model)
         {
             var userId = _userManager.GetUserId(User);
-            var user = _context.Users.Single(x => x.Id == userId);
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
             var oldModel = GetNewProfileVM(user);
             var resultsList = new List<IdentityResult>();
 
@@ -192,7 +198,9 @@ namespace FromLocalsToLocals.Controllers
             }
 
             if (ModelState.ErrorCount == 0)
+            {
                 _toastNotification.AddSuccessToastMessage("Changes saved successfully");
+            }
 
             return Profile();
         }
