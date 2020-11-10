@@ -87,7 +87,10 @@ function sortList(arg) {
                 for (i = 0; i < (b.length - 1); i++) {
                     shouldSwitch = false;
 
-                    if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
+                    rating = getStarRating(b, i);
+                    rating1 = getStarRating(b, i + 1);
+
+                    if (rating < rating1) {
                         shouldSwitch = true;
                         break;
                     }
@@ -107,4 +110,9 @@ function sortList(arg) {
 function getDate(arr, index) {
     var x = arr[index].getElementsByTagName("SMALL");
     return x[0].innerHTML.substring(10, 20);
+}
+
+function getStarRating(arr, index) {
+    var x = arr[index].getElementsByTagName("P");
+    return x[0].getAttribute('data-rating');
 }
