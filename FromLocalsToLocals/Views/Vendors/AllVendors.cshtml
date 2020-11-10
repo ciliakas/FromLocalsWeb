@@ -6,14 +6,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>All Vendors</h1>
-<form asp-action="AllVendors" method="get">
+<h2 class="mt-4">All Vendors</h2>
+<form asp-action="AllVendors" method="get" class="form-inline">
     <p>
-        <select asp-for="VendorType" asp-items="Model.Types">
+        <select asp-for="VendorType" asp-items="Model.Types" class="form-control mr-2">
             <option value="">All</option>
         </select>
-        Title: <input type="text" name="searchString" />
-        <input type="submit" value="Filter" />
+        Title: <input type="text" name="searchString" class="form-control"/>
+        <input type="submit" value="Filter" class="btn btn-success"/>
     </p>
 </form>
 <table class="table">
