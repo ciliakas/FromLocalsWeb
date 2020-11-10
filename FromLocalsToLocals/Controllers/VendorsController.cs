@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Policy;
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcMovie.Models;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -29,9 +32,28 @@ namespace FromLocalsToLocals.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllVendors()
+        public async Task<IActionResult> AllVendors(string vendorType, string searchString)
         {
-            return View(await _context.Vendors.ToListAsync());
+            IQueryable<string> typeQuery = from m in _context.Vendors
+                                           orderby m.VendorTypeDb
+                                           select m.VendorTypeDb;
+
+            var vendors = from m in _context.Vendors
+                        select m;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vendors = vendors.Where(s => s.Title.Contains(searchString));
+            }
+            if (!string.IsNullOrEmpty(vendorType))
+            {
+                vendors = vendors.Where(x => x.VendorTypeDb == vendorType);
+            }
+            var vendorTypeVM = new VendorTypeViewModel
+            {
+                Types = new SelectList(await typeQuery.Distinct().ToListAsync()),
+                Vendors = await vendors.ToListAsync()
+            };
+            return View(vendorTypeVM);
         }
 
         [HttpGet]
