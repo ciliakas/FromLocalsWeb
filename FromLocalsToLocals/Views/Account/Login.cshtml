@@ -5,6 +5,9 @@
     ViewData["Title"] = "User Login";
 }
 
+<head>
+    <link href="~/css/revealEye.css" rel="stylesheet" type="text/css">
+</head>
 
 
 <div class="row">
@@ -25,7 +28,7 @@
                                 <input asp-for="Username" class="form-control" />
                                 <span asp-validation-for="Username" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group, wrapper">
                                 <label asp-for="Password"></label>
                                 <input asp-for="Password" class="form-control" />
                                 <span asp-validation-for="Password" class="text-danger"></span>
@@ -36,6 +39,9 @@
                                         <input asp-for="RememberMe" />
                                         @Html.DisplayNameFor(m => m.RememberMe)
                                     </label>
+                                    <p>
+                                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -45,30 +51,7 @@
                     </div>
                 </div>
             </div>
-            @*<div asp-validation-summary="All" class="text-danger"></div>
 
-                <div class="form-group">
-                    <label asp-for="Username"></label>
-                    <input asp-for="Username" class="form-control" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
-                </div>
-                <div class="form-group, wrapper">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
-                            @Html.DisplayNameFor(m => m.RememberMe)
-                        </label>
-                        <p>
-                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                        </p>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-success">Login</button>*@
         </form>
     </div>
 </div>
@@ -82,5 +65,7 @@
     $(function () {
         $('#loginModal').modal('show');
     });
-</script> 
+</script>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="~/js/revealEye.js"></script>
