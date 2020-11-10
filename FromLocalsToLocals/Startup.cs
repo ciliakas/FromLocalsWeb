@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
+using Microsoft.AspNet.Identity;
 using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NToastNotify;
+using SendGrid.Helpers.Mail;
+using Microsoft.AspNetCore.Components;
 
 namespace FromLocalsToLocals
 {
@@ -34,17 +39,32 @@ namespace FromLocalsToLocals
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
 
+
+
             services.AddIdentity<AppUser, IdentityRole>(options =>
                 {
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireDigit = false;
                     options.Password.RequireUppercase = false;
-                }).AddEntityFrameworkStores<AppDbContext>();
+                    options.SignIn.RequireConfirmedEmail = false;
+                }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+
+            services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
+            {
+                ProgressBar = false,
+                PositionClass = ToastPositions.BottomCenter
+            });
+
+
 
             services.AddScoped<INotificationService, NotificationService>();
 
             services.AddSignalR();
+
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -67,6 +87,8 @@ namespace FromLocalsToLocals
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseNToastNotify();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -75,5 +97,8 @@ namespace FromLocalsToLocals
                 endpoints.MapHub<NotificationHub>("/notificationHub");
             });
         }
+
+      
+
     }
 }
