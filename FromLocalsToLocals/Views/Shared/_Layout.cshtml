@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/notification/ikr.notification.css" rel="stylesheet" />
 
     @*!--LeafLet CSS and Script-->*@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -64,6 +65,8 @@
                 <ul class="navbar-nav">
                     @if (signInManager.IsSignedIn(User))
                     {
+                        <div id="noti_Container"></div>
+
                         <li class="nav-item">
                             <form method="post" asp-action="logout" asp-controller="Account">
                                 <button type="submit" class="nav-link btn btn-link py-0" style="width:auto;">
@@ -99,8 +102,77 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/notification/ikr.notificationPlugin.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+<script type="text/javascript">
+
+
+    function hide(e) {
+
+        e.parentElement.parentElement.style.display = 'none';
+        var notiId = e.parentElement.parentElement.getAttribute("notiId");
+       
+        $.ajax({
+            type: "POST",
+            url: '/Notification/DeleteItem/' + notiId,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                var elem = document.getElementById("noti_Container");
+                elem.innerHTML = "";
+                $("#noti_Container").ikrNotificationSetup();
+                getNotifications();
+            },
+            error: function (e) {
+                alert("Couldn't delete notification");
+            }
+        });
+        
+    };
+
+    function getNotifications() {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/Notification/GetNotifications",
+            traditional: true,
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                var notifications = data;
+                $("#noti_Container").ikrNotificationCount({
+                    NotificationList: notifications,
+                    ListBodyPropName: "NotiBody",
+                    ControllerName: "Notifications",
+                    ActionName: "AllNotifications",
+                    Date: "CreatedDate"
+                });
+            },
+            error: function (xhr, status, error) {
+
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#noti_Container").ikrNotificationSetup();
+        getNotifications();
+    })
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
+
+    connection.on("displayNotification", () => {
+        var elem = document.getElementById("noti_Container");
+        elem.innerHTML = "";
+        $("#noti_Container").ikrNotificationSetup();
+        getNotifications();
+    });
+
+    connection.start();
+
+</script>
