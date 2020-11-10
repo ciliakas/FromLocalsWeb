@@ -12,7 +12,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MvcMovie.Models;
+using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -33,13 +33,11 @@ namespace FromLocalsToLocals.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AllVendors(string vendorType, string searchString)
         {
-            IQueryable<string> typeQuery = from m in _context.Vendors
-                                           orderby m.VendorTypeDb
-                                           select m.VendorTypeDb;
+            List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
 
             var vendors = from m in _context.Vendors
                         select m;
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 vendors = vendors.Where(s => s.Title.Contains(searchString));
             }
@@ -49,7 +47,7 @@ namespace FromLocalsToLocals.Controllers
             }
             var vendorTypeVM = new VendorTypeViewModel
             {
-                Types = new SelectList(await typeQuery.Distinct().ToListAsync()),
+                Types = new SelectList(typesOfVendors),
                 Vendors = await vendors.ToListAsync()
             };
             return View(vendorTypeVM);

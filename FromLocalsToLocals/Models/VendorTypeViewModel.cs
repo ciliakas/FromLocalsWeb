@@ -1,8 +1,7 @@
-using FromLocalsToLocals.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
-namespace MvcMovie.Models
+namespace FromLocalsToLocals.Models
 {
     public class VendorTypeViewModel
     {
