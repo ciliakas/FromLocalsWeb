@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Models
 {
-    public class ReviewWindow
+    public class ReviewWindowVM
     {
         public Vendor Vendor {get; set;}
         public IEnumerable<Review> Reviews { get; set; }
