@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using NToastNotify;
 using SendGrid.Helpers.Mail;
 using Microsoft.AspNetCore.Components;
+using FromLocalsToLocals.Models.Services;
 
 namespace FromLocalsToLocals
 {
@@ -57,6 +58,7 @@ namespace FromLocalsToLocals
             });
 
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IVendorService, VendorService>();
 
             services.AddSignalR();
 

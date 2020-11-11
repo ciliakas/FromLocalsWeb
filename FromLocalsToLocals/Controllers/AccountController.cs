@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using SuppLocals;
@@ -24,10 +25,10 @@ namespace FromLocalsToLocals.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
         private readonly ILogger<AccountController> _logger;
-        private readonly NToastNotify.IToastNotification _toastNotification;
+        private readonly IToastNotification _toastNotification;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, 
-                                 AppDbContext context, ILogger<AccountController> logger, NToastNotify.IToastNotification toastNotification)
+                                 AppDbContext context, ILogger<AccountController> logger, IToastNotification toastNotification)
         {
             _userManager = userManager;
             _signInManager = signInManager;
