@@ -40,7 +40,7 @@ namespace FromLocalsToLocals.Controllers
             var vendorTypeVM = new VendorTypeViewModel
             {
                 Types = new SelectList(typesOfVendors),
-                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page??1, 2)
+                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page??1, 20)
             };
 
             return View(vendorTypeVM);
