@@ -22,7 +22,7 @@ namespace FromLocalsToLocals.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
-
+ 
         public VendorsController(UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
         {
             _userManager = userManager;
@@ -33,14 +33,14 @@ namespace FromLocalsToLocals.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllVendors(int ? id,string vendorType, string searchString, [FromQuery(Name = "page")] int page = 1)
+        public async Task<IActionResult> AllVendors([FromQuery(Name = "vendortype")]string? vendorType, [FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "page")] int? page)
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
 
             var vendorTypeVM = new VendorTypeViewModel
             {
                 Types = new SelectList(typesOfVendors),
-                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page, 5)
+                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page??1, 2)
             };
 
             return View(vendorTypeVM);

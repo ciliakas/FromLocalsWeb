@@ -10,6 +10,7 @@ namespace FromLocalsToLocals.Models.Services
     public class VendorService : IVendorService
     {
         private readonly AppDbContext _context;
+
         public VendorService(AppDbContext context)
         {
             _context = context;

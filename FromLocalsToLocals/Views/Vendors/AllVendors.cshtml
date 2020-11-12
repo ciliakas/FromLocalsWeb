@@ -52,11 +52,24 @@
     </tbody>
 </table>
 <ul class="pagination">
+    @{
+        var prevDisabled = !Model.Vendors.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Vendors.HasNextPage ? "disabled" : ""; 
+        var vendorType = Html.ViewContext.HttpContext.Request.Query["vendorType"];
+        var searchString = Html.ViewContext.HttpContext.Request.Query["searchString"];  
+    }
+    <li class="page-item @prevDisabled">
+        <a class="page-link" href="@Url.Action("AllVendors", new {searchString = searchString , vendorType=vendorType , page = (Model.Vendors.PageIndex - 1) } )"><<</a>
+    </li>
+
     @for (int i = 1; i <= Model.Vendors.TotalPages; i++)
     {
         <li class="@(i == Model.Vendors.PageIndex ? "page-item active" : "page-item")">
-            <a class="page-link" href="@Url.Action("AllVendors", new { page = i })">@i</a>
+            <a class="page-link" href="@Url.Action("AllVendors", new { searchString = searchString , vendorType=vendorType , page = i })">@i</a>
         </li>
-
     }
+    <li class="page-item @nextDisabled">
+        <a class="page-link" href="@Url.Action("AllVendors", new { searchString = searchString , vendorType=vendorType ,page = (Model.Vendors.PageIndex + 1) } )">>></a>
+    </li>
 </ul>
+
