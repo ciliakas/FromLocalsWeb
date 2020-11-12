@@ -7,25 +7,27 @@ using FromLocalsToLocals.Models;
 using SuppLocals;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Policy;
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FromLocalsToLocals.Utilities;
+using FromLocalsToLocals.Models.Services;
+using NToastNotify;
 
 namespace FromLocalsToLocals.Controllers
 {
     [Authorize]
     public class VendorsController : Controller
     {
-        private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IVendorService _vendorService;
+        private readonly IToastNotification _toastNotification;
 
-        public VendorsController(AppDbContext context, UserManager<AppUser> userManager)
+        public VendorsController(UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
         {
-            _context = context;
             _userManager = userManager;
+            _vendorService = vendorService;
+            _toastNotification = toastNotification;
         }
 
 
@@ -35,21 +37,12 @@ namespace FromLocalsToLocals.Controllers
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
 
-            var vendors = from m in _context.Vendors
-                        select m;
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                vendors = vendors.Where(s => s.Title.Contains(searchString));
-            }
-            if (!string.IsNullOrEmpty(vendorType))
-            {
-                vendors = vendors.Where(x => x.VendorTypeDb == vendorType);
-            }
             var vendorTypeVM = new VendorTypeViewModel
             {
                 Types = new SelectList(typesOfVendors),
-                Vendors = await vendors.ToListAsync()
+                Vendors = await _vendorService.GetVendorsAsync(searchString, vendorType),
             };
+
             return View(vendorTypeVM);
         }
 
@@ -57,7 +50,7 @@ namespace FromLocalsToLocals.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> MyVendors()
         {
-            return View(await _context.Vendors.Where(x => x.UserID == _userManager.GetUserId(User)).ToListAsync());
+            return View(await _vendorService.GetVendorsAsync( userId : _userManager.GetUserId(User)));
         }
 
         [HttpGet]
@@ -69,8 +62,8 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            var vendor = await _context.Vendors
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var vendor = await _vendorService.GetVendorAsync(id ?? default);
+
             if (vendor == null)
             {
                 return NotFound();
@@ -96,22 +89,24 @@ namespace FromLocalsToLocals.Controllers
 
                 if (latLng != null)
                 {
-
                     model.UserID = _userManager.GetUserId(User);
                     model.Latitude = latLng.Item1;
                     model.Longitude = latLng.Item2;
-                    
-                    _context.Vendors.Add(model);
-                    _context.SaveChanges();
+
+                    await _vendorService.CreateAsync(model);
+
+                    _toastNotification.AddSuccessToastMessage("Service Created");
 
                     return RedirectToAction("MyVendors");
                 }
             }
 
-            //Somehow we should inform the client-side that probably address is not recognizable
+            ModelState.AddModelError("", "Sorry, we can't recognize this address");
+            _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
+
             return View(model);
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -119,8 +114,9 @@ namespace FromLocalsToLocals.Controllers
             {
                 return NotFound();
             }
-            
-            var vendor = await _context.Vendors.FindAsync(id);
+
+            var vendor = await _vendorService.GetVendorAsync(id ?? default);
+
             if (vendor == null)
             {
                 return NotFound();
@@ -143,7 +139,7 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            var vendor = _context.Vendors.Single(x => x.ID == id);
+            var vendor = await _vendorService.GetVendorAsync(id);
 
             if (!ValidUser(vendor.UserID))
             {
@@ -152,39 +148,27 @@ namespace FromLocalsToLocals.Controllers
 
             if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
                 ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
-            {
-                try
+            {   
+
+                var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
+
+                if (latLng == null)
                 {
-                    var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
-
-                    if (latLng == null)
-                    {
-                        //Somehow we should inform the client-side that probably address is not recognizable
-                        return View(model);
-                    }
-
-                    vendor.Title = model.Title;
-                    vendor.About = model.About;
-                    vendor.Address = model.Address;
-                    vendor.Latitude = latLng.Item1;
-                    vendor.Longitude = latLng.Item2;
-                    vendor.VendorType = model.VendorType;
-
-                    _context.Update(vendor);
-                    await _context.SaveChangesAsync();
-
+                    _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
+                    return View(model);
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VendorExists(model.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                vendor.Title = model.Title;
+                vendor.About = model.About;
+                vendor.Address = model.Address;
+                vendor.Latitude = latLng.Item1;
+                vendor.Longitude = latLng.Item2;
+                vendor.VendorType = model.VendorType;
+
+
+                await _vendorService.UpdateAsync(vendor);
+                _toastNotification.AddSuccessToastMessage("Service Updated");
+
                 return RedirectToAction(nameof(MyVendors));
             }
 
@@ -199,8 +183,8 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            var vendor = await _context.Vendors
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var vendor = await _vendorService.GetVendorAsync(id ?? default);
+
             if (vendor == null)
             {
                 return NotFound();
@@ -211,32 +195,12 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            return View(vendor);
-        }
+            await _vendorService.DeleteAsync(vendor);
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var vendor = await _context.Vendors.FindAsync(id);
-
-            if (!ValidUser(vendor.UserID))
-            {
-                return NotFound();
-            }
-
-            _context.Vendors.Remove(vendor);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(MyVendors));
         }
-
         
-
         #region Helpers
-        private bool VendorExists(int id)
-        {
-            return _context.Vendors.Any(e => e.ID == id);
-        }
 
         private bool ValidUser(string id)
         {
