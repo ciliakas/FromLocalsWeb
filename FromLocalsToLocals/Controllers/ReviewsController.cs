@@ -34,7 +34,7 @@ namespace FromLocalsToLocals.Controllers
         public async Task<IActionResult> Reviews()
         {
             var id = GetVendorID();
-            var model = new ReviewWindowVM();
+            var model = new ReviewViewModel();
             
             model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
 
@@ -47,7 +47,7 @@ namespace FromLocalsToLocals.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reviews(ReviewWindowVM model)
+        public async Task<IActionResult> Reviews(ReviewViewModel model)
         {
             var id = GetVendorID();
             var vendor = await _context.Vendors.FindAsync(id);
