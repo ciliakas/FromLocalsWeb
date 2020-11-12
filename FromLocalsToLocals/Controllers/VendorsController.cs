@@ -22,26 +22,30 @@ namespace FromLocalsToLocals.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
+        private readonly AppDbContext _context;
  
-        public VendorsController(UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
+        public VendorsController(AppDbContext context,UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
         {
             _userManager = userManager;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
+            _context = context;
         }
 
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllVendors([FromQuery(Name = "vendortype")]string? vendorType, [FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "page")] int? page)
+        public async Task<IActionResult> AllVendors([FromQuery(Name = "vendortype")]string? vendorType, [FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "itemCount")] int? itemCount)
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
 
             var vendorTypeVM = new VendorTypeViewModel
             {
                 Types = new SelectList(typesOfVendors),
-                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page??1, 20)
+                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page ?? 1, itemCount ?? 20)
             };
+
+            vendorTypeVM.Vendors.ForEach(a => a.UpdateReviewsCount(_context));
 
             return View(vendorTypeVM);
         }

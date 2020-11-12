@@ -2,6 +2,7 @@
 using FromLocalsToLocals.Utilities;
 using Geocoding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -98,9 +99,7 @@ namespace FromLocalsToLocals.Models
 
         public void UpdateReviewsCount(AppDbContext context)
         {
-            var reviews = (from r in context.Reviews
-                           where r.VendorID == ID
-                           select r).ToList();
+            var reviews = context.Reviews.Where(x => x.VendorID == ID).ToList();
 
             for (var i = 0; i < 5; i++)
             {
