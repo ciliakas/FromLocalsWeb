@@ -12,8 +12,8 @@
         <select asp-for="VendorType" asp-items="Model.Types" class="form-control mr-2">
             <option value="">All</option>
         </select>
-        Title: <input type="text" name="searchString" class="form-control"/>
-        <input type="submit" value="Filter" class="btn btn-success"/>
+        Title: <input type="text" name="searchString" class="form-control" />
+        <input type="submit" value="Filter" class="btn btn-success" />
     </p>
 </form>
 <table class="table">
@@ -51,3 +51,12 @@
         }
     </tbody>
 </table>
+<ul class="pagination">
+    @for (int i = 1; i <= Model.Vendors.TotalPages; i++)
+    {
+        <li class="@(i == Model.Vendors.PageIndex ? "page-item active" : "page-item")">
+            <a class="page-link" href="@Url.Action("AllVendors", new { page = i })">@i</a>
+        </li>
+
+    }
+</ul>

@@ -57,7 +57,6 @@ namespace FromLocalsToLocals.Models.Services
             return _context.Vendors.Any(e => e.ID == id);
         }
 
-
         private async Task<List<Vendor>> FilterVendorsListAsync(IQueryable<Vendor> vendors, string searchString = "", string vendorType = "")
         {
             if (!string.IsNullOrEmpty(searchString))

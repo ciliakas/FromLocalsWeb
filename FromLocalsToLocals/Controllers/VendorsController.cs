@@ -33,14 +33,14 @@ namespace FromLocalsToLocals.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllVendors(string vendorType, string searchString)
+        public async Task<IActionResult> AllVendors(int ? id,string vendorType, string searchString, [FromQuery(Name = "page")] int page = 1)
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
 
             var vendorTypeVM = new VendorTypeViewModel
             {
                 Types = new SelectList(typesOfVendors),
-                Vendors = await _vendorService.GetVendorsAsync(searchString, vendorType),
+                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page, 5)
             };
 
             return View(vendorTypeVM);
