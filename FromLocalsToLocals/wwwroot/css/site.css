@@ -161,3 +161,7 @@ button.boxclose {
     counter-increment: rateme 1;
 }
 
+ul li:nth-child(n+11) {
+    display: none;
+}
+
