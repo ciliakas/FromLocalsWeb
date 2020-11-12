@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using SuppLocals;
@@ -23,16 +24,14 @@ namespace FromLocalsToLocals.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
-        private readonly ILogger<AccountController> _logger;
-        private readonly NToastNotify.IToastNotification _toastNotification;
+        private readonly IToastNotification _toastNotification;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, 
-                                 AppDbContext context, ILogger<AccountController> logger, NToastNotify.IToastNotification toastNotification)
+                                 AppDbContext context, IToastNotification toastNotification)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
-            _logger = logger;
             _toastNotification = toastNotification;
         }
 
@@ -124,15 +123,12 @@ namespace FromLocalsToLocals.Controllers
         [Authorize]
         public async Task<IActionResult> Profile(string submitBtn, ProfileVM model)
         {
-            switch (submitBtn)
+            return submitBtn switch
             {
-                case "picName":
-                    return await PicNameChange(model);
-                case "password":
-                    return await ChangePassword(model);
-                default:
-                    return View();
-            }
+                "picName" => await PicNameChange(model),
+                "password" => await ChangePassword(model),
+                _ => View(),
+            };
         }
         private async Task<IActionResult> PicNameChange(ProfileVM model)
         {
