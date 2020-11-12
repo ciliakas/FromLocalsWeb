@@ -25,7 +25,14 @@
             </div>
         </div>
         <div class="col-sm-6 d-flex flex-column justify-content-between">
-            <img src="~/Assets/appLogo.png" style="width: inherit;" />
+            @if (Model.Image == null)
+            {
+                <img src="~/Assets/appLogo.png" style="width:inherit" />
+            }
+            else
+            {
+                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" style="width:inherit ; max-height:350px;" />
+            }
             <a class="btn btn-outline-secondary w-25" style="align-self: center;" asp-route-id="Vendor/@Model.ID" asp-controller="Reviews" asp-action="Reviews">Reviews</a>
         </div>
     </div>

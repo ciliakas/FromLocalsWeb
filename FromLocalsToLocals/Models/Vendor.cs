@@ -50,6 +50,7 @@ namespace FromLocalsToLocals.Models
 
         [NotMapped]
         public VendorType VendorType { get; set; }
+        public byte[] Image { get; set; }
 
         #region IComparable
 

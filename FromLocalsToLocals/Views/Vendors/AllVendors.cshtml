@@ -40,9 +40,16 @@
         {
             <div class="col-sm-@(12/itemsInRow) mb-2">
                 <div class="card border-primary" style="width:inherit; height:inherit;">
-                    <img class="card-img-top" src="~/Assets/appLogo.png" alt="Card image cap">
+                    @if (Model.Vendors[i * itemsInRow + j].Image == null)
+                    {
+                        <img src="~/Assets/appLogo.png" style="width:inherit ; height:100px;" />
+                    }
+                    else
+                    {
+                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Vendors[i * itemsInRow + j].Image)" style="width:inherit ; height:100px;" />
+                    }
                     <div class="card-body">
-                        <h5 class="card-title" style="margin:0;">@Model.Vendors[i * itemsInRow + j].Title</h5>
+                        <h5 class="card-title" style="margin:0px">@Model.Vendors[i * itemsInRow + j].Title</h5>
                         <p style="font-size:12px;">(@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
                         @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
                         {
@@ -104,7 +111,14 @@
                                     break;
                             }
                         }
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <div class="row">
+                        <div class="col">
+                            <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details" class="btn btn-primary">Read More</a>
+                        </div>
+                        <div class="col">
+                            <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews" class="btn btn-primary">Reviews</a>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
