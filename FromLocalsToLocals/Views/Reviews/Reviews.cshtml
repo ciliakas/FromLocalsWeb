@@ -44,7 +44,7 @@
                                             <div class="d-flex">
                                                 @if (item.SenderUsername != "Anonimas")
                                                 {
-                                                    <img src="data:image;base64,@System.Convert.ToBase64String(userManager.GetUserId())" class="mr-3" style="width: 32px; height: 32px;" />
+                                                    <img src="data:image;base64,@System.Convert.ToBase64String(item.SenderImage)" class="userImage mr-3" style="width: 32px; height: 32px;" />
                                                 }
                                                 else
                                                 {

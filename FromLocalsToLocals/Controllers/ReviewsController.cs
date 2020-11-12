@@ -39,6 +39,7 @@ namespace FromLocalsToLocals.Controllers
             model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
 
             var vendor = await _context.Vendors.FindAsync(id);
+
             vendor.UpdateReviewsCount(_context);
             model.Vendor = vendor;
 
@@ -71,6 +72,7 @@ namespace FromLocalsToLocals.Controllers
                 {
                     var user = await _userManager.GetUserAsync(User);
                     review.SenderUsername = user.UserName;
+                    review.SenderImage = user.Image;
                 }
 
                 else
@@ -100,8 +102,6 @@ namespace FromLocalsToLocals.Controllers
                     NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendor.Title}'.",
                     Url = HttpContext.Request.Path.Value
                 };
-
-
 
                 _context.Notifications.Add(notification);
                 _context.SaveChanges();
