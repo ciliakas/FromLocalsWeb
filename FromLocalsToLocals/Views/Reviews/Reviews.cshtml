@@ -6,7 +6,7 @@
 }
 
 <body>
-    <h2 class="text-center mt-4">Reviews about @Model.Vendor.Title</h2>
+    <h2 class="text-center mt-4">Reviews about "@Model.Vendor.Title"</span></h2>
     <hr />
     <div class="container-fluid">
         <div class="row align-content-lg-start">
@@ -31,9 +31,7 @@
                         <ul class="list-group list-group-flush" id="allReviews">
                             @if (Model.Reviews.Count() == 0)
                             {
-                                <li class="list-group-item font-italic">
-                                    No reviews
-                                </li>
+                                <li class="list-group-item font-italic">No reviews</li>
                             }
                             else
                             {

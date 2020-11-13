@@ -44,7 +44,6 @@ namespace FromLocalsToLocals.Controllers
 
             model.Reviews = from review in reviews
                              join user in _context.Users on review.SenderUsername equals user.UserName into temp
-
                              from leftTable in temp.DefaultIfEmpty()
                              select new Review{
                                  VendorID = review.VendorID, 
