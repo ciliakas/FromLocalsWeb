@@ -25,6 +25,7 @@ namespace FromLocalsToLocals.Models
 
         public string Reply { get; set; }
 
+        [NotMapped]
         public byte[] SenderImage { get; set; }
 
         public bool Equals([AllowNull] Review other)
