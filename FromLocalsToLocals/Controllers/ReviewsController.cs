@@ -34,13 +34,27 @@ namespace FromLocalsToLocals.Controllers
         public async Task<IActionResult> Reviews()
         {
             var id = GetVendorID();
+
             var model = new ReviewViewModel();
-            
-            model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
+            var reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
 
             var vendor = await _context.Vendors.FindAsync(id);
             vendor.UpdateReviewsCount(_context);
             model.Vendor = vendor;
+
+            model.Reviews = from review in reviews
+                             join user in _context.Users on review.SenderUsername equals user.UserName into temp
+                             from leftTable in temp.DefaultIfEmpty()
+                             select new Review{
+                                 VendorID = review.VendorID, 
+                                 SenderUsername = review.SenderUsername,
+                                 CommentID = review.CommentID,
+                                 Text = review.Text,
+                                 Stars = review.Stars,
+                                 Date = review.Date,
+                                 Reply = review.Reply,
+                                 SenderImage = leftTable?.Image ?? null
+                             };
 
             return View(model);
         }
@@ -93,15 +107,13 @@ namespace FromLocalsToLocals.Controllers
                 //Notify vendor owner that someone commented on his shop
                 var notification = new Notification
                 {
-                    OwnerId = _context.Vendors.Single(v => v.ID == GetVendorID()).UserID,
+                    OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == GetVendorID()).UserID,
                     VendorId = id,
                     IsRead = false,
                     CreatedDate = DateTime.Now,
                     NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendor.Title}'.",
                     Url = HttpContext.Request.Path.Value
                 };
-
-
 
                 _context.Notifications.Add(notification);
                 _context.SaveChanges();

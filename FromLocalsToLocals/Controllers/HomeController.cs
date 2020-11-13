@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,19 +7,13 @@ using Microsoft.Extensions.Logging;
 using FromLocalsToLocals.Models;
 using FromLocalsToLocals.Database;
 using Microsoft.EntityFrameworkCore;
-using SuppLocals;
-using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Controllers
 {
-
-
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
-
-
 
         public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
@@ -66,8 +59,5 @@ namespace FromLocalsToLocals.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
-
     }
 }
