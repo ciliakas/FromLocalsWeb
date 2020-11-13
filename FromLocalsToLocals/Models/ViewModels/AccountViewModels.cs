@@ -89,9 +89,6 @@ namespace FromLocalsToLocals.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
         public string ConfirmPassword { get; set; }
-
-
         public string Code { get; set; }
     }
-
 }

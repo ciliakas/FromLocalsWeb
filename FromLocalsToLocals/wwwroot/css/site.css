@@ -161,3 +161,11 @@ button.boxclose {
     counter-increment: rateme 1;
 }
 
+ul li:nth-child(n+11) {
+    display: none;
+}
+
+img.userImage.mr-3 {
+    border-radius: 50%;
+}
+
