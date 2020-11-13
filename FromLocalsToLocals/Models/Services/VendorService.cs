@@ -1,4 +1,5 @@
 ﻿using FromLocalsToLocals.Database;
+using Geocoding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace FromLocalsToLocals.Models.Services
     public class VendorService : IVendorService
     {
         private readonly AppDbContext _context;
+
         public VendorService(AppDbContext context)
         {
             _context = context;
@@ -56,7 +58,6 @@ namespace FromLocalsToLocals.Models.Services
         {
             return _context.Vendors.Any(e => e.ID == id);
         }
-
 
         private async Task<List<Vendor>> FilterVendorsListAsync(IQueryable<Vendor> vendors, string searchString = "", string vendorType = "")
         {
