@@ -88,15 +88,22 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditVendorVM model)
         {
-            if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
-                ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
+            try
             {
-                var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
-
-                if (latLng != null)
+                if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
+                    ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
                 {
-                    var vendor = new Vendor();
+                    var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
 
+                    if (latLng == null)
+                    {
+                        ModelState.AddModelError("", "Sorry, we can't recognize this address");
+                        _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
+                        return View(model);
+
+                    }
+
+                    var vendor = new Vendor();
                     vendor.UserID = _userManager.Value.GetUserId(User);
                     vendor.Latitude = latLng.Item1;
                     vendor.Longitude = latLng.Item2;
@@ -105,14 +112,15 @@ namespace FromLocalsToLocals.Controllers
                     await _vendorService.CreateAsync(vendor);
 
                     _toastNotification.AddSuccessToastMessage("Service Created");
-
                     return RedirectToAction("MyVendors");
                 }
             }
-
-            ModelState.AddModelError("", "Sorry, we can't recognize this address");
-            _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
-
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _toastNotification.AddErrorToastMessage(ex.Message);
+            }
+            
             return View(model);
         }
         
@@ -166,15 +174,25 @@ namespace FromLocalsToLocals.Controllers
                     _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
                     return View(model);
                 }
-                
-                vendor.Latitude = latLng.Item1;
-                vendor.Longitude = latLng.Item2;
-                model.SetValuesToVendor(vendor);
 
-                await _vendorService.UpdateAsync(vendor);
-                _toastNotification.AddSuccessToastMessage("Service Updated");
+                try
+                {
+                    vendor.Latitude = latLng.Item1;
+                    vendor.Longitude = latLng.Item2;
+                    model.SetValuesToVendor(vendor);
 
-                return RedirectToAction(nameof(MyVendors));
+                    await _vendorService.UpdateAsync(vendor);
+
+                    _toastNotification.AddSuccessToastMessage("Service Updated");
+
+                    return RedirectToAction(nameof(MyVendors));
+                }
+                catch(Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    _toastNotification.AddErrorToastMessage(ex.Message);
+                }
+
             }
 
             return View(model);
@@ -200,8 +218,15 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            await _vendorService.DeleteAsync(vendor);
-
+            try
+            {
+                await _vendorService.DeleteAsync(vendor);
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _toastNotification.AddErrorToastMessage(ex.Message);
+            }
             return RedirectToAction(nameof(MyVendors));
         }
         

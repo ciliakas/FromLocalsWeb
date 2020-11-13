@@ -19,14 +19,29 @@ namespace FromLocalsToLocals.Models.Services
 
         public async Task CreateAsync(Vendor vendor)
         {
-            _context.Vendors.Add(vendor);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Vendors.Add(vendor);
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateException)
+            {
+                throw new DbUpdateException("Unable to save service in database");
+            }
+
         }
 
         public async Task DeleteAsync(Vendor vendor)
         {
-            _context.Vendors.Remove(vendor);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Vendors.Remove(vendor);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new DbUpdateException("Unable to delete service from database");
+            }
         }
         public async Task<Vendor> GetVendorAsync(int id)
         {
@@ -50,8 +65,16 @@ namespace FromLocalsToLocals.Models.Services
 
         public async Task UpdateAsync(Vendor vendor)
         {
-            _context.Vendors.Update(vendor);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Vendors.Update(vendor);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new DbUpdateException("Unable to update service in database");
+            }
+
         }
 
         public bool Exists(int id)
