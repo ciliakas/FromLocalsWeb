@@ -21,14 +21,14 @@ namespace FromLocalsToLocals.Controllers
     [Authorize]
     public class VendorsController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly Lazy<UserManager<AppUser>> _userManager;
         private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
         private readonly AppDbContext _context;
  
         public VendorsController(AppDbContext context,UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
         {
-            _userManager = userManager;
+            _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
             _vendorService = vendorService;
             _toastNotification = toastNotification;
             _context = context;
@@ -56,7 +56,7 @@ namespace FromLocalsToLocals.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> MyVendors()
         {
-            return View(await _vendorService.GetVendorsAsync( userId : _userManager.GetUserId(User)));
+            return View(await _vendorService.GetVendorsAsync( userId : _userManager.Value.GetUserId(User)));
         }
 
         [HttpGet]
@@ -97,24 +97,10 @@ namespace FromLocalsToLocals.Controllers
                 {
                     var vendor = new Vendor();
 
-                    vendor.UserID = _userManager.GetUserId(User);
+                    vendor.UserID = _userManager.Value.GetUserId(User);
                     vendor.Latitude = latLng.Item1;
                     vendor.Longitude = latLng.Item2;
-                    vendor.Title = model.Title;
-                    vendor.About = model.About;
-                    vendor.Address = model.Address;
-
-                    if (model.Image != null)
-                    {
-                        if (model.Image.Length > 0)
-                        {
-                            using (var target = new MemoryStream())
-                            {
-                                model.Image.CopyTo(target);
-                                vendor.Image = target.ToArray();
-                            }
-                        }
-                    }
+                    model.SetValuesToVendor(vendor);
 
                     await _vendorService.CreateAsync(vendor);
 
@@ -150,15 +136,7 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            var model = new CreateEditVendorVM
-            {
-                ID = vendor.ID,
-                Title = vendor.Title,
-                About = vendor.About,
-                Address = vendor.Address
-            };
-
-            return View(model);
+            return View(new CreateEditVendorVM(vendor));
         }
 
         [HttpPost]
@@ -188,26 +166,10 @@ namespace FromLocalsToLocals.Controllers
                     _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
                     return View(model);
                 }
-
-                if (model.Image != null)
-                {
-                    if (model.Image.Length > 0)
-                    {
-                        using (var target = new MemoryStream())
-                        {
-                            model.Image.CopyTo(target);
-                            vendor.Image = target.ToArray();
-                        }
-                    }
-                }
-
-                vendor.Title = model.Title;
-                vendor.About = model.About;
-                vendor.Address = model.Address;
+                
                 vendor.Latitude = latLng.Item1;
                 vendor.Longitude = latLng.Item2;
-                vendor.VendorType = model.VendorType;
-
+                model.SetValuesToVendor(vendor);
 
                 await _vendorService.UpdateAsync(vendor);
                 _toastNotification.AddSuccessToastMessage("Service Updated");
@@ -247,7 +209,7 @@ namespace FromLocalsToLocals.Controllers
 
         private bool ValidUser(string id)
         {
-            return id == _userManager.GetUserId(User);
+            return id == _userManager.Value.GetUserId(User);
         }
 
         #endregion
