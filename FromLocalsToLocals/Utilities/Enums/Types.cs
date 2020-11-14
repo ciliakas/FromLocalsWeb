@@ -7,4 +7,9 @@ namespace FromLocalsToLocals.Utilities
         CarRepair,          
         Other
     }
+    public enum OrderType
+    {
+        MostLiked,
+        LeastLiked
+    }
 }

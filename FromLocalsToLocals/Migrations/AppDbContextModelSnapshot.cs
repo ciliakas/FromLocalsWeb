@@ -170,6 +170,9 @@ namespace FromLocalsToLocals.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 

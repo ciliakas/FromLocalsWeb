@@ -7,31 +7,22 @@ using Microsoft.Extensions.Logging;
 using FromLocalsToLocals.Models;
 using FromLocalsToLocals.Database;
 using Microsoft.EntityFrameworkCore;
+using FromLocalsToLocals.Models.Services;
 
 namespace FromLocalsToLocals.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly AppDbContext _context;
+        private readonly IVendorService _vendorService;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(IVendorService vendorService)
         {
-            _logger = logger;
-            _context = context;
+            _vendorService = vendorService;
         }
 
         public async Task<IActionResult> Index(string searchString)
         {
-            var vendors = from v in _context.Vendors
-                         select v;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                vendors = vendors.Where(s => s.Title.Contains(searchString));
-            }
-
-            return View(await vendors.ToListAsync());
+            return View(await _vendorService.GetVendorsAsync(searchString, ""));
         }
 
         public IActionResult Privacy()

@@ -48,6 +48,9 @@ namespace FromLocalsToLocals.Models
 
         [NotMapped]
         public VendorType VendorType { get; set; }
+        [NotMapped]
+        public double Average { get; set; }
+
         public byte[] Image { get; set; }
 
         #region IComparable
@@ -57,7 +60,7 @@ namespace FromLocalsToLocals.Models
         {
             if (other == null) return 1;
 
-            return ReviewsCount.Average().CompareTo(other.ReviewsCount.Average());
+            return Average.CompareTo(other.Average);
         }
 
         public static bool operator >(Vendor operand1, Vendor operand2)
@@ -106,9 +109,11 @@ namespace FromLocalsToLocals.Models
             }
 
             reviews.ForEach(x => ReviewsCount[x.Stars - 1]++);
+
+            Average = CountAverage();
         }
 
-        public double Average()
+        public double CountAverage()
         {
             var sum = 0;
             for (var i = 0; i < 5; i++)
