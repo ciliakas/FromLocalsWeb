@@ -6,21 +6,28 @@
 <h2 class="mt-4"></h2>
 <div class="row">
     <div class="col m-lg-5 text-center">
-        <img src="/Assets/userLoc.png" style="max-width: 90%; max-height: 80%;"/>
+        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" style="max-width: 90%; max-height: 80%;"/>
     </div>
     <div class="col">
         <div class="m-4">
             <div class="row">
-                <p class="text-muted text-uppercase">@Model.VendorType</p>
+            @switch(@Model.VendorType)
+            {
+                    case FromLocalsToLocals.Utilities.VendorType.CarRepair: <p class="text-muted text-uppercase">Car repair</p>
+                    break;
+
+                    default: <p class="text-muted text-uppercase">@Model.VendorType</p>
+                    break;
+            }
             </div>
-            <div class="row" style="margin-top: -20px;">
+            <div class="row mb-3" style="margin-top: -15px;">
                 <h2>@Model.Title</h2>
             </div>
             <div class="row">
                 @if (string.IsNullOrEmpty(@Model.About))
-                {
+                        {
                     <p class="font-italic">No description provided</p>
-                }
+                    }
                 else
                 {
                     <p class="font-italic">@Model.About</p>
