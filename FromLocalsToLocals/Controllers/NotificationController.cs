@@ -40,12 +40,7 @@ namespace FromLocalsToLocals.Controllers
 
             var noti = await _context.Notifications.FirstOrDefaultAsync(m => m.NotiId == id);
 
-            if (noti == null)
-            {
-                return Json(new { success = false });
-            }
-
-            if (noti.OwnerId != _userManager.GetUserId(User))
+            if (noti == null || noti.OwnerId != _userManager.GetUserId(User))
             {
                 return Json(new { success = false });
             }

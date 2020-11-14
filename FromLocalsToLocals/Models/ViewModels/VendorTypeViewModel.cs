@@ -8,6 +8,8 @@ namespace FromLocalsToLocals.Models
     {
         public PaginatedList<Vendor> Vendors { get; set; }
         public SelectList Types { get; set; }
+        public SelectList OrderTypes { get; set; }
+        public string OrderType { get; set; }
         public string VendorType { get; set; }
         public string SearchString { get; set; }
     }

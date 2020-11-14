@@ -1,4 +1,5 @@
 ﻿using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Utilities;
 using Geocoding;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,10 +12,25 @@ namespace FromLocalsToLocals.Models.Services
     public class VendorService : IVendorService
     {
         private readonly AppDbContext _context;
+        Comparison<Vendor> Descending = delegate (Vendor t1, Vendor t2) { return (-1) * t1.CompareTo(t2); };
+        Comparison<Vendor> Ascending = delegate (Vendor t1, Vendor t2) { return t1.CompareTo(t2); };
+
 
         public VendorService(AppDbContext context)
         {
             _context = context;
+        }
+        public void Sort(List<Vendor> vendors, string order)
+        {
+            switch (order)
+            {
+                case "MostLiked":
+                    vendors.Sort(Descending);
+                    break;
+                case "LeastLiked":
+                    vendors.Sort(Ascending);
+                    break;
+            };
         }
 
         public async Task CreateAsync(Vendor vendor)

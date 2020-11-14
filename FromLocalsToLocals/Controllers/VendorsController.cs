@@ -34,23 +34,28 @@ namespace FromLocalsToLocals.Controllers
             _context = context;
         }
 
-
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllVendors([FromQuery(Name = "vendortype")]string? vendorType, [FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "itemCount")] int? itemCount)
+        public async Task<IActionResult> AllVendors([FromQuery(Name = "ordertype")] string? orderType,[FromQuery(Name = "vendortype")]string? vendorType, [FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "itemCount")] int? itemCount)
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
+            List<OrderType> typesOfOrdering = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().ToList();
+
+            var vendors = await _vendorService.GetVendorsAsync(searchString,vendorType);
+            vendors.ForEach(a => a.UpdateReviewsCount(_context));
+            _vendorService.Sort(vendors, orderType ?? "");
+
 
             var vendorTypeVM = new VendorTypeViewModel
             {
                 Types = new SelectList(typesOfVendors),
-                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page ?? 1, itemCount ?? 20)
+                OrderTypes = new SelectList(typesOfOrdering),
+                Vendors = PaginatedList<Vendor>.Create(vendors, page ?? 1, itemCount ?? 20)
             };
-
-            vendorTypeVM.Vendors.ForEach(a => a.UpdateReviewsCount(_context));
 
             return View(vendorTypeVM);
         }
+
 
         [HttpGet]
         [AllowAnonymous]
