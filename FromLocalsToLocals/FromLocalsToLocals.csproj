@@ -16,17 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201104122210_Extend_IdentityUser.cs" />
-    <Compile Remove="Migrations\20201104122210_Extend_IdentityUser.Designer.cs" />
-    <Compile Remove="Migrations\20201108234544_NotificationTable.cs" />
-    <Compile Remove="Migrations\20201108234544_NotificationTable.Designer.cs" />
-    <Compile Remove="Migrations\20201109081856_NotificationTable.cs" />
-    <Compile Remove="Migrations\20201109081856_NotificationTable.Designer.cs" />
-    <Compile Remove="Migrations\20201109223455_Notification.cs" />
-    <Compile Remove="Migrations\20201109223455_Notification.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Assets\carrepair.png" />
     <None Include="wwwroot\Assets\food.png" />
     <None Include="wwwroot\Assets\other.png" />

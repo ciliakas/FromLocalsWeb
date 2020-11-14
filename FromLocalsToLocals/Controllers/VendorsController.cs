@@ -21,42 +21,47 @@ namespace FromLocalsToLocals.Controllers
     [Authorize]
     public class VendorsController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly Lazy<UserManager<AppUser>> _userManager;
         private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
         private readonly AppDbContext _context;
  
         public VendorsController(AppDbContext context,UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
         {
-            _userManager = userManager;
+            _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
             _vendorService = vendorService;
             _toastNotification = toastNotification;
             _context = context;
         }
 
-
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllVendors([FromQuery(Name = "vendortype")]string? vendorType, [FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "itemCount")] int? itemCount)
+        public async Task<IActionResult> AllVendors([FromQuery(Name = "ordertype")] string? orderType,[FromQuery(Name = "vendortype")]string? vendorType, [FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "itemCount")] int? itemCount)
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
+            List<OrderType> typesOfOrdering = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().ToList();
+
+            var vendors = await _vendorService.GetVendorsAsync(searchString,vendorType);
+            vendors.ForEach(a => a.UpdateReviewsCount(_context));
+            _vendorService.Sort(vendors, orderType ?? "");
+
 
             var vendorTypeVM = new VendorTypeViewModel
             {
                 Types = new SelectList(typesOfVendors),
-                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page ?? 1, itemCount ?? 20)
+                OrderTypes = new SelectList(typesOfOrdering),
+                Vendors = PaginatedList<Vendor>.Create(vendors, page ?? 1, itemCount ?? 20)
             };
-
-            vendorTypeVM.Vendors.ForEach(a => a.UpdateReviewsCount(_context));
 
             return View(vendorTypeVM);
         }
+
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> MyVendors()
         {
-            return View(await _vendorService.GetVendorsAsync( userId : _userManager.GetUserId(User)));
+            return View(await _vendorService.GetVendorsAsync( userId : _userManager.Value.GetUserId(User)));
         }
 
         [HttpGet]
@@ -88,45 +93,39 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditVendorVM model)
         {
-            if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
-                ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
+            try
             {
-                var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
-
-                if (latLng != null)
+                if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
+                    ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
                 {
-                    var vendor = new Vendor();
+                    var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
 
-                    vendor.UserID = _userManager.GetUserId(User);
+                    if (latLng == null)
+                    {
+                        ModelState.AddModelError("", "Sorry, we can't recognize this address");
+                        _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
+                        return View(model);
+
+                    }
+
+                    var vendor = new Vendor();
+                    vendor.UserID = _userManager.Value.GetUserId(User);
                     vendor.Latitude = latLng.Item1;
                     vendor.Longitude = latLng.Item2;
-                    vendor.Title = model.Title;
-                    vendor.About = model.About;
-                    vendor.Address = model.Address;
-
-                    if (model.Image != null)
-                    {
-                        if (model.Image.Length > 0)
-                        {
-                            using (var target = new MemoryStream())
-                            {
-                                model.Image.CopyTo(target);
-                                vendor.Image = target.ToArray();
-                            }
-                        }
-                    }
+                    model.SetValuesToVendor(vendor);
 
                     await _vendorService.CreateAsync(vendor);
 
                     _toastNotification.AddSuccessToastMessage("Service Created");
-
                     return RedirectToAction("MyVendors");
                 }
             }
-
-            ModelState.AddModelError("", "Sorry, we can't recognize this address");
-            _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
-
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _toastNotification.AddErrorToastMessage(ex.Message);
+            }
+            
             return View(model);
         }
         
@@ -150,15 +149,7 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            var model = new CreateEditVendorVM
-            {
-                ID = vendor.ID,
-                Title = vendor.Title,
-                About = vendor.About,
-                Address = vendor.Address
-            };
-
-            return View(model);
+            return View(new CreateEditVendorVM(vendor));
         }
 
         [HttpPost]
@@ -189,30 +180,24 @@ namespace FromLocalsToLocals.Controllers
                     return View(model);
                 }
 
-                if (model.Image != null)
+                try
                 {
-                    if (model.Image.Length > 0)
-                    {
-                        using (var target = new MemoryStream())
-                        {
-                            model.Image.CopyTo(target);
-                            vendor.Image = target.ToArray();
-                        }
-                    }
+                    vendor.Latitude = latLng.Item1;
+                    vendor.Longitude = latLng.Item2;
+                    model.SetValuesToVendor(vendor);
+
+                    await _vendorService.UpdateAsync(vendor);
+
+                    _toastNotification.AddSuccessToastMessage("Service Updated");
+
+                    return RedirectToAction(nameof(MyVendors));
+                }
+                catch(Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    _toastNotification.AddErrorToastMessage(ex.Message);
                 }
 
-                vendor.Title = model.Title;
-                vendor.About = model.About;
-                vendor.Address = model.Address;
-                vendor.Latitude = latLng.Item1;
-                vendor.Longitude = latLng.Item2;
-                vendor.VendorType = model.VendorType;
-
-
-                await _vendorService.UpdateAsync(vendor);
-                _toastNotification.AddSuccessToastMessage("Service Updated");
-
-                return RedirectToAction(nameof(MyVendors));
             }
 
             return View(model);
@@ -238,8 +223,15 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            await _vendorService.DeleteAsync(vendor);
-
+            try
+            {
+                await _vendorService.DeleteAsync(vendor);
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _toastNotification.AddErrorToastMessage(ex.Message);
+            }
             return RedirectToAction(nameof(MyVendors));
         }
         
@@ -247,7 +239,7 @@ namespace FromLocalsToLocals.Controllers
 
         private bool ValidUser(string id)
         {
-            return id == _userManager.GetUserId(User);
+            return id == _userManager.Value.GetUserId(User);
         }
 
         #endregion

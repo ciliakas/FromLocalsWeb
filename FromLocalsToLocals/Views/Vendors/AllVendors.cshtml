@@ -21,6 +21,9 @@
         <select asp-for="VendorType" asp-items="Model.Types" class="form-control mr-2">
             <option value="">All</option>
         </select>
+        <select asp-for="OrderType" asp-items="Model.OrderTypes" class="form-control mr-2">
+            <option value="">Random</option>
+        </select>
         Title: <input type="text" name="searchString" class="form-control" />
         Items: <input type="number" min="1" max="50" name="itemCount" class="form-control" value=@itemCountDouble  />
         <input type="submit" value="Filter" class="btn btn-success" />
@@ -57,7 +60,7 @@
                         }
                         else
                         {
-                            @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].Average()))
+                            @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].Average))
                             {
                                 case 5:
                                     <p class="ml-3">
@@ -66,7 +69,7 @@
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
-                                        <span>@Model.Vendors[i * itemsInRow + j].Average().ToString("0.0")</span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
                                     </p>
                                     break;
                                 case 4:
@@ -76,7 +79,7 @@
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star"></span>
-                                        <span>@Model.Vendors[i * itemsInRow + j].Average().ToString("0.0")</span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
                                     </p>
                                     break;
                                 case 3:
@@ -86,7 +89,7 @@
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
-                                        <span>@Model.Vendors[i * itemsInRow + j].Average().ToString("0.0")</span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
                                     </p>
                                     break;
                                 case 2:
@@ -96,7 +99,7 @@
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
-                                        <span>@Model.Vendors[i * itemsInRow + j].Average().ToString("0.0")</span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
                                     </p>
                                     break;
                                 default:
@@ -106,7 +109,7 @@
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
-                                        <span>@Model.Vendors[i * itemsInRow + j].Average().ToString("0.0")</span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
                                     </p>
                                     break;
                             }
