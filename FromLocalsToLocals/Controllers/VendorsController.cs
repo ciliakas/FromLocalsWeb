@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Models.Services;
 using NToastNotify;
+using FromLocalsToLocals.Models.ViewModels;
+using System.IO;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -22,25 +24,29 @@ namespace FromLocalsToLocals.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
-
-        public VendorsController(UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
+        private readonly AppDbContext _context;
+ 
+        public VendorsController(AppDbContext context,UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
         {
             _userManager = userManager;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
+            _context = context;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllVendors(string vendorType, string searchString)
+        public async Task<IActionResult> AllVendors([FromQuery(Name = "vendortype")]string? vendorType, [FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "itemCount")] int? itemCount)
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
 
             var vendorTypeVM = new VendorTypeViewModel
             {
                 Types = new SelectList(typesOfVendors),
-                Vendors = await _vendorService.GetVendorsAsync(searchString, vendorType),
+                Vendors = PaginatedList<Vendor>.Create(await _vendorService.GetVendorsAsync(searchString, vendorType), page ?? 1, itemCount ?? 20)
             };
+
+            vendorTypeVM.Vendors.ForEach(a => a.UpdateReviewsCount(_context));
 
             return View(vendorTypeVM);
         }
@@ -79,7 +85,7 @@ namespace FromLocalsToLocals.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Vendor model)
+        public async Task<IActionResult> Create(CreateEditVendorVM model)
         {
             if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
                 ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
@@ -88,11 +94,28 @@ namespace FromLocalsToLocals.Controllers
 
                 if (latLng != null)
                 {
-                    model.UserID = _userManager.GetUserId(User);
-                    model.Latitude = latLng.Item1;
-                    model.Longitude = latLng.Item2;
+                    var vendor = new Vendor();
 
-                    await _vendorService.CreateAsync(model);
+                    vendor.UserID = _userManager.GetUserId(User);
+                    vendor.Latitude = latLng.Item1;
+                    vendor.Longitude = latLng.Item2;
+                    vendor.Title = model.Title;
+                    vendor.About = model.About;
+                    vendor.Address = model.Address;
+
+                    if (model.Image != null)
+                    {
+                        if (model.Image.Length > 0)
+                        {
+                            using (var target = new MemoryStream())
+                            {
+                                model.Image.CopyTo(target);
+                                vendor.Image = target.ToArray();
+                            }
+                        }
+                    }
+
+                    await _vendorService.CreateAsync(vendor);
 
                     _toastNotification.AddSuccessToastMessage("Service Created");
 
@@ -126,12 +149,20 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            return View(vendor);
+            var model = new CreateEditVendorVM
+            {
+                ID = vendor.ID,
+                Title = vendor.Title,
+                About = vendor.About,
+                Address = vendor.Address
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Vendor model)
+        public async Task<IActionResult> Edit(int id, CreateEditVendorVM model)
         {
             if (id != model.ID)
             {
@@ -155,6 +186,18 @@ namespace FromLocalsToLocals.Controllers
                 {
                     _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
                     return View(model);
+                }
+
+                if (model.Image != null)
+                {
+                    if (model.Image.Length > 0)
+                    {
+                        using (var target = new MemoryStream())
+                        {
+                            model.Image.CopyTo(target);
+                            vendor.Image = target.ToArray();
+                        }
+                    }
                 }
 
                 vendor.Title = model.Title;
