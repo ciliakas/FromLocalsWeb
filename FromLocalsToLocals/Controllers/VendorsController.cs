@@ -30,7 +30,6 @@ namespace FromLocalsToLocals.Controllers
             _toastNotification = toastNotification;
         }
 
-
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> AllVendors(string vendorType, string searchString)

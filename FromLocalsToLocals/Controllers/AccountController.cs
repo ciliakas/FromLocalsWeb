@@ -26,7 +26,7 @@ namespace FromLocalsToLocals.Controllers
         private readonly AppDbContext _context;
         private readonly IToastNotification _toastNotification;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, 
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
                                  AppDbContext context, IToastNotification toastNotification)
         {
             _userManager = userManager;
@@ -35,7 +35,7 @@ namespace FromLocalsToLocals.Controllers
             _toastNotification = toastNotification;
         }
 
-  
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -101,7 +101,7 @@ namespace FromLocalsToLocals.Controllers
                 }
 
 
-                ModelState.AddModelError(string.Empty,"Invalid Login Attempt");
+                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
 
             }
 
@@ -126,11 +126,13 @@ namespace FromLocalsToLocals.Controllers
             return submitBtn switch
             {
                 "picName" => await PicNameChange(model),
+                "accDetails" => await AccountDetailsChange(model),
                 "password" => await ChangePassword(model),
                 _ => View(),
             };
         }
-        private async Task<IActionResult> PicNameChange(ProfileVM model)
+
+        private async Task<IActionResult> AccountDetailsChange(ProfileVM model)
         {
             var userId = _userManager.GetUserId(User);
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
@@ -173,6 +175,33 @@ namespace FromLocalsToLocals.Controllers
                     ModelState.AddModelError("", $"Email '{model.Email}' is already in use.");
                 }
             }
+
+            CheckForErrors(resultsList);
+            return Profile();
+        }
+
+        private void CheckForErrors(List<IdentityResult> results)
+        {
+            var errors = GetErrors(results);
+            if (!errors.IsNullOrEmpty())
+            {
+                errors.ForEach(e => ModelState.AddModelError("", e));
+            }
+
+            if (ModelState.ErrorCount == 0)
+            {
+                _toastNotification.AddSuccessToastMessage("Changes saved successfully");
+            }
+        }
+
+
+        private async Task<IActionResult> PicNameChange(ProfileVM model)
+        {
+            var userId = _userManager.GetUserId(User);
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            var oldModel = GetNewProfileVM(user);
+            var resultsList = new List<IdentityResult>();
+            
             if (model.ImageFile != null)
             {
                 if (model.ImageFile.Length > 0)
@@ -187,17 +216,8 @@ namespace FromLocalsToLocals.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
-            var errors = GetErrors(resultsList);
-            if (!errors.IsNullOrEmpty())
-            {
-                errors.ForEach(e => ModelState.AddModelError("", e));
-            }
 
-            if (ModelState.ErrorCount == 0)
-            {
-                _toastNotification.AddSuccessToastMessage("Changes saved successfully");
-            }
-
+            CheckForErrors(resultsList);
             return Profile();
         }
         private async Task<IActionResult> ChangePassword(ProfileVM model)
