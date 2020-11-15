@@ -126,8 +126,8 @@ namespace FromLocalsToLocals.Controllers
                 {
                     OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == GetVendorID()).UserID,
                     VendorId = id,
-                    IsRead = false,
                     CreatedDate = DateTime.Now,
+                    Review = review,
                     NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendor.Title}'.",
                     Url = HttpContext.Request.Path.Value
                 };
