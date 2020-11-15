@@ -53,6 +53,8 @@ namespace FromLocalsToLocals.Controllers
                                  Stars = review.Stars,
                                  Date = review.Date,
                                  Reply = review.Reply,
+                                 ReplySender = review.ReplySender,
+                                 ReplyDate = review.ReplyDate,
                                  SenderImage = leftTable?.Image ?? null
                              };
 
@@ -73,6 +75,19 @@ namespace FromLocalsToLocals.Controllers
             if (vendor == null)
             {
                 return NotFound();
+            }
+
+            if (!string.IsNullOrWhiteSpace(Request.Form["vendorReply"]))
+            {
+                var index = int.Parse(Request.Form["postReview"]);
+                var review = await _context.Reviews.FirstOrDefaultAsync(x => (x.VendorID == id) && (x.CommentID == index));
+
+                review.Reply = Request.Form["vendorReply"];
+                review.ReplySender = vendor.Title;
+                review.ReplyDate = DateTime.Now.ToString("yyyy-MM-dd"); 
+                    
+                _context.SaveChanges();
+                vendor.UpdateReviewsCount(_context);
             }
 
             if (!string.IsNullOrWhiteSpace(Request.Form["comment"]))
@@ -96,6 +111,8 @@ namespace FromLocalsToLocals.Controllers
                 review.Stars = int.Parse(Request.Form["starRating"]);
                 review.Date = DateTime.Now.ToString("yyyy-MM-dd");
                 review.Reply = "";
+                review.ReplySender = "";
+                review.ReplyDate = "";
 
                 _context.Reviews.Add(review);
                 _context.SaveChanges();
@@ -130,38 +147,5 @@ namespace FromLocalsToLocals.Controllers
             string path = HttpContext.Request.Path.Value;
             return int.Parse(path.Remove(0, 26));
         }
-
-        /* STILL NEEDED
-        private void PostComment(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            var replyBox = ((Grid) button.Parent).FindName("ReplyTextBox") as TextBox;
-
-            var comment = ((Grid) button.Parent).FindName("UserComment") as TextBlock;
-
-            var replyGrid = ((Grid) button.Parent).FindName("ReplyGrid") as Grid;
-            var commentGrid = ((Grid) button.Parent).FindName("CommentGrid") as Border;
-
-            replyGrid.Visibility = Visibility.Collapsed;
-            commentGrid.Visibility = Visibility.Visible;
-
-
-            comment.Text = _vendor.Title + "\n" + "\n" + replyBox.Text + "\n" + DateTime.Now.ToString("yyyy-MM-dd");
-
-            // getting the index of the pressed POST button
-            var index = GetIndex(button);
-
-            using var db = new AppDbContext();
-            var user = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
-            user.Reply = comment.Text;
-            db.SaveChanges();
-        }
-
-        private int GetIndex(FrameworkElement element)
-        {
-            return RView.Items.IndexOf(element.DataContext);
-        }
-    } 
-         */
     }
 }
