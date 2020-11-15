@@ -25,6 +25,10 @@ namespace FromLocalsToLocals.Models
 
         public string Reply { get; set; }
 
+        public string ReplySender { get; set; }
+
+        public string ReplyDate { get; set; }
+
         [NotMapped]
         public byte[] SenderImage { get; set; }
 
