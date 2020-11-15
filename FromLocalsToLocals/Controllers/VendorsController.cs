@@ -98,6 +98,13 @@ namespace FromLocalsToLocals.Controllers
                 if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
                     ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
                 {
+                    if (model.Image != null & !model.Image.ValidImage())
+                    {
+                        ModelState.AddModelError("", "Invalid image type");
+                        _toastNotification.AddErrorToastMessage("Invalid image type");
+                        return View(model);
+                    }
+
                     var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
 
                     if (latLng == null)
@@ -105,13 +112,13 @@ namespace FromLocalsToLocals.Controllers
                         ModelState.AddModelError("", "Sorry, we can't recognize this address");
                         _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
                         return View(model);
-
                     }
 
                     var vendor = new Vendor();
                     vendor.UserID = _userManager.Value.GetUserId(User);
                     vendor.Latitude = latLng.Item1;
                     vendor.Longitude = latLng.Item2;
+
                     model.SetValuesToVendor(vendor);
 
                     await _vendorService.CreateAsync(vendor);
@@ -170,7 +177,13 @@ namespace FromLocalsToLocals.Controllers
 
             if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
                 ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
-            {   
+            {
+                if (model.Image != null & !model.Image.ValidImage())
+                {
+                    ModelState.AddModelError("", "Invalid image type");
+                    _toastNotification.AddErrorToastMessage("Invalid image type");
+                    return View(model);
+                }
 
                 var latLng = await MapMethods.ConvertAddressToLocationAsync(model.Address);
 
@@ -184,10 +197,10 @@ namespace FromLocalsToLocals.Controllers
                 {
                     vendor.Latitude = latLng.Item1;
                     vendor.Longitude = latLng.Item2;
+
                     model.SetValuesToVendor(vendor);
 
                     await _vendorService.UpdateAsync(vendor);
-
                     _toastNotification.AddSuccessToastMessage("Service Updated");
 
                     return RedirectToAction(nameof(MyVendors));
