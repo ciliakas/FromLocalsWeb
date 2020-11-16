@@ -18,7 +18,7 @@
     <style>
         .card {
             overflow: hidden;
-            min-height: 550px;
+            min-height: 450px;
             box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
         }
     </style>
@@ -77,17 +77,13 @@
                         <h5 class="card-title" style="margin:0px;">@Model.Vendors[i * itemsInRow + j].Title</h5>
                         <hr />
 
-                        <h6 class="card-title" style="margin:0px;"> About: </h6>
-
                         @if (Model.Vendors[i * itemsInRow + j].About == null)
                         {
-                            <p style="font-size:12px;">Vendor type: (@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
-                            <p style="font-size:14px; font-style:italic">No description added.</p>
+                            <p style="font-size:16px;">Vendor type: (@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
                         }
                         else
                         {
-                            <p style="font-size:12px;">Vendor type: (@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
-                            <p style="font-size:14px; font-style:italic">@Model.Vendors[i * itemsInRow + j].About</p>
+                            <p style="font-size:16px;">Vendor type: (@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
                         }
 
                         <hr />
@@ -154,17 +150,19 @@
                         }
 
                         <hr />
-                        <div class="row, ">
-                            <div class="col">
-                                <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details" 
-                                class="btn btn-primary" style="background-color: #CCBA8B; border: 2px solid white;" >Read More</a>
-                            </div>
-                            <div class="col">
-                                <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews" 
-                                   class="btn btn-primary" style="background-color: #CCBA8B; border: 2px solid white;" >Reviews</a>
+                        <div class="navbar" style="align-content:center">
+                            
+                                <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details"
+                                   class="btn btn-primary" style="background-color: #CCBA8B; border: 2px solid white;">Read More</a>
+                            
+
+                            
+                                <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews"
+                                   class="btn btn-primary" style="background-color: #CCBA8B; border: 2px solid white;">Reviews</a>
+                           
+
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         }
