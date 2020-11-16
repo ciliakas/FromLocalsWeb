@@ -26,6 +26,5 @@ namespace FromLocalsToLocals.Database
             }
         }
 
-
     }
 }
