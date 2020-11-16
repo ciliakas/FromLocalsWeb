@@ -203,7 +203,7 @@ namespace FromLocalsToLocals.Controllers
             var oldModel = GetNewProfileVM(user);
             var resultsList = new List<IdentityResult>();
 
-            if (model.ImageFile!=null & !model.ImageFile.ValidImage())
+            if (model.ImageFile!=null && !model.ImageFile.ValidImage())
             {
                 ModelState.AddModelError("", "Invalid profile image");
                 _toastNotification.AddErrorToastMessage("Invalid profile image");
