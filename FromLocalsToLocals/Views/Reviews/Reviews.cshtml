@@ -131,7 +131,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 }
                                 else
                                 {
@@ -145,6 +145,39 @@
                                     </form>
                                 }
                             }
+                            else
+                            {
+                                @if (item.Reply != "")
+                                {
+                                    <div class="mt-3 mb-3">
+                                        <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#k_@i" aria-expanded="false" aria-controls="k_@i">
+                                            Show reply
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="k_@i">
+                                        <div style="margin-left: 10%; background-color: whitesmoke; border-radius: 4px;">
+                                            <div class="row">
+                                                <div class="container m-3">
+                                                    <div class="d-flex">
+                                                        @if (Model.Vendor.Image != null)
+                                                        {
+                                                            <img src="data:image;base64,@System.Convert.ToBase64String(Model.Vendor.Image)" class="userImage mr-3" style="width: 32px; height: 32px;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/Assets/profile.png" class="mr-3" style="width: 32px; height: 32px;" />
+                                                        }
+                                                        <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.ReplySender)</h5>
+                                                    </div>
+                                                    <p class="mt-3">@Html.DisplayFor(modelItem => item.Reply)</p>
+                                                    <small>Posted on @Html.DisplayFor(modelItem => item.ReplyDate)</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
                         </li>
                                     i++;
                                 }
