@@ -98,7 +98,7 @@ namespace FromLocalsToLocals.Controllers
                 if (ModelState.GetFieldValidationState("Title") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid &&
                     ModelState.GetFieldValidationState("Address") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid)
                 {
-                    if (model.Image != null & !model.Image.ValidImage())
+                    if (model.Image != null && !model.Image.ValidImage())
                     {
                         ModelState.AddModelError("", "Invalid image type");
                         _toastNotification.AddErrorToastMessage("Invalid image type");
