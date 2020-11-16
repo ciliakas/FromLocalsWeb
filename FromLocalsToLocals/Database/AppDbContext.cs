@@ -1,6 +1,8 @@
 ﻿using FromLocalsToLocals.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace FromLocalsToLocals.Database
 {
@@ -14,7 +16,7 @@ namespace FromLocalsToLocals.Database
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
-
+  
 
     }
 }

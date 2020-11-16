@@ -16,25 +16,24 @@
 
 <head>
     <style>
-        .card{
+        .card {
             overflow: hidden;
             min-height: 400px;
             box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
         }
-
     </style>
 </head>
 <h2 class="mt-4" style="text-align: center; font-size: 30px;"> All Services</h2>
 
 <hr />
 
-<form asp-action="AllVendors" method="get" class="form-inline">
-    <p>
-        <select asp-for="VendorType" asp-items="Model.Types" class="btn dropdown-toggle" type="button" data-toggle="dropdown">
+<form asp-action="AllVendors" method="get" class="navbar">
+
+        <select asp-for="VendorType" asp-items="Model.Types" class="dropdown, btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
             <option value="">All</option>
 
         </select>
-        <select asp-for="OrderType" asp-items="Model.OrderTypes" class="dropdown, btn btn-secondary dropdown-toggle"
+        <select asp-for="OrderType" asp-items="Model.OrderTypes" class="dropdown, btn btn-primary dropdown-toggle"
                 type="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
 
@@ -42,13 +41,16 @@
         </select>
 
 
-        <input type="text" name="searchString" class="form-control" placeholder="Title" />
-        <input type="number" min="1" max="50" name="itemCount" class="form-control" placeholder="Items per page" value=@itemCountDouble />
-        <input type="submit" value="Filter" class="btn btn-primary" />
-    </p>
-
-
+   
+        <input type="text" name="searchString"  placeholder="Title" />
+        <input  type="number" min="1" max="50" name="itemCount" placeholder="Items per page" value=@itemCountDouble />
+        <input class="btn btn-primary" style="float:right;" type="submit" value="Filter" />
+    
 </form>
+
+
+<hr />
+
 @{
     var itemsInRow = 4; // Make sure its divisible by 12
     var rows = Math.Ceiling(itemCountDouble / itemsInRow);
@@ -73,7 +75,23 @@
                     }
                     <div class="card-body ">
                         <h5 class="card-title" style="margin:0px">@Model.Vendors[i * itemsInRow + j].Title</h5>
-                        <p style="font-size:12px;">(@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
+                        <hr />
+
+                        <h6 class="card-title" style="margin:0px"> About: </h6>
+
+                        @if (Model.Vendors[i * itemsInRow + j].About == null)
+                        {
+                            <p style="font-size:12px;">Vendor type: (@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
+                            <p style="font-size:14px; font-style:italic">No description added.</p>
+                        }
+                        else
+                        {
+                            <p style="font-size:12px;">Vendor type: (@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
+                            <p style="font-size:14px; font-style:italic">@Model.Vendors[i * itemsInRow + j].About</p>
+                        }
+
+                        <hr />
+
                         @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
                         {
                             <p>No Reviews</p>
@@ -83,7 +101,7 @@
                             @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].Average))
                             {
                                 case 5:
-                                    <p class="ml-3">
+                                    <p class="ml-3 ">
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
@@ -134,6 +152,8 @@
                                     break;
                             }
                         }
+
+                        <hr />
                         <div class="row">
                             <div class="col">
                                 <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details" class="btn btn-primary">Read More</a>
@@ -153,7 +173,7 @@
 
 
 
-
+<hr />
 <ul class="pagination">
     <li class="page-item @prevDisabled">
         <a class="page-link" href="@Url.Action("AllVendors", new {itemCount=itemCount, searchString = searchString , vendorType=vendorType , page = (Model.Vendors.PageIndex - 1) } )"><<</a>
