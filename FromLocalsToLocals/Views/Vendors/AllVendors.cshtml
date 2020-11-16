@@ -11,23 +11,43 @@
     var vendorType = Html.ViewContext.HttpContext.Request.Query["vendorType"];
     var searchString = Html.ViewContext.HttpContext.Request.Query["searchString"];
     var itemCount = Html.ViewContext.HttpContext.Request.Query["itemCount"];
-    var itemCountDouble = (!string.IsNullOrEmpty(itemCount))?double.Parse(itemCount) :20;
+    var itemCountDouble = (!string.IsNullOrEmpty(itemCount)) ? double.Parse(itemCount) : 20;
 }
 
+<head>
+    <style>
+        .card{
+            overflow: hidden;
+            min-height: 400px;
+            box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+        }
 
-<h2 class="mt-4">All Services</h2>
+    </style>
+</head>
+<h2 class="mt-4" style="text-align: center; font-size: 30px;"> All Services</h2>
+
+<hr />
+
 <form asp-action="AllVendors" method="get" class="form-inline">
     <p>
-        <select asp-for="VendorType" asp-items="Model.Types" class="form-control mr-2">
+        <select asp-for="VendorType" asp-items="Model.Types" class="btn dropdown-toggle" type="button" data-toggle="dropdown">
             <option value="">All</option>
+
         </select>
-        <select asp-for="OrderType" asp-items="Model.OrderTypes" class="form-control mr-2">
+        <select asp-for="OrderType" asp-items="Model.OrderTypes" class="dropdown, btn btn-secondary dropdown-toggle"
+                type="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+
             <option value="">Random</option>
         </select>
-        Title: <input type="text" name="searchString" class="form-control" />
-        Items: <input type="number" min="1" max="50" name="itemCount" class="form-control" value=@itemCountDouble  />
-        <input type="submit" value="Filter" class="btn btn-success" />
+
+
+        <input type="text" name="searchString" class="form-control" placeholder="Title" />
+        <input type="number" min="1" max="50" name="itemCount" class="form-control" placeholder="Items per page" value=@itemCountDouble />
+        <input type="submit" value="Filter" class="btn btn-primary" />
     </p>
+
+
 </form>
 @{
     var itemsInRow = 4; // Make sure its divisible by 12
@@ -41,8 +61,8 @@
 
         @for (int j = 0; j < itemsInRow && i * itemsInRow + j < vendorCount; j++)
         {
-            <div class="col-sm-@(12/itemsInRow) mb-2">
-                <div class="card border-primary" style="width:inherit; height:inherit;">
+            <div class="col-sm-@(12/itemsInRow) mb-2 ">
+                <div class="card" style="width:inherit; height:inherit;">
                     @if (Model.Vendors[i * itemsInRow + j].Image == null)
                     {
                         <img src="~/Assets/appLogo.png" style="width:inherit ; height:100px;" />
@@ -51,7 +71,7 @@
                     {
                         <img src="data:image;base64,@System.Convert.ToBase64String(Model.Vendors[i * itemsInRow + j].Image)" style="width:inherit ; height:100px;" />
                     }
-                    <div class="card-body">
+                    <div class="card-body ">
                         <h5 class="card-title" style="margin:0px">@Model.Vendors[i * itemsInRow + j].Title</h5>
                         <p style="font-size:12px;">(@Model.Vendors[i * itemsInRow + j].VendorTypeDb)</p>
                         @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
@@ -114,14 +134,14 @@
                                     break;
                             }
                         }
-                    <div class="row">
-                        <div class="col">
-                            <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details" class="btn btn-primary">Read More</a>
+                        <div class="row">
+                            <div class="col">
+                                <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details" class="btn btn-primary">Read More</a>
+                            </div>
+                            <div class="col">
+                                <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews" class="btn btn-primary">Reviews</a>
+                            </div>
                         </div>
-                        <div class="col">
-                            <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews" class="btn btn-primary">Reviews</a>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -129,6 +149,9 @@
 
     </div>
 }
+
+
+
 
 
 <ul class="pagination">

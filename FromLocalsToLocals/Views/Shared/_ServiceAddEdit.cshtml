@@ -8,12 +8,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control" placeholder="Type title..."/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="About" class="control-label"></label>
-                <textarea asp-for="About" class="form-control" rows="3"></textarea>
+                <textarea asp-for="About" class="form-control" rows="3" placeholder="Tell us about your shop..." maxlength="140"></textarea>
                 <span asp-validation-for="About" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -27,7 +27,7 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VendorType" class="control-label"></label>
+                <label asp-for="VendorType" class="control-label">Vendor Type</label>
                 @Html.DropDownListFor(m => m.VendorType,
                      new SelectList(Enum.GetValues(typeof(FromLocalsToLocals.Utilities.VendorType))))
             </div>
