@@ -84,7 +84,7 @@ namespace FromLocalsToLocals.Controllers
 
                 review.Reply = Request.Form["vendorReply"];
                 review.ReplySender = vendor.Title;
-                review.ReplyDate = DateTime.Now.ToString("yyyy-MM-dd"); 
+                review.ReplyDate = DateTime.UtcNow.ToString("yyyy-MM-dd"); 
                     
                 _context.SaveChanges();
                 vendor.UpdateReviewsCount(_context);
@@ -109,7 +109,6 @@ namespace FromLocalsToLocals.Controllers
 
                 review.Text = Request.Form["comment"];
                 review.Stars = int.Parse(Request.Form["starRating"]);
-                review.Date = DateTime.Now.ToString("yyyy-MM-dd");
                 review.Reply = "";
                 review.ReplySender = "";
                 review.ReplyDate = "";
@@ -126,8 +125,8 @@ namespace FromLocalsToLocals.Controllers
                 {
                     OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == GetVendorID()).UserID,
                     VendorId = id,
-                    IsRead = false,
                     CreatedDate = DateTime.Now,
+                    Review = review,
                     NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendor.Title}'.",
                     Url = HttpContext.Request.Path.Value
                 };
