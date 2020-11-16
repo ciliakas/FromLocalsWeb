@@ -51,6 +51,7 @@ namespace FromLocalsToLocals.Models.Services
         {
             try
             {
+                _context.Notifications.RemoveRange(_context.Notifications.Where(x => x.VendorId == vendor.ID));
                 _context.Vendors.Remove(vendor);
                 await _context.SaveChangesAsync();
             }

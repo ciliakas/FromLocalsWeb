@@ -173,3 +173,13 @@ ul li:nth-child(n+11) {
     border-bottom: 3px solid black;
     border-radius: 2px;
 }
+
+img.userImage.mr-3{
+    border-radius: 50%;
+}
+
+.center {
+    position: absolute;
+    left: 25%;
+    top: 10%;
+}

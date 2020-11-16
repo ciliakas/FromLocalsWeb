@@ -49,63 +49,6 @@ namespace FromLocalsToLocals.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    NotiId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OwnerId = table.Column<string>(nullable: true),
-                    VendorId = table.Column<int>(nullable: false),
-                    IsRead = table.Column<bool>(nullable: false),
-                    Url = table.Column<string>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    NotiBody = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.NotiId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reviews",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    VendorID = table.Column<int>(nullable: false),
-                    CommentID = table.Column<int>(nullable: false),
-                    SenderUsername = table.Column<string>(nullable: false),
-                    Text = table.Column<string>(nullable: false),
-                    Stars = table.Column<int>(nullable: false),
-                    Date = table.Column<string>(nullable: false),
-                    Reply = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviews", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Vendors",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(nullable: false),
-                    Title = table.Column<string>(nullable: false),
-                    About = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: false),
-                    Latitude = table.Column<double>(nullable: false),
-                    Longitude = table.Column<double>(nullable: false),
-                    VendorType = table.Column<string>(nullable: true),
-                    Image = table.Column<byte[]>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vendors", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -211,6 +154,83 @@ namespace FromLocalsToLocals.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Vendors",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: false),
+                    About = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: false),
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false),
+                    VendorType = table.Column<string>(nullable: true),
+                    Image = table.Column<byte[]>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vendors", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Vendors_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VendorID = table.Column<int>(nullable: false),
+                    CommentID = table.Column<int>(nullable: false),
+                    SenderUsername = table.Column<string>(nullable: false),
+                    Text = table.Column<string>(nullable: false),
+                    Stars = table.Column<int>(nullable: false),
+                    Date = table.Column<string>(nullable: false),
+                    Reply = table.Column<string>(nullable: true),
+                    ReplySender = table.Column<string>(nullable: true),
+                    ReplyDate = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Vendors_VendorID",
+                        column: x => x.VendorID,
+                        principalTable: "Vendors",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    NotiId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OwnerId = table.Column<string>(nullable: true),
+                    VendorId = table.Column<int>(nullable: false),
+                    Url = table.Column<string>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    NotiBody = table.Column<string>(nullable: true),
+                    ReviewID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.NotiId);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Reviews_ReviewID",
+                        column: x => x.ReviewID,
+                        principalTable: "Reviews",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -249,6 +269,21 @@ namespace FromLocalsToLocals.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_ReviewID",
+                table: "Notifications",
+                column: "ReviewID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_VendorID",
+                table: "Reviews",
+                column: "VendorID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vendors_UserID",
+                table: "Vendors",
+                column: "UserID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -272,13 +307,13 @@ namespace FromLocalsToLocals.Migrations
                 name: "Notifications");
 
             migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Vendors");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -9,6 +9,9 @@
 
 <h2 class="mt-4" style="text-align: center;">My Services</h2>
 
+<p>
+    <a class="btn btn-primary mt-3 mb-3" asp-action="Create"><span class="fa fa-plus"></span> Add a service</a>
+</p>
 
 <table class="table">
 
@@ -27,33 +30,54 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VendorTypeDb)
-            </td>
-            <td>
-                <div class="btn-group" role="group" aria-label="Basic example" >
-                    <a asp-action="Edit" asp-route-id="@item.ID" type="button" class="btn btn-primary" >Edit</a> 
-                    <a asp-action="Details" asp-route-id="@item.ID" type="button" class="btn btn-primary" >Details</a> 
-                    <a asp-action="Delete" asp-route-id="@item.ID" type="button" class="btn btn-primary" >Delete</a>
-                </div>
-            </td>
 
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VendorTypeDb)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a href="#" data-target="#deleteModal" data-toggle="modal" class="identifyingClass" data-title="@item.Title" data-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
 
-
-        </tr>
-}
     </tbody>
 </table>
 
 
-<div class="form-control" >
-    <a asp-action="Create" type="button" class="btn-primary">Create New</a>
-</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                Are you sure you want to delete "<span name="vendorTitle" id="vendorTitle" value=""></span>"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="close btn btn-default" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">Cancel</span>
+                </button>
+                <a type="button" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".identifyingClass").click(function () {
+                var vendorId = $(this).data('id');
+                document.getElementById("vendorTitle").textContent = $(this).data('title');
+                $('.modal-footer a').attr('href', '/Vendors/Delete/' + vendorId);
+            })
+        });
+    </script>
+

@@ -14,10 +14,14 @@ namespace FromLocalsToLocals.Models
         public int NotiId { get; set; }
         public string OwnerId { get; set; }
         public int VendorId { get; set; }
-        public bool IsRead { get; set; }
         public string Url { get; set; }
         public DateTime CreatedDate { get; set; }
         public string NotiBody { get; set; }
+
+        public Review Review { get; set; }
+
+        [NotMapped]
+        public bool IsRead { get; set; } = false;
 
     }
 }

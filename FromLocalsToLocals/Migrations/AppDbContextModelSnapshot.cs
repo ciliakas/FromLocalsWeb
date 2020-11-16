@@ -100,14 +100,14 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
                     b.Property<string>("NotiBody")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ReviewID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -116,6 +116,8 @@ namespace FromLocalsToLocals.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("NotiId");
+
+                    b.HasIndex("ReviewID");
 
                     b.ToTable("Notifications");
                 });
@@ -137,6 +139,12 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<string>("Reply")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ReplyDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReplySender")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SenderUsername")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -152,6 +160,8 @@ namespace FromLocalsToLocals.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("VendorID");
 
                     b.ToTable("Reviews");
                 });
@@ -185,13 +195,15 @@ namespace FromLocalsToLocals.Migrations
 
                     b.Property<string>("UserID")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("VendorTypeDb")
                         .HasColumnName("VendorType")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Vendors");
                 });
@@ -325,6 +337,31 @@ namespace FromLocalsToLocals.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Models.Notification", b =>
+                {
+                    b.HasOne("FromLocalsToLocals.Models.Review", "Review")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ReviewID");
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Models.Review", b =>
+                {
+                    b.HasOne("FromLocalsToLocals.Models.Vendor", "Vendor")
+                        .WithMany("Reviews")
+                        .HasForeignKey("VendorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Models.Vendor", b =>
+                {
+                    b.HasOne("FromLocalsToLocals.Models.AppUser", "User")
+                        .WithMany("Vendors")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
