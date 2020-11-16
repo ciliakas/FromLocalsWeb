@@ -18,7 +18,7 @@
     <style>
         .card {
             overflow: hidden;
-            min-height: 400px;
+            min-height: 550px;
             box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
         }
     </style>
@@ -44,7 +44,7 @@
    
         <input type="text" name="searchString"  placeholder="Title" />
         <input  type="number" min="1" max="50" name="itemCount" placeholder="Items per page" value=@itemCountDouble />
-        <input class="btn btn-primary" style="float:right;" type="submit" value="Filter" />
+        <input class="btn btn-primary" style="float:right; width: 300px;" type="submit" value="Filter" />
     
 </form>
 
@@ -64,20 +64,20 @@
         @for (int j = 0; j < itemsInRow && i * itemsInRow + j < vendorCount; j++)
         {
             <div class="col-sm-@(12/itemsInRow) mb-2 ">
-                <div class="card" style="width:inherit; height:inherit;">
+                <div class="card" style="width:inherit; height:inherit; background-color: #CCBA8B;">
                     @if (Model.Vendors[i * itemsInRow + j].Image == null)
                     {
-                        <img src="~/Assets/appLogo.png" style="width:inherit ; height:100px;" />
+                        <img src="~/Assets/appLogo.png" style="width:inherit ; height:150px;  border-radius: 60%;" />
                     }
                     else
                     {
-                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Vendors[i * itemsInRow + j].Image)" style="width:inherit ; height:100px;" />
+                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Vendors[i * itemsInRow + j].Image)" style="width:inherit ; height:150px;  border-radius: 60%;" />
                     }
-                    <div class="card-body ">
-                        <h5 class="card-title" style="margin:0px">@Model.Vendors[i * itemsInRow + j].Title</h5>
+                    <div class="card-body " style="height:200px;" >
+                        <h5 class="card-title" style="margin:0px;">@Model.Vendors[i * itemsInRow + j].Title</h5>
                         <hr />
 
-                        <h6 class="card-title" style="margin:0px"> About: </h6>
+                        <h6 class="card-title" style="margin:0px;"> About: </h6>
 
                         @if (Model.Vendors[i * itemsInRow + j].About == null)
                         {
@@ -154,12 +154,14 @@
                         }
 
                         <hr />
-                        <div class="row">
+                        <div class="row, ">
                             <div class="col">
-                                <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details" class="btn btn-primary">Read More</a>
+                                <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details" 
+                                class="btn btn-primary" style="background-color: #CCBA8B; border: 2px solid white;" >Read More</a>
                             </div>
                             <div class="col">
-                                <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews" class="btn btn-primary">Reviews</a>
+                                <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews" 
+                                   class="btn btn-primary" style="background-color: #CCBA8B; border: 2px solid white;" >Reviews</a>
                             </div>
                         </div>
                     </div>

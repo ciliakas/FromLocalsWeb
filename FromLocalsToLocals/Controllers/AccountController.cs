@@ -333,10 +333,10 @@ namespace FromLocalsToLocals.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user); 
                
                 var callbackUrl = Url.Action("ResetPassword", "Account",
-                new { user = user , code = code }, protocol: Request.Scheme); 
+                new { user, code }, protocol: Request.Scheme);
 
 
-                var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" +
+                var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" + 
                                   "Please confirm your account by clicking this link: <a href =\""
                                                  + callbackUrl + "\">link</a> </body></html>";
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);

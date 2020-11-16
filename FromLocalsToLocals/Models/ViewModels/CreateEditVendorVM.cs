@@ -24,6 +24,8 @@ namespace FromLocalsToLocals.Models.ViewModels
 
         public string About { get; set; }
 
+        public string Link { get; set; }
+
         [Required]
         public string Address { get; set; }
 
