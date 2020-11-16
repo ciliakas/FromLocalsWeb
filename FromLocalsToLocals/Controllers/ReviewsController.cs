@@ -84,7 +84,7 @@ namespace FromLocalsToLocals.Controllers
 
                 review.Reply = Request.Form["vendorReply"];
                 review.ReplySender = vendor.Title;
-                review.ReplyDate = DateTime.Now.ToString("yyyy-MM-dd"); 
+                review.ReplyDate = DateTime.UtcNow.ToString("yyyy-MM-dd"); 
                     
                 _context.SaveChanges();
                 vendor.UpdateReviewsCount(_context);
@@ -109,7 +109,6 @@ namespace FromLocalsToLocals.Controllers
 
                 review.Text = Request.Form["comment"];
                 review.Stars = int.Parse(Request.Form["starRating"]);
-                review.Date = DateTime.Now.ToString("yyyy-MM-dd");
                 review.Reply = "";
                 review.ReplySender = "";
                 review.ReplyDate = "";
