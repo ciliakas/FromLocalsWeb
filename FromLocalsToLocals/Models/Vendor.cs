@@ -53,6 +53,11 @@ namespace FromLocalsToLocals.Models
 
         public byte[] Image { get; set; }
 
+        [ForeignKey("UserID")]
+        public AppUser User { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+
+
         #region IComparable
 
 

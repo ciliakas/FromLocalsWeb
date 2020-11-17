@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -31,6 +32,11 @@ namespace FromLocalsToLocals.Models
 
         [NotMapped]
         public byte[] SenderImage { get; set; }
+
+        [ForeignKey("VendorID")]
+        public Vendor Vendor { get; set; }
+
+        public ICollection<Notification> Notifications { get; set; }
 
         public bool Equals([AllowNull] Review other)
         {
