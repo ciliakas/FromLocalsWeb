@@ -78,17 +78,16 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                 @if (signInManager.IsSignedIn(User))
                                 {
+                                    <a class="nav-link py-0" asp-controller="Account" asp-action="Profile"><i class="fa fa-cog"></i> Profile</a>
                                     <form method="post" asp-action="logout" asp-controller="Account">
                                         <button type="submit" class="nav-link btn btn-link py-0" style="width:auto;">
                                             <i class="fa fa-sign-out"></i> Logout
                                         </button>
                                     </form>
-                                    <a class="nav-link py-0" asp-controller="Account" asp-action="Profile"><i class="fa fa-cog"></i> Profile</a>
                                 }
                                 else
                                 {
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Log In</a>
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Register"><i class="fa fa-registered"></i>Register</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Log In or Sign Up</a>
                                 }
                             </div>
                         </div>

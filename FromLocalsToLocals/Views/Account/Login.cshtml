@@ -1,4 +1,6 @@
 ﻿@model FromLocalsToLocals.ViewModels.LoginVM
+@*@model Tuple<FromLocalsToLocals.ViewModels.LoginVM, FromLocalsToLocals.ViewModels.RegisterVM>*@
+
 
 
 @{
@@ -10,60 +12,78 @@
 </head>
 
 
-<div class="row">
-    <div class="col-md-12">
-        <form method="post">
-            <div class="modal fade" tabindex="-1" id="loginModal"
-                 data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Login</h4>
-                            <a href='javascript:history.go(-1)' class="Button">x</a>
-                        </div>
-                        <div class="modal-body">
-                            <div asp-validation-summary="All" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="Username"></label>
-                                <input asp-for="Username" class="form-control" />
-                                <span asp-validation-for="Username" class="text-danger"></span>
-                            </div>
-                            <div class="form-group, wrapper">
-                                <label asp-for="Password"></label>
-                                <input asp-for="Password" class="form-control" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label asp-for="RememberMe">
-                                        <input asp-for="RememberMe" />
-                                        @Html.DisplayNameFor(m => m.RememberMe)
-                                    </label>
-                                    <p>
-                                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                                    </p>
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-c-tabs">
+                <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#loginPanel" role="tab">
+                            <i class="fa fa-user-o" aria-hidden="true"></i>
+                            Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Register", "Account")" class="nav-link" >
+                            <span>
+                                <i class="fa fa-user-plus"></i>
+                                Register
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade in show active" id="loginPanel" role="tabpanel">
+                        <div class="modal-body mb-1">
+                            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                            {
+
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Username"></label>
+                                    <input asp-for="Username" class="form-control" />
+                                    <span asp-validation-for="Username" class="text-danger"></span>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Login</button>
+                                <div class="form-group, wrapper">
+                                    <label asp-for="Password"></label>
+                                    <input asp-for="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label asp-for="RememberMe">
+                                            <input asp-for="RememberMe" />
+                                            @Html.DisplayNameFor(m => m.RememberMe)
+                                        </label>
+                                        <p>
+                                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Login</button>
+                                    <a href='javascript:history.go(-1)' class="Button btn btn-outline-info waves-effect ml-auto">Close</a>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
-
-        </form>
+        </div>
     </div>
 </div>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
 </script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 
+
+
 <script type="text/javascript">
     $(function () {
-        $('#loginModal').modal('show');
+        $('#modalForm').modal('show');
     });
 </script>
 
