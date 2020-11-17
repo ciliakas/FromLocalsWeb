@@ -4,6 +4,9 @@
 <head>
     <link href="~/css/revealEye.css" rel="stylesheet" type="text/css">
 </head>
+
+
+
 <div asp-validation-summary="All" class="text-danger mt-3" style="font-size: 22px;"></div>
 <div class="row m-4 mt-4">
     <div class="col text-center">
@@ -16,6 +19,8 @@
             {
                 <img class="rounded" id="image_upload_preview" src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" style="width: inherit; max-height: 350px;" />
             }
+
+        <hr />
         <div class="form-inline mt-3">
             <div class="form-group mx-sm-3" style="background-color: white; border-radius: 4px;">
                 <input asp-for="ImageFile" class="form-control-file" type="file" id="changePhoto"/>

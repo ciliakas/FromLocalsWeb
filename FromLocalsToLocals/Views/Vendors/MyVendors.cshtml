@@ -5,11 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="mt-4" style="text-align: center;">My Services</h2>
+
+
+<h2 class="mt-4" style="text-align: center;" id="myservices">My Services</h2>
+<hr />
+
 <p>
     <a class="btn btn-primary mt-3 mb-3" asp-action="Create"><span class="fa fa-plus"></span> Add a service</a>
 </p>
-<table class="table">
+
+<table class="table" id="Table1">
+
     <thead>
         <tr>
             <th>
@@ -25,6 +31,7 @@
         </tr>
     </thead>
     <tbody>
+
         @foreach (var item in Model)
         {
             <tr>
@@ -40,10 +47,11 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a href="#" data-target="#deleteModal" data-toggle="modal" class="identifyingClass" data-title="@item.Title" data-id="@item.ID">Delete</a>
+                    <a href="#" data-target="#deleteModal" data-toggle="modal" class="identifyingClass, " data-title="@item.Title" data-id="@item.ID">Delete</a>
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
 
@@ -72,3 +80,6 @@
             })
         });
     </script>
+
+
+

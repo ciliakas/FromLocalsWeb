@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 using System;
 
 namespace FromLocalsToLocals.Database
@@ -17,6 +18,7 @@ namespace FromLocalsToLocals.Database
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Review> Reviews { get; set; }
+
 
         private void OnEntityTracked(object sender, EntityTrackedEventArgs e)
         {

@@ -16,6 +16,5 @@ namespace FromLocalsToLocals.Models.Services
         Task DeleteAsync(Vendor vendor);
         bool Exists(int id);
         void Sort(List<Vendor> vendors, string order);
-
     }
 }
