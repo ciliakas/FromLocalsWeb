@@ -68,11 +68,10 @@ namespace FromLocalsToLocals.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!string.IsNullOrWhiteSpace(model.TextBug)) { 
-                Execute().Wait();
-
-                _toastNotification.AddSuccessToastMessage("Report message send succesfully!");
-                return View("Index");
+                if (!string.IsNullOrWhiteSpace(model.TextBug)) {
+                    await Execute();
+                    _toastNotification.AddSuccessToastMessage("Report message send succesfully!");
+                    return View("Index");
                 }
 
                 else

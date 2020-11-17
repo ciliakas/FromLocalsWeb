@@ -84,6 +84,7 @@ namespace FromLocalsToLocals.ViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
+        [MinLength(6, ErrorMessage = "Password must contain at least 6 letters!")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]

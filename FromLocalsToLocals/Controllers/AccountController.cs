@@ -78,7 +78,6 @@ namespace FromLocalsToLocals.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
-            
             return View(model);
         }
 
@@ -287,7 +286,7 @@ namespace FromLocalsToLocals.Controllers
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
             var isValid = false;
-            var passwordLength = 6;
+      
 
             if (!ModelState.IsValid)
             {
@@ -302,14 +301,14 @@ namespace FromLocalsToLocals.Controllers
 
             if (model.ConfirmPassword == model.Password)
             {
-                if (model.Password.Length >= passwordLength)
+                if (model.ConfirmPassword is null || model.Password is null)
                 {
-                    isValid = true;
+                    ModelState.AddModelError("", "Please fill both passwords field.");
+                    return View();
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Password length must be atleast 6 letters!");
-                    return View();
+                    isValid = true;
                 }
             }
             else
@@ -352,9 +351,9 @@ namespace FromLocalsToLocals.Controllers
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("Register");
                 }
-                
-          
-                Execute().Wait();
+
+
+                await Execute();
                 return View("ForgotPasswordConfirmation");
             }
 
@@ -364,7 +363,7 @@ namespace FromLocalsToLocals.Controllers
                 var key = Config.Send_Grid_Key;
                 var client = new SendGridClient(key);
 
-                var from = new EmailAddress("fromlocalstolocals@gmail.com", "Example User");
+                var from = new EmailAddress("fromlocalstolocals@gmail.com", "Forgot password");
                 var subject = "Forgot Password Confirmation";
                 var to = new EmailAddress(model.Email, "Dear User");
                 var plainTextContent = "";
