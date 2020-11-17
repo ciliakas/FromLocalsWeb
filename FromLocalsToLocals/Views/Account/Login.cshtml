@@ -1,6 +1,7 @@
 ﻿@model FromLocalsToLocals.ViewModels.LoginVM
 
 
+
 @{
     ViewData["Title"] = "User Login";
 }
@@ -10,62 +11,90 @@
 </head>
 
 
-<div class="row">
-    <div class="col-md-12">
-        <form method="post">
-            <div class="modal fade" tabindex="-1" id="loginModal"
-                 data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog modal-lg center" style="width: 45%;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Login</h4>
-                            <a href='javascript:history.go(-1)' class="Button">X</a>
-                        </div>
-                        <div class="modal-body">
-                            <div asp-validation-summary="All" class="text-danger"></div>
-                            <div class="form-group mt-3 mb-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <span class="fa fa-user"  style="width: 20px;" ></span>
-                                        </span>
-                                    </div>
-                                    <input asp-for="Username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
-                                </div>
-                            </div>
-                            <div class="form-group, wrapper mt-3 mb-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon2">
-                                            <span class="fa fa-lock " style="width: 20px;"></span>
-                                        </span>
-                                    </div>
-                                    <input asp-for="Password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" />
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-success btn-block">Login</button>
-                        </div>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                        <div class="checkbox">
-                                                <input asp-for="RememberMe" />Remember me     
+
+
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-c-tabs">
+                <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#loginPanel" role="tab">
+                            <i class="fa fa-user-o" aria-hidden="true"></i>
+                            Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Register", "Account")" class="nav-link" >
+                            <span>
+                                <i class="fa fa-user-plus"></i>
+                                Register
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade in show active" id="loginPanel" role="tabpanel">
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                        {
+
+                            <div class="modal-body">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group mt-3 mb-3">
+                                    <div class="input-group">
+                                        <span asp-validation-for="Username" class="text-danger"></span>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <span class="fa fa-user"></span>
+                                            </span>
                                         </div>
-        
+                                        <input asp-for="Username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
+
+                                    </div>
                                 </div>
-                                <div style="text-align: right;">
-                                    <p class="mt-3">@Html.ActionLink("Forgot your password?", "ForgotPassword")</p>
+
+                                <div class="form-group, wrapper mt-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="text-danger" asp-validation-for="Password"></span>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon2">
+                                                <span class="fa fa-lock"></span>
+                                            </span>
+                                        </div>
+                                        <input asp-for="Password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" />
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer"> 
-                               Don't have an account? <a type="button" class="btn-link" asp-controller="Account" asp-action="Register">  Sign up now!</a>
-                        </div>
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <input asp-for="RememberMe" />Remember me
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <p class="mt-3">@Html.ActionLink("Forgot your password?", "ForgotPassword")</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Login</button>
+                                <a href='/' class="Button btn btn-outline-info waves-effect ml-auto">Close</a>
+                            </div>
+                        }
+
                     </div>
                 </div>
             </div>
-
-        </form>
+        </div>
     </div>
 </div>
 
@@ -74,9 +103,11 @@
 </script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 
+
+
 <script type="text/javascript">
     $(function () {
-        $('#loginModal').modal('show');
+        $('#modalForm').modal('show');
     });
 </script>
 
