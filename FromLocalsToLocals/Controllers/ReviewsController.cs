@@ -84,7 +84,7 @@ namespace FromLocalsToLocals.Controllers
                 await _reviewsService.AddReplyAsync(id, index, Request.Form["vendorReply"], vendor.Title); 
             }
 
-            if (!string.IsNullOrWhiteSpace(Request.Form["comment"]))
+            if (!string.IsNullOrWhiteSpace(Request.Form["comment"]) && (int.Parse(Request.Form["starRating"]) != 0))
             {
                 var commentId = int.Parse(Request.Form["listItemCount"]);
                 var stars     = int.Parse(Request.Form["starRating"]);

@@ -8,6 +8,7 @@ namespace SuppLocals
         public Config()
         {}
 
+        public static string email = "lukasstc223@gmail.com";
         public static string[] permittedExtensions = { ".png", ".jpg", ".jpeg" };
 
         //GOOGLE

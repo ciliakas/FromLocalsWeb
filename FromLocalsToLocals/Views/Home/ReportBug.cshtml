@@ -1,0 +1,24 @@
+@model FromLocalsToLocals.ViewModels.BugReportVM
+
+
+<html>
+<head>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
+    <link href="~/css/reportbug.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="absoluteCenteredDiv">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="box">
+                <h1>Report Bug</h1>
+                <div class="form-group">
+                    <textarea asp-for="TextBug" class="form-control" rows="10" placeholder="Give us details about bug..." maxlength="400"></textarea>
+                </div>
+                <button class="button" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

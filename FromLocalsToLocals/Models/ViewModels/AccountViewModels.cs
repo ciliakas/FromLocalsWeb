@@ -12,7 +12,7 @@ namespace FromLocalsToLocals.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Remember be")]
+        [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
     }
 
@@ -84,11 +84,18 @@ namespace FromLocalsToLocals.ViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
+        [MinLength(6, ErrorMessage = "Password must contain at least 6 letters!")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
         public string Code { get; set; }
+    }
+
+    public class BugReportVM
+    {
+        public string TextBug { get; set; }
     }
 }

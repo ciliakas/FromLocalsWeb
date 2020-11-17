@@ -1,8 +1,6 @@
 ﻿using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Utilities;
 using Geocoding;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

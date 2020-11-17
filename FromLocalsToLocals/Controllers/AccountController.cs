@@ -11,8 +11,6 @@ using Geocoding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -80,7 +78,6 @@ namespace FromLocalsToLocals.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
-            
             return View(model);
         }
 
@@ -143,10 +140,10 @@ namespace FromLocalsToLocals.Controllers
 
             if (model.UserName != user.UserName)
             {
-                if (model.UserName == "")
+                if (string.IsNullOrWhiteSpace(model.UserName))
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.UserName)).Value.RawValue = user.UserName;
-                    ModelState.AddModelError("", $"Username cannot be empty");
+                    ModelState.AddModelError("", $"Username cannot be empty!");
                 }
                 else if (!_context.Users.Any(x => x.UserName == model.UserName))
                 {
@@ -161,7 +158,7 @@ namespace FromLocalsToLocals.Controllers
             }
             if (model.Email != user.Email)
             {
-                if (model.Email == "")
+                if (string.IsNullOrWhiteSpace(model.Email))
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.Email)).Value.RawValue = user.Email;
                     ModelState.AddModelError("", $"Email cannot be empty");
@@ -204,7 +201,7 @@ namespace FromLocalsToLocals.Controllers
             var oldModel = GetNewProfileVM(user);
             var resultsList = new List<IdentityResult>();
 
-            if (model.ImageFile!=null && !model.ImageFile.ValidImage())
+            if (model.ImageFile != null && !model.ImageFile.ValidImage())
             {
                 ModelState.AddModelError("", "Invalid profile image");
                 _toastNotification.AddErrorToastMessage("Invalid profile image");
@@ -229,12 +226,14 @@ namespace FromLocalsToLocals.Controllers
 
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
+            var passwordLength = 6;
+
             if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.NewPassword) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
             {
                 ModelState.AddModelError("", "Please, fill all fields");
                 return Profile();
             }
-            if (model.NewPassword.Length < 6)
+            if (model.NewPassword.Length < passwordLength)
             {
                 ModelState.AddModelError("", "Password must be at least 6 characters long");
                 return Profile();
@@ -286,7 +285,9 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
-   
+            var isValid = false;
+      
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -297,12 +298,42 @@ namespace FromLocalsToLocals.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction("Register", "Account");
             }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code , model.Password);
-            if (result.Succeeded)
+
+            if (model.ConfirmPassword == model.Password)
             {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                if (model.ConfirmPassword is null || model.Password is null)
+                {
+                    ModelState.AddModelError("", "Please fill both passwords field.");
+                    return View();
+                }
+                else
+                {
+                    isValid = true;
+                }
             }
-            return View();
+            else
+            {
+                ModelState.AddModelError("", "Password do not match!");
+                return View();
+            }
+
+            if (isValid is true)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unexpected error");
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
         }
 
 
@@ -320,9 +351,9 @@ namespace FromLocalsToLocals.Controllers
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("Register");
                 }
-                
-          
-                Execute().Wait();
+
+
+                await Execute();
                 return View("ForgotPasswordConfirmation");
             }
 
@@ -332,17 +363,19 @@ namespace FromLocalsToLocals.Controllers
                 var key = Config.Send_Grid_Key;
                 var client = new SendGridClient(key);
 
-                var from = new EmailAddress("fromlocalstolocals@gmail.com", "Example User");
+                var from = new EmailAddress("fromlocalstolocals@gmail.com", "Forgot password");
                 var subject = "Forgot Password Confirmation";
                 var to = new EmailAddress(model.Email, "Dear User");
                 var plainTextContent = "";
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user); 
+
              
                 var callbackUrl = Url.Action("ResetPassword", "Account",
                 new { user = user , code = code }, protocol: Request.Scheme); 
 
                 var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" +
+
                                   "Please confirm your account by clicking this link: <a href =\""
                                                  + callbackUrl + "\">link</a> </body></html>";
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
