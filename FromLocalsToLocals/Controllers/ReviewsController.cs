@@ -90,7 +90,7 @@ namespace FromLocalsToLocals.Controllers
                 vendor.UpdateReviewsCount(_context);
             }
 
-            if (!string.IsNullOrWhiteSpace(Request.Form["comment"]))
+            if (!string.IsNullOrWhiteSpace(Request.Form["comment"]) && (int.Parse(Request.Form["starRating"]) != 0))
             {
                 var review = new Review();
                 review.VendorID = id;
