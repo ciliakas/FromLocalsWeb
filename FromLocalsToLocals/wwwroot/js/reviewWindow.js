@@ -1,9 +1,24 @@
-﻿function toggle() {
-    document.getElementById("postComment").disabled = false;
+﻿function readMore() {
+    $('#allReviews li:hidden').slice(0, 10).show();
+    if ($('#allReviews li').length == $('#allReviews li:visible').length) {
+        document.getElementById("readMoreBtn").hidden = true;
+    }
 }
 
-function isEmptyOrSpaces(str) {
-    return str === null || str.match(/^\s*$/) !== null || srt.match(/\r\n |\r |\n/) !== null;
+function toggle() {
+    /*
+    if (($('#starCount').val != 0) && !(isEmptyOrSpaces($('#userComment').val()))) {
+        $('#postComment').prop('disabled', false);
+        alert("button not disabled");
+    }
+    else {
+        alert("button disabled");
+        $('#postComment').prop('disabled', true);
+    }*/
+}
+
+function isEmptyOrSpaces(k) {
+    return k === null || k.match(/^\s*S/) !== null || k.match(/\r\n |\r |\n/) !== null; 
 }
 
 
