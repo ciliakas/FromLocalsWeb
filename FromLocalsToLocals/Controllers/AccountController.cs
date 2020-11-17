@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.ViewModels;
 using Geocoding;
 using Microsoft.AspNetCore.Authorization;
@@ -201,25 +202,30 @@ namespace FromLocalsToLocals.Controllers
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
             var oldModel = GetNewProfileVM(user);
             var resultsList = new List<IdentityResult>();
-            
-            if (model.ImageFile != null)
+
+            if (model.ImageFile!=null && !model.ImageFile.ValidImage())
             {
-                if (model.ImageFile.Length > 0)
+                ModelState.AddModelError("", "Invalid profile image");
+                _toastNotification.AddErrorToastMessage("Invalid profile image");
+                return Profile();
+            }
+
+            if (model.ImageFile.ValidImage())
+            {
+                using (var target = new MemoryStream())
                 {
-                    using (var target = new MemoryStream())
-                    {
-                        model.ImageFile.CopyTo(target);
-                        user.Image = target.ToArray();
-                        model.Image = user.Image;
-                    }
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    model.ImageFile.CopyTo(target);
+                    user.Image = target.ToArray();
+                    model.Image = user.Image;
                 }
+                _context.Update(user);
+                await _context.SaveChangesAsync();
             }
 
             CheckForErrors(resultsList);
             return Profile();
         }
+
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
             if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.NewPassword) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
@@ -331,13 +337,9 @@ namespace FromLocalsToLocals.Controllers
                 var plainTextContent = "";
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user); 
-               
-
-
+             
                 var callbackUrl = Url.Action("ResetPassword", "Account",
                 new { user = user , code = code }, protocol: Request.Scheme); 
-
-
 
                 var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" +
                                   "Please confirm your account by clicking this link: <a href =\""
