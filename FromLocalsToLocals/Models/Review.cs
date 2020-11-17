@@ -8,6 +8,22 @@ namespace FromLocalsToLocals.Models
 {
     public class Review : IEquatable<Review>
     {
+        public Review()
+        {
+
+        }
+        public Review(int id, int commentId, string username, string comment, int stars)
+        {
+            VendorID = id;
+            CommentID = commentId;
+            SenderUsername = username;
+            Text = comment;
+            Stars = stars;
+            Reply = "";
+            ReplySender = "";
+            ReplyDate = "";
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
@@ -29,9 +45,6 @@ namespace FromLocalsToLocals.Models
         public string ReplySender { get; set; }
 
         public string ReplyDate { get; set; }
-
-        [NotMapped]
-        public byte[] SenderImage { get; set; }
 
         [ForeignKey("VendorID")]
         public Vendor Vendor { get; set; }

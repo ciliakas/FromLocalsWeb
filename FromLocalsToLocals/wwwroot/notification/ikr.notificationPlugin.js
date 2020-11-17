@@ -1,11 +1,5 @@
 (function ($) {
-    // ****** Add ikr.notification.css ******
     $.fn.ikrNotificationSetup = function (options) {
-        /*
-          Declaration : $("#noti_Container").ikrNotificationSetup({
-                    List: objCollectionList
-          });
-       */
         var defaultSettings = $.extend({
             BeforeSeenColor: "#2E467C",
             AfterSeenColor: "#ccc"
@@ -52,16 +46,6 @@
         }
     };
     $.fn.ikrNotificationCount = function (options) {
-        /*
-          Declaration : $("#myComboId").ikrNotificationCount({
-                    NotificationList: [],
-                    NotiFromPropName: "",
-                    ListTitlePropName: "",
-                    ListBodyPropName: "",
-                    ControllerName: "Notifications",
-                    ActionName: "AllNotifications"
-          });
-       */
         var defaultSettings = $.extend({
             NotificationList: [],
             NotiFromPropName: "",
@@ -90,6 +74,7 @@
                         "</div>");
                     $(".ikrNotificationBody").click(function () {
                         if ($.trim(item.url) != "") {
+                            hide(this);
                             window.location.href = item.url;
                         }
                     });
@@ -99,6 +84,34 @@
     };
 }(jQuery));
 
+
+function hide(e) {
+
+    e.parentElement.parentElement.style.display = 'none';
+    var notiId;
+    if (e instanceof HTMLDivElement) {
+        notiId = e.parentElement.getAttribute("notiId");
+    } else {
+        notiId = e.parentElement.parentElement.getAttribute("notiId");
+    }
+
+    $.ajax({
+        type: "POST",
+        url: '/Notification/DeleteItem/' + notiId,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            var elem = document.getElementById("noti_Container");
+            elem.innerHTML = "";
+            $("#noti_Container").ikrNotificationSetup();
+            getNotifications();
+        },
+        error: function (e) {
+            alert("Couldn't delete notification");
+        }
+    });
+
+};
 
 function formatDate(date) {
     var d = new Date(date),
