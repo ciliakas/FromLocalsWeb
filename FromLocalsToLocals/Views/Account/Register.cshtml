@@ -5,7 +5,7 @@
 }
 
 <head>
-    <link href="~/css/revealEye.css" rel="stylesheet" type="text/css">
+    <link href="~/css/revealEyeLogin.css" rel="stylesheet" type="text/css">
 </head>
 
 <div class="row">
@@ -27,7 +27,7 @@
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">
-                                            <span class="fa fa-envelope"></span>
+                                            <span class="fa fa-envelope"  style="width: 20px;" ></span>
                                         </span>
                                     </div>
                                     <input asp-for="Email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
@@ -38,7 +38,7 @@
                                     <span asp-validation-for="Username" class="text-danger"></span>
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon2">
-                                            <span class="fa fa-user"></span>
+                                            <span class="fa fa-user"  style="width: 20px;" ></span>
                                         </span>
                                     </div>
                                     <input asp-for="Username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2" />
@@ -49,7 +49,7 @@
                                     <span class="text-danger" asp-validation-for="Password"></span>
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon3">
-                                            <span class="fa fa-lock"></span>
+                                            <span class="fa fa-lock"  style="width: 20px;" ></span>
                                         </span>
                                     </div>
                                     <input asp-for="Password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon3" />
@@ -60,13 +60,18 @@
                                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon4">
-                                            <span class="fa fa-lock"></span>
+                                            <span class="fa fa-lock" style="width: 20px;"></span>
                                         </span>
                                     </div>
                                     <input asp-for="ConfirmPassword" class="form-control" placeholder="ConfirmPassword" aria-label="ConfirmPassword" aria-describedby="basic-addon4" />
                                 </div>
 
                             </div>
+
+                            <div class="modal-footer">
+                                Already have an account? <a type="button" class="btn-link" asp-controller="Account" asp-action="Register"> Login now!</a>
+                            </div>
+
                             <button type="submit" class="btn btn-success btn-block">Register</button>
                         </div>
                     </div>

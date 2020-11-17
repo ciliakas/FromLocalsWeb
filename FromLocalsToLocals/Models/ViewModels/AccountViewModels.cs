@@ -92,4 +92,9 @@ namespace FromLocalsToLocals.ViewModels
         public string ConfirmPassword { get; set; }
         public string Code { get; set; }
     }
+
+    public class BugReportVM
+    {
+        public string TextBug { get; set; }
+    }
 }

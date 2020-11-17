@@ -88,7 +88,7 @@
                                 else
                                 {
                                     <a class="dropdown-item" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Log In</a>
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Register"><i class="fa fa-registered"></i>Register</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Register"><i class="fa fa-registered"></i> Register</a>
                                 }
                             </div>
                         </div>
@@ -104,10 +104,15 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - FromLocalsToLocals - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container navbar">
+           
+                <p> &copy; 2020 - FromLocalsToLocals - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> <p/>
+                <p style="float: right;">Found a bug ? <a asp-area="" asp-controller="Home" asp-action="ReportBug">Report Bug</a> </p>
+            
         </div>
     </footer>
+
+    
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>

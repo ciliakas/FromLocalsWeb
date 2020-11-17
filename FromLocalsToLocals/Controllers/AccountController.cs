@@ -11,8 +11,6 @@ using Geocoding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -142,10 +140,10 @@ namespace FromLocalsToLocals.Controllers
 
             if (model.UserName != user.UserName)
             {
-                if (model.UserName == "")
+                if (string.IsNullOrWhiteSpace(model.UserName))
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.UserName)).Value.RawValue = user.UserName;
-                    ModelState.AddModelError("", $"Username cannot be empty");
+                    ModelState.AddModelError("", $"Username cannot be empty!");
                 }
                 else if (!_context.Users.Any(x => x.UserName == model.UserName))
                 {
@@ -160,7 +158,7 @@ namespace FromLocalsToLocals.Controllers
             }
             if (model.Email != user.Email)
             {
-                if (model.Email == "")
+                if (string.IsNullOrWhiteSpace(model.Email))
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.Email)).Value.RawValue = user.Email;
                     ModelState.AddModelError("", $"Email cannot be empty");
@@ -203,7 +201,7 @@ namespace FromLocalsToLocals.Controllers
             var oldModel = GetNewProfileVM(user);
             var resultsList = new List<IdentityResult>();
 
-            if (model.ImageFile!=null && !model.ImageFile.ValidImage())
+            if (model.ImageFile != null && !model.ImageFile.ValidImage())
             {
                 ModelState.AddModelError("", "Invalid profile image");
                 _toastNotification.AddErrorToastMessage("Invalid profile image");
@@ -228,12 +226,14 @@ namespace FromLocalsToLocals.Controllers
 
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
+            var passwordLength = 6;
+
             if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.NewPassword) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
             {
                 ModelState.AddModelError("", "Please, fill all fields");
                 return Profile();
             }
-            if (model.NewPassword.Length < 6)
+            if (model.NewPassword.Length < passwordLength)
             {
                 ModelState.AddModelError("", "Password must be at least 6 characters long");
                 return Profile();
@@ -285,7 +285,9 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
-   
+            var isValid = false;
+            var passwordLength = 6;
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -296,12 +298,42 @@ namespace FromLocalsToLocals.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction("Register", "Account");
             }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code , model.Password);
-            if (result.Succeeded)
+
+            if (model.ConfirmPassword == model.Password)
             {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                if (model.Password.Length >= passwordLength)
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Password length must be atleast 6 letters!");
+                    return View();
+                }
             }
-            return View();
+            else
+            {
+                ModelState.AddModelError("", "Password do not match!");
+                return View();
+            }
+
+            if (isValid is true)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unexpected error");
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
         }
 
 
