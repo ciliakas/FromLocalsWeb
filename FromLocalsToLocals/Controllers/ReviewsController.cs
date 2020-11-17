@@ -8,6 +8,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using FromLocalsToLocals.Utilities;
+using System.Collections.Generic;
+using FromLocalsToLocals.Models.Services;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -17,13 +19,19 @@ namespace FromLocalsToLocals.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IReviewsService _reviewsService;
+        private readonly INotificationService _notificationService;
 
-        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotificationHub> hubContext)
+
+
+        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotificationHub> hubContext, IReviewsService reviewsService, INotificationService notificationService)
         {
             _context = context;
             _signInManager = signInManager;
             _userManager = userManager;
             _hubContext = hubContext;
+            _reviewsService = reviewsService;
+            _notificationService = notificationService;
         }
         public ActionResult Index()
         {
@@ -34,29 +42,24 @@ namespace FromLocalsToLocals.Controllers
         public async Task<IActionResult> Reviews()
         {
             var id = GetVendorID();
-
-            var model = new ReviewViewModel();
-            var reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
-
             var vendor = await _context.Vendors.FindAsync(id);
             vendor.UpdateReviewsCount(_context);
-            model.Vendor = vendor;
 
-            model.Reviews = from review in reviews
-                             join user in _context.Users on review.SenderUsername equals user.UserName into temp
-                             from leftTable in temp.DefaultIfEmpty()
-                             select new Review{
-                                 VendorID = review.VendorID, 
-                                 SenderUsername = review.SenderUsername,
-                                 CommentID = review.CommentID,
-                                 Text = review.Text,
-                                 Stars = review.Stars,
-                                 Date = review.Date,
-                                 Reply = review.Reply,
-                                 ReplySender = review.ReplySender,
-                                 ReplyDate = review.ReplyDate,
-                                 SenderImage = leftTable?.Image ?? null
-                             };
+            var reviews = await _reviewsService.GetReviewsAsync(id);
+            var users = await _context.Users.ToListAsync();
+
+            var anonym = new AppUser{UserName = "Anonimas"};
+            
+            users.Add(anonym);
+
+            var model = new ReviewViewModel
+            {
+                Vendor = vendor,
+                Reviews = reviews.Join(users,
+                    rev => rev.SenderUsername,
+                    kit => kit.UserName,
+                    (rev, kit) => Tuple.Create(rev, kit.Image))
+            };
 
             return View(model);
         }
@@ -67,10 +70,7 @@ namespace FromLocalsToLocals.Controllers
         {
             var id = GetVendorID();
             var vendor = await _context.Vendors.FindAsync(id);
-            var userLoggedIn = _signInManager.IsSignedIn(User);
-
-            model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
-            model.Vendor = vendor;
+            var user = await _userManager.GetUserAsync(User);
 
             if (vendor == null)
             {
@@ -80,65 +80,46 @@ namespace FromLocalsToLocals.Controllers
             if (!string.IsNullOrWhiteSpace(Request.Form["vendorReply"]))
             {
                 var index = int.Parse(Request.Form["postReview"]);
-                var review = await _context.Reviews.FirstOrDefaultAsync(x => (x.VendorID == id) && (x.CommentID == index));
 
-                review.Reply = Request.Form["vendorReply"];
-                review.ReplySender = vendor.Title;
-                review.ReplyDate = DateTime.UtcNow.ToString("yyyy-MM-dd"); 
-                    
-                _context.SaveChanges();
-                vendor.UpdateReviewsCount(_context);
+                await _reviewsService.AddReplyAsync(id, index, Request.Form["vendorReply"], vendor.Title); 
             }
 
             if (!string.IsNullOrWhiteSpace(Request.Form["comment"]) && (int.Parse(Request.Form["starRating"]) != 0))
             {
-                var review = new Review();
-                review.VendorID = id;
-                review.CommentID = int.Parse(Request.Form["listItemCount"]);
+                var commentId = int.Parse(Request.Form["listItemCount"]);
+                var stars     = int.Parse(Request.Form["starRating"]);
+                var userName = (user != null) ? user.UserName : "Anonimas";
+                var review = new Review(id, commentId, userName, Request.Form["comment"], stars);
 
-                if (userLoggedIn)
-                {
-                    var user = await _userManager.GetUserAsync(User);
-                    review.SenderUsername = user.UserName;
-                }
+                await _reviewsService.CreateAsync(review);
 
-                else
-                {
-                    review.SenderUsername = "Anonimas";
-                }
-
-                review.Text = Request.Form["comment"];
-                review.Stars = int.Parse(Request.Form["starRating"]);
-                review.Reply = "";
-                review.ReplySender = "";
-                review.ReplyDate = "";
-
-                _context.Reviews.Add(review);
-                _context.SaveChanges();
                 vendor.UpdateReviewsCount(_context);
 
-                model.Reviews = await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
-                model.Vendor = vendor;
-
-                //Notify vendor owner that someone commented on his shop
-                var notification = new Notification
-                {
-                    OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == GetVendorID()).UserID,
-                    VendorId = id,
-                    CreatedDate = DateTime.Now,
-                    Review = review,
-                    NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendor.Title}'.",
-                    Url = HttpContext.Request.Path.Value
-                };
-
-                _context.Notifications.Add(notification);
-                _context.SaveChanges();
-
-                await _hubContext.Clients.All.SendAsync("displayNotification", "");
-
-                return View(model);
+                // Notify vendor owner that someone commented on his shop
+                await NotifyUserWithNewReview(review, vendor.Title);
             }
-            return View(model);
+
+            vendor.UpdateReviewsCount(_context);
+
+            return await Reviews();
+        }
+
+        private async Task NotifyUserWithNewReview(Review review, string vendorTitle )
+        {
+            var id = GetVendorID();
+
+            var notification = new Notification
+            {
+                OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == GetVendorID()).UserID,
+                VendorId = id,
+                CreatedDate = DateTime.UtcNow,
+                Review = review,
+                NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendorTitle}'.",
+                Url = HttpContext.Request.Path.Value
+            };
+
+             await _notificationService.AddNotificationAsync(notification);
+             await _hubContext.Clients.All.SendAsync("displayNotification", "");
         }
 
         private int GetVendorID()
