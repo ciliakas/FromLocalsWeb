@@ -287,19 +287,6 @@
         document.getElementById("listItemCount").value = @Model.Reviews.Count();
     }
 
-    function checkInput() {
-        if (($('#starCount').val != 0) && !(isEmptyOrSpaces($('#userComment').val()))) {
-            $('#postComment').prop('disabled', false);
-            alert("button not disabled");
-        }
-        else {
-            alert("button disabled");
-            $('#postComment').prop('disabled', true);
-        }
-    }
-
-
-
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }

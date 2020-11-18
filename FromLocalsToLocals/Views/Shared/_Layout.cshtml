@@ -87,9 +87,7 @@
                                 }
                                 else
                                 {
-
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Log In/Sign Up</a>
-
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Log In | Sign Up</a>
                                 }
                             </div>
                         </div>
@@ -103,23 +101,16 @@
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
-        <div class="container navbar">
-           
-                <p> &copy; 2020 - FromLocalsToLocals - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> <p/>
-                <p style="float: right;">Found a bug ? <a asp-area="" asp-controller="Home" asp-action="ReportBug">Report Bug</a> </p>
-            
+        <div class="d-flex justify-content-between mr-3 ml-3">
+            <p>&copy; 2020 - FromLocalsToLocals - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a><p />
+            <p style="float: right;">Found a bug ? <a asp-area="" asp-controller="Home" asp-action="ReportBug">Report it</a></p>
         </div>
     </footer>
-
-    
-
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/notification/ikr.notificationPlugin.js"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>
