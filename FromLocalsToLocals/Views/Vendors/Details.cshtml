@@ -9,7 +9,7 @@
 
         @if (Model.Image == null)
         {
-            <img src="~/Assets/appLogo.png" style="max-width: 90%; max-height: 80%;" />
+            <img src="~/Assets/localSeller.png" style="max-width: 90%; max-height: 80%;" />
         }
         else
         {
@@ -19,14 +19,14 @@
     <div class="col">
         <div class="m-4">
             <div class="row">
-                @switch (@Model.VendorType)
+                @switch (Model.VendorType)
                 {
                     case FromLocalsToLocals.Utilities.VendorType.CarRepair:<p class="text-muted text-uppercase">Car repair</p>
                         break;
 
                     default: <p class="text-muted text-uppercase">@Model.VendorType</p>
                     break;
-            }
+                }
             </div>
             <div class="row mb-3" style="margin-top: -15px;">
                 <h2>@Model.Title</h2>
