@@ -14,7 +14,7 @@ namespace FromLocalsToLocals.Models
         {
 
         }
-        public Review(int id, int commentId, string username, string comment, int stars, string vendorTitle ="")
+        public Review(int id, int commentId, string username, string comment, int stars, string vendorTitle)
         {
             VendorID = id;
             CommentID = commentId;

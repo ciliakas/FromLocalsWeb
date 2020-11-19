@@ -38,11 +38,6 @@ namespace FromLocalsToLocals.Controllers
             PublisherSingleton.Instance.ReviewCreatedEvent+=NotifyUserWithNewReview;
         }
 
-        static void HandleCustomEvent(object sender, ReviewCreatedEventArgs e)
-        {
-            Debug.WriteLine($" received this message {e.VendorTitle}    {e.Review.Text}");
-        }
-
         public ActionResult Index()
         {
             return View();
@@ -101,10 +96,6 @@ namespace FromLocalsToLocals.Controllers
                 var userName = (user != null) ? user.UserName : "Anonimas";
                 var review = new Review(id, commentId, userName, Request.Form["comment"], stars , vendor.Title);
 
-                //Some weird stuff happens, by creating review in it's constructor event is fired which creates new notification
-                //and probably because notification  has realationships in database with review. Review is created also
-                //so we don't need this line. 
-                //await _reviewsService.CreateAsync(review);
             }
 
             vendor.UpdateReviewsCount(_context);
@@ -114,7 +105,7 @@ namespace FromLocalsToLocals.Controllers
 
         private async Task NotifyUserWithNewReview(object sender , ReviewCreatedEventArgs e )
         {
-            var id = int.Parse(HttpContext.Request.Path.Value.Remove(0,26));
+            var id = GetVendorID();
 
             var notification = new Notification
             {
