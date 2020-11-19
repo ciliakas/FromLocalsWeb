@@ -27,6 +27,5 @@ namespace FromLocalsToLocals.Database
                 review.Date = DateTime.UtcNow.ToString("yyyy-MM-dd");
             }
         }
-
     }
 }

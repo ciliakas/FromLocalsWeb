@@ -122,7 +122,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <img src="~/Assets/profile.png" class="mr-3" style="width: 32px; height: 32px;" />
+                                                            <img src="~/Assets/localSeller.png" class="mr-3" style="width: 32px; height: 32px;" />
                                                         }
                                                         <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.ReplySender)</h5>
                                                     </div>
@@ -131,7 +131,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 }
                                 else
                                 {
@@ -145,6 +145,39 @@
                                     </form>
                                 }
                             }
+                            else
+                            {
+                                @if (item.Item1.Reply != "")
+                                {
+                                    <div class="mt-3 mb-3">
+                                        <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#k_@i" aria-expanded="false" aria-controls="k_@i">
+                                            Show reply
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="k_@i">
+                                        <div style="margin-left: 10%; background-color: whitesmoke; border-radius: 4px;">
+                                            <div class="row">
+                                                <div class="container m-3">
+                                                    <div class="d-flex">
+                                                        @if (Model.Vendor.Image != null)
+                                                        {
+                                                            <img src="data:image;base64,@System.Convert.ToBase64String(Model.Vendor.Image)" class="userImage mr-3" style="width: 32px; height: 32px;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/Assets/profile.png" class="mr-3" style="width: 32px; height: 32px;" />
+                                                        }
+                                                        <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.ReplySender)</h5>
+                                                    </div>
+                                                    <p class="mt-3">@Html.DisplayFor(modelItem => item.Item1.Reply)</p>
+                                                    <small>Posted on @Html.DisplayFor(modelItem => item.Item1.ReplyDate)</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
                         </li>
                                     i++;
                                 }
@@ -171,7 +204,7 @@
                             </div>
                             <textarea name="starRating" id="starCount" hidden></textarea>
                             <textarea name="listItemCount" id="listItemCount" hidden></textarea>
-                            <textarea name="comment" class="form-control mb-3 mt-3" rows="3" onkeyup="toggle()" id="userComment"></textarea>
+                            <textarea name="comment" class="form-control mb-3 mt-3" rows="3" id="userComment" oninput="checkInput()"></textarea>
                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Cannot post an empty review!">
                                 <button type="submit" class="btn btn-success" id="postComment" onclick="handlePost()" disabled>Comment</button>
                             </span>
@@ -250,23 +283,12 @@
 <script src="~/js/reviewWindow.js"></script>
 <script>
     function handlePost() {
-    document.getElementById("starCount").value = document.querySelector('.stars').getAttribute('data-rating');
-    document.getElementById("listItemCount").value = @Model.Reviews.Count();
-
-    if ((document.getElementById("starCount").value == 0) || (isEmptyOrSpaces(document.getElementById("userComment").value))) {
-        document.getElementById("postComment").disabled = true;
-    }
-    else {
-         document.getElementById("postComment").disabled = false;
-    }
+        document.getElementById("starCount").value = document.querySelector('.stars').getAttribute('data-rating');
+        document.getElementById("listItemCount").value = @Model.Reviews.Count();
     }
 
-    function readMore () {
-        $('#allReviews li:hidden').slice(0, 10).show();
-        if ($('#allReviews li').length == $('#allReviews li:visible').length) {
-            document.getElementById("readMoreBtn").hidden = true;
-        }
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
     }
 </script>
-
 

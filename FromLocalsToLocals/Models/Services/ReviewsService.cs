@@ -57,7 +57,5 @@ namespace FromLocalsToLocals.Models.Services
         {
             return await _context.Reviews.Where(x => x.VendorID == id).ToListAsync();
         }
-
-
     }
 }

@@ -1,11 +1,21 @@
-﻿function toggle() {
-    document.getElementById("postComment").disabled = false;
+﻿function readMore() {
+    $('#allReviews li:hidden').slice(0, 10).show();
+    if ($('#allReviews li').length == $('#allReviews li:visible').length) {
+        document.getElementById("readMoreBtn").hidden = true;
+    }
 }
 
-function isEmptyOrSpaces(str) {
-    return str === null || str.match(/^\s*$/) !== null || srt.match(/\r\n |\r |\n/) !== null;
-}
+function checkInput() {
+    var stars = document.querySelector('.stars').getAttribute('data-rating');
+    var text = (document.getElementById("userComment").value).trim();
 
+    if (stars == 0 || text == '') {
+        document.getElementById("postComment").disabled = true;
+    }
+    else {
+        document.getElementById("postComment").disabled = false;
+    }
+}
 
 //initial setup
 document.addEventListener('DOMContentLoaded', function () {
@@ -37,13 +47,13 @@ function setRating(ev) {
         }
     });
     document.querySelector('.stars').setAttribute('data-rating', num);
+    checkInput();
 }
 
 function sortList(arg) {
     var list, i, switching, b, shouldSwitch;
     list = document.getElementById("allReviews");
     switching = true;
-
 
     // Make a loop that will continue until no switching has been done:
     while (switching) {
