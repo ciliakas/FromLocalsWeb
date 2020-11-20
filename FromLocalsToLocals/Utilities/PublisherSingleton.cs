@@ -7,7 +7,7 @@ namespace FromLocalsToLocals.Utilities
 {
     public class PublisherSingleton
     {
-        private static PublisherSingleton instance = new PublisherSingleton();
+        private static Lazy<PublisherSingleton> instance = new Lazy<PublisherSingleton>(() => new PublisherSingleton());
 
         private event Func<object, ReviewCreatedEventArgs, Task> _reviewCreatedEvent;
 
@@ -53,7 +53,7 @@ namespace FromLocalsToLocals.Utilities
 
         private PublisherSingleton() { }
 
-        public static PublisherSingleton Instance { get => instance ?? new PublisherSingleton(); }
+        public static PublisherSingleton Instance { get => instance.Value; }
 
         public void Send(ReviewCreatedEventArgs eventArgs)
         {
