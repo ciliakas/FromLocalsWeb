@@ -73,10 +73,7 @@ namespace FromLocalsToLocals.Controllers
                     return RedirectToAction("index", "home");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                CheckForErrors(new List<IdentityResult>() { result });
             }
             return View(model);
         }
@@ -98,10 +95,7 @@ namespace FromLocalsToLocals.Controllers
                 {
                     return RedirectToAction("index", "home");
                 }
-
-
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-
             }
 
             return View(model);
@@ -124,7 +118,7 @@ namespace FromLocalsToLocals.Controllers
         {
             return submitBtn switch
             {
-                "picName" => await PicNameChange(model),
+                "picName" => await PicChange(model),
                 "accDetails" => await AccountDetailsChange(model),
                 "password" => await ChangePassword(model),
                 _ => View(),
@@ -179,22 +173,7 @@ namespace FromLocalsToLocals.Controllers
             return Profile();
         }
 
-        private void CheckForErrors(List<IdentityResult> results)
-        {
-            var errors = GetErrors(results);
-            if (!errors.IsNullOrEmpty())
-            {
-                errors.ForEach(e => ModelState.AddModelError("", e));
-            }
-
-            if (ModelState.ErrorCount == 0)
-            {
-                _toastNotification.AddSuccessToastMessage("Changes saved successfully");
-            }
-        }
-
-
-        private async Task<IActionResult> PicNameChange(ProfileVM model)
+        private async Task<IActionResult> PicChange(ProfileVM model)
         {
             var userId = _userManager.GetUserId(User);
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
@@ -226,22 +205,35 @@ namespace FromLocalsToLocals.Controllers
 
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
+            Func<string[], bool> StringArrNull = (s) =>
+            {
+                foreach (var i in s)
+                {
+                    if (string.IsNullOrEmpty(i))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            Func<string, Func<bool>, bool> InvalidPassword = (err, action) =>
+              {
+                  if (action())
+                  {
+                      ModelState.AddModelError("", err);
+                      return true;
+                  }
+                  return false;
+              };
+
             var passwordLength = 6;
 
-            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.NewPassword) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
+            if (InvalidPassword("Please, fill all fields",
+                                () => { return StringArrNull(new string[] { model.Password, model.NewPassword, model.ConfirmPassword });} ) ||
+                InvalidPassword("Password must be at least 6 characters long", () => { return model.NewPassword.Length < passwordLength; }) ||
+                InvalidPassword("Passwords do not match", () => { return model.NewPassword != model.ConfirmPassword; })) 
             {
-                ModelState.AddModelError("", "Please, fill all fields");
-                return Profile();
-            }
-            if (model.NewPassword.Length < passwordLength)
-            {
-                ModelState.AddModelError("", "Password must be at least 6 characters long");
-                return Profile();
-            }
-
-            if (model.NewPassword != model.ConfirmPassword)
-            {
-                ModelState.AddModelError("", "Passwords do not match");
                 return Profile();
             }
 
@@ -386,6 +378,19 @@ namespace FromLocalsToLocals.Controllers
         }
 
         #region Helpers
+        private void CheckForErrors(List<IdentityResult> results)
+        {
+            var errors = GetErrors(results);
+            if (!errors.IsNullOrEmpty())
+            {
+                errors.ForEach(e => ModelState.AddModelError("", e));
+            }
+
+            if (ModelState.ErrorCount == 0)
+            {
+                _toastNotification.AddSuccessToastMessage("Changes saved successfully");
+            }
+        }
 
         private List<string> GetErrors(List<IdentityResult> results)
         {
