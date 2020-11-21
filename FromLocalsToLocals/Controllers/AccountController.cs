@@ -227,11 +227,9 @@ namespace FromLocalsToLocals.Controllers
                   return false;
               };
 
-            var passwordLength = 6;
-
             if (InvalidPassword("Please, fill all fields",
                                 () => { return StringArrNull(new string[] { model.Password, model.NewPassword, model.ConfirmPassword });} ) ||
-                InvalidPassword("Password must be at least 6 characters long", () => { return model.NewPassword.Length < passwordLength; }) ||
+                InvalidPassword("Password must be at least 6 characters long", () => { return model.NewPassword.Length < Config.minPasswordLength; }) ||
                 InvalidPassword("Passwords do not match", () => { return model.NewPassword != model.ConfirmPassword; })) 
             {
                 return Profile();
