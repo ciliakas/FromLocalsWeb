@@ -40,8 +40,9 @@ namespace FromLocalsToLocals.Controllers
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
             List<OrderType> typesOfOrdering = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().ToList();
+            List<Vendor> newVendors = await _vendorService.GetNewVendorsAsync();
 
-            var vendors = await _vendorService.GetVendorsAsync(searchString,vendorType);
+            var vendors = await _vendorService.GetVendorsAsync(searchString, vendorType);
             vendors.ForEach(a => a.UpdateReviewsCount(_context));
             _vendorService.Sort(vendors, orderType ?? "");
 
@@ -50,7 +51,8 @@ namespace FromLocalsToLocals.Controllers
             {
                 Types = new SelectList(typesOfVendors),
                 OrderTypes = new SelectList(typesOfOrdering),
-                Vendors = PaginatedList<Vendor>.Create(vendors, page ?? 1, itemCount ?? 20)
+                Vendors = PaginatedList<Vendor>.Create(vendors, page ?? 1, itemCount ?? 20),
+                NewVendors = newVendors
             };
 
             return View(vendorTypeVM);

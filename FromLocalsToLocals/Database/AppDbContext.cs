@@ -26,6 +26,11 @@ namespace FromLocalsToLocals.Database
             {
                 review.Date = DateTime.UtcNow.ToString("yyyy-MM-dd");
             }
+            
+            else if (!e.FromQuery && e.Entry.State == EntityState.Added && e.Entry.Entity is Vendor vendor)
+            {
+                vendor.DateCreated = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm");
+            }
         }
     }
 }

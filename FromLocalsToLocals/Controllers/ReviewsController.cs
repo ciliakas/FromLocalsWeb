@@ -22,8 +22,6 @@ namespace FromLocalsToLocals.Controllers
         private readonly IReviewsService _reviewsService;
         private readonly INotificationService _notificationService;
 
-
-
         public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotificationHub> hubContext, IReviewsService reviewsService, INotificationService notificationService)
         {
             _context = context;
@@ -100,7 +98,6 @@ namespace FromLocalsToLocals.Controllers
             }
 
             vendor.UpdateReviewsCount(_context);
-
             return await Reviews();
         }
 
@@ -115,7 +112,7 @@ namespace FromLocalsToLocals.Controllers
                 VendorId = id,
                 CreatedDate = DateTime.UtcNow,
                 Review = review,
-                NotiBody = $"{review.SenderUsername} gave {review.Stars} stars to '{vendorTitle}'.",
+                NotiBody = $"{review.SenderUsername} gave {review.Stars} star(s) to '{vendorTitle}'.",
                 Url = HttpContext.Request.Path.Value
             };
 
