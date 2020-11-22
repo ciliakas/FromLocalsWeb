@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FromLocalsToLocals.Utilities.TimeCalculator;
 
 namespace FromLocalsToLocals.Models.Services
 {
@@ -82,9 +83,11 @@ namespace FromLocalsToLocals.Models.Services
 
         public async Task<List<Vendor>> GetNewVendorsAsync()
         {
-            var list = (from vendor in _context.Vendors
-                        orderby vendor.DateCreated descending
-                        select vendor).Take(4);
+            var list = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(4);
+            foreach (var item in list)
+            {
+                item.DateCreated = CalcRelativeTime(item.DateCreated);
+            }
             return await list.ToListAsync();
         }
 
@@ -99,7 +102,6 @@ namespace FromLocalsToLocals.Models.Services
             {
                 throw new DbUpdateException("Unable to update service in database");
             }
-
         }
 
         public bool Exists(int id)
@@ -119,6 +121,5 @@ namespace FromLocalsToLocals.Models.Services
             }
             return await vendors.ToListAsync();
         }
-    
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FromLocalsToLocals.Utilities.TimeCalculator;
 
 namespace FromLocalsToLocals.Models.Services
 {
@@ -24,7 +25,7 @@ namespace FromLocalsToLocals.Models.Services
 
                 review.Reply = text;
                 review.ReplySender = sender;
-                review.ReplyDate = DateTime.UtcNow.ToString("yyyy-MM-dd");
+                review.ReplyDate = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
 
                 _context.Update(review);
                 _context.SaveChanges();
