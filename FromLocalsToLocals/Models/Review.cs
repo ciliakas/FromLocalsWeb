@@ -1,18 +1,20 @@
-﻿using System;
+﻿using FromLocalsToLocals.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Models
-{
+{ 
     public class Review : IEquatable<Review>
     {
         public Review()
         {
 
         }
-        public Review(int id, int commentId, string username, string comment, int stars)
+        public Review(int id, int commentId, string username, string comment, int stars, string vendorTitle)
         {
             VendorID = id;
             CommentID = commentId;
@@ -22,6 +24,11 @@ namespace FromLocalsToLocals.Models
             Reply = "";
             ReplySender = "";
             ReplyDate = "";
+
+
+            //AsyncContext.Run(() => SearchRequest(this, EventArgs.Empty));
+
+            PublisherSingleton.Instance.Send(new ReviewCreatedEventArgs(this, vendorTitle));
         }
 
         [Key]

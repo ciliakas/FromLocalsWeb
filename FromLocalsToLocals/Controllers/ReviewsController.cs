@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.SignalR;
 using FromLocalsToLocals.Utilities;
 using System.Collections.Generic;
 using FromLocalsToLocals.Models.Services;
+using System.Diagnostics;
+using static FromLocalsToLocals.Models.Review;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -22,6 +24,8 @@ namespace FromLocalsToLocals.Controllers
         private readonly IReviewsService _reviewsService;
         private readonly INotificationService _notificationService;
 
+
+
         public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotificationHub> hubContext, IReviewsService reviewsService, INotificationService notificationService)
         {
             _context = context;
@@ -30,7 +34,10 @@ namespace FromLocalsToLocals.Controllers
             _hubContext = hubContext;
             _reviewsService = reviewsService;
             _notificationService = notificationService;
+
+            PublisherSingleton.Instance.ReviewCreatedEvent+=NotifyUserWithNewReview;
         }
+
         public ActionResult Index()
         {
             return View();
@@ -87,35 +94,30 @@ namespace FromLocalsToLocals.Controllers
                 var commentId = int.Parse(Request.Form["listItemCount"]);
                 var stars     = int.Parse(Request.Form["starRating"]);
                 var userName = (user != null) ? user.UserName : "Anonimas";
-                var review = new Review(id, commentId, userName, Request.Form["comment"], stars);
+                var review = new Review(id, commentId, userName, Request.Form["comment"], stars , vendor.Title);
 
-                await _reviewsService.CreateAsync(review);
-
-                vendor.UpdateReviewsCount(_context);
-
-                // Notify vendor owner that someone commented on his shop
-                await NotifyUserWithNewReview(review, vendor.Title);
             }
 
             vendor.UpdateReviewsCount(_context);
+
             return await Reviews();
         }
 
-        private async Task NotifyUserWithNewReview(Review review, string vendorTitle )
+        private async Task NotifyUserWithNewReview(object sender , ReviewCreatedEventArgs e )
         {
             var id = GetVendorID();
 
             var notification = new Notification
             {
                 // sukurti metoda, kuris priema lambda (?)
-                OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == GetVendorID()).UserID,
+                OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == id).UserID,
                 VendorId = id,
                 CreatedDate = DateTime.UtcNow,
-                Review = review,
-                NotiBody = $"{review.SenderUsername} gave {review.Stars} star(s) to '{vendorTitle}'.",
+                Review = e.Review,
+                NotiBody = $"{e.Review.SenderUsername} gave {e.Review.Stars} stars to '{e.VendorTitle}'.",
                 Url = HttpContext.Request.Path.Value
             };
-
+            
              await _notificationService.AddNotificationAsync(notification);
              await _hubContext.Clients.All.SendAsync("displayNotification", "");
         }
