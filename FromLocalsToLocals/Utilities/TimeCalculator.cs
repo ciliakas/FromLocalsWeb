@@ -27,7 +27,7 @@ namespace FromLocalsToLocals.Utilities
             {
                 return ts.Minutes + " minutes ago";
             }
-            else if (delta < 90 * SecondsPerMinute)
+            else if (delta < 2 * SecondsPerHour)
             {
                 return "1 hour ago";
             }
@@ -35,7 +35,7 @@ namespace FromLocalsToLocals.Utilities
             {
                 return ts.Hours + " hours ago";
             }
-            else if (delta < 48 * SecondsPerHour)
+            else if (delta < 2 * SecondsPerDay)
             {
                 return "1 day ago";
             }

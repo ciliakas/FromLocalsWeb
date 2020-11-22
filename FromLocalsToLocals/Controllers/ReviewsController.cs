@@ -24,8 +24,6 @@ namespace FromLocalsToLocals.Controllers
         private readonly IReviewsService _reviewsService;
         private readonly INotificationService _notificationService;
 
-
-
         public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotificationHub> hubContext, IReviewsService reviewsService, INotificationService notificationService)
         {
             _context = context;
