@@ -31,12 +31,13 @@
     var rows = Math.Ceiling(itemCountDouble / itemsInRow);
     var vendorCount = Model.Vendors.Count;
 }
-<h2 class="mt-4" style="text-align: center; font-size: 30px;">New Services</h2>
+<h2 class="mt-4 mb-2" style="text-align: center; font-size: 30px;">New Services</h2>
+<p class="mt-2" style="text-align: center; font-size: 18px;">Services in the past month registered on our site</p>
 <hr />
-
 @if (Model.NewVendors.Count() == 0)
 {
-    <p class="list-group-item mt-2 mb-2 text-center" style="font-size: 21px; border-radius: 7px;">No new services:(<br /><br /><b>But there might be some soon!</b></p>
+    <p class="mt-2 mb-2 text-center" style="font-size: 21px; border-radius: 7px;">No new services:(<br /><br /><b>But there might be some soon!</b></p>
+    <hr />
 }
 else
 {
@@ -45,9 +46,6 @@ else
         {
             <div class="col-sm-@(12 / itemsInRow) mb-3 mt-3">
                 <div class="card" style="width:inherit; height:inherit; background-color: #F7F7F7;">
-                    <div>
-                        <p class="mt-1" style="float: right; font-size: 18px;">@vendor.DateCreated</p>
-                    </div>
                     @if (vendor.Image == null)
                     {
                         <img src="~/Assets/localSeller.png" class="mt-3" style="width:160px ; height:150px; border-radius: 50%; align-self:center;" />

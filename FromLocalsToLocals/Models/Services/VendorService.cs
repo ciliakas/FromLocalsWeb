@@ -80,13 +80,9 @@ namespace FromLocalsToLocals.Models.Services
             return await FilterVendorsListAsync(vendors,searchString,vendorType);
         }
 
-        public async Task<List<Vendor>> GetNewVendorsAsync()
+        public async Task<List<Vendor>> GetNewVendorsAsync(int count)
         {
-            var list = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(4);
-            foreach (var item in list)
-            {
-                item.DateCreated = CalcRelativeTime(item.DateCreated);
-            }
+            var list = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(count);
             return await list.ToListAsync();
         }
 

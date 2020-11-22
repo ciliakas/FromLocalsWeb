@@ -12,45 +12,45 @@ namespace FromLocalsToLocals.Utilities
             const int SecondsPerMonth = 30 * SecondsPerDay;
 
             var date = DateTime.Parse(strDate);
-            var ts = new TimeSpan(DateTime.UtcNow.Ticks - date.Ticks);
-            double delta = Math.Abs(ts.TotalSeconds);
+            var timeSpan = new TimeSpan(DateTime.UtcNow.Ticks - date.Ticks);
+            double delta = Math.Abs(timeSpan.TotalSeconds);
 
             if (delta < SecondsPerMinute)
             {
-                return ts.Seconds == 1 ? "1 second ago" : ts.Seconds + " seconds ago";
+                return timeSpan.Seconds == 1 ? "1 second ago" : timeSpan.Seconds + " seconds ago";
             }
             else if (delta < 2 * SecondsPerMinute)
             {
                 return "1 minute ago";
             }
-            else if (delta < 45 * SecondsPerMinute)
+            else if (delta < SecondsPerHour)
             {
-                return ts.Minutes + " minutes ago";
+                return timeSpan.Minutes + " minutes ago";
             }
             else if (delta < 2 * SecondsPerHour)
             {
                 return "1 hour ago";
             }
-            else if (delta < 24 * SecondsPerHour)
+            else if (delta < SecondsPerDay)
             {
-                return ts.Hours + " hours ago";
+                return timeSpan.Hours + " hours ago";
             }
             else if (delta < 2 * SecondsPerDay)
             {
                 return "1 day ago";
             }
-            else if (delta < 30 * SecondsPerDay)
+            else if (delta < SecondsPerMonth)
             {
-                return ts.Days + " days ago";
+                return timeSpan.Days + " days ago";
             }
             else if (delta < 12 * SecondsPerMonth)
             {
-                int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
+                int months = Convert.ToInt32(Math.Floor((double)timeSpan.Days / 30));
                 return months <= 1 ? "1 month ago" : months + " months ago";
             }
             else
             {
-                int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
+                int years = Convert.ToInt32(Math.Floor((double)timeSpan.Days / 365));
                 return years <= 1 ? "1 year ago" : years + " years ago";
             }
         }
