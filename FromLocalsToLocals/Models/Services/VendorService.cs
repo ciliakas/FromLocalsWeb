@@ -2,6 +2,9 @@
 using FromLocalsToLocals.Utilities;
 using Geocoding;
 using Microsoft.EntityFrameworkCore;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using SuppLocals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +43,7 @@ namespace FromLocalsToLocals.Models.Services
                 _context.Vendors.Add(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateException )
+            catch(DbUpdateException)
             {
                 throw new DbUpdateException("Unable to save service in database");
             }
@@ -111,6 +114,11 @@ namespace FromLocalsToLocals.Models.Services
             }
             return await vendors.ToListAsync();
         }
-    
+
+
+  
+
+
     }
+
 }

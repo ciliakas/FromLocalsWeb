@@ -336,20 +336,28 @@ namespace FromLocalsToLocals.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-               
-
-                if (user == null)
+                if (ModelState.IsValid)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("Register");
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+
+                    /*
+                    if (user == null)
+                    {
+                        // Don't reveal that the user does not exist or is not confirmed
+                        return View("Register");
+                    }
+                    */
+
+                    await Execute();
+                    return View("ForgotPasswordConfirmation");
                 }
-
-
-                await Execute();
-                return View("ForgotPasswordConfirmation");
+            }
+            catch(Exception e)
+            {
+                await e.ExceptionSender();
+                return View("Error");
             }
 
             async Task Execute()
@@ -416,6 +424,7 @@ namespace FromLocalsToLocals.Controllers
         #endregion
 
 
+      
 
     }
 }
