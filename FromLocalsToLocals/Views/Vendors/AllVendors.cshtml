@@ -26,30 +26,136 @@
         }
     </style>
 </head>
-
-<h2 class="mt-4" style="text-align: center; font-size: 30px;"> All Services</h2>
-<hr />
-<form asp-action="AllVendors" method="get" class="navbar">
-        <select asp-for="VendorType" asp-items="Model.Types" class="dropdown, btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            <option value="">All</option>
-        </select>
-        <select asp-for="OrderType" asp-items="Model.OrderTypes" class="dropdown, btn btn-primary dropdown-toggle"
-                type="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-
-            <option value="">Random</option>
-        </select>
-        <input type="text" name="searchString"  placeholder="Title" />
-        <input  type="number" min="1" max="50" name="itemCount" placeholder="Items per page" value=@itemCountDouble />
-        <input class="btn btn-primary" style="float:right; width: 300px;" type="submit" value="Filter" />  
-</form>
-<hr />
 @{
     var itemsInRow = 4; // Make sure its divisible by 12
     var rows = Math.Ceiling(itemCountDouble / itemsInRow);
     var vendorCount = Model.Vendors.Count;
 }
+<h2 class="mt-4 mb-2" style="text-align: center; font-size: 30px;">New Services</h2>
+<p class="mt-2" style="text-align: center; font-size: 18px;">Services in the past month registered on our site</p>
+<hr />
+@if (Model.NewVendors.Count() == 0)
+{
+    <p class="mt-2 mb-2 text-center" style="font-size: 21px; border-radius: 7px;">No new services:(<br /><br /><b>But there might be some soon!</b></p>
+    <hr />
+}
+else
+{
+    <div class="row" style="background-color: #CCBA8B;">
+        @foreach (var vendor in Model.NewVendors)
+        {
+            <div class="col-sm-@(12 / itemsInRow) mb-3 mt-3">
+                <div class="card" style="width:inherit; height:inherit; background-color: #F7F7F7;">
+                    @if (vendor.Image == null)
+                    {
+                        <img src="~/Assets/localSeller.png" class="mt-3" style="width:160px ; height:150px; border-radius: 50%; align-self:center;" />
+                    }
+                    else
+                    {
+                        <img src="data:image;base64,@System.Convert.ToBase64String(vendor.Image)" class="mt-3" style="width:160px; height: 150px; border-radius: 50%; align-self:center;" />
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title" style="margin:0px;">@vendor.Title</h5>
+                        <hr />
+                        @switch (vendor.VendorTypeDb)
+                        {
+                            case "CarRepair":<p class="text-muted text-uppercase">Car repair</p>
+                                break;
 
+                            default: <p class="text-muted text-uppercase">@vendor.VendorTypeDb</p>
+                            break;
+                    }
+                        <hr />
+                        @if (vendor.ReviewsCount.Sum() == 0)
+                        {
+                            <p class="font-italic">No Reviews</p>
+                        }
+                        else
+                        {
+                            @switch (@Math.Round(vendor.Average))
+                            {
+                                case 5:
+                                    <p class="ml-3 ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span>@vendor.Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                                case 4:
+                                    <p class="ml-3">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span>@vendor.Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                                case 3:
+                                    <p class="ml-3">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span>@vendor.Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                                case 2:
+                                    <p class="ml-3">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span>@vendor.Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                                default:
+                                    <p class="ml-3">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span>@vendor.Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                            }
+                        }
+                        <hr />
+                        <div class="navbar" style="align-content:center">
+                            <a asp-route-id="@vendor.ID" asp-controller="Vendors" asp-action="Details"
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Read More</a>
+                            <a asp-route-id="Vendor/@vendor.ID" asp-controller="Reviews" asp-action="Reviews"
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Reviews</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+}
+<h2 class="mt-4" style="text-align: center; font-size: 30px;"> All Services</h2>
+<hr />
+<form asp-action="AllVendors" method="get" class="container-fluid">
+    <select asp-for="VendorType" asp-items="Model.Types" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <option value="">All</option>
+    </select>
+    <select asp-for="OrderType" asp-items="Model.OrderTypes" class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+        <option value="">Random</option>
+    </select>
+    <input type="text" class="m-3" name="searchString" placeholder="Title" /> Items per page:
+    <input type="number" class="m-3" min="1" max="50" name="itemCount" value=@itemCountDouble />
+    <input class="btn btn-primary" style="float:right; width: 100px;" type="submit" value="Filter" />
+</form>
+<hr />
 @for (int i = 0; i < rows; i++)
 {
     <div class="row">
@@ -65,86 +171,86 @@
                     {
                         <img src="data:image;base64,@System.Convert.ToBase64String(Model.Vendors[i * itemsInRow + j].Image)" class="mt-3" style="width:160px; height: 150px; border-radius: 50%; align-self:center;" />
                     }
-                <div class="card-body" >
-                    <h5 class="card-title" style="margin:0px;">@Model.Vendors[i * itemsInRow + j].Title</h5>
-                    <hr />
-                    @switch (Model.Vendors[i * itemsInRow + j].VendorTypeDb)
-                    {
-                        case "CarRepair":<p class="text-muted text-uppercase">Car repair</p>
-                            break;
-
-                        default: <p class="text-muted text-uppercase">@Model.Vendors[i * itemsInRow + j].VendorTypeDb</p>
-                        break;
-                }
-                    <hr />
-                    @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
-                    {
-                        <p class="font-italic">No Reviews</p>
-                    }
-                    else
-                    {
-                        @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].Average))
+                    <div class="card-body">
+                        <h5 class="card-title" style="margin:0px;">@Model.Vendors[i * itemsInRow + j].Title</h5>
+                        <hr />
+                        @switch (Model.Vendors[i * itemsInRow + j].VendorTypeDb)
                         {
-                            case 5:
-                                <p class="ml-3 ">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
-                                </p>
+                            case "CarRepair":<p class="text-muted text-uppercase">Car repair</p>
                                 break;
-                            case 4:
-                                <p class="ml-3">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
-                                </p>
-                                break;
-                            case 3:
-                                <p class="ml-3">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
-                                </p>
-                                break;
-                            case 2:
-                                <p class="ml-3">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
-                                </p>
-                                break;
-                            default:
-                                <p class="ml-3">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
-                                </p>
-                                break;
-                        }
+
+                            default: <p class="text-muted text-uppercase">@Model.Vendors[i * itemsInRow + j].VendorTypeDb</p>
+                            break;
                     }
-                    <hr />
-                    <div class="navbar" style="align-content:center">
-                        <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details"
-                           class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Read More</a>
-                        <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews"
-                           class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Reviews</a>
+                        <hr />
+                        @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
+                        {
+                            <p class="font-italic">No Reviews</p>
+                        }
+                        else
+                        {
+                            @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].Average))
+                            {
+                                case 5:
+                                    <p class="ml-3 ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                                case 4:
+                                    <p class="ml-3">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                                case 3:
+                                    <p class="ml-3">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                                case 2:
+                                    <p class="ml-3">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                                default:
+                                    <p class="ml-3">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                    </p>
+                                    break;
+                            }
+                        }
+                        <hr />
+                        <div class="navbar" style="align-content:center">
+                            <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details"
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Read More</a>
+                            <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews"
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Reviews</a>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
         }
