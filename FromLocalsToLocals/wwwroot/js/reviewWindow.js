@@ -119,7 +119,7 @@ function sortList(arg) {
 
 function getDate(arr, index) {
     var x = arr[index].getElementsByTagName("SMALL");
-    return x[0].innerHTML.substring(10, 20);
+    return x[0].getAttribute('data-val');
 }
 
 function getStarRating(arr, index) {
