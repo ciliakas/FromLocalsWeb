@@ -11,10 +11,12 @@ using Geocoding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using SuppLocals;
+using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -24,14 +26,17 @@ namespace FromLocalsToLocals.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
         private readonly IToastNotification _toastNotification;
+        private readonly SendGridAccount _userOptions;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                                 AppDbContext context, IToastNotification toastNotification)
+                                 AppDbContext context, IToastNotification toastNotification,
+                                 IOptions<SendGridAccount>  userOptions)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _toastNotification = toastNotification;
+            _userOptions = userOptions.Value;
         }
 
 
@@ -353,7 +358,7 @@ namespace FromLocalsToLocals.Controllers
                 var key = Config.Send_Grid_Key;
                 var client = new SendGridClient(key);
 
-                var from = new EmailAddress("fromlocalstolocals@gmail.com", "Forgot password");
+                var from = new EmailAddress(_userOptions.ReceiverEmail, "Forgot password");
                 var subject = "Forgot Password Confirmation";
                 var to = new EmailAddress(model.Email, "Dear User");
                 var plainTextContent = "";

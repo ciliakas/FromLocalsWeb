@@ -40,7 +40,7 @@ namespace FromLocalsToLocals.Models.Services
                 _context.Vendors.Add(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateException)
+            catch(DbUpdateException )
             {
                 throw new DbUpdateException("Unable to save service in database");
             }
