@@ -107,7 +107,6 @@ namespace FromLocalsToLocals.Controllers
 
             var notification = new Notification
             {
-                // sukurti metoda, kuris priema lambda (?)
                 OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == id).UserID,
                 VendorId = id,
                 CreatedDate = DateTime.UtcNow,

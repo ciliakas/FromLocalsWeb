@@ -25,9 +25,6 @@ namespace FromLocalsToLocals.Models
             ReplySender = "";
             ReplyDate = "";
 
-
-            //AsyncContext.Run(() => SearchRequest(this, EventArgs.Empty));
-
             PublisherSingleton.Instance.Send(new ReviewCreatedEventArgs(this, vendorTitle));
         }
 

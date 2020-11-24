@@ -28,6 +28,8 @@ namespace FromLocalsToLocals.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly SendGridAccount _userOptions;
 
+        delegate bool MyPredicate<in T>(T arg);
+
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
                                  AppDbContext context, IToastNotification toastNotification,
                                  IOptions<SendGridAccount>  userOptions)
@@ -218,7 +220,7 @@ namespace FromLocalsToLocals.Controllers
 
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
-            Predicate<string[]> StringArrNull = (s) =>
+            MyPredicate<string[]> StringArrNull = (s) =>
             {
                 foreach (var i in s)
                 {
