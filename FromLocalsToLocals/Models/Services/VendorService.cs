@@ -43,9 +43,9 @@ namespace FromLocalsToLocals.Models.Services
                 _context.Vendors.Add(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateException)
+            catch(DbUpdateException e)
             {
-                throw new DbUpdateException("Unable to save service in database");
+                await e.ExceptionSender();
             }
 
         }
@@ -58,9 +58,9 @@ namespace FromLocalsToLocals.Models.Services
                 _context.Vendors.Remove(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException e)
             {
-                throw new DbUpdateException("Unable to delete service from database");
+                await e.ExceptionSender();
             }
         }
         public async Task<Vendor> GetVendorAsync(int id)
