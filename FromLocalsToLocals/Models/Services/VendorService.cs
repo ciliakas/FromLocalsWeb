@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FromLocalsToLocals.Utilities.TimeCalculator;
 
 namespace FromLocalsToLocals.Models.Services
 {
@@ -17,7 +18,6 @@ namespace FromLocalsToLocals.Models.Services
         private readonly AppDbContext _context;
         Comparison<Vendor> Descending = delegate (Vendor t1, Vendor t2) { return (-1) * t1.CompareTo(t2); };
         Comparison<Vendor> Ascending = delegate (Vendor t1, Vendor t2) { return t1.CompareTo(t2); };
-
 
         public VendorService(AppDbContext context)
         {
@@ -83,6 +83,12 @@ namespace FromLocalsToLocals.Models.Services
             return await FilterVendorsListAsync(vendors,searchString,vendorType);
         }
 
+        public async Task<List<Vendor>> GetNewVendorsAsync(int count)
+        {
+            var list = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(count);
+            return await list.ToListAsync();
+        }
+
         public async Task UpdateAsync(Vendor vendor)
         {
             try
@@ -94,7 +100,6 @@ namespace FromLocalsToLocals.Models.Services
             {
                 throw new DbUpdateException("Unable to update service in database");
             }
-
         }
 
         public bool Exists(int id)
@@ -114,10 +119,6 @@ namespace FromLocalsToLocals.Models.Services
             }
             return await vendors.ToListAsync();
         }
-
-
-  
-
 
     }
 

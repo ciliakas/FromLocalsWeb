@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
 using SuppLocals;
@@ -14,7 +13,6 @@ using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Models.Services;
 using NToastNotify;
 using FromLocalsToLocals.Models.ViewModels;
-using System.IO;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -40,8 +38,9 @@ namespace FromLocalsToLocals.Controllers
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
             List<OrderType> typesOfOrdering = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().ToList();
+            List<Vendor> newVendors = await _vendorService.GetNewVendorsAsync(count: 4);
 
-            var vendors = await _vendorService.GetVendorsAsync(searchString,vendorType);
+            var vendors = await _vendorService.GetVendorsAsync(searchString, vendorType);
             vendors.ForEach(a => a.UpdateReviewsCount(_context));
             _vendorService.Sort(vendors, orderType ?? "");
 
@@ -50,7 +49,8 @@ namespace FromLocalsToLocals.Controllers
             {
                 Types = new SelectList(typesOfVendors),
                 OrderTypes = new SelectList(typesOfOrdering),
-                Vendors = PaginatedList<Vendor>.Create(vendors, page ?? 1, itemCount ?? 20)
+                Vendors = PaginatedList<Vendor>.Create(vendors, page ?? 1, itemCount ?? 20),
+                NewVendors = newVendors
             };
 
             return View(vendorTypeVM);
@@ -254,7 +254,6 @@ namespace FromLocalsToLocals.Controllers
         {
             return id == _userManager.Value.GetUserId(User);
         }
-
         #endregion
     }
 }
