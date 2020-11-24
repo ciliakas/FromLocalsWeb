@@ -96,8 +96,9 @@ namespace FromLocalsToLocals.Models.Services
                 _context.Vendors.Update(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException e)
             {
+                await e.ExceptionSender();
                 throw new DbUpdateException("Unable to update service in database");
             }
         }

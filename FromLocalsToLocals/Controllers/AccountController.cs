@@ -92,18 +92,26 @@ namespace FromLocalsToLocals.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
-
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction("index", "home");
-                }
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-            }
+                    var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
 
-            return View(model);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                }
+
+                return View(model);
+            }
+            catch(Exception e)
+            {
+                await e.ExceptionSender();
+                return View("Error");
+            }
         }
 
 
@@ -280,54 +288,62 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
-            var isValid = false;
-      
+            try
+            {
+                var isValid = false;
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("Register", "Account");
-            }
 
-            if (model.ConfirmPassword == model.Password)
-            {
-                if (model.ConfirmPassword is null || model.Password is null)
+                if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("", "Please fill both passwords field.");
-                    return View();
+                    return View(model);
+                }
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction("Register", "Account");
+                }
+
+                if (model.ConfirmPassword == model.Password)
+                {
+                    if (model.ConfirmPassword is null || model.Password is null)
+                    {
+                        ModelState.AddModelError("", "Please fill both passwords field.");
+                        return View();
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
                 }
                 else
                 {
-                    isValid = true;
+                    ModelState.AddModelError("", "Password do not match!");
+                    return View();
                 }
-            }
-            else
-            {
-                ModelState.AddModelError("", "Password do not match!");
-                return View();
-            }
 
-            if (isValid is true)
-            {
-                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-                if (result.Succeeded)
+                if (isValid is true)
                 {
-                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                    var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ResetPasswordConfirmation", "Account");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unexpected error");
+                        return View();
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Unexpected error");
                     return View();
                 }
             }
-            else
+            catch(Exception e)
             {
-                return View();
+                await e.ExceptionSender();
+                return View("Error");
             }
         }
 
@@ -342,13 +358,6 @@ namespace FromLocalsToLocals.Controllers
                 {
                     var user = await _userManager.FindByEmailAsync(model.Email);
 
-                    /*
-                    if (user == null)
-                    {
-                        // Don't reveal that the user does not exist or is not confirmed
-                        return View("Register");
-                    }
-                    */
 
                     await Execute();
                     return View("ForgotPasswordConfirmation");
