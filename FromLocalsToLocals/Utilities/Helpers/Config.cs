@@ -8,6 +8,8 @@ namespace SuppLocals
         public Config()
         {}
 
+        public const int minPasswordLength = 6;
+
         public static string email = "lukasstc223@gmail.com";
         public static string[] permittedExtensions = { ".png", ".jpg", ".jpeg" };
 

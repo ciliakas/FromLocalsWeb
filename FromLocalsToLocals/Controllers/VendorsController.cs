@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
 using SuppLocals;
@@ -14,7 +13,6 @@ using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Models.Services;
 using NToastNotify;
 using FromLocalsToLocals.Models.ViewModels;
-using System.IO;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -40,7 +38,7 @@ namespace FromLocalsToLocals.Controllers
         {
             List<VendorType> typesOfVendors = Enum.GetValues(typeof(VendorType)).Cast<VendorType>().ToList();
             List<OrderType> typesOfOrdering = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().ToList();
-            List<Vendor> newVendors = await _vendorService.GetNewVendorsAsync();
+            List<Vendor> newVendors = await _vendorService.GetNewVendorsAsync(count: 4);
 
             var vendors = await _vendorService.GetVendorsAsync(searchString, vendorType);
             vendors.ForEach(a => a.UpdateReviewsCount(_context));
@@ -256,7 +254,6 @@ namespace FromLocalsToLocals.Controllers
         {
             return id == _userManager.Value.GetUserId(User);
         }
-
         #endregion
     }
 }

@@ -19,6 +19,7 @@ using NToastNotify;
 using SendGrid.Helpers.Mail;
 using Microsoft.AspNetCore.Components;
 using FromLocalsToLocals.Models.Services;
+using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
 
 namespace FromLocalsToLocals
 {
@@ -36,11 +37,12 @@ namespace FromLocalsToLocals
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
-
+            
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
+                options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Transient);
 
 
+            services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
                 {
@@ -49,6 +51,7 @@ namespace FromLocalsToLocals
                     options.Password.RequireUppercase = false;
                     options.SignIn.RequireConfirmedEmail = false;
                 }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
 
 
             services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()

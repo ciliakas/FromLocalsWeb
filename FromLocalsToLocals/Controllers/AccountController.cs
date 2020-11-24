@@ -11,10 +11,12 @@ using Geocoding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using SuppLocals;
+using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -24,14 +26,17 @@ namespace FromLocalsToLocals.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
         private readonly IToastNotification _toastNotification;
+        private readonly SendGridAccount _userOptions;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                                 AppDbContext context, IToastNotification toastNotification)
+                                 AppDbContext context, IToastNotification toastNotification,
+                                 IOptions<SendGridAccount>  userOptions)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _toastNotification = toastNotification;
+            _userOptions = userOptions.Value;
         }
 
 
@@ -73,10 +78,7 @@ namespace FromLocalsToLocals.Controllers
                     return RedirectToAction("index", "home");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                CheckForErrors(new List<IdentityResult>() { result });
             }
             return View(model);
         }
@@ -90,21 +92,26 @@ namespace FromLocalsToLocals.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
-
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction("index", "home");
+                    var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
 
-
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-
+                return View(model);
             }
-
-            return View(model);
+            catch(Exception e)
+            {
+                await e.ExceptionSender();
+                return View("Error");
+            }
         }
 
 
@@ -124,7 +131,7 @@ namespace FromLocalsToLocals.Controllers
         {
             return submitBtn switch
             {
-                "picName" => await PicNameChange(model),
+                "picName" => await PicChange(model),
                 "accDetails" => await AccountDetailsChange(model),
                 "password" => await ChangePassword(model),
                 _ => View(),
@@ -179,22 +186,7 @@ namespace FromLocalsToLocals.Controllers
             return Profile();
         }
 
-        private void CheckForErrors(List<IdentityResult> results)
-        {
-            var errors = GetErrors(results);
-            if (!errors.IsNullOrEmpty())
-            {
-                errors.ForEach(e => ModelState.AddModelError("", e));
-            }
-
-            if (ModelState.ErrorCount == 0)
-            {
-                _toastNotification.AddSuccessToastMessage("Changes saved successfully");
-            }
-        }
-
-
-        private async Task<IActionResult> PicNameChange(ProfileVM model)
+        private async Task<IActionResult> PicChange(ProfileVM model)
         {
             var userId = _userManager.GetUserId(User);
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
@@ -226,22 +218,33 @@ namespace FromLocalsToLocals.Controllers
 
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
-            var passwordLength = 6;
+            Func<string[], bool> StringArrNull = (s) =>
+            {
+                foreach (var i in s)
+                {
+                    if (string.IsNullOrEmpty(i))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            };
 
-            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.NewPassword) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
-            {
-                ModelState.AddModelError("", "Please, fill all fields");
-                return Profile();
-            }
-            if (model.NewPassword.Length < passwordLength)
-            {
-                ModelState.AddModelError("", "Password must be at least 6 characters long");
-                return Profile();
-            }
+            Func<string, Func<bool>, bool> InvalidPassword = (err, action) =>
+              {
+                  if (action())
+                  {
+                      ModelState.AddModelError("", err);
+                      return true;
+                  }
+                  return false;
+              };
 
-            if (model.NewPassword != model.ConfirmPassword)
+            if (InvalidPassword("Please, fill all fields",
+                                () => { return StringArrNull(new string[] { model.Password, model.NewPassword, model.ConfirmPassword });} ) ||
+                InvalidPassword("Password must be at least 6 characters long", () => { return model.NewPassword.Length < Config.minPasswordLength; }) ||
+                InvalidPassword("Passwords do not match", () => { return model.NewPassword != model.ConfirmPassword; })) 
             {
-                ModelState.AddModelError("", "Passwords do not match");
                 return Profile();
             }
 
@@ -285,54 +288,62 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
-            var isValid = false;
-      
+            try
+            {
+                var isValid = false;
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("Register", "Account");
-            }
 
-            if (model.ConfirmPassword == model.Password)
-            {
-                if (model.ConfirmPassword is null || model.Password is null)
+                if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("", "Please fill both passwords field.");
-                    return View();
+                    return View(model);
+                }
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction("Register", "Account");
+                }
+
+                if (model.ConfirmPassword == model.Password)
+                {
+                    if (model.ConfirmPassword is null || model.Password is null)
+                    {
+                        ModelState.AddModelError("", "Please fill both passwords field.");
+                        return View();
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
                 }
                 else
                 {
-                    isValid = true;
+                    ModelState.AddModelError("", "Password do not match!");
+                    return View();
                 }
-            }
-            else
-            {
-                ModelState.AddModelError("", "Password do not match!");
-                return View();
-            }
 
-            if (isValid is true)
-            {
-                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-                if (result.Succeeded)
+                if (isValid is true)
                 {
-                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                    var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ResetPasswordConfirmation", "Account");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unexpected error");
+                        return View();
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Unexpected error");
                     return View();
                 }
             }
-            else
+            catch(Exception e)
             {
-                return View();
+                await e.ExceptionSender();
+                return View("Error");
             }
         }
 
@@ -341,20 +352,21 @@ namespace FromLocalsToLocals.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-               
-
-                if (user == null)
+                if (ModelState.IsValid)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("Register");
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+
+
+                    await Execute();
+                    return View("ForgotPasswordConfirmation");
                 }
-
-
-                await Execute();
-                return View("ForgotPasswordConfirmation");
+            }
+            catch(Exception e)
+            {
+                await e.ExceptionSender();
+                return View("Error");
             }
 
             async Task Execute()
@@ -363,7 +375,7 @@ namespace FromLocalsToLocals.Controllers
                 var key = Config.Send_Grid_Key;
                 var client = new SendGridClient(key);
 
-                var from = new EmailAddress("fromlocalstolocals@gmail.com", "Forgot password");
+                var from = new EmailAddress(_userOptions.ReceiverEmail, "Forgot password");
                 var subject = "Forgot Password Confirmation";
                 var to = new EmailAddress(model.Email, "Dear User");
                 var plainTextContent = "";
@@ -386,6 +398,19 @@ namespace FromLocalsToLocals.Controllers
         }
 
         #region Helpers
+        private void CheckForErrors(List<IdentityResult> results)
+        {
+            var errors = GetErrors(results);
+            if (!errors.IsNullOrEmpty())
+            {
+                errors.ForEach(e => ModelState.AddModelError("", e));
+            }
+
+            if (ModelState.ErrorCount == 0)
+            {
+                _toastNotification.AddSuccessToastMessage("Changes saved successfully");
+            }
+        }
 
         private List<string> GetErrors(List<IdentityResult> results)
         {
@@ -408,6 +433,7 @@ namespace FromLocalsToLocals.Controllers
         #endregion
 
 
+      
 
     }
 }

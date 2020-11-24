@@ -2,10 +2,14 @@
 using FromLocalsToLocals.Utilities;
 using Geocoding;
 using Microsoft.EntityFrameworkCore;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using SuppLocals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FromLocalsToLocals.Utilities.TimeCalculator;
 
 namespace FromLocalsToLocals.Models.Services
 {
@@ -39,9 +43,9 @@ namespace FromLocalsToLocals.Models.Services
                 _context.Vendors.Add(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateException)
+            catch(DbUpdateException e)
             {
-                throw new DbUpdateException("Unable to save service in database");
+                await e.ExceptionSender();
             }
 
         }
@@ -54,9 +58,9 @@ namespace FromLocalsToLocals.Models.Services
                 _context.Vendors.Remove(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException e)
             {
-                throw new DbUpdateException("Unable to delete service from database");
+                await e.ExceptionSender();
             }
         }
         public async Task<Vendor> GetVendorAsync(int id)
@@ -79,11 +83,9 @@ namespace FromLocalsToLocals.Models.Services
             return await FilterVendorsListAsync(vendors,searchString,vendorType);
         }
 
-        public async Task<List<Vendor>> GetNewVendorsAsync()
+        public async Task<List<Vendor>> GetNewVendorsAsync(int count)
         {
-            var list = (from vendor in _context.Vendors
-                        orderby vendor.DateCreated descending
-                        select vendor).Take(4);
+            var list = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(count);
             return await list.ToListAsync();
         }
 
@@ -94,11 +96,11 @@ namespace FromLocalsToLocals.Models.Services
                 _context.Vendors.Update(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException e)
             {
+                await e.ExceptionSender();
                 throw new DbUpdateException("Unable to update service in database");
             }
-
         }
 
         public bool Exists(int id)
@@ -118,5 +120,7 @@ namespace FromLocalsToLocals.Models.Services
             }
             return await vendors.ToListAsync();
         }
+
     }
+
 }
