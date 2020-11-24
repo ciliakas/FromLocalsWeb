@@ -56,6 +56,7 @@ namespace FromLocalsToLocals.ViewModels
         }
 
         [DataType(DataType.EmailAddress)]
+        [Display(Name ="Email")]
         public string Email { get; set; }
 
         public string UserName { get; set; }

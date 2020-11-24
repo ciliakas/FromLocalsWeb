@@ -1,7 +1,9 @@
-﻿@model FromLocalsToLocals.ViewModels.RegisterVM
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+@model FromLocalsToLocals.ViewModels.RegisterVM
 
 @{
-    ViewBag.Title = "User Registration";
+    ViewBag.Title = _localizer["User Registration"];
 }
 
 <head>
@@ -17,13 +19,13 @@
                     <li class="nav-item">
                         <a href="@Url.Action("Login", "Account")" class="nav-link" role="tab">
                             <i class="fa fa-user-o" style="width: 20px;" aria-hidden="true"></i>
-                            Login
+                            @_localizer["Login"]
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#registerPanel" role="tab">
                             <i class="fa fa-user-plus"></i>
-                            Register
+                            @_localizer["Register"]
                         </a>
                     </li>
                 </ul>
@@ -38,7 +40,7 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                <span class="fa fa-envelope"  style="width: 20px;" ></span>
+                                                <span class="fa fa-envelope" style="width: 20px;"></span>
                                             </span>
                                         </div>
                                         <input asp-for="Email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
@@ -47,13 +49,13 @@
                                 </div>
 
                                 <div class="form-group mt-3 mb-3">
-                                    <div class="input-group"> 
+                                    <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon2">
-                                                <span class="fa fa-user"  style="width: 20px;" ></span>
+                                                <span class="fa fa-user" style="width: 20px;"></span>
                                             </span>
                                         </div>
-                                        <input asp-for="Username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2" />
+                                        <input asp-for="Username" class="form-control" placeholder=@_localizer["Username"] aria-label="Username" aria-describedby="basic-addon2" />
 
                                     </div>
                                 </div>
@@ -62,23 +64,23 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon3">
-                                                <span class="fa fa-lock"  style="width: 20px;" ></span>
+                                                <span class="fa fa-lock" style="width: 20px;"></span>
                                             </span>
                                         </div>
-                                        <input asp-for="Password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon3" />
+                                        <input asp-for="Password" class="form-control" placeholder=@_localizer["Password"] aria-label="Password" aria-describedby="basic-addon3" />
 
                                     </div>
                                 </div>
 
                                 <div class="form-group, wrapper mt-3 mb-4">
                                     <div class="input-group">
-                                      
+
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon4">
                                                 <span class="fa fa-lock" style="width: 20px;"></span>
                                             </span>
                                         </div>
-                                        <input asp-for="ConfirmPassword" class="form-control" placeholder="ConfirmPassword" aria-label="ConfirmPassword" aria-describedby="basic-addon4" />
+                                        <input asp-for="ConfirmPassword" class="form-control" placeholder=@_localizer["ConfirmPassword"] aria-label="ConfirmPassword" aria-describedby="basic-addon4" />
 
                                     </div>
                                 </div>
@@ -86,9 +88,9 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-success" id="divPartial">Register</button>
-                                <a href='/' class="Button btn btn-outline-info waves-effect ml-auto">Close</a>
-                            </div>
+                                <button type="submit" class="btn btn-success" id="divPartial">@_localizer["Register"]</button>
+                                <a href='/' class="Button btn btn-outline-info waves-effect ml-auto">@_localizer["Close"]</a>
+</div>
 
                         }
 

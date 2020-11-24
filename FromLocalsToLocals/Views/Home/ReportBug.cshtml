@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 @model FromLocalsToLocals.ViewModels.BugReportVM
 
 
@@ -12,11 +14,11 @@
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="box">
-                <h2>Report a bug</h2>
+                <h2>@_localizer["Report a bug"]</h2>
                 <div class="form-group">
-                    <textarea asp-for="TextBug" class="form-control" rows="10" placeholder="Give us details about a bug..." maxlength="400"></textarea>
+                    <textarea asp-for="TextBug" class="form-control" rows="10" placeholder=@_localizer["Give us details about a bug..."] maxlength="400"></textarea>
                 </div>
-                <button class="button" type="submit">Submit</button>
+                <button class="button" type="submit">@_localizer["Submit"]</button>
             </div>
         </form>
     </div>

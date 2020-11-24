@@ -23,15 +23,19 @@ namespace FromLocalsToLocals.Models
 
         [Required] public string UserID { get; set; }
           
-        [Required] 
+        [Required]
+        [Display(Name ="Title")]
         public string Title { get; set; }
 
+        [Display(Name = "About")]
         public string About { get; set; }
 
-        [Required] 
+        [Required]
+        [Display(Name = "Address")]
         public string Address { get; set; }
 
         [Required]
+        [Display(Name = "Date Created")]
         public string DateCreated { get; set; }
 
         [Required] public double Latitude { get; set; }

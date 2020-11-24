@@ -11,7 +11,7 @@ using Geocoding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Localization;
 using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -27,13 +27,16 @@ namespace FromLocalsToLocals.Controllers
         private readonly AppDbContext _context;
         private readonly IToastNotification _toastNotification;
         private readonly SendGridAccount _userOptions;
+        private readonly IStringLocalizer<AccountController> _localizer;
 
         delegate bool MyPredicate<in T>(T arg);
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
                                  AppDbContext context, IToastNotification toastNotification,
                                  IOptions<SendGridAccount>  userOptions)
+                                 AppDbContext context, IToastNotification toastNotification, IStringLocalizer<AccountController> localizer)
         {
+            _localizer = localizer;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
@@ -100,12 +103,12 @@ namespace FromLocalsToLocals.Controllers
                 {
                     var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
 
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("index", "home");
-                    }
-                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("index", "home");
                 }
+                ModelState.AddModelError(string.Empty, _localizer["Invalid Login Attempt"]);
+            }
 
                 return View(model);
             }
@@ -152,7 +155,7 @@ namespace FromLocalsToLocals.Controllers
                 if (string.IsNullOrWhiteSpace(model.UserName))
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.UserName)).Value.RawValue = user.UserName;
-                    ModelState.AddModelError("", $"Username cannot be empty!");
+                    ModelState.AddModelError("", _localizer[$"Username cannot be empty!"]);
                 }
                 else if (!_context.Users.Any(x => x.UserName == model.UserName))
                 {
@@ -162,7 +165,7 @@ namespace FromLocalsToLocals.Controllers
                 else
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.UserName)).Value.RawValue = user.UserName;
-                    ModelState.AddModelError("", $"Username '{model.UserName}' is already taken.");
+                    ModelState.AddModelError("", _localizer[$"Username '{model.UserName}' is already taken."]);
                 }
             }
             if (model.Email != user.Email)
