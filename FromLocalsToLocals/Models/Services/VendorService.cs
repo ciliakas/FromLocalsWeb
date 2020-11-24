@@ -15,7 +15,6 @@ namespace FromLocalsToLocals.Models.Services
         Comparison<Vendor> Descending = delegate (Vendor t1, Vendor t2) { return (-1) * t1.CompareTo(t2); };
         Comparison<Vendor> Ascending = delegate (Vendor t1, Vendor t2) { return t1.CompareTo(t2); };
 
-
         public VendorService(AppDbContext context)
         {
             _context = context;
@@ -119,6 +118,5 @@ namespace FromLocalsToLocals.Models.Services
             }
             return await vendors.ToListAsync();
         }
-    
     }
 }
