@@ -33,6 +33,7 @@
 <body>
     <header>
         @await Component.InvokeAsync("NToastNotify")
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background-color: #CCBA8B; font-size: 17px;">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/Assets/appLogo.png" width="90" height="40" />
@@ -95,7 +96,8 @@
                 </ul>
             </div>
         </nav>
-    </header>
+     </header>
+
     <div class="container-fluid" >
         <main role="main" class="pb-3">
             @RenderBody()
