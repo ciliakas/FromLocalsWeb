@@ -1,8 +1,10 @@
 ﻿@model FromLocalsToLocals.Models.VendorTypeViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 
 
 @{
-    ViewData["Title"] = "All Services";
+    ViewData["Title"] = _localizer["All Services"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 
@@ -31,12 +33,12 @@
     var rows = Math.Ceiling(itemCountDouble / itemsInRow);
     var vendorCount = Model.Vendors.Count;
 }
-<h2 class="mt-4 mb-2" style="text-align: center; font-size: 30px;">New Services</h2>
-<p class="mt-2" style="text-align: center; font-size: 18px;">Services in the past month registered on our site</p>
+<h2 class="mt-4 mb-2" style="text-align: center; font-size: 30px;">@_localizer["New Services"]</h2>
+<p class="mt-2" style="text-align: center; font-size: 18px;">@_localizer["Services in the past month registered on our site"]</p>
 <hr />
 @if (Model.NewVendors.Count() == 0)
 {
-    <p class="mt-2 mb-2 text-center" style="font-size: 21px; border-radius: 7px;">No new services:(<br /><br /><b>But there might be some soon!</b></p>
+    <p class="mt-2 mb-2 text-center" style="font-size: 21px; border-radius: 7px;">@_localizer["No new services:"]<br /><br /><b>@_localizer["But there might be some soon!"]</b></p>
     <hr />
 }
 else
@@ -59,7 +61,7 @@ else
                         <hr />
                         @switch (vendor.VendorTypeDb)
                         {
-                            case "CarRepair":<p class="text-muted text-uppercase">Car repair</p>
+                            case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                                 break;
 
                             default: <p class="text-muted text-uppercase">@vendor.VendorTypeDb</p>
@@ -68,7 +70,7 @@ else
                         <hr />
                         @if (vendor.ReviewsCount.Sum() == 0)
                         {
-                            <p class="font-italic">No Reviews</p>
+                            <p class="font-italic">@_localizer["No Reviews"]</p>
                         }
                         else
                         {
@@ -129,10 +131,10 @@ else
                         <hr />
                         <div class="navbar" style="align-content:center">
                             <a asp-route-id="@vendor.ID" asp-controller="Vendors" asp-action="Details"
-                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Read More</a>
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Read More"]</a>
                             <a asp-route-id="Vendor/@vendor.ID" asp-controller="Reviews" asp-action="Reviews"
-                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Reviews</a>
-                        </div>
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Reviews"]</a>
+</div>
                     </div>
                 </div>
             </div>
@@ -140,20 +142,20 @@ else
 
     </div>
 }
-<h2 class="mt-4" style="text-align: center; font-size: 30px;"> All Services</h2>
+<h2 class="mt-4" style="text-align: center; font-size: 30px;"> @_localizer["All Services"]</h2>
 <hr />
 <form asp-action="AllVendors" method="get" class="container-fluid">
     <select asp-for="VendorType" asp-items="Model.Types" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        <option value="">All</option>
+        <option value="">@_localizer["All"]</option>
     </select>
     <select asp-for="OrderType" asp-items="Model.OrderTypes" class="btn btn-primary dropdown-toggle"
             data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-        <option value="">Random</option>
+        <option value="">@_localizer["Random"]</option>
     </select>
-    <input type="text" class="m-3" name="searchString" placeholder="Title" /> Items per page:
+    <input type="text" class="m-3" name="searchString" placeholder=@_localizer["Title"] />@_localizer["Items per page:"]
     <input type="number" class="m-3" min="1" max="50" name="itemCount" value=@itemCountDouble />
-    <input class="btn btn-primary" style="float:right; width: 100px;" type="submit" value="Filter" />
+    <input class="btn btn-primary" style="float:right; width: 100px;" type="submit" value=@_localizer["Filter"] />
 </form>
 <hr />
 @for (int i = 0; i < rows; i++)
@@ -176,7 +178,7 @@ else
                         <hr />
                         @switch (Model.Vendors[i * itemsInRow + j].VendorTypeDb)
                         {
-                            case "CarRepair":<p class="text-muted text-uppercase">Car repair</p>
+                            case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                                 break;
 
                             default: <p class="text-muted text-uppercase">@Model.Vendors[i * itemsInRow + j].VendorTypeDb</p>
@@ -185,7 +187,7 @@ else
                         <hr />
                         @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
                         {
-                            <p class="font-italic">No Reviews</p>
+                            <p class="font-italic">@_localizer["No Reviews"]</p>
                         }
                         else
                         {
@@ -246,9 +248,9 @@ else
                         <hr />
                         <div class="navbar" style="align-content:center">
                             <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details"
-                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Read More</a>
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Read More"]</a>
                             <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews"
-                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">Reviews</a>
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Reviews"]</a>
                         </div>
                     </div>
                 </div>
