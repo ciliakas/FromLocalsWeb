@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -33,8 +34,7 @@ namespace FromLocalsToLocals.Controllers
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
                                  AppDbContext context, IToastNotification toastNotification,
-                                 IOptions<SendGridAccount>  userOptions)
-                                 AppDbContext context, IToastNotification toastNotification, IStringLocalizer<AccountController> localizer)
+                                 IOptions<SendGridAccount>  userOptions, IStringLocalizer<AccountController> localizer)
         {
             _localizer = localizer;
             _userManager = userManager;
