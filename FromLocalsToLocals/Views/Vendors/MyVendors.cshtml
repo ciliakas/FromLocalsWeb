@@ -1,17 +1,19 @@
 ﻿@model IEnumerable<FromLocalsToLocals.Models.Vendor>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 
 @{
-    ViewData["Title"] = "MyVendors";
+    ViewData["Title"] = _localizer["MyVendors"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
 
-<h2 class="mt-4" style="text-align: center;" id="myservices">My Services</h2>
+<h2 class="mt-4" style="text-align: center;" id="myservices">@_localizer["My Services"]</h2>
 <hr />
 
 <p>
-    <a class="btn btn-primary mt-3 mb-3" asp-action="Create"><span class="fa fa-plus"></span> Add a service</a>
+    <a class="btn btn-primary mt-3 mb-3" asp-action="Create"><span class="fa fa-plus"></span>@_localizer["Add a service"]</a>
 </p>
 
 <table class="table" id="Table1">
@@ -45,9 +47,9 @@
                     @Html.DisplayFor(modelItem => item.VendorTypeDb)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a href="#" data-target="#deleteModal" data-toggle="modal" class="identifyingClass" data-title="@item.Title" data-id="@item.ID">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.ID">@_localizer["Edit"]</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">@_localizer["Details"]</a> |
+                    <a href="#" data-target="#deleteModal" data-toggle="modal" class="identifyingClass" data-title="@item.Title" data-id="@item.ID">@_localizer["Delete"]</a>
                 </td>
             </tr>
         }
@@ -60,13 +62,13 @@
     <div class="modal-dialog modal-dialog-centered" role="dialog">
         <div class="modal-content">
             <div class="modal-body">
-                Are you sure you want to delete "<span name="vendorTitle" id="vendorTitle" value=""></span>"?
+                @_localizer["Are you sure you want to delete "]<span name="vendorTitle" id="vendorTitle" value=""></span>"?
             </div>
             <div class="modal-footer">
                 <button type="button" class="close btn btn-default" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">Cancel</span>
+                    <span aria-hidden="true">@_localizer["Cancel"]</span>
                 </button>
-                <a type="button" class="btn btn-danger">Delete</a>
+                <a type="button" class="btn btn-danger">@_localizer["Delete"]</a>
             </div>
         </div>
     </div>

@@ -19,17 +19,23 @@ namespace FromLocalsToLocals.Models.ViewModels
         }
 
         public int ID { get; set; }
+        
         [Required]
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
+        [Display(Name = "About")]
         public string About { get; set; }
 
         public string Link { get; set; }
 
         [Required]
+        [Display(Name = "Address")]
         public string Address { get; set; }
 
-        [Required] public VendorType VendorType { get; set; }
+        [Required]
+        [Display(Name = "VendorType")]
+        public VendorType VendorType { get; set; }
 
         public IFormFile Image { get; set; }
 

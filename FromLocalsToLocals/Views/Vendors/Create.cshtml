@@ -1,11 +1,13 @@
 ﻿@model FromLocalsToLocals.Models.ViewModels.CreateEditVendorVM
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = _localizer["Create"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<h2 class="mt-4" style="text-align: center;">Create a Service</h2>
+<h2 class="mt-4" style="text-align: center;">@_localizer["Create a Service"]</h2>
 <hr />
 <div class="container">
     @Html.Partial("_ServiceAddEdit", Model)
