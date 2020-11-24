@@ -19,6 +19,10 @@ using NToastNotify;
 using SendGrid.Helpers.Mail;
 using Microsoft.AspNetCore.Components;
 using FromLocalsToLocals.Models.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Localization;
 
 namespace FromLocalsToLocals
 {
@@ -34,6 +38,28 @@ namespace FromLocalsToLocals
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(opts =>
+            {
+                opts.ResourcesPath = "Resources";
+            });
+
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+            //services.AddMvc()
+            //    .AddViewLocalization(opts => { opts.ResourcesPath = "Resources"; })
+            //    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+            //    .AddDataAnnotationsLocalization()
+            //    .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+            services.Configure<RequestLocalizationOptions>(opts =>
+            {
+                var supportedCultures = new List<CultureInfo> {
+                new CultureInfo("en"),
+                new CultureInfo("lt"),
+            };
+                opts.DefaultRequestCulture = new RequestCulture("en");
+                opts.SupportedCultures = supportedCultures;
+                opts.SupportedUICultures = supportedCultures;
+            });
             services.AddControllersWithViews();
             services.AddRazorPages();
             
@@ -90,6 +116,9 @@ namespace FromLocalsToLocals
             app.UseAuthorization();
 
             app.UseNToastNotify();
+
+            //var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseEndpoints(endpoints =>
             {

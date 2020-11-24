@@ -15,6 +15,10 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NToastNotify;
+using System.Threading;
+using System.Globalization;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -24,8 +28,11 @@ namespace FromLocalsToLocals.Controllers
 
         private readonly IVendorService _vendorService;
 
-        public HomeController(IVendorService vendorService, IToastNotification toastNotification)
+        private readonly IStringLocalizer<HomeController> _localizer;
+
+        public HomeController(IStringLocalizer<HomeController> localizer, IVendorService vendorService, IToastNotification toastNotification)
         {
+            _localizer = localizer;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
         }
@@ -101,6 +108,18 @@ namespace FromLocalsToLocals.Controllers
   
 
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(30) }
+                );
+
+            return LocalRedirect(returnUrl);
         }
     }
 }
