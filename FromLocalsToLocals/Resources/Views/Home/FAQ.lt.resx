@@ -124,10 +124,10 @@
     <value>A: Registruotu vartotoju būti nereikia. Bet kuris naudotojas gali rašyti atsiliepimus. Tačiau tik savininkas gali atsakyti į atsiliepimus.</value>
   </data>
   <data name="A: The amount of services that one can register is unlimited. If you are registered as a vendor, in the home screen select 'Add service'. If not, first create an account by clicking the image in the home screen in the top right corner." xml:space="preserve">
-    <value>A: Limitas, kiek vienas naudotojas gali užregistruoti prekybviečių nėra taikomas. Jeigu jau esate užregistruotas vartotojas, pradiniame puslapyje pasirinkite "Pridėti paslaugą". Jeigu dar esate neužsiregistravęs, tai galite padaryti paspaudę nuotrauką viršutiniame dešiniajame kampe.</value>
+    <value>A: Limitas, kiek vienas naudotojas gali užregistruoti prekybviečių nėra taikomas. Jeigu jau esate registruotas vartotojas, pradiniame puslapyje pasirinkite "Pridėti paslaugą". Jeigu dar esate neužsiregistravęs, tai galite padaryti paspaudę nuotrauką viršutiniame dešiniajame kampe.</value>
   </data>
   <data name="A: Yes you can! On a map in the home screen, select a pin of service which you want to review. A panel of infomation about that service should appear on the right. Then, at the bottom click the button on the far right." xml:space="preserve">
-    <value>A: Taip, Tu gali! Žemėlapyje, esančiame pagrindiniame puslapyje, pasirinkite prekybvietę apie kurią norite palikti atsiliepimą. Pasirinktos prekybvietės informacija pasirodys dešinėje. Tada apačioje pasirinkite tolimiausią dešinį mygtuką.</value>
+    <value>A: Taip, tikrai galite! Žemėlapyje, esančiame pagrindiniame puslapyje, pasirinkite prekybvietę apie kurią norite palikti atsiliepimą. Pasirinktos prekybvietės informacija pasirodys dešinėje. Tada apačioje pasirinkite tolimiausią dešinį mygtuką.</value>
   </data>
   <data name="FAQ" xml:space="preserve">
     <value>DUK</value>
@@ -139,7 +139,7 @@
     <value>K: Ar galiu rašyti atsiliepimus apie prekybvietes?</value>
   </data>
   <data name="Q: Do I need to register in order to review a service?" xml:space="preserve">
-    <value>K: Ar reikia būti registruotų vartotoju norint rašyti atsiliepimus?</value>
+    <value>K: Ar reikia užsiregistuoti norint rašyti atsiliepimus?</value>
   </data>
   <data name="Q: How many services can I register?" xml:space="preserve">
     <value>K: Kiek prekybviečių aš galiu užregistruoti?</value>
