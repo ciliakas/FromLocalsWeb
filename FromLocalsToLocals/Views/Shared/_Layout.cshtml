@@ -34,6 +34,7 @@
 <body>
     <header>
         @await Component.InvokeAsync("NToastNotify")
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background-color: #CCBA8B; font-size: 17px;">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/Assets/appLogo.png" width="90" height="40" />
@@ -101,8 +102,9 @@
                 </ul>
             </div>
         </nav>
-    </header>
-    <div class="container-fluid">
+     </header>
+
+    <div class="container-fluid" >
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -114,6 +116,7 @@
             <p style="float: right;">@_localizer["Found a bug ?"]<a asp-area="" asp-controller="Home" asp-action="ReportBug">@_localizer["Report it"]</a></p>
         </div>
     </footer>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

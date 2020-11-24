@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Localization;
+using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
 
 namespace FromLocalsToLocals
 {
@@ -67,6 +68,7 @@ namespace FromLocalsToLocals
                 options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Transient);
 
 
+            services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
                 {
@@ -75,6 +77,7 @@ namespace FromLocalsToLocals
                     options.Password.RequireUppercase = false;
                     options.SignIn.RequireConfirmedEmail = false;
                 }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
 
 
             services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()

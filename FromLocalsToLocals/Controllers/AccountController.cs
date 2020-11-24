@@ -16,6 +16,7 @@ using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using SuppLocals;
+using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -25,9 +26,12 @@ namespace FromLocalsToLocals.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
         private readonly IToastNotification _toastNotification;
+        private readonly SendGridAccount _userOptions;
         private readonly IStringLocalizer<AccountController> _localizer;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
+                                 AppDbContext context, IToastNotification toastNotification,
+                                 IOptions<SendGridAccount>  userOptions)
                                  AppDbContext context, IToastNotification toastNotification, IStringLocalizer<AccountController> localizer)
         {
             _localizer = localizer;
@@ -35,6 +39,7 @@ namespace FromLocalsToLocals.Controllers
             _signInManager = signInManager;
             _context = context;
             _toastNotification = toastNotification;
+            _userOptions = userOptions.Value;
         }
 
 
@@ -90,9 +95,11 @@ namespace FromLocalsToLocals.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+                if (ModelState.IsValid)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded)
                 {
@@ -101,7 +108,13 @@ namespace FromLocalsToLocals.Controllers
                 ModelState.AddModelError(string.Empty, _localizer["Invalid Login Attempt"]);
             }
 
-            return View(model);
+                return View(model);
+            }
+            catch(Exception e)
+            {
+                await e.ExceptionSender();
+                return View("Error");
+            }
         }
 
 
@@ -278,54 +291,62 @@ namespace FromLocalsToLocals.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
-            var isValid = false;
-      
+            try
+            {
+                var isValid = false;
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("Register", "Account");
-            }
 
-            if (model.ConfirmPassword == model.Password)
-            {
-                if (model.ConfirmPassword is null || model.Password is null)
+                if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("", "Please fill both passwords field.");
-                    return View();
+                    return View(model);
+                }
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction("Register", "Account");
+                }
+
+                if (model.ConfirmPassword == model.Password)
+                {
+                    if (model.ConfirmPassword is null || model.Password is null)
+                    {
+                        ModelState.AddModelError("", "Please fill both passwords field.");
+                        return View();
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
                 }
                 else
                 {
-                    isValid = true;
+                    ModelState.AddModelError("", "Password do not match!");
+                    return View();
                 }
-            }
-            else
-            {
-                ModelState.AddModelError("", "Password do not match!");
-                return View();
-            }
 
-            if (isValid is true)
-            {
-                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-                if (result.Succeeded)
+                if (isValid is true)
                 {
-                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                    var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ResetPasswordConfirmation", "Account");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unexpected error");
+                        return View();
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Unexpected error");
                     return View();
                 }
             }
-            else
+            catch(Exception e)
             {
-                return View();
+                await e.ExceptionSender();
+                return View("Error");
             }
         }
 
@@ -334,20 +355,21 @@ namespace FromLocalsToLocals.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-               
-
-                if (user == null)
+                if (ModelState.IsValid)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("Register");
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+
+
+                    await Execute();
+                    return View("ForgotPasswordConfirmation");
                 }
-
-
-                await Execute();
-                return View("ForgotPasswordConfirmation");
+            }
+            catch(Exception e)
+            {
+                await e.ExceptionSender();
+                return View("Error");
             }
 
             async Task Execute()
@@ -356,7 +378,7 @@ namespace FromLocalsToLocals.Controllers
                 var key = Config.Send_Grid_Key;
                 var client = new SendGridClient(key);
 
-                var from = new EmailAddress("fromlocalstolocals@gmail.com", "Forgot password");
+                var from = new EmailAddress(_userOptions.ReceiverEmail, "Forgot password");
                 var subject = "Forgot Password Confirmation";
                 var to = new EmailAddress(model.Email, "Dear User");
                 var plainTextContent = "";
@@ -414,6 +436,7 @@ namespace FromLocalsToLocals.Controllers
         #endregion
 
 
+      
 
     }
 }
