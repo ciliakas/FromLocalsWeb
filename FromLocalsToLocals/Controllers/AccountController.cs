@@ -210,7 +210,7 @@ namespace FromLocalsToLocals.Controllers
 
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
-            Func<string[], bool> StringArrNull = (s) =>
+            Predicate<string[]> StringArrNull = (s) =>
             {
                 foreach (var i in s)
                 {
