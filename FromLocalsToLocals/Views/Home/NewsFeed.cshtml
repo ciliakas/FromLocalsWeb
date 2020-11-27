@@ -1,0 +1,19 @@
+﻿@model FromLocalsToLocals.Models.ViewModels.NewsFeedTabVM
+
+
+<ul class="nav nav-tabs">
+    <li role="presentation" class="@(Model.ActiveTab == FromLocalsToLocals.Models.ViewModels.Tab.All? "active" : string.Empty)"><a asp-route-tabname="All" asp-controller="Home" asp-action="SwitchTabs">All</a></li>
+    <li role="presentation" class="@(Model.ActiveTab == FromLocalsToLocals.Models.ViewModels.Tab.Love? "active" : string.Empty)"><a asp-route-tabname="Love" asp-controller="Home" asp-action="SwitchTabs">Love</a></li>
+</ul>
+
+@switch (Model.ActiveTab)
+{
+    case FromLocalsToLocals.Models.ViewModels.Tab.All:
+        @await Component.InvokeAsync("AllNews");
+        break;
+    case FromLocalsToLocals.Models.ViewModels.Tab.Love:
+        @await Component.InvokeAsync("LovedVendorsNews");
+        break;
+    default:
+        break;
+}

@@ -19,6 +19,8 @@ using System.Threading;
 using System.Globalization;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
+using FromLocalsToLocals.Models.ViewModels;
+using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -121,5 +123,22 @@ namespace FromLocalsToLocals.Controllers
 
             return LocalRedirect(returnUrl);
         }
+    
+        [HttpGet]
+        public IActionResult NewsFeed(NewsFeedTabVM model)
+        {
+            if(model == null)
+            {
+                model = new NewsFeedTabVM { ActiveTab = Tab.All };
+            }
+            return View(model);
+        }
+
+        [Authorize]
+        public IActionResult SwitchTabs(string tabName)
+        {            
+            return RedirectToAction(nameof(HomeController.NewsFeed), new NewsFeedTabVM{ActiveTab = tabName.ParseEnum<Tab>()});
+        }
+
     }
 }
