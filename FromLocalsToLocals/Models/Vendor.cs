@@ -61,6 +61,8 @@ namespace FromLocalsToLocals.Models
         [ForeignKey("UserID")]
         public AppUser User { get; set; }
         public ICollection<Review> Reviews { get; set; }
+        public ICollection<Post> Posts { get; set; }
+
 
 
         #region IComparable

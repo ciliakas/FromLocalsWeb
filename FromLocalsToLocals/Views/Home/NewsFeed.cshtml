@@ -1,4 +1,4 @@
-﻿@model FromLocalsToLocals.Models.ViewModels.NewsFeedTabVM
+﻿@model FromLocalsToLocals.Models.ViewModels.PostVM
 
 
 <ul class="nav nav-tabs">
@@ -9,10 +9,10 @@
 @switch (Model.ActiveTab)
 {
     case FromLocalsToLocals.Models.ViewModels.Tab.All:
-        @await Component.InvokeAsync("AllNews");
+        @await Component.InvokeAsync("AllNews",Model);
         break;
     case FromLocalsToLocals.Models.ViewModels.Tab.Love:
-        @await Component.InvokeAsync("LovedVendorsNews");
+        @await Component.InvokeAsync("LovedVendorsNews",Model);
         break;
     default:
         break;

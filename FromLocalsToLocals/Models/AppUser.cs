@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FromLocalsToLocals.Models
 {
@@ -8,6 +9,6 @@ namespace FromLocalsToLocals.Models
         public byte[] Image { get; set; }
         public int VendorsCount { get; set; }
 
-        public ICollection<Vendor> Vendors { get; set; }
+        public virtual ICollection<Vendor> Vendors { get; set; }
     }
 }

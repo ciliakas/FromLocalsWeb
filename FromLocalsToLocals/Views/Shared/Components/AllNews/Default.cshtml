@@ -1,4 +1,7 @@
-﻿
+﻿@model FromLocalsToLocals.Models.ViewModels.PostVM
+@inject UserManager<AppUser> userManager
+@using static FromLocalsToLocals.Utilities.TimeCalculator
+
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
@@ -166,50 +169,53 @@
     </style>
     <div class="row">
         <div class="col-md-12">
-
-            <!--Post form-->
-            <div id="content" class="content content-full-width">
-                <!-- begin profile-content -->
-                <div class="profile-content">
-                    <!-- begin tab-content -->
-                    <div class="tab-content p-0">
-                        <!-- begin #profile-post tab -->
-                        <div class="tab-pane fade active show" id="profile-post">
-                            <!-- begin timeline -->
-                            <ul class="timeline">
-                                <li>
-                                    <!-- end timeline-icon -->
-                                    <!-- begin timeline-body -->
-                                    <div class="timeline-body">
-                                        <div class="timeline-header">
-                                            <select>
-                                                <option>
-                                                    Medis
-                                                </option>
-                                                <option>
-                                                    Akmuo
-                                                </option> 
-                                            </select>
-                                        </div>
-                                        <div class="timeline-content">
-                                            <textarea style="width:100%" placeholder="What's new?"></textarea>
-                                        </div>
-                                        <div class="timeline-footer">
-                                            <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> POST </a>
-                                        </div>
-                                    </div>
-                                    <!-- end timeline-body -->
-                                </li>                              
-                            </ul>
-                            <!-- end timeline -->
+            @if (Model.User != null && Model.User.VendorsCount > 0)
+            {
+                <!--Post form-->
+                <div id="content" class="content content-full-width">
+                    <!-- begin profile-content -->
+                    <div class="profile-content">
+                        <!-- begin tab-content -->
+                        <div class="tab-content p-0">
+                            <!-- begin #profile-post tab -->
+                            <div class="tab-pane fade active show" id="profile-post">
+                                <!-- begin timeline -->
+                                <ul class="timeline">
+                                    <li>
+                                        <form asp-action="CreatePost" asp-controller="Home">
+                                            <!-- end timeline-icon -->
+                                            <!-- begin timeline-body -->
+                                            <div class="timeline-body">
+                                                <div class="timeline-header">
+                                                    <select asp-for="@Model.SelectedVendorTitle">
+                                                        @foreach (var x in Model.User.Vendors)
+                                                        {
+                                                            <option>
+                                                                @x.Title
+                                                            </option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="timeline-content">
+                                                    <textarea asp-for="@Model.PostText" style="width:100%" placeholder="What's new?"></textarea>
+                                                </div>
+                                                <div class="timeline-footer">
+                                                    <input type="submit" class="btn btn-success" value="POST">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- end timeline-body -->
+                                    </li>
+                                </ul>
+                                <!-- end timeline -->
+                            </div>
+                            <!-- end #profile-post tab -->
                         </div>
-                        <!-- end #profile-post tab -->
+                        <!-- end tab-content -->
                     </div>
-                    <!-- end tab-content -->
+                    <!-- end profile-content -->
                 </div>
-                <!-- end profile-content -->
-            </div>
-
+            }
             <!--Posts-->
 
             <div id="content" class="content content-full-width">
@@ -221,34 +227,43 @@
                         <div class="tab-pane fade active show" id="profile-post">
                             <!-- begin timeline -->
                             <ul class="timeline">
-                                <li>
-                                    <!-- begin timeline-time -->
-                                    <div class="timeline-time">
-                                        <span class="date">today</span>
-                                        <span class="time">04:20</span>
-                                    </div>
-                                    <!-- end timeline-time -->
-                                    <!-- begin timeline-icon -->
-                                    <div class="timeline-icon">
-                                        <a href="javascript:;">&nbsp;</a>
-                                    </div>
-                                    <!-- end timeline-icon -->
-                                    <!-- begin timeline-body -->
-                                    <div class="timeline-body">
-                                        <div class="timeline-header">
-                                            <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-                                            <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
+                                @foreach (var x in Model.Posts)
+                                {
+                                    <li>
+                                        <!-- begin timeline-time -->
+                                        <div class="timeline-time">
+                                            <span class="time">@CalcRelativeTime(x.Item1.Date)</span>
                                         </div>
-                                        <div class="timeline-content">
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                                                Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-                                            </p>
+                                        <!-- end timeline-time -->
+                                        <!-- begin timeline-icon -->
+                                        <div class="timeline-icon">
+                                            <a href="javascript:;">&nbsp;</a>
                                         </div>
-                                    </div>
-                                    <!-- end timeline-body -->
-                                </li>
+                                        <!-- end timeline-icon -->
+                                        <!-- begin timeline-body -->
+                                        <div class="timeline-body">
+                                            <div class="timeline-header">
+                                                @if (x.Item2 == null)
+                                                {
+                                                    <span class="userimage"><img src="~/Assets/localSeller.png" alt=""></span>
 
+                                                }
+                                                else
+                                                {
+                                                    <span class="userimage"><img src="data:image;base64,@System.Convert.ToBase64String(x.Item2)" alt=""></span>
+
+                                                }
+                                                <span class="username"><a href="javascript:;">@x.Item1.Vendor.Title</a> <small></small></span>
+                                            </div>
+                                            <div class="timeline-content">
+                                                <p>
+                                                    @x.Item1.Text
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- end timeline-body -->
+                                    </li>
+                                }
                                 <li>
                                     <!-- begin timeline-icon -->
                                     <div class="timeline-icon">
@@ -257,7 +272,7 @@
                                     <!-- end timeline-icon -->
                                     <!-- begin timeline-body -->
                                     <div class="timeline-body">
-                                        Loading...
+                                        No more posts...
                                     </div>
                                     <!-- begin timeline-body -->
                                 </li>

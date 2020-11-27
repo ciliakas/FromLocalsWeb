@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201127185707_Fix.cs" />
+    <Compile Remove="Migrations\20201127185707_Fix.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\Assets\carrepair.png" />
     <None Include="wwwroot\Assets\food.png" />
     <None Include="wwwroot\Assets\other.png" />

@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Database;
-using Microsoft.EntityFrameworkCore;
 using FromLocalsToLocals.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using FromLocalsToLocals.ViewModels;
 using SuppLocals;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NToastNotify;
-using System.Threading;
-using System.Globalization;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using FromLocalsToLocals.Models.ViewModels;
 using FromLocalsToLocals.Utilities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using FromLocalsToLocals.Database;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -31,12 +27,18 @@ namespace FromLocalsToLocals.Controllers
         private readonly IVendorService _vendorService;
 
         private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly AppDbContext _context;
 
-        public HomeController(IStringLocalizer<HomeController> localizer, IVendorService vendorService, IToastNotification toastNotification)
+
+        public HomeController(AppDbContext context, IStringLocalizer<HomeController> localizer, IVendorService vendorService, IToastNotification toastNotification, UserManager<AppUser> userManager )
         {
             _localizer = localizer;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
+            _userManager = userManager;
+            _context = context;
+
         }
 
         public async Task<IActionResult> Index(string searchString)
@@ -125,19 +127,59 @@ namespace FromLocalsToLocals.Controllers
         }
     
         [HttpGet]
-        public IActionResult NewsFeed(NewsFeedTabVM model)
+        public async Task<IActionResult> NewsFeed(PostVM model)
         {
-            if(model == null)
+
+            if (model.User == null)
             {
-                model = new NewsFeedTabVM { ActiveTab = Tab.All };
+                model = new PostVM
+                {
+                    ActiveTab = Tab.All,
+                    User = await _userManager.Users.Include(x => x.Vendors).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User))
+            };
             }
             return View(model);
         }
 
         [Authorize]
-        public IActionResult SwitchTabs(string tabName)
-        {            
-            return RedirectToAction(nameof(HomeController.NewsFeed), new NewsFeedTabVM{ActiveTab = tabName.ParseEnum<Tab>()});
+        public IActionResult SwitchTabs(PostVM model,string tabName)
+        {
+            model.ActiveTab = tabName.ParseEnum<Tab>();
+            return RedirectToAction(nameof(HomeController.NewsFeed), model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreatePost(PostVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                _toastNotification.AddErrorToastMessage("Cannot create post with empty message");
+                return RedirectToAction(nameof(HomeController.NewsFeed), model);
+            }
+
+            var userId = _userManager.GetUserId(User);
+            model.SelectedVendor = await _context.Vendors.FirstOrDefaultAsync(x => x.Title == model.SelectedVendorTitle && x.UserID == userId);
+
+            if (model.SelectedVendor == null)
+            {
+                return RedirectToAction(nameof(HomeController.NewsFeed), model);
+            }
+
+            try
+            {
+                _context.Posts.Add(new Post(model));
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                _toastNotification.AddErrorToastMessage("Something unexpected happened. Cannot create a post.");
+                return RedirectToAction(nameof(HomeController.NewsFeed), model);
+            }
+
+            model.PostText = "";
+
+            return RedirectToAction(nameof(HomeController.NewsFeed), model);
         }
 
     }
