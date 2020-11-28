@@ -132,12 +132,14 @@ namespace FromLocalsToLocals.Controllers
 
             if (model.User == null)
             {
-                model = new PostVM
-                {
-                    ActiveTab = Tab.All,
-                    User = await _userManager.Users.Include(x => x.Vendors).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User))
-            };
+                model.User = await _userManager.Users.Include(x => x.Vendors).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User));
+                
             }
+            if (model.ActiveTab == null)
+            {
+                model.ActiveTab = Tab.AllFeed;
+            }
+
             return View(model);
         }
 

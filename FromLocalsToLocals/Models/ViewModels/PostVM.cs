@@ -28,8 +28,8 @@ namespace FromLocalsToLocals.Models.ViewModels
 
     public enum Tab
     {
-        All,
-        Love
+        AllFeed,
+        MyFeed
     }
 
 }
