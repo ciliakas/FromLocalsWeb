@@ -169,7 +169,7 @@
     </style>
     <div class="row">
         <div class="col-md-12">
-            @if (Model.User != null && Model.User.VendorsCount > 0)
+            @if (Model.User != null && Model.User.Vendors.Count > 0)
             {
                 <!--Post form-->
                 <div id="content" class="content content-full-width">
@@ -186,16 +186,26 @@
                                             <!-- end timeline-icon -->
                                             <!-- begin timeline-body -->
                                             <div class="timeline-body">
+                                                
                                                 <div class="timeline-header">
-                                                    <select asp-for="@Model.SelectedVendorTitle">
-                                                        @foreach (var x in Model.User.Vendors)
-                                                        {
-                                                            <option>
-                                                                @x.Title
-                                                            </option>
-                                                        }
-                                                    </select>
-                                                </div>
+                                                    @if (!Model.DisplayInDetails)
+                                                    {
+                                                        <select asp-for="@Model.SelectedVendorTitle">
+                                                            @foreach (var x in Model.User.Vendors)
+                                                            {
+                                                                <option>
+                                                                    @x.Title
+                                                                </option>
+                                                            }
+                                                        </select>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="hidden" asp-for="@Model.SelectedVendorTitle" value="@Model.SelectedVendor.Title" />
+                                                    }
+                                                    <input type="hidden" asp-for="@Model.PostBackUrl" value="@Html.ViewContext.HttpContext.Request.Path.Value.ToString()" />
+
+                                                </div>                                                
                                                 <div class="timeline-content">
                                                     <textarea asp-for="@Model.PostText" style="width:100%" placeholder="What's new?"></textarea>
                                                 </div>
@@ -253,7 +263,14 @@
                                                     <span class="userimage"><img src="data:image;base64,@System.Convert.ToBase64String(x.Item2)" alt=""></span>
 
                                                 }
-                                                <span class="username"><a href="javascript:;">@x.Item1.Vendor.Title</a> <small></small></span>
+                                                @if (Model.DisplayInDetails)
+                                                {
+                                                    <span class="username"><a href="javascript:;">@Model.SelectedVendor.Title</a> <small></small></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="username"><a href="javascript:;">@x.Item1.Vendor.Title</a> <small></small></span>
+                                                }
                                             </div>
                                             <div class="timeline-content">
                                                 <p>

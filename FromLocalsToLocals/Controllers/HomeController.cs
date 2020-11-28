@@ -157,31 +157,29 @@ namespace FromLocalsToLocals.Controllers
             if (!ModelState.IsValid)
             {
                 _toastNotification.AddErrorToastMessage("Cannot create post with empty message");
-                return RedirectToAction(nameof(HomeController.NewsFeed), model);
+                return Redirect(model.PostBackUrl);
             }
 
             var userId = _userManager.GetUserId(User);
             model.SelectedVendor = await _context.Vendors.FirstOrDefaultAsync(x => x.Title == model.SelectedVendorTitle && x.UserID == userId);
 
-            if (model.SelectedVendor == null)
+            if (model.SelectedVendor != null)
             {
-                return RedirectToAction(nameof(HomeController.NewsFeed), model);
-            }
-
-            try
-            {
-                _context.Posts.Add(new Post(model));
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                _toastNotification.AddErrorToastMessage("Something unexpected happened. Cannot create a post.");
-                return RedirectToAction(nameof(HomeController.NewsFeed), model);
+                try
+                {
+                    _context.Posts.Add(new Post(model));
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception)
+                {
+                    _toastNotification.AddErrorToastMessage("Something unexpected happened. Cannot create a post.");
+                    return Redirect(model.PostBackUrl);
+                }
             }
 
             model.PostText = "";
 
-            return RedirectToAction(nameof(HomeController.NewsFeed), model);
+            return Redirect(model.PostBackUrl);
         }
 
     }

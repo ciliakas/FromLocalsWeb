@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace FromLocalsToLocals.Models.ViewModels
 
         public Vendor SelectedVendor { get; set; }
 
+        public bool DisplayInDetails { get; set; } = false;
+
         [Required]
         public string PostText { get; set; }
 
@@ -24,12 +27,14 @@ namespace FromLocalsToLocals.Models.ViewModels
 
         public byte[] VendorImage { get; set; }
 
+        public string PostBackUrl { get; set; }
     }
 
     public enum Tab
     {
         AllFeed,
-        MyFeed
+        MyFeed,
+        VendorFeed
     }
 
 }
