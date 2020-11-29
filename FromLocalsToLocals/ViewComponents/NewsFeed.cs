@@ -25,16 +25,22 @@ namespace FromLocalsToLocals.ViewComponents
             switch (model.ActiveTab)
             {
                 case Tab.MyFeed:
-                    model.Posts = await _context.Posts.OrderBy(x => x).Include(x => x.Vendor).Join(_context.Vendors,
-                                               post => post.VendorID,
-                                               vendor => vendor.ID,
-                                               (post, vendor) => Tuple.Create(post, vendor.Image)).ToListAsync();
+                    var list = new List<Tuple<Post, byte[]>>();
+                    foreach(var follower in model.User.Folllowing)
+                    {
+                        byte[] img = follower.Vendor.Image;
+                        foreach(var p in follower.Vendor.Posts)
+                        {
+                            list.Add(Tuple.Create(p, img));
+                        }
+                    }
+                    model.Posts = list;
                     break;
                 case Tab.VendorFeed:
-                    var list = new List<Tuple<Post, byte[]>>();
+                    var list1 = new List<Tuple<Post, byte[]>>();
                     await _context.Posts.Where(x => x.VendorID == model.SelectedVendor.ID).OrderByDescending(x => x)
-                                        .ForEachAsync(p => list.Add(Tuple.Create(p, model.SelectedVendor.Image)));
-                    model.Posts = list;
+                                        .ForEachAsync(p => list1.Add(Tuple.Create(p, model.SelectedVendor.Image)));
+                    model.Posts = list1;
                     break;
                 default:
                     model.Posts = await _context.Posts.OrderByDescending(x => x).Include(x => x.Vendor).Join(_context.Vendors,

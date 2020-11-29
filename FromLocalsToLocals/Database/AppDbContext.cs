@@ -14,6 +14,12 @@ namespace FromLocalsToLocals.Database
             ChangeTracker.Tracked += OnEntityTracked;
         }
 
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Follower> Followers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -28,14 +34,6 @@ namespace FromLocalsToLocals.Database
                 .WithMany(c => c.Followers)
                 .HasForeignKey(bc => bc.VendorID);
         }
-
-
-        public DbSet<Notification> Notifications { get; set; }
-        public DbSet<Vendor> Vendors { get; set; }
-        public DbSet<Review> Reviews { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Follower> Followers { get; set; }
-
 
         private void OnEntityTracked(object sender, EntityTrackedEventArgs e)
         {
