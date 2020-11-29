@@ -14,10 +14,27 @@ namespace FromLocalsToLocals.Database
             ChangeTracker.Tracked += OnEntityTracked;
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Follower>()
+                .HasKey(bc => new { bc.UserID, bc.VendorID });
+            modelBuilder.Entity<Follower>()
+              .HasOne(u => u.User)
+              .WithMany(u => u.Folllowing)
+              .HasForeignKey(bc => bc.UserID).IsRequired().OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Follower>()
+                .HasOne(bc => bc.Vendor)
+                .WithMany(c => c.Followers)
+                .HasForeignKey(bc => bc.VendorID);
+        }
+
+
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Follower> Followers { get; set; }
 
 
         private void OnEntityTracked(object sender, EntityTrackedEventArgs e)

@@ -19,6 +19,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20201127185707_Fix.cs" />
     <Compile Remove="Migrations\20201127185707_Fix.Designer.cs" />
+    <Compile Remove="Migrations\20201129113638_Followers.cs" />
+    <Compile Remove="Migrations\20201129113638_Followers.Designer.cs" />
+    <Compile Remove="Migrations\20201129113801_Followers.cs" />
+    <Compile Remove="Migrations\20201129113801_Followers.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

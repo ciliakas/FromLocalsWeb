@@ -60,13 +60,13 @@ namespace FromLocalsToLocals.Models
 
         public byte[] Image { get; set; }
 
-        [JsonIgnore]
+        [JsonIgnore] 
         [IgnoreDataMember]
         [ForeignKey("UserID")]
-        public AppUser User { get; set; }
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<Post> Posts { get; set; }
-
+        public virtual AppUser User { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Follower> Followers { get; set; }
 
 
         #region IComparable
