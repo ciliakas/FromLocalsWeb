@@ -17,7 +17,7 @@ namespace FromLocalsToLocals.Models
         public virtual ICollection<Vendor> Vendors { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
-        public virtual ICollection<Follower> Folllowing { get; set; }
+        public virtual ICollection<Follower> Following { get; set; }
 
     }
 }

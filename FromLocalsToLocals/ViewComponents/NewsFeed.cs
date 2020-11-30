@@ -26,7 +26,7 @@ namespace FromLocalsToLocals.ViewComponents
             {
                 case Tab.MyFeed:
                     var list = new List<Tuple<Post, byte[]>>();
-                    foreach(var follower in model.User.Folllowing)
+                    foreach(var follower in model.User.Following)
                     {
                         byte[] img = follower.Vendor.Image;
                         foreach(var p in follower.Vendor.Posts)

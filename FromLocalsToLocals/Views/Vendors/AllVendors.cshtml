@@ -16,7 +16,7 @@
     var itemCount = Html.ViewContext.HttpContext.Request.Query["itemCount"];
     var itemCountDouble = (!string.IsNullOrEmpty(itemCount)) ? double.Parse(itemCount) : 20;
 
-    var user = await usermanager.Users.Include(x => x.Vendors).Include(x=>x.Folllowing).FirstOrDefaultAsync(x => x.Id == usermanager.GetUserId(User));
+    var user = await usermanager.GetUserAsync(User);
 }
 
 <head>
@@ -140,7 +140,7 @@ else
                     </div>
                     @if (user != null && !user.Vendors.Any(x => x.ID == vendor.ID))
                     {
-                        if (user.Folllowing.Any(x => x.VendorID == vendor.ID))
+                        if (user.Following.Any(x => x.VendorID == vendor.ID))
                         {
                             <button data-follow="false" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">Unfollow</button>
                         }
@@ -268,7 +268,7 @@ else
                     </div>
                     @if (user != null && !user.Vendors.Any(x => x.ID == Model.Vendors[i * itemsInRow + j].ID))
                     {
-                        if (user.Folllowing.Any(x => x.VendorID == Model.Vendors[i * itemsInRow + j].ID))
+                        if (user.Following.Any(x => x.VendorID == Model.Vendors[i * itemsInRow + j].ID))
                         {
                             <button data-follow="false" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">Unfollow</button>
                         }

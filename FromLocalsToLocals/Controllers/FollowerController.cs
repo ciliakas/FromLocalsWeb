@@ -38,7 +38,7 @@ namespace FromLocalsToLocals.Controllers
             var follower = new Follower(user, vendor);
             try
             {
-                user.Folllowing.Add(follower);
+                user.Following.Add(follower);
                 await _userManager.UpdateAsync(user);
             }
             catch(Exception ex)
@@ -59,11 +59,11 @@ namespace FromLocalsToLocals.Controllers
                 return Json(new { success = false });
             }
 
-            var followingVendor = user.Folllowing.FirstOrDefault(x => x.VendorID == id);
+            var followingVendor = user.Following.FirstOrDefault(x => x.VendorID == id);
 
             try
             {
-                user.Folllowing.Remove(followingVendor);
+                user.Following.Remove(followingVendor);
                 await _userManager.UpdateAsync(user);
             }
             catch (Exception ex)
