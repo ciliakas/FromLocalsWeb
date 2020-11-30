@@ -32,7 +32,7 @@ namespace FromLocalsToLocals.Database
             modelBuilder.Entity<Follower>()
                 .HasOne(bc => bc.Vendor)
                 .WithMany(c => c.Followers)
-                .HasForeignKey(bc => bc.VendorID);
+                .HasForeignKey(bc => bc.VendorID).IsRequired().OnDelete(DeleteBehavior.Restrict);
         }
 
         private void OnEntityTracked(object sender, EntityTrackedEventArgs e)

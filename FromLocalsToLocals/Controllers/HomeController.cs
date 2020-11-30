@@ -132,9 +132,7 @@ namespace FromLocalsToLocals.Controllers
 
             if (model.User == null)
             {
-                model.User = await _userManager.Users.Include(x => x.Vendors)
-                                .Include(x=>x.Folllowing).ThenInclude(x=>x.Vendor).ThenInclude(x=>x.Posts)
-                                .FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User));                
+                model.User = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User));                
             }
             if (model.ActiveTab == null)
             {

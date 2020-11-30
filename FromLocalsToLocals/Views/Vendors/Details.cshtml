@@ -6,7 +6,7 @@
     ViewData["Title"] = _localizer["Details"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var userForFeed = await  userManager.Users.Include(x=>x.Vendors).FirstOrDefaultAsync(x => x.Id == userManager.GetUserId(User));
+    var userForFeed = await userManager.GetUserAsync(User);
     if (userForFeed.Id != Model.User.Id) userForFeed = null;
 
 

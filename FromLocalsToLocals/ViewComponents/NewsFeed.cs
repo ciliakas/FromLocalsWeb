@@ -43,7 +43,7 @@ namespace FromLocalsToLocals.ViewComponents
                     model.Posts = list1;
                     break;
                 default:
-                    model.Posts = await _context.Posts.OrderByDescending(x => x).Include(x => x.Vendor).Join(_context.Vendors,
+                    model.Posts = await _context.Posts.OrderByDescending(x => x).Join(_context.Vendors,
                                                post => post.VendorID,
                                                vendor => vendor.ID,
                                                (post, vendor) => Tuple.Create(post, vendor.Image)).ToListAsync();

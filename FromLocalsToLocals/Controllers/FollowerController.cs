@@ -27,7 +27,7 @@ namespace FromLocalsToLocals.Controllers
         public async Task<IActionResult> Follow(int? id)
         {
 
-            var user = await _userManager.Users.Include(x => x.Folllowing).FirstOrDefaultAsync(x=> x.Id==_userManager.GetUserId(User));
+            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.Id==_userManager.GetUserId(User));
 
             if (id == null || user == null)
             {
@@ -52,7 +52,7 @@ namespace FromLocalsToLocals.Controllers
         [HttpPost]
         public async Task<IActionResult> Unfollow(int? id)
         {
-            var user = await _userManager.Users.Include(x => x.Folllowing).FirstOrDefaultAsync(x=> x.Id == _userManager.GetUserId(User));
+            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.Id == _userManager.GetUserId(User));
 
             if (id == null || user == null)
             {

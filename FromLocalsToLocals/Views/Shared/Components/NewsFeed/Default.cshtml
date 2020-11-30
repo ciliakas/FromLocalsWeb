@@ -228,7 +228,7 @@
             }
             <!--Posts-->
 
-            <div id="content" class="content content-full-width">
+            <div id="content" class="content content-full-width pre-scrollable">
                 <!-- begin profile-content -->
                 <div class="profile-content">
                     <!-- begin tab-content -->
@@ -269,7 +269,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <span class="username"><a href="javascript:;">@x.Item1.Vendor.Title</a> <small></small></span>
+                                                    <span class="username"><a href="/Vendors/Details/@x.Item1.Vendor.ID">@x.Item1.Vendor.Title</a> <small></small></span>
                                                 }
                                             </div>
                                             <div class="timeline-content">
@@ -281,18 +281,33 @@
                                         <!-- end timeline-body -->
                                     </li>
                                 }
-                                <li>
-                                    <!-- begin timeline-icon -->
-                                    <div class="timeline-icon">
-                                        <a href="javascript:;">&nbsp;</a>
+                            <li>
+                                @if (Model.DisplayInDetails)
+                                {
+                                    <div class="timeline-time">
+
+                                        <span class="time">@Model.SelectedVendor.DateCreated</span>
                                     </div>
-                                    <!-- end timeline-icon -->
-                                    <!-- begin timeline-body -->
-                                    <div class="timeline-body">
-                                        No more posts...
-                                    </div>
-                                    <!-- begin timeline-body -->
-                                </li>
+
+                                }
+      
+                                <div class="timeline-icon">
+                                    <a href="javascript:;">&nbsp;</a>
+                                </div>
+                                <!-- end timeline-icon -->
+                                <!-- begin timeline-body -->
+                                <div class="timeline-body">
+                                    @if (Model.DisplayInDetails)
+                                    {
+                                        <p>@Model.SelectedVendor.Title was created</p>
+                                    }
+                                    else
+                                    {
+                                        <p>No more posts...</p>
+                                    }
+                                </div>
+                                <!-- begin timeline-body -->
+                            </li>
                             </ul>
                             <!-- end timeline -->
                         </div>
