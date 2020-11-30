@@ -77,13 +77,13 @@ namespace FromLocalsToLocals.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(model.TextBug)) {
                     await Execute();
-                    _toastNotification.AddSuccessToastMessage("Report message send succesfully!");
+                    _toastNotification.AddSuccessToastMessage(_localizer["Report message send succesfully!"]);
                     return View("Index");
                 }
 
                 else
                 {
-                    _toastNotification.AddErrorToastMessage("Report message can not be empty! ");
+                    _toastNotification.AddErrorToastMessage(_localizer["Report message can not be empty!"]);
                     return View();
                 }
             }

@@ -13,6 +13,7 @@ using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Models.Services;
 using NToastNotify;
 using FromLocalsToLocals.Models.ViewModels;
+using Microsoft.Extensions.Localization;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -23,13 +24,15 @@ namespace FromLocalsToLocals.Controllers
         private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
         private readonly AppDbContext _context;
- 
-        public VendorsController(AppDbContext context,UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification)
+        private readonly IStringLocalizer<VendorsController> _localizer;
+
+        public VendorsController(AppDbContext context,UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer)
         {
             _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
             _vendorService = vendorService;
             _toastNotification = toastNotification;
             _context = context;
+            _localizer = localizer;
         }
 
         [HttpGet]
@@ -100,8 +103,8 @@ namespace FromLocalsToLocals.Controllers
                 {
                     if (model.Image != null && !model.Image.ValidImage())
                     {
-                        ModelState.AddModelError("", "Invalid image type");
-                        _toastNotification.AddErrorToastMessage("Invalid image type");
+                        ModelState.AddModelError("", _localizer["Invalid image type"]);
+                        _toastNotification.AddErrorToastMessage(_localizer["Invalid image type"]);
                         return View(model);
                     }
 
@@ -109,8 +112,8 @@ namespace FromLocalsToLocals.Controllers
 
                     if (latLng == null)
                     {
-                        ModelState.AddModelError("", "Sorry, we can't recognize this address");
-                        _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
+                        ModelState.AddModelError("", _localizer["Sorry, we can't recognize this address"]);
+                        _toastNotification.AddErrorToastMessage(_localizer["Sorry, we can't recognize this address"]);
                         return View(model);
                     }
 
@@ -123,7 +126,7 @@ namespace FromLocalsToLocals.Controllers
 
                     await _vendorService.CreateAsync(vendor);
 
-                    _toastNotification.AddSuccessToastMessage("Service Created");
+                    _toastNotification.AddSuccessToastMessage(_localizer["Service Created"]);
                     return RedirectToAction("MyVendors");
                 }
             }
@@ -180,8 +183,8 @@ namespace FromLocalsToLocals.Controllers
             {
                 if (model.Image != null && !model.Image.ValidImage())
                 {
-                    ModelState.AddModelError("", "Invalid image type");
-                    _toastNotification.AddErrorToastMessage("Invalid image type");
+                    ModelState.AddModelError("", _localizer["Invalid image type"]);
+                    _toastNotification.AddErrorToastMessage(_localizer["Invalid image type"]);
                     return View(model);
                 }
 
@@ -189,7 +192,7 @@ namespace FromLocalsToLocals.Controllers
 
                 if (latLng == null)
                 {
-                    _toastNotification.AddErrorToastMessage("Sorry, we can't recognize this address");
+                    _toastNotification.AddErrorToastMessage(_localizer["Sorry, we can't recognize this address"]);
                     return View(model);
                 }
 
@@ -201,7 +204,7 @@ namespace FromLocalsToLocals.Controllers
                     model.SetValuesToVendor(vendor);
 
                     await _vendorService.UpdateAsync(vendor);
-                    _toastNotification.AddSuccessToastMessage("Service Updated");
+                    _toastNotification.AddSuccessToastMessage(_localizer["Service Updated"]);
 
                     return RedirectToAction(nameof(MyVendors));
                 }
