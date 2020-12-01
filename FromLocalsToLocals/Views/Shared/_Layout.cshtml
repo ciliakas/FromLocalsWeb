@@ -67,7 +67,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="FAQ">@_localizer["FAQ"]</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="NewsFeed">News Feed</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="NewsFeed">@_localizer["News Feed"]</a>
                     </li>
                 </ul>
                 @if (signInManager.IsSignedIn(User))
@@ -117,7 +117,7 @@
         <div class="d-flex justify-content-between mr-3 ml-3">
             <p>&copy; 2020 FromLocalsToLocals<p />
             <!--Space after 'Found a bug?' is NEEDED-->
-            <p>@_localizer["Found a bug?"]<a asp-area="" asp-controller="Home" asp-action="ReportBug"> @_localizer["Report it"]</a></p>
+            <p>@_localizer["Found a bug?&nbsp;"]<a asp-area="" asp-controller="Home" asp-action="ReportBug"> @_localizer["Report it"]</a></p>
         </div>
     </footer>
 
