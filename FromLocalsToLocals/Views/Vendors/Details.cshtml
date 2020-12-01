@@ -1,11 +1,18 @@
 ﻿@model FromLocalsToLocals.Models.Vendor
 @using Microsoft.AspNetCore.Mvc.Localization
+@inject UserManager<AppUser> userManager
 @inject IViewLocalizer _localizer
 @{
     ViewData["Title"] = _localizer["Details"];
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var userForFeed = await userManager.GetUserAsync(User);
+    if (userForFeed.Id != Model.User.Id) userForFeed = null;
+
+
 }
 @using static FromLocalsToLocals.Utilities.TimeCalculator
+@using Microsoft.EntityFrameworkCore
 
 <h2 class="mt-4"></h2>
 <div class="row">
@@ -25,18 +32,18 @@
                 @switch (Model.VendorType)
                 {
                     case FromLocalsToLocals.Utilities.VendorType.CarRepair:<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
-                        break;
-
-                    default: <p class="text-muted text-uppercase">@Model.VendorType</p>
                     break;
-            }
+
+                default: <p class="text-muted text-uppercase">@Model.VendorType</p>
+                break;
+        }
             </div>
             <div class="row" style="margin-top: -15px;">
                 <h2>@Model.Title</h2>
             </div>
             <div class="row mb-3">
                 <p>@_localizer["Service registered |"]@CalcRelativeTime(Model.DateCreated)</p>
-             </div>
+            </div>
             <hr />
             <div class="row">
                 @if (string.IsNullOrEmpty(@Model.About))
@@ -55,10 +62,13 @@
                 </button>
                 <div class="collapse navbar-collapse myNav" id="navbarNav">
                     <ul class="navbar-nav justify-content-center w-100">
-                        <li class="nav-item text-center" style="width: 50%;">
+                        <li class="nav-item text-center" style="width: 33%;">
                             <a class="nav-link" id="address" style="font-size: 19px;" onclick="showMap()">@_localizer["Address"]</a>
                         </li>
-                        <li class="nav-item text-center" style="width: 50%;">
+                        <li class="nav-item text-center" style="width: 33%;">
+                            <a class="nav-link" id="feedBtn" style="font-size: 19px;" onclick="showFeed()">News Feed</a>
+                        </li>
+                        <li class="nav-item text-center" style="width: 33%;">
                             <a class="nav-link" style="font-size: 19px;" asp-route-id="Vendor/@Model.ID" asp-controller="Reviews" asp-action="Reviews">@_localizer["Reviews"]</a>
                         </li>
                     </ul>
@@ -69,6 +79,11 @@
                 <p><b>@_localizer["Address:&nbsp;"]</b>@Model.Address</p>
                 <div id="mapid" style="width: 100%; height: 90%;"></div>
             </div>
+
+            <div class="row mt-3 mb-3" id="feed" style="display:none">
+                @await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Models.ViewModels.PostVM { ActiveTab = FromLocalsToLocals.Models.ViewModels.Tab.VendorFeed, DisplayInDetails = true, SelectedVendor = Model, User = userForFeed})
+            </div>
+
         </div>
     </div>
 </div>
@@ -82,10 +97,29 @@
 <script src="~/js/createMap.js"></script>
 <script>
     var marker = L.marker(center);
+    var mapas = document.getElementById("map");
+    var feed = document.getElementById("feed");
+
     marker.addTo(map);
 
     function showMap() {
-        $("#map").toggle("slow");
+        if (mapas.style.display == "none") {
+            feed.style.display = "none";
+            $("#map").toggle("slow");
+        } else {
+            $("#map").toggle("slow");
+        }
     }
+
+    function showFeed() {
+        if (feed.style.display == "none") {
+            mapas.style.display = "none";
+            $("#feed").toggle("slow");
+        } else {
+            $("#feed").toggle("slow");
+        }
+    }
+
+
 </script>
 
