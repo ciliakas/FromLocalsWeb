@@ -35,7 +35,6 @@
     <header>
 
         @await Component.InvokeAsync("NToastNotify")
-
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background-color: #CCBA8B; font-size: 17px;">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/Assets/appLogo.png" width="90" height="40" />
@@ -66,6 +65,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="FAQ">@_localizer["FAQ"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="NewsFeed">News Feed</a>
                     </li>
                 </ul>
                 @if (signInManager.IsSignedIn(User))
@@ -113,8 +115,9 @@
     </div>
     <footer class="border-top footer text-muted">
         <div class="d-flex justify-content-between mr-3 ml-3">
-            <p>&copy; 2020 - FromLocalsToLocals - <a asp-area="" asp-controller="Home" asp-action="Privacy">@_localizer["Privacy"]</a><p />
-            <p style="float: right;">@_localizer["Found a bug ?"]<a asp-area="" asp-controller="Home" asp-action="ReportBug">@_localizer["&nbsp;Report it"]</a></p>
+            <p>&copy; 2020 FromLocalsToLocals<p />
+            <!--Space after 'Found a bug?' is NEEDED-->
+            <p>@_localizer["Found a bug?"]<a asp-area="" asp-controller="Home" asp-action="ReportBug"> @_localizer["Report it"]</a></p>
         </div>
     </footer>
 

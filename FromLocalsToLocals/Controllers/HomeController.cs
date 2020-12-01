@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Database;
-using Microsoft.EntityFrameworkCore;
 using FromLocalsToLocals.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using FromLocalsToLocals.ViewModels;
 using SuppLocals;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NToastNotify;
-using System.Threading;
-using System.Globalization;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
+using FromLocalsToLocals.Models.ViewModels;
+using FromLocalsToLocals.Utilities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using FromLocalsToLocals.Database;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -29,12 +27,18 @@ namespace FromLocalsToLocals.Controllers
         private readonly IVendorService _vendorService;
 
         private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly AppDbContext _context;
 
-        public HomeController(IStringLocalizer<HomeController> localizer, IVendorService vendorService, IToastNotification toastNotification)
+
+        public HomeController(AppDbContext context, IStringLocalizer<HomeController> localizer, IVendorService vendorService, IToastNotification toastNotification, UserManager<AppUser> userManager )
         {
             _localizer = localizer;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
+            _userManager = userManager;
+            _context = context;
+
         }
 
         public async Task<IActionResult> Index(string searchString)

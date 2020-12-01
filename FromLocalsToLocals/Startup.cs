@@ -71,7 +71,8 @@ namespace FromLocalsToLocals
             services.AddRazorPages();
             
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Transient);
+                options.UseLazyLoadingProxies()
+                .UseSqlServer(Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Transient);
 
 
             services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
