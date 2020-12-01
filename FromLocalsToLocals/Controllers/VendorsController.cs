@@ -114,8 +114,12 @@ namespace FromLocalsToLocals.Controllers
                         return View(model);
                     }
 
+                    var user = await _userManager.Value.GetUserAsync(User);
+                    user.VendorsCount++;
+                    await _userManager.Value.UpdateAsync(user);
+
                     var vendor = new Vendor();
-                    vendor.UserID = _userManager.Value.GetUserId(User);
+                    vendor.UserID = user.Id;
                     vendor.Latitude = latLng.Item1;
                     vendor.Longitude = latLng.Item2;
 

@@ -8,6 +8,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace FromLocalsToLocals.Models
 {
@@ -58,9 +60,22 @@ namespace FromLocalsToLocals.Models
 
         public byte[] Image { get; set; }
 
+        [JsonIgnore] 
+        [IgnoreDataMember]
         [ForeignKey("UserID")]
-        public AppUser User { get; set; }
-        public ICollection<Review> Reviews { get; set; }
+        public virtual AppUser User { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual ICollection<Review> Reviews { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual ICollection<Post> Posts { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual ICollection<Follower> Followers { get; set; }
 
 
         #region IComparable
