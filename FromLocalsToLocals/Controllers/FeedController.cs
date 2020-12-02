@@ -58,7 +58,7 @@ namespace FromLocalsToLocals.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _toastNotification.AddErrorToastMessage("Cannot create post with empty message");
+                _toastNotification.AddErrorToastMessage("Cannot create post with an empty message");
                 return Redirect(model.PostBackUrl);
             }
 
@@ -68,8 +68,8 @@ namespace FromLocalsToLocals.Controllers
             if (model.SelectedVendor != null)
             {
                 try
-                {
-                    _context.Posts.Add(new Post(model));
+                {               
+                    _context.Posts.Add(new Post(model,model.Image.ConvertToBytes()));
                     await _context.SaveChangesAsync();
                 }
                 catch (Exception)

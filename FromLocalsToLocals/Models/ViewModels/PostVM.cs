@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,6 +27,8 @@ namespace FromLocalsToLocals.Models.ViewModels
         public string SelectedVendorTitle { get; set; }
 
         public byte[] VendorImage { get; set; }
+
+        public IFormFile Image { get; set; }
 
         public string PostBackUrl { get; set; }
     }

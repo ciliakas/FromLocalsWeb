@@ -22,7 +22,7 @@
                                 <!-- begin timeline -->
                                 <ul class="timeline">
                                     <li>
-                                        <form asp-action="CreatePost" asp-controller="Feed">
+                                        <form asp-action="CreatePost" asp-controller="Feed" enctype="multipart/form-data">
                                             <!-- end timeline-icon -->
                                             <!-- begin timeline-body -->
                                             <div class="timeline-body">
@@ -47,10 +47,13 @@
 
                                                 </div>                                                
                                                 <div class="timeline-content">
-                                                    <textarea asp-for="@Model.PostText" style="width:100%" placeholder="What's new?"></textarea>
+                                                        <textarea asp-for="@Model.PostText" style="width:100%" placeholder="What's new?"></textarea>
                                                 </div>
                                                 <div class="timeline-footer">
-                                                    <input type="submit" class="btn btn-success" value="POST">
+                                                    <div class="=row">
+                                                        <input asp-for="Image" class="btn" value="Add Image" type="file" />
+                                                        <input type="submit" class="btn btn-success" value="POST">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </form>
@@ -113,9 +116,15 @@
                                                 }
                                             </div>
                                             <div class="timeline-content">
-                                                <p>
+                                                    <p>
                                                     @x.Item1.Text
-                                                </p>
+                                                    </p>
+                                                @if (x.Item1.Image != null)
+                                                {
+                                                <div class="row">
+                                                    <img class="rounded" id="image_upload_preview" src="data:image;base64,@System.Convert.ToBase64String(x.Item1.Image)" style="width: 100%; max-height: 250px;" />
+                                                </div>
+                                                }
                                             </div>
                                         </div>
                                         <!-- end timeline-body -->
