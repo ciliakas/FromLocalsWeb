@@ -33,6 +33,7 @@
 
 <body>
     <header>
+
         @await Component.InvokeAsync("NToastNotify")
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background-color: #CCBA8B; font-size: 17px;">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -66,7 +67,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="FAQ">@_localizer["FAQ"]</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="NewsFeed">News Feed</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="NewsFeed">@_localizer["News Feed"]</a>
                     </li>
                 </ul>
                 @if (signInManager.IsSignedIn(User))
@@ -104,9 +105,10 @@
                 </ul>
             </div>
         </nav>
-     </header>
+        <partial name="_CookieConsentPartial" />
+    </header>
 
-    <div class="container-fluid" >
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -115,7 +117,7 @@
         <div class="d-flex justify-content-between mr-3 ml-3">
             <p>&copy; 2020 FromLocalsToLocals<p />
             <!--Space after 'Found a bug?' is NEEDED-->
-            <p>@_localizer["Found a bug?"]<a asp-area="" asp-controller="Home" asp-action="ReportBug"> @_localizer["Report it"]</a></p>
+            <p>@_localizer["Found a bug?&nbsp;"]<a asp-area="" asp-controller="Home" asp-action="ReportBug"> @_localizer["Report it"]</a></p>
         </div>
     </footer>
 

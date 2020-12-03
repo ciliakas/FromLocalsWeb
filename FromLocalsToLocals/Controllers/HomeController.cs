@@ -67,6 +67,11 @@ namespace FromLocalsToLocals.Controllers
             return View();
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -81,13 +86,13 @@ namespace FromLocalsToLocals.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(model.TextBug)) {
                     await Execute();
-                    _toastNotification.AddSuccessToastMessage("Report message send succesfully!");
+                    _toastNotification.AddSuccessToastMessage(_localizer["Report message send succesfully!"]);
                     return View("Index");
                 }
 
                 else
                 {
-                    _toastNotification.AddErrorToastMessage("Report message can not be empty! ");
+                    _toastNotification.AddErrorToastMessage(_localizer["Report message can not be empty!"]);
                     return View();
                 }
             }

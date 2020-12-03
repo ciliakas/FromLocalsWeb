@@ -24,6 +24,7 @@ using System.Globalization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Localization;
 using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
+using Microsoft.AspNetCore.Http;
 
 namespace FromLocalsToLocals
 {
@@ -36,9 +37,13 @@ namespace FromLocalsToLocals
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                //options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             services.AddLocalization(opts =>
             {
                 opts.ResourcesPath = "Resources";
@@ -46,20 +51,21 @@ namespace FromLocalsToLocals
 
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
-            //services.AddMvc()
-            //    .AddViewLocalization(opts => { opts.ResourcesPath = "Resources"; })
-            //    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-            //    .AddDataAnnotationsLocalization()
-            //    .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+
             services.Configure<RequestLocalizationOptions>(opts =>
             {
                 var supportedCultures = new List<CultureInfo> {
                 new CultureInfo("en"),
                 new CultureInfo("lt"),
-            };
+                };
                 opts.DefaultRequestCulture = new RequestCulture("en");
                 opts.SupportedCultures = supportedCultures;
                 opts.SupportedUICultures = supportedCultures;
+                opts.RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                    new QueryStringRequestCultureProvider(),
+                new CookieRequestCultureProvider(),
+                };
             });
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -101,6 +107,7 @@ namespace FromLocalsToLocals
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCookiePolicy();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -120,6 +127,10 @@ namespace FromLocalsToLocals
             app.UseAuthorization();
 
             app.UseNToastNotify();
+
+            //
+            
+            //
 
             //var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);

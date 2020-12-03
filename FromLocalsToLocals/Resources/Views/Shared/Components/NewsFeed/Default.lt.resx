@@ -117,43 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About Us" xml:space="preserve">
-    <value>Apie mus</value>
+  <data name="No more posts..." xml:space="preserve">
+    <value>Naujienų daugiau nėra...</value>
   </data>
-  <data name="Add Service" xml:space="preserve">
-    <value>Pridėti paslaugą</value>
-  </data>
-  <data name="All Services" xml:space="preserve">
-    <value>Visos prekybvietės</value>
-  </data>
-  <data name="FAQ" xml:space="preserve">
-    <value>DUK</value>
-  </data>
-  <data name="Found a bug?&amp;nbsp;" xml:space="preserve">
-    <value>Radote klaidą?&amp;nbsp;</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Pradinis</value>
-  </data>
-  <data name="Log In | Sign Up" xml:space="preserve">
-    <value>Prisijungti | Registracija</value>
-  </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Atsijungti</value>
-  </data>
-  <data name="My Services" xml:space="preserve">
-    <value>Mano prekybvietės</value>
-  </data>
-  <data name="News Feed" xml:space="preserve">
-    <value>Naujienos</value>
-  </data>
-  <data name="Privacy" xml:space="preserve">
-    <value>Privatumas</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profilis</value>
-  </data>
-  <data name="Report it" xml:space="preserve">
-    <value>Praneškite</value>
+  <data name="What's new?" xml:space="preserve">
+    <value>Kas naujo?</value>
   </data>
 </root>

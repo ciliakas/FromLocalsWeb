@@ -64,10 +64,10 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\Controllers\AccountController.lt.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator></Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Home\AboutUS.lt.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>
 
