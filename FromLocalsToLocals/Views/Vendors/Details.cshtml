@@ -86,7 +86,7 @@
 
             <div class="row mt-3 mb-3" id="feed" style="display:none">
                 @if(userForFeed != null){
-                    @await Component.InvokeAsync("CreatePost", new FromLocalsToLocals.Models.ViewModels.CreatePostVM { User = userForFeed, DisplayInDetails = true })
+                    @await Component.InvokeAsync("CreatePost", new FromLocalsToLocals.Models.ViewModels.CreatePostVM { User = userForFeed, DisplayInDetails = true, VendorTitle= Model.Title })
                 }
                 @await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Models.ViewModels.FeedVM { ActiveUser = userForFeed, ActiveTab = FromLocalsToLocals.Utilities.Enums.FeedTabs.VendorFeed, DisplayInDetails = true, Vendor = Model })
             </div>

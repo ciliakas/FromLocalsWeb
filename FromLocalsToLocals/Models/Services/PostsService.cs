@@ -41,8 +41,14 @@ namespace FromLocalsToLocals.Models.Services
                 var listOfPosts = new List<Post>();
                 foreach(var follower in user.Following)
                 {
-                    listOfPosts.AddRange(follower.Vendor.Posts.OrderByDescending(x=>x).Skip(skip).Take(take));
+                    foreach(var p in follower.Vendor.Posts)
+                    {
+                        listOfPosts.Add(p);
+                    }
                 }
+
+                listOfPosts = listOfPosts.OrderByDescending(x => x.Date).Skip(skip).Take(take).ToList();
+
                 return new JsonResult(listOfPosts);
 
             }

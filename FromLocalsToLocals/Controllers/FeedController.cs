@@ -82,9 +82,7 @@ namespace FromLocalsToLocals.Controllers
                 {
                     var post = new Post(model.Text, selectedVendor, model.Image.ConvertToBytes());
                     await _vendorService.AddPostAsync(selectedVendor,post);
-                  // selectedVendor.Posts.Add(post);
-                  // _context.Update(selectedVendor);
-                  // await _context.SaveChangesAsync();
+
                 }
                 catch (Exception ex)
                 {

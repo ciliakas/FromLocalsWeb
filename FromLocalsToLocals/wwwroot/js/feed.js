@@ -9,9 +9,17 @@ $(document).ready(() => {
     loadPageData();
 });
 
+var feedScroll = document.getElementById('content1');
 var pageCount = 5;
+
+function scrollFeedDetails() {
+    if (feedScroll.scrollTop + feedScroll.offsetHeight + 150 >= feedScroll.scrollHeight && !loading && details) {
+        loadPageData();
+    }
+};
+
 $(window).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() + 250 >= $(document).height() && !loading ) {
+    if ($(window).scrollTop() + $(window).height() + 250 >= $(document).height() && !loading && !details  ) {
         loadPageData();
     }
 });
@@ -68,7 +76,7 @@ function loadPageData() {
             loading = false;
         },
         error: function (err) {
-            alert(err);
+            alert("Sorry something wen wrong..");
             loading = false;
         }
     });
