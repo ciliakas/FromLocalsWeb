@@ -80,7 +80,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle) {
     var postImageLine = '';
 
     if (vendorImage == null) {
-        vendorImageLine = `<span class="userimage"><img src="~/Assets/localSeller.png" alt=""></span>`;
+        vendorImageLine = `<span class="userimage"><img src="/Assets/localSeller.png" alt=""></span>`;
     } else {
         vendorImageLine = `<span class="userimage"><img src="data:image;base64,${vendorImage}" alt=""></span>`;
     }

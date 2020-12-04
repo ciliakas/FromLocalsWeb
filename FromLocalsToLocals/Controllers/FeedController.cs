@@ -74,13 +74,17 @@ namespace FromLocalsToLocals.Controllers
             }
 
             var userId = _userManager.GetUserId(User);
-            //var selectedVendor = await _vendorService.GetVendorAsync(userId, model.VendorTitle);
-            var selectedVendor = await _context.Vendors.FirstOrDefaultAsync(x => x.Title == model.VendorTitle && x.UserID == userId);
+            var selectedVendor = await _vendorService.GetVendorAsync(userId, model.VendorTitle);
+
             if (selectedVendor != null)
             {
                 try
                 {
-                    await _postsService.CreatePost(new Post(model.Text,selectedVendor, model.Image.ConvertToBytes()));
+                    var post = new Post(model.Text, selectedVendor, model.Image.ConvertToBytes());
+                    await _vendorService.AddPostAsync(selectedVendor,post);
+                  // selectedVendor.Posts.Add(post);
+                  // _context.Update(selectedVendor);
+                  // await _context.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {

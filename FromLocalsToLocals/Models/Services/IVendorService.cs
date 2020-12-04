@@ -8,6 +8,7 @@ namespace FromLocalsToLocals.Models.Services
 {
     public interface IVendorService
     {
+        Task AddPostAsync(Vendor vendor,Post post);
         Task CreateAsync(Vendor vendor);
         Task<Vendor> GetVendorAsync(int id);
         Task<List<Vendor>> GetVendorsAsync(string searchString="", string vendorType = "");

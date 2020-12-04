@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+@{
+    ViewData["Title"] = _localizer["Privacy"];
+}
+
+<h1 class="mt-4" style="text-align: center; font-size: 30px;">@_localizer["Privacy"]</h1>
+<hr />
+
+<div class="container-fluid">
+    <div class="col">
+        <p style="margin: 10px; font-size: 18px; text-align:center">
+            @_localizer["What is a cookie?"]
+        </p>
+        <p>
+            @_localizer["On this website we use cookies. A cookie is a simple little file that is sent along with the pages of this website and which is stored on the hard drive of your computer. Information stored in that cookie can be returned to our servers when you visit us again."]
+        </p>
+    </div>
+</div>

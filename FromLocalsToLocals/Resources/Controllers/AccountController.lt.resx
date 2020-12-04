@@ -117,8 +117,59 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Changes saved successfully" xml:space="preserve">
+    <value>Pakeitimai išsaugoti sėkmingai</value>
+  </data>
+  <data name="Dear User" xml:space="preserve">
+    <value>Gerbiamas Naudotojau</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>El. paštas</value>
+  </data>
+  <data name="Email cannot be empty" xml:space="preserve">
+    <value>El. pašto adreso laukas negali būti tuščias</value>
+  </data>
+  <data name="Forgot Password Confirmation" xml:space="preserve">
+    <value>Pamiršto slaptažodžio atstatymas</value>
+  </data>
   <data name="Invalid Login Attempt" xml:space="preserve">
     <value>Neteisingi prisijungimo duomenys</value>
+  </data>
+  <data name="Invalid profile image" xml:space="preserve">
+    <value>Bloga profilio nuotrauka</value>
+  </data>
+  <data name="is already in use." xml:space="preserve">
+    <value>jau naudojamas.</value>
+  </data>
+  <data name="is already taken" xml:space="preserve">
+    <value>jau naudojamas</value>
+  </data>
+  <data name="Password changed successfully" xml:space="preserve">
+    <value>Slaptažodis pakeistas sėkmingai</value>
+  </data>
+  <data name="Password do not match!" xml:space="preserve">
+    <value>Neteisingas slaptažodis!</value>
+  </data>
+  <data name="Password must be at least 6 characters long" xml:space="preserve">
+    <value>Slaptažodį turi sudaryti bent 6 simboliai</value>
+  </data>
+  <data name="Passwords do not match" xml:space="preserve">
+    <value>Slaptažodžiai nesutampa</value>
+  </data>
+  <data name="Please confirm your account by clicking this link:" xml:space="preserve">
+    <value>Prašome patvirtinti paspaudžiant šią nuorodą</value>
+  </data>
+  <data name="Please fill both passwords field." xml:space="preserve">
+    <value>Prašome užpildyti abu slaptažodžio laukus.</value>
+  </data>
+  <data name="Please, fill all fields" xml:space="preserve">
+    <value>Prašome užpildyti visus laukus</value>
+  </data>
+  <data name="Unexpected error" xml:space="preserve">
+    <value>Neatpažinta klaida</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Vartotojo vardas</value>
   </data>
   <data name="Username '{model.UserName}' is already taken." xml:space="preserve">
     <value>Vartotojo vardas '{model.UserName}' jau naudojamas.</value>

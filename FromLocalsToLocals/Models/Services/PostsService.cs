@@ -20,20 +20,6 @@ namespace FromLocalsToLocals.Models.Services
             _context = context;
         }
 
-        public async Task CreatePost(Post post)
-        {
-            try
-            {
-                _context.Posts.Add(post);
-                await _context.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                throw new Exception("Something unexpected happened while trying to add post");
-            }
-
-        }
-
         public async Task<IActionResult> GetAllPosts(int skip, int take)
         {
             try

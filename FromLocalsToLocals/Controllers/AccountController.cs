@@ -165,7 +165,7 @@ namespace FromLocalsToLocals.Controllers
                 else
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.UserName)).Value.RawValue = user.UserName;
-                    ModelState.AddModelError("", _localizer[$"Username '{model.UserName}' is already taken."]);
+                    ModelState.AddModelError("", _localizer["Username"] + " " + model.UserName + " " + _localizer["is already taken"]);
                 }
             }
             if (model.Email != user.Email)
@@ -173,7 +173,7 @@ namespace FromLocalsToLocals.Controllers
                 if (string.IsNullOrWhiteSpace(model.Email))
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.Email)).Value.RawValue = user.Email;
-                    ModelState.AddModelError("", $"Email cannot be empty");
+                    ModelState.AddModelError("", _localizer[$"Email cannot be empty"]);
                 }
                 else if (!_context.Users.Any(x => x.Email == model.Email))
                 {
@@ -183,7 +183,7 @@ namespace FromLocalsToLocals.Controllers
                 else
                 {
                     ModelState.FirstOrDefault(x => x.Key == nameof(model.Email)).Value.RawValue = user.Email;
-                    ModelState.AddModelError("", $"Email '{model.Email}' is already in use.");
+                    ModelState.AddModelError("", _localizer["Email"] + " " + model.Email + " " + _localizer["is already in use."]);
                 }
             }
 
@@ -200,8 +200,8 @@ namespace FromLocalsToLocals.Controllers
 
             if (model.ImageFile != null && !model.ImageFile.ValidImage())
             {
-                ModelState.AddModelError("", "Invalid profile image");
-                _toastNotification.AddErrorToastMessage("Invalid profile image");
+                ModelState.AddModelError("", _localizer["Invalid profile image"]);
+                _toastNotification.AddErrorToastMessage(_localizer["Invalid profile image"]);
                 return Profile();
             }
 
@@ -245,10 +245,10 @@ namespace FromLocalsToLocals.Controllers
                   return false;
               };
 
-            if (InvalidPassword("Please, fill all fields",
+            if (InvalidPassword(_localizer["Please, fill all fields"],
                                 () => { return StringArrNull(new string[] { model.Password, model.NewPassword, model.ConfirmPassword });} ) ||
-                InvalidPassword("Password must be at least 6 characters long", () => { return model.NewPassword.Length < Config.minPasswordLength; }) ||
-                InvalidPassword("Passwords do not match", () => { return model.NewPassword != model.ConfirmPassword; })) 
+                InvalidPassword(_localizer["Password must be at least 6 characters long"], () => { return model.NewPassword.Length < Config.minPasswordLength; }) ||
+                InvalidPassword(_localizer["Passwords do not match"], () => { return model.NewPassword != model.ConfirmPassword; })) 
             {
                 return Profile();
             }
@@ -266,7 +266,7 @@ namespace FromLocalsToLocals.Controllers
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _toastNotification.AddSuccessToastMessage("Password changed successfully");
+            _toastNotification.AddSuccessToastMessage(_localizer["Password changed successfully"]);
 
             return Profile();
         }
@@ -313,7 +313,7 @@ namespace FromLocalsToLocals.Controllers
                 {
                     if (model.ConfirmPassword is null || model.Password is null)
                     {
-                        ModelState.AddModelError("", "Please fill both passwords field.");
+                        ModelState.AddModelError("", _localizer["Please fill both passwords field."]);
                         return View();
                     }
                     else
@@ -323,7 +323,7 @@ namespace FromLocalsToLocals.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Password do not match!");
+                    ModelState.AddModelError("", _localizer["Password do not match!"]);
                     return View();
                 }
 
@@ -336,7 +336,7 @@ namespace FromLocalsToLocals.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Unexpected error");
+                        ModelState.AddModelError("", _localizer["Unexpected error"]);
                         return View();
                     }
                 }
@@ -381,8 +381,8 @@ namespace FromLocalsToLocals.Controllers
                 var client = new SendGridClient(key);
 
                 var from = new EmailAddress(_userOptions.ReceiverEmail, "Forgot password");
-                var subject = "Forgot Password Confirmation";
-                var to = new EmailAddress(model.Email, "Dear User");
+                var subject = _localizer["Forgot Password Confirmation"];
+                var to = new EmailAddress(model.Email, _localizer["Dear User"]);
                 var plainTextContent = "";
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user); 
@@ -393,7 +393,8 @@ namespace FromLocalsToLocals.Controllers
 
                 var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" +
 
-                                  "Please confirm your account by clicking this link: <a href =\""
+                                  _localizer["Please confirm your account by clicking this link:"] + 
+                                  " <a href =\""
                                                  + callbackUrl + "\">link</a> </body></html>";
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
                 var response = await client.SendEmailAsync(msg);
@@ -413,7 +414,7 @@ namespace FromLocalsToLocals.Controllers
 
             if (ModelState.ErrorCount == 0)
             {
-                _toastNotification.AddSuccessToastMessage("Changes saved successfully");
+                _toastNotification.AddSuccessToastMessage(_localizer["Changes saved successfully"]);
             }
         }
 

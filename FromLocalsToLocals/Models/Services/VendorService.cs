@@ -22,6 +22,15 @@ namespace FromLocalsToLocals.Models.Services
         {
             _context = context;
         }
+
+
+        public async Task AddPostAsync(Vendor vendor,Post post)
+        {
+            vendor.Posts.Add(post);
+            _context.Update(vendor);
+            await _context.SaveChangesAsync();
+        }
+
         public void Sort(List<Vendor> vendors, string order)
         {
             switch (order)
