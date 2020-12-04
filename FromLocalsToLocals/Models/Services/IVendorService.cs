@@ -13,6 +13,9 @@ namespace FromLocalsToLocals.Models.Services
         Task<List<Vendor>> GetVendorsAsync(string searchString="", string vendorType = "");
         Task<List<Vendor>> GetVendorsAsync(string userId,string searchString="" , string vendorType="");
         Task<List<Vendor>> GetNewVendorsAsync(int count);
+
+        Task<Vendor> GetVendorAsync(string userId, string title);
+
         Task UpdateAsync(Vendor vendor);
         Task DeleteAsync(Vendor vendor);
         bool Exists(int id);

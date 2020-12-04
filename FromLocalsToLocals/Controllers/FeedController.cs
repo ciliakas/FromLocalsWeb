@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Models.Services;
 using FromLocalsToLocals.Models.ViewModels;
 using FromLocalsToLocals.Utilities;
+using FromLocalsToLocals.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,43 +20,52 @@ namespace FromLocalsToLocals.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IToastNotification _toastNotification;
+        private readonly IPostsService _postsService;
+        private readonly IVendorService _vendorService;
         private readonly AppDbContext _context;
 
 
-        public FeedController(UserManager<AppUser> userManager, IToastNotification toastNotification, AppDbContext context)
+        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService)
         {
+            _context = context;
             _userManager = userManager;
             _toastNotification = toastNotification;
-            _context = context;
+            _postsService = postsService;
+            _vendorService = vendorService;
 
         }
 
         [HttpGet]
-        public async Task<IActionResult> NewsFeed(PostVM model)
+        public IActionResult NewsFeed(FeedVM model)
         {
-
-            if (model.User == null)
-            {
-                model.User = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User));
-            }
-            if (model.ActiveTab == null)
-            {
-                model.ActiveTab = Tab.AllFeed;
-            }
-
             return View(model);
+        } 
+        [HttpGet]
+        public async Task<IActionResult> GetAllPosts(int skip, int itemsCount)
+        {
+            return Json(await _postsService.GetAllPosts(skip, itemsCount));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetFollowingPosts(string userId,int skip, int itemsCount)
+        {
+            return Json(await _postsService.GetFollowingPosts(userId,skip, itemsCount));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetVendorPosts(int vendorId, int skip, int itemsCount)
+        {
+            return Json(await _postsService.GetVendorPosts(vendorId,skip, itemsCount));
         }
 
         [Authorize]
-        public IActionResult SwitchTabs(PostVM model, string tabName)
+        public IActionResult SwitchTabs(FeedVM model, string tabName)
         {
-            model.ActiveTab = tabName.ParseEnum<Tab>();
+            model.ActiveTab = tabName.ParseEnum<FeedTabs>();
             return RedirectToAction(nameof(NewsFeed), model);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreatePost(PostVM model)
+        public async Task<IActionResult> CreatePost(CreatePostVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -63,23 +74,22 @@ namespace FromLocalsToLocals.Controllers
             }
 
             var userId = _userManager.GetUserId(User);
-            model.SelectedVendor = await _context.Vendors.FirstOrDefaultAsync(x => x.Title == model.SelectedVendorTitle && x.UserID == userId);
-
-            if (model.SelectedVendor != null)
+            //var selectedVendor = await _vendorService.GetVendorAsync(userId, model.VendorTitle);
+            var selectedVendor = await _context.Vendors.FirstOrDefaultAsync(x => x.Title == model.VendorTitle && x.UserID == userId);
+            if (selectedVendor != null)
             {
                 try
-                {               
-                    _context.Posts.Add(new Post(model,model.Image.ConvertToBytes()));
-                    await _context.SaveChangesAsync();
+                {
+                    await _postsService.CreatePost(new Post(model.Text,selectedVendor, model.Image.ConvertToBytes()));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     _toastNotification.AddErrorToastMessage("Something unexpected happened. Cannot create a post.");
                     return Redirect(model.PostBackUrl);
                 }
             }
 
-            model.PostText = "";
+            model.Text = "";
 
             return Redirect(model.PostBackUrl);
         }

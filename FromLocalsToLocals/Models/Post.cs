@@ -12,10 +12,11 @@ namespace FromLocalsToLocals.Models
         public Post()
         { }
 
-        public Post(PostVM vm, byte[] image = null)
+        public Post(string text , Vendor vendor, byte[] image = null)
         {
-            Vendor = vm.SelectedVendor;
-            Text = vm.PostText;
+            Vendor = vendor;
+            VendorID = vendor.ID;
+            Text = text;
             Image = image;
         }
 

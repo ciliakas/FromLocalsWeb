@@ -1,5 +1,14 @@
-﻿@model FromLocalsToLocals.Models.ViewModels.PostVM
-@inject SignInManager<AppUser> signinManager
+﻿@model FromLocalsToLocals.Models.ViewModels.FeedVM
+@inject UserManager<AppUser> userManager
+
+@{
+    var user = await userManager.GetUserAsync(User);
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/Posts.css">
+
+
 <div class="row">
 
 
@@ -7,13 +16,19 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse myNav" id="navbarNav">
-            @if(signinManager.IsSignedIn(User)){
-            <a class="text-center nav-link" style="font-size: 19px; width:50%;" asp-route-tabname="MyFeed" asp-controller="Feed" asp-action="SwitchTabs">My Feed</a>
-            <a class="text-center nav-link" style="font-size: 19px; width:50%;" asp-route-tabname="AllFeed" asp-controller="Feed" asp-action="SwitchTabs">All Feed</a>
-            }
-        </div>
+        @if (user != null)
+        {
+            <div class="collapse navbar-collapse myNav" id="navbarNav">
+                <a class="text-center nav-link" style="font-size: 19px; width:50%;" asp-route-tabname="MyFeed" asp-controller="Feed" asp-action="SwitchTabs">My Feed</a>
+                <a class="text-center nav-link" style="font-size: 19px; width:50%;" asp-route-tabname="AllFeed" asp-controller="Feed" asp-action="SwitchTabs">All Feed</a>
+            </div>
+        }
     </nav>
 </div>
 
-@await Component.InvokeAsync("NewsFeed", Model);
+@if (user != null && user.Vendors.Count > 0)
+{
+    @await Component.InvokeAsync("CreatePost", new FromLocalsToLocals.Models.ViewModels.CreatePostVM { User = user, DisplayInDetails = false })
+}
+@await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Models.ViewModels.FeedVM { ActiveUser = user, DisplayInDetails = false })
+

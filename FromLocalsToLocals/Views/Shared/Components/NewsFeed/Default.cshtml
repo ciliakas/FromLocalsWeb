@@ -1,77 +1,11 @@
-﻿@model FromLocalsToLocals.Models.ViewModels.PostVM
-@inject UserManager<AppUser> userManager
+﻿@model FromLocalsToLocals.Models.ViewModels.FeedVM
 @using static FromLocalsToLocals.Utilities.TimeCalculator
 
-
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" href="~/css/Posts.css">
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            @if (Model.User != null && Model.User.Vendors.Count > 0)
-            {
-                <!--Post form-->
-                <div id="content" class="content content-full-width">
-                    <!-- begin profile-content -->
-                    <div class="profile-content">
-                        <!-- begin tab-content -->
-                        <div class="tab-content p-0">
-                            <!-- begin #profile-post tab -->
-                            <div class="tab-pane fade active show" id="profile-post">
-                                <!-- begin timeline -->
-                                <ul class="timeline">
-                                    <li>
-                                        <form asp-action="CreatePost" asp-controller="Feed" enctype="multipart/form-data">
-                                            <!-- end timeline-icon -->
-                                            <!-- begin timeline-body -->
-                                            <div class="timeline-body">
-                                                
-                                                <div class="timeline-header">
-                                                    @if (!Model.DisplayInDetails)
-                                                    {
-                                                        <select asp-for="@Model.SelectedVendorTitle">
-                                                            @foreach (var x in Model.User.Vendors)
-                                                            {
-                                                                <option>
-                                                                    @x.Title
-                                                                </option>
-                                                            }
-                                                        </select>
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="hidden" asp-for="@Model.SelectedVendorTitle" value="@Model.SelectedVendor.Title" />
-                                                    }
-                                                    <input type="hidden" asp-for="@Model.PostBackUrl" value="@Html.ViewContext.HttpContext.Request.Path.Value.ToString()" />
-
-                                                </div>                                                
-                                                <div class="timeline-content">
-                                                        <textarea asp-for="@Model.PostText" style="width:100%" placeholder="What's new?"></textarea>
-                                                </div>
-                                                <div class="timeline-footer">
-                                                    <div class="=row">
-                                                        <input asp-for="Image" class="btn" value="Add Image" type="file" />
-                                                        <input type="submit" class="btn btn-success" value="POST">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <!-- end timeline-body -->
-                                    </li>
-                                </ul>
-                                <!-- end timeline -->
-                            </div>
-                            <!-- end #profile-post tab -->
-                        </div>
-                        <!-- end tab-content -->
-                    </div>
-                    <!-- end profile-content -->
-                </div>
-            }
-            <!--Posts-->
-
-            <div id="content" class="content content-full-width pre-scrollable">
+            <div id="content" class="content content-full-width newsFeedPanel">
                 <!-- begin profile-content -->
                 <div class="profile-content">
                     <!-- begin tab-content -->
@@ -79,13 +13,13 @@
                         <!-- begin #profile-post tab -->
                         <div class="tab-pane fade active show" id="profile-post">
                             <!-- begin timeline -->
-                            <ul class="timeline">
+                            <ul class="timeline" id="postsUL">
                                 @foreach (var x in Model.Posts)
                                 {
-                                    <li>
+                                    <li class="postsL">
                                         <!-- begin timeline-time -->
                                         <div class="timeline-time">
-                                            <span class="time">@CalcRelativeTime(x.Item1.Date)</span>
+                                            <span class="time">@CalcRelativeTime(x.Date)</span>
                                         </div>
                                         <!-- end timeline-time -->
                                         <!-- begin timeline-icon -->
@@ -96,33 +30,33 @@
                                         <!-- begin timeline-body -->
                                         <div class="timeline-body">
                                             <div class="timeline-header">
-                                                @if (x.Item2 == null)
+                                                @if (x.Vendor.Image == null)
                                                 {
                                                     <span class="userimage"><img src="~/Assets/localSeller.png" alt=""></span>
 
                                                 }
                                                 else
                                                 {
-                                                    <span class="userimage"><img src="data:image;base64,@System.Convert.ToBase64String(x.Item2)" alt=""></span>
+                                                    <span class="userimage"><img src="data:image;base64,@System.Convert.ToBase64String(x.Vendor.Image)" alt=""></span>
 
                                                 }
                                                 @if (Model.DisplayInDetails)
                                                 {
-                                                    <span class="username"><a href="javascript:;">@Model.SelectedVendor.Title</a> <small></small></span>
+                                                    <span class="username"><a href="javascript:;">@Model.Vendor.Title</a> <small></small></span>
                                                 }
                                                 else
                                                 {
-                                                    <span class="username"><a href="/Vendors/Details/@x.Item1.Vendor.ID">@x.Item1.Vendor.Title</a> <small></small></span>
+                                                    <span class="username"><a href="/Vendors/Details/@x.Vendor.ID">@x.Vendor.Title</a> <small></small></span>
                                                 }
                                             </div>
                                             <div class="timeline-content">
                                                     <p>
-                                                    @x.Item1.Text
+                                                    @x.Text
                                                     </p>
-                                                @if (x.Item1.Image != null)
+                                                @if (x.Image != null)
                                                 {
                                                 <div class="row">
-                                                    <img class="rounded" id="image_upload_preview" src="data:image;base64,@System.Convert.ToBase64String(x.Item1.Image)" style="width: 100%; max-height: 250px;" />
+                                                    <img src="data:image;base64,@System.Convert.ToBase64String(x.Image)" style="width: 100%; max-height: 250px;" />
                                                 </div>
                                                 }
                                             </div>
@@ -130,33 +64,6 @@
                                         <!-- end timeline-body -->
                                     </li>
                                 }
-                            <li>
-                                @if (Model.DisplayInDetails)
-                                {
-                                    <div class="timeline-time">
-
-                                        <span class="time">@Model.SelectedVendor.DateCreated</span>
-                                    </div>
-
-                                }
-      
-                                <div class="timeline-icon">
-                                    <a href="javascript:;">&nbsp;</a>
-                                </div>
-                                <!-- end timeline-icon -->
-                                <!-- begin timeline-body -->
-                                <div class="timeline-body">
-                                    @if (Model.DisplayInDetails)
-                                    {
-                                        <p>@Model.SelectedVendor.Title was created</p>
-                                    }
-                                    else
-                                    {
-                                        <p>No more posts...</p>
-                                    }
-                                </div>
-                                <!-- begin timeline-body -->
-                            </li>
                             </ul>
                             <!-- end timeline -->
                         </div>
@@ -169,3 +76,52 @@
         </div>
     </div>
 </div>
+@{ 
+    int vId;
+    string vTitle;
+    string vDate;
+    if (Model.Vendor == null) {
+        vId = 0;
+        vTitle = "";
+        vDate = "";
+    }
+    else
+    {
+        vTitle = Model.Vendor.Title;
+        vDate = Model.Vendor.DateCreated;
+        vId = Model.Vendor.ID;
+    }
+
+    string userID;
+    if (Model.ActiveUser == null)
+    {
+        userID = "";
+    }
+    else
+    {
+        userID = Model.ActiveUser.Id;
+    }
+}
+<script>
+    var details;
+    var tab;
+    var userID;
+    var vendorID;
+    var vendorTitleImp;
+    var vendorDate;
+
+    $(document).ready(() => {
+        details = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DisplayInDetails))
+            tab = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ActiveTab))
+            userID = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(userID))
+        if (details) {
+            vendorID = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(vId))
+            vendorTitleImp = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(vTitle))
+            vendorDate = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(vDate))
+
+
+            $(".newsFeedPanel").addClass("pre-scrollable");
+        }
+    });
+</script>
+<script src="~/js/feed.js"></script>

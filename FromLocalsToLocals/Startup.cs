@@ -90,6 +90,7 @@ namespace FromLocalsToLocals
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IVendorService, VendorService>();
             services.AddScoped<IReviewsService, ReviewsService>();
+            services.AddScoped<IPostsService, PostsService>();
 
 
             services.AddSignalR();

@@ -120,6 +120,10 @@ namespace FromLocalsToLocals.Models.Services
             return await vendors.ToListAsync();
         }
 
+        public async Task<Vendor> GetVendorAsync(string userId, string title)
+        {
+            return await _context.Vendors.FirstOrDefaultAsync(x => x.Title == title && x.UserID == userId);
+        }
     }
 
 }
