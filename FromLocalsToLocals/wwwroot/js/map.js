@@ -157,7 +157,7 @@ function addMarkers() {
             var newMarker = L.marker([allVendors[i].Latitude, allVendors[i].Longitude], {
                 title: allVendors[i].Title,
                 id: allVendors[i].ID,
-                icon: new vendorIcon({ iconUrl: `/../Assets/ygServiceType/${allVendors[i].VendorTypeDb}.png` }),
+                icon: new vendorIcon({ iconUrl: `/../Assets/ServiceType/${allVendors[i].VendorTypeDb}.png` }),
                 picture: allVendors[i].Image 
             }).on('click', function onClick(e) {
                 info.update(e.target.options);
