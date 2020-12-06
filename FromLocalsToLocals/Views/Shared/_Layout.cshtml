@@ -72,6 +72,7 @@
                 </ul>
                 @if (signInManager.IsSignedIn(User))
                 {
+                    <a asp-controller="Chat" asp-action="Index"><img src="~/Assets/message.png" style="width:30px;height:30px;"></img></a>
                     <p id="noti_Container" class="mt-3"></p>
                 }
                 <ul class="navbar-nav">
