@@ -14,6 +14,10 @@
 @using static FromLocalsToLocals.Utilities.TimeCalculator
 @using Microsoft.EntityFrameworkCore
 
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/Posts.css">
+
 <h2 class="mt-4"></h2>
 <div class="row">
     <div class="col m-lg-5 text-center">
@@ -81,7 +85,10 @@
             </div>
 
             <div class="row mt-3 mb-3" id="feed" style="display:none">
-                @await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Models.ViewModels.PostVM { ActiveTab = FromLocalsToLocals.Models.ViewModels.Tab.VendorFeed, DisplayInDetails = true, SelectedVendor = Model, User = userForFeed})
+                @if(userForFeed != null){
+                    @await Component.InvokeAsync("CreatePost", new FromLocalsToLocals.Models.ViewModels.CreatePostVM { User = userForFeed, DisplayInDetails = true, VendorTitle= Model.Title })
+                }
+                @await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Models.ViewModels.FeedVM { ActiveUser = userForFeed, ActiveTab = FromLocalsToLocals.Utilities.Enums.FeedTabs.VendorFeed, DisplayInDetails = true, Vendor = Model })
             </div>
 
         </div>

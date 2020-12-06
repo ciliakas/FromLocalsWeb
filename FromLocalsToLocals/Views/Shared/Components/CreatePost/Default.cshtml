@@ -1,0 +1,51 @@
+﻿@model FromLocalsToLocals.Models.ViewModels.CreatePostVM
+
+
+<div class="container">
+        <div id="content" class="content content-full-width">
+            <div class="profile-content">
+                <div class="tab-content p-0">
+                    <div class="tab-pane fade active show" id="profile-post">
+                        <ul class="timeline">
+                            <li>
+                                <form asp-action="CreatePost" asp-controller="Feed" enctype="multipart/form-data">
+
+                                    <div class="timeline-body">
+
+                                        <div class="timeline-header">
+                                            @if (!Model.DisplayInDetails)
+                                            {
+                                                <select asp-for="@Model.VendorTitle">
+                                                    @foreach (var x in Model.User.Vendors)
+                                                    {
+                                                        <option>
+                                                            @x.Title
+                                                        </option>
+                                                    }
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <input type="hidden" asp-for="@Model.VendorTitle" value="@Model.VendorTitle" />
+                                            }
+                                            <input type="hidden" asp-for="@Model.PostBackUrl" value="@Html.ViewContext.HttpContext.Request.Path.Value.ToString()" />
+
+                                        </div>
+                                        <div class="timeline-content">
+                                            <textarea asp-for="@Model.Text" style="width:100%" placeholder="What's new?"></textarea>
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <div class="=row">
+                                                <input asp-for="Image" class="btn" value="Add Image" type="file" />
+                                                <input type="submit" class="btn btn-success" value="POST">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

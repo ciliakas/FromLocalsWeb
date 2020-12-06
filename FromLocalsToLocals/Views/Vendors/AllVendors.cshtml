@@ -142,11 +142,11 @@ else
                         {
                             if (user.Following.Any(x => x.VendorID == vendor.ID))
                             {
-                                <button data-follow="false" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">Unfollow</button>
+                                <button data-follow="false" data-id="@vendor.ID" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">Unfollow</button>
                             }
                             else
                             {
-                                <button data-follow="true" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">Follow</button>
+                                <button data-follow="true" data-id="@vendor.ID" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">Follow</button>
                             }
                         }
                     </div>
@@ -283,11 +283,11 @@ else
                         {
                             if (user.Following.Any(x => x.VendorID == Model.Vendors[i * itemsInRow + j].ID))
                             {
-                                <button data-follow="false" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">Unfollow</button>
+                                <button data-follow="false" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">Unfollow</button>
                             }
                             else
                             {
-                                <button data-follow="true" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">Follow</button>
+                                <button data-follow="true" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">Follow</button>
                             }
                         }
                     </div>
@@ -314,6 +314,8 @@ else
 
 <script>
     function followBtnClick(obj, id) {
+
+        var fButtons = $(`.followBtn[data-id='${id}']`);;
         $.ajax({
             type: "POST",
             url: '/Follower/' + obj.innerText + '/' + id,
@@ -322,9 +324,13 @@ else
             success: function (m) {
                 if (m.success) {
                     if (obj.innerText == "Follow") {
-                        obj.innerText = "Unfollow";
+                        for (var i = 0; i < fButtons.length; i++) {
+                            fButtons[i].innerText = "Unfollow";
+                        }
                     } else if (obj.innerText == "Unfollow") {
-                        obj.innerText = "Follow";
+                        for (var i = 0; i < fButtons.length; i++) {
+                            fButtons[i].innerText = "Follow";
+                        }
                     }
                 } else {
                     alert("Error occured when trying to " + obj.innerText + " vendor");
