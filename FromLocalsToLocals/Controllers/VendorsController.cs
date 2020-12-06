@@ -117,6 +117,7 @@ namespace FromLocalsToLocals.Controllers
                         return View(model);
                     }
 
+
                     var user = await _userManager.Value.GetUserAsync(User);
                     user.VendorsCount++;
                     await _userManager.Value.UpdateAsync(user);

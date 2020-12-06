@@ -67,9 +67,12 @@ else
                             case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                             break;
 
+                            case "RuralTourism":<p class="text-muted text-uppercase">Rural tourism</p>
+                            break;
+
                         default: <p class="text-muted text-uppercase">@vendor.VendorTypeDb</p>
                         break;
-                }
+                        }
                         <hr />
                         @if (vendor.ReviewsCount.Sum() == 0)
                         {

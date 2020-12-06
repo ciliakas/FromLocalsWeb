@@ -27,6 +27,9 @@ namespace FromLocalsToLocals.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
+        [NotMapped]
+        public bool IsWorking { get; set; }
+
         [Required] 
         public int VendorID { get; set; }
 
