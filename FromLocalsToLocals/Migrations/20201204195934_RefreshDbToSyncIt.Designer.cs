@@ -10,16 +10,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FromLocalsToLocals.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201115222956_NewTables")]
-    partial class NewTables
+    [Migration("20201204195934_RefreshDbToSyncIt")]
+    partial class RefreshDbToSyncIt
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("FromLocalsToLocals.Models.AppUser", b =>
                 {
@@ -34,8 +34,8 @@ namespace FromLocalsToLocals.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -50,12 +50,12 @@ namespace FromLocalsToLocals.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -73,8 +73,8 @@ namespace FromLocalsToLocals.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("VendorsCount")
                         .HasColumnType("int");
@@ -82,14 +82,29 @@ namespace FromLocalsToLocals.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Models.Follower", b =>
+                {
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("VendorID")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserID", "VendorID");
+
+                    b.HasIndex("VendorID");
+
+                    b.ToTable("Followers");
                 });
 
             modelBuilder.Entity("FromLocalsToLocals.Models.Notification", b =>
@@ -97,7 +112,7 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<int>("NotiId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -124,12 +139,38 @@ namespace FromLocalsToLocals.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("FromLocalsToLocals.Models.Post", b =>
+                {
+                    b.Property<int>("PostID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VendorID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostID");
+
+                    b.HasIndex("VendorID");
+
+                    b.ToTable("Posts");
+                });
+
             modelBuilder.Entity("FromLocalsToLocals.Models.Review", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("CommentID")
                         .HasColumnType("int");
@@ -173,12 +214,16 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("About")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DateCreated")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -200,8 +245,8 @@ namespace FromLocalsToLocals.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("VendorTypeDb")
-                        .HasColumnName("VendorType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("VendorType");
 
                     b.HasKey("ID");
 
@@ -220,18 +265,18 @@ namespace FromLocalsToLocals.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -242,7 +287,7 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -266,7 +311,7 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -341,11 +386,43 @@ namespace FromLocalsToLocals.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("FromLocalsToLocals.Models.Follower", b =>
+                {
+                    b.HasOne("FromLocalsToLocals.Models.AppUser", "User")
+                        .WithMany("Following")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FromLocalsToLocals.Models.Vendor", "Vendor")
+                        .WithMany("Followers")
+                        .HasForeignKey("VendorID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Vendor");
+                });
+
             modelBuilder.Entity("FromLocalsToLocals.Models.Notification", b =>
                 {
                     b.HasOne("FromLocalsToLocals.Models.Review", "Review")
                         .WithMany("Notifications")
                         .HasForeignKey("ReviewID");
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Models.Post", b =>
+                {
+                    b.HasOne("FromLocalsToLocals.Models.Vendor", "Vendor")
+                        .WithMany("Posts")
+                        .HasForeignKey("VendorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vendor");
                 });
 
             modelBuilder.Entity("FromLocalsToLocals.Models.Review", b =>
@@ -355,6 +432,8 @@ namespace FromLocalsToLocals.Migrations
                         .HasForeignKey("VendorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Vendor");
                 });
 
             modelBuilder.Entity("FromLocalsToLocals.Models.Vendor", b =>
@@ -364,6 +443,8 @@ namespace FromLocalsToLocals.Migrations
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -415,6 +496,27 @@ namespace FromLocalsToLocals.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Models.AppUser", b =>
+                {
+                    b.Navigation("Following");
+
+                    b.Navigation("Vendors");
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Models.Review", b =>
+                {
+                    b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Models.Vendor", b =>
+                {
+                    b.Navigation("Followers");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

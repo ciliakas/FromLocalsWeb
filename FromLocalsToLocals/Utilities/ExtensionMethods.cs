@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FromLocalsToLocals.Models;
+using Microsoft.AspNetCore.Http;
 using SuppLocals;
 using System;
 using System.IO;
@@ -30,5 +31,28 @@ namespace FromLocalsToLocals.Utilities
             }
             return false;
         }
+
+        public static byte[] ConvertToBytes(this IFormFile image)
+        {
+            if (image != null)
+            {
+                if (image.Length > 0)
+                {
+                    var ext = Path.GetExtension(image.FileName).ToLowerInvariant();
+
+                    if (string.IsNullOrEmpty(ext) || Config.permittedExtensions.Contains(ext))
+                    {
+                        using (var target = new MemoryStream())
+                        {
+                            image.CopyTo(target);
+                            return target.ToArray();
+                        
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
     }
 }

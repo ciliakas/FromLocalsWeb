@@ -9,6 +9,11 @@
 }
 
 <body>
+    <style>
+        ul li:nth-child(n+11) {
+            display: none;
+        }
+    </style>
     <h2 class="text-center mt-4">@_localizer["Reviews about"]"@Model.Vendor.Title"</h2>
     <hr />
     <div class="container-fluid">
