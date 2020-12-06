@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var userForFeed = await userManager.GetUserAsync(User);
-    if (userForFeed.Id != Model.User.Id) userForFeed = null;
+    if (userForFeed !=null && userForFeed.Id != Model.User.Id) userForFeed = null;
 
 
 }

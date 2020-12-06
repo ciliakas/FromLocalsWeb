@@ -20,6 +20,10 @@ namespace FromLocalsToLocals.Database
         public DbSet<Post> Posts { get; set; }
         public DbSet<Follower> Followers { get; set; }
         public DbSet<WorkHours> VendorWorkHours { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +38,16 @@ namespace FromLocalsToLocals.Database
                 .HasOne(bc => bc.Vendor)
                 .WithMany(c => c.Followers)
                 .HasForeignKey(bc => bc.VendorID).IsRequired().OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Contact>()
+              .HasOne(u => u.User)
+              .WithMany(u => u.Contacts)
+              .HasForeignKey(bc => bc.UserID).IsRequired().OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Contact>()
+                .HasOne(bc => bc.Vendor)
+                .WithMany(c => c.Contacts)
+                .HasForeignKey(bc => bc.ReceiverID).IsRequired().OnDelete(DeleteBehavior.Restrict);
+
         }
 
         private void OnEntityTracked(object sender, EntityTrackedEventArgs e)
@@ -51,6 +65,11 @@ namespace FromLocalsToLocals.Database
             else if (!e.FromQuery && e.Entry.State == EntityState.Added && e.Entry.Entity is Post post)
             {
                 post.Date = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+
+            else if (!e.FromQuery && e.Entry.State == EntityState.Added && e.Entry.Entity is Message msg)
+            {
+                msg.Date = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
     }
