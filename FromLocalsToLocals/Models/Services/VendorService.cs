@@ -114,11 +114,11 @@ namespace FromLocalsToLocals.Models.Services
             }
         }
 
-        public async Task UpdateWorkHoursAsync(WorkHours workHours)
+        public async Task RemoveWorkHoursAsync(Vendor vendor)
         {
             try
             {
-                _context.VendorWorkHours.Add(workHours);
+                _context.VendorWorkHours.RemoveRange(_context.VendorWorkHours.Where(x => x.VendorID == vendor.ID));
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException e)
