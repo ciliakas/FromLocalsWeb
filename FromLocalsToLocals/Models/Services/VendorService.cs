@@ -114,11 +114,16 @@ namespace FromLocalsToLocals.Models.Services
             }
         }
 
-        public async Task RemoveWorkHoursAsync(Vendor vendor)
+        public async Task ChangeWorkHoursAsync(WorkHours workHours)
         {
             try
             {
-                _context.VendorWorkHours.RemoveRange(_context.VendorWorkHours.Where(x => x.VendorID == vendor.ID));
+                var row = _context.VendorWorkHours.FirstOrDefault(x => x.VendorID == workHours.VendorID && x.Day == workHours.Day);
+                row.VendorID = workHours.VendorID;
+                row.Day = workHours.Day;
+                row.OpenTime = workHours.OpenTime;
+                row.CloseTime = workHours.CloseTime;
+                _context.VendorWorkHours.Update(row);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException e)

@@ -234,10 +234,7 @@ namespace FromLocalsToLocals.Controllers
 
                     model.SetValuesToVendor(vendor);
 
-                    await _vendorService.RemoveWorkHoursAsync(vendor);
                     var serviceOperatingHours = model.VendorHours;
-
-
                     foreach (var elem in serviceOperatingHours)
                     {
                         if (elem.IsWorking)
@@ -252,14 +249,14 @@ namespace FromLocalsToLocals.Controllers
                             else
                             {
                                 WorkHours workHours = new WorkHours(vendor.ID, elem.Day, elem.OpenTime, elem.CloseTime);
-                                await _vendorService.AddWorkHoursAsync(workHours);
+                                await _vendorService.ChangeWorkHoursAsync(workHours);
                             }
                         }
                         else
                         {
                             TimeSpan timeSpan = new TimeSpan(-1);
                             WorkHours workHours = new WorkHours(vendor.ID, elem.Day, timeSpan, timeSpan);
-                            await _vendorService.AddWorkHoursAsync(workHours);
+                            await _vendorService.ChangeWorkHoursAsync(workHours);
                         }
                     }
 

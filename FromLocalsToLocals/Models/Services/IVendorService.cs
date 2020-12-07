@@ -15,7 +15,7 @@ namespace FromLocalsToLocals.Models.Services
         Task<List<Vendor>> GetVendorsAsync(string userId,string searchString="" , string vendorType="");
         Task<List<Vendor>> GetNewVendorsAsync(int count);
         Task AddWorkHoursAsync(WorkHours workHours);
-        Task RemoveWorkHoursAsync(Vendor vendor);
+        Task ChangeWorkHoursAsync(WorkHours workHours);
         Task<Vendor> GetVendorAsync(string userId, string title);
 
         Task UpdateAsync(Vendor vendor);
