@@ -30,7 +30,7 @@ namespace FromLocalsToLocals.Models
         [NotMapped]
         public bool IsWorking { get; set; }
 
-        [Required] 
+        [Required]
         public int VendorID { get; set; }
 
         [Required]
@@ -57,3 +57,4 @@ namespace FromLocalsToLocals.Models
         }
     }
 }
+

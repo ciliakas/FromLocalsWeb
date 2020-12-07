@@ -58,6 +58,9 @@ namespace FromLocalsToLocals.Models
         [NotMapped]
         public double Average { get; set; }
 
+        [NotMapped]
+        public List<WorkHours> VendorHours { get; set; }
+
         public byte[] Image { get; set; }
 
         [JsonIgnore] 

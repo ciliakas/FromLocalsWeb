@@ -73,7 +73,11 @@ namespace FromLocalsToLocals.Models.Services
         }
         public async Task<Vendor> GetVendorAsync(int id)
         {
-            return await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
+            var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
+
+            List<WorkHours> vendorWorkHours = await _context.VendorWorkHours.Where(x => x.VendorID == id).ToListAsync();
+            vendor.VendorHours = vendorWorkHours;
+            return vendor;
         }
 
         public async Task<List<Vendor>> GetVendorsAsync(string searchString="", string vendorType="")
@@ -98,6 +102,19 @@ namespace FromLocalsToLocals.Models.Services
         }
 
         public async Task AddWorkHoursAsync(WorkHours workHours)
+        {
+            try
+            {
+                _context.VendorWorkHours.Add(workHours);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
+        public async Task UpdateWorkHoursAsync(WorkHours workHours)
         {
             try
             {

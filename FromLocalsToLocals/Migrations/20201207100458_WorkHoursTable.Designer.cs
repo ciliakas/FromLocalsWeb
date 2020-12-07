@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FromLocalsToLocals.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201206154415_WorkHoursTable")]
+    [Migration("20201207100458_WorkHoursTable")]
     partial class WorkHoursTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
