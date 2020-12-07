@@ -97,6 +97,19 @@ namespace FromLocalsToLocals.Models.Services
             return await list.ToListAsync();
         }
 
+        public async Task AddWorkHoursAsync(WorkHours workHours)
+        {
+            try
+            {
+                _context.VendorWorkHours.Add(workHours);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
         public async Task UpdateAsync(Vendor vendor)
         {
             try

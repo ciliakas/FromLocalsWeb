@@ -46,7 +46,7 @@
                 <h2>@Model.Title</h2>
             </div>
             <div class="row mb-3">
-                <p>@_localizer["Service registered |"]@CalcRelativeTime(Model.DateCreated)</p>
+                <p>@_localizer["Service registered | "]@CalcRelativeTime(Model.DateCreated)</p>
             </div>
             <hr />
             <div class="row">
@@ -58,6 +58,10 @@
                 {
                     <p class="font-italic">@Model.About</p>
                 }
+            </div>
+            <hr />
+            <div class="row">
+                <p>Working hours</p>
             </div>
             <hr />
             <nav class="navbar navbar-expand-lg navbar-light bg-white" style="color: gray; border-radius: 4px;">
@@ -79,7 +83,6 @@
                 </div>
             </nav>
             <div class="row mt-3 mb-3" id="map" style="height:250px;">
-
                 <p><b>@_localizer["Address:&nbsp;"]</b>@Model.Address</p>
                 <div id="mapid" style="width: 100%; height: 90%;"></div>
             </div>

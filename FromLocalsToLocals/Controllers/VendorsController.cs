@@ -117,7 +117,6 @@ namespace FromLocalsToLocals.Controllers
                         return View(model);
                     }
 
-
                     var user = await _userManager.Value.GetUserAsync(User);
                     user.VendorsCount++;
                     await _userManager.Value.UpdateAsync(user);
@@ -130,6 +129,27 @@ namespace FromLocalsToLocals.Controllers
                     model.SetValuesToVendor(vendor);
 
                     await _vendorService.CreateAsync(vendor);
+
+                    var serviceOperatingHours = model.VendorHours;
+
+                    foreach (var elem in serviceOperatingHours)
+                    {
+                        if (elem.IsWorking)
+                        {
+                            if (elem.CloseTime < elem.OpenTime)
+                            {
+                                ModelState.AddModelError("", "Invalid work hours");
+                                _toastNotification.AddErrorToastMessage("Choose the correct working hours");
+                                return View(model);
+                            }
+
+                            else
+                            {
+                                WorkHours workHours = new WorkHours(vendor.ID, elem.Day, elem.OpenTime, elem.CloseTime);
+                                await _vendorService.AddWorkHoursAsync(workHours);
+                            }
+                        }
+                    }
 
                     _toastNotification.AddSuccessToastMessage(_localizer["Service Created"]);
                     return RedirectToAction("MyVendors");
