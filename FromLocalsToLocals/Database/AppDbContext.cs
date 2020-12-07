@@ -21,7 +21,6 @@ namespace FromLocalsToLocals.Database
         public DbSet<Follower> Followers { get; set; }
         public DbSet<WorkHours> VendorWorkHours { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-
         public DbSet<Message> Messages { get; set; }
 
 

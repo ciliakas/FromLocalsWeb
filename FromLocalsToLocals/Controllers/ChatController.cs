@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FromLocalsToLocals.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +10,18 @@ namespace FromLocalsToLocals.Controllers
 {
     public class ChatController : Controller
     {
+        private readonly UserManager<AppUser> _userManager;
 
-
-        public IActionResult Index()
+        public ChatController(UserManager<AppUser> userManager)
         {
-            return View();
+            _userManager = userManager;
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+
+            return View(await _userManager.GetUserAsync(User));
         }
 
     }

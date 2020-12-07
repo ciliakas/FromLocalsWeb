@@ -1,4 +1,7 @@
-﻿<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+﻿@model AppUser
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="~/css/chat.css" rel="stylesheet" />
 
 <div class="container">
@@ -12,59 +15,121 @@
                         <div class="col-md-4">
                             <div>
                                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 550px;">
-                                    <div class="chat-list-wrapper" style="overflow-y: auto; width: auto; height: 550px;">
-                                    <!--List of contacts-->
-                                        <ul class="chat-list">
-                                            <li class="new">
-                                                <span class="avatar available">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="header">
-                                                        <span class="username">Gavin Free</span>
-                                                        <small class="timestamp text-muted">
-                                                            <i class="fa fa-clock-o"></i>1 secs ago
-                                                        </small>
-                                                    </div>
-                                                    <p>
-                                                        Hey, have you finished up with the Ladybug project?
-                                                    </p>
-                                                </div>
+                                    <div class="chat-list-wrapper" style="overflow-y: auto; overflow-x:hidden" width: auto; height: 550px;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button onclick="mySentMsgs()" class="btn" style="width:100%">My sent</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button onclick="myVendorsMsgs()" class="btn active" style="width:100%">My Vendors</button>
+                                            </div>
+                                        </div>
+                                        <hr class="m-0">
+                                    
+                                        <!--List of other vendors which user contacted-->
+                                        <ul id="mySentMsgs" class="chat-list" style="display:none">
+                                            @if (Model.Image != null)
+                                            {<li style="display:none">
+                                                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" alt="avatar" id="@Model.UserName-img" class="img-circle" style="display:none" />
                                             </li>
-                                            <li class="active">
-                                                <span class="avatar available">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="header">
-                                                        <span class="username">Yanique Robinson</span>
-                                                        <small class="timestamp text-muted">
-                                                            <i class="fa fa-clock-o"></i>3 secs ago
-                                                        </small>
-                                                    </div>
-                                                    <p>
-                                                        Cool. I'll see you guys then.
-                                                    </p>
-                                                </div>
+                                            }
+                                            else
+                                            {<li style="display:none">
+                                                 <img src="~/Assets/profile.png" id="@Model.UserName-img" alt="avatar" class="img-circle" style="display:none" />
                                             </li>
-                                            <li>
-                                                <span class="avatar">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="header">
-                                                        <span class="username">Ryan Haywood</span>
-                                                        <small class="timestamp text-muted">
-                                                            <i class="fa fa-clock-o"></i>12 mins ago
-                                                        </small>
+                                            }
+                                            @foreach (var c in Model.Contacts)
+                                            {
+
+                                                <li class="new" onclick='loadMessages(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.Messages)),@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.User.UserName)),@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.Vendor.Title)), false)'>
+                                                    <span class="avatar">
+                                                        @if (c.Vendor.Image != null)
+                                                        {
+                                                            <img src="data:image;base64,@System.Convert.ToBase64String(c.Vendor.Image)" id="@c.Vendor.Title-img" alt="avatar" class="img-circle" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/Assets/appLogo.png" id="@c.Vendor.Title-img" alt="avatar" class="img-circle" />
+                                                        }
+                                                    </span>
+                                                    <div class="body">
+                                                        <div class="header">
+                                                            <span class="username">@c.Vendor.Title</span>
+                                                            <small class="timestamp text-muted">
+                                                                <i class="fa fa-clock-o"></i>@c.Messages.Last().Date
+                                                            </small>
+                                                        </div>
+                                                        <p>
+                                                            @c.Messages.Last().Text
+                                                        </p>
                                                     </div>
-                                                    <p>
-                                                        Kevin, tomorrow is GoT night at my house. Bring your HDMI extension. Thanks.
-                                                    </p>
-                                                </div>
-                                            </li>
-                                            <!--End list of contacts-->
+                                                </li>
+                                            }
                                         </ul>
+
+
+
+                                        <!--List of user vendors that other users contacted -->
+                                        <div class="accordion active" id="listOfVendors">
+                                            @foreach (var v in Model.Vendors)
+                                            {
+                                                <div class="card">
+                                                    <div class="card-header" id="@v.Title + 'H'">
+                                                        <h5 class="mb-0">
+                                                            <button class="btn" type="button" data-toggle="collapse" data-target="#@v.Title" aria-expanded="true" aria-controls="collapseOne">
+                                                                @if (v.Image != null)
+                                                                {
+                                                                    <img src="data:image;base64,@System.Convert.ToBase64String(v.Image)" alt="avatar" id="@v.Title-img" class="img-circle" style="width:50px;height:50px;"/>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img src="~/Assets/appLogo.png" id="@v.Title-img" alt="avatar" class="img-circle" style="width:50px;height:50px;" />
+                                                                }
+                                                                @v.Title
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+
+                                                    <div id="@v.Title" class="collapse" aria-labelledby="@v.Title + 'H'" data-parent="#listOfVendors">
+                                                        <div class="card-body" style="padding:0;">
+                                                            <ul class="chat-list">
+                                                                @foreach (var c in v.Contacts)
+                                                                {
+                                          
+                                                                    <li class="new" onclick='loadMessages(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.Messages)),@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.User.UserName)),@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.Vendor.Title)), true)' >
+                                                                        <span class="avatar">
+                                                                            @if (c.User.Image != null)
+                                                                            {
+                                                                                <img src="data:image;base64,@System.Convert.ToBase64String(c.User.Image)" alt="avatar" id="@c.User.UserName-img" class="img-circle" />
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <img src="~/Assets/profile.png" id="@c.User.UserName-img" alt="avatar" class="img-circle" />
+                                                                            }
+                                                                        </span>
+                                                                        <div class="body">
+                                                                            <div class="header">
+                                                                                <span class="username">@c.User.UserName</span>
+                                                                                <small class="timestamp text-muted">
+                                                                                    <i class="fa fa-clock-o"></i>@c.Messages.Last().Date
+                                                                                </small>
+                                                                            </div>
+                                                                            <p>
+                                                                                @c.Messages.Last().Text
+                                                                            </p>
+                                                                        </div>
+                                                                    </li>
+
+
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+
+
                                     </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 478.639px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div>
                                 </div>
                             </div>
@@ -74,197 +139,20 @@
 
                         <!--Right side-->
                         <div class="col-md-8">
-
+                            <div id="chattingWith" style="font-size:20px;" class="text-center"></div>
                             <div>
                                 <!--Messages-->
                                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 452px;">
                                     <div class="message-list-wrapper" style="overflow: hidden; width: auto; height: 452px;">
-                                        <ul class="message-list pre-scrollable" style="max-height:452px;"> 
-                                            <li class="left">
-                                                <span class="username">Yanique Robinson</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>9 mins ago
-                                                </small>
-                                                <span class="avatar available tooltips" data-toggle="tooltip " data-placement="right" data-original-title="Yanique Robinson">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Hey, are you busy at the moment?
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="right">
-                                                <span class="username">Kevin Mckoy</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>5 mins ago
-                                                </small>
-                                                <span class="avatar tooltips" data-toggle="tooltip " data-placement="left" data-original-title="Kevin Mckoy">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Um, no actually. I've just wrapped up my last project for the day.
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="message well well-sm">
-                                                        Whats up?
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="left">
-                                                <span class="username">Yanique Robinson</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>3 mins ago
-                                                </small>
-                                                <span class="avatar available tooltips" data-toggle="tooltip " data-placement="right" data-original-title="Yanique Robinson">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Well, I wanted to find out if you have any plans for tonight.
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="message well well-sm">
-                                                        <p><a href="#" class="white">Barbara</a> and I are going to this restaurant out of town.</p>
-                                                        <img src="https://via.placeholder.com/300x200" alt="">
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="right">
-                                                <span class="username">Kevin Mckoy</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>2 mins ago
-                                                </small>
-                                                <span class="avatar tooltips" data-toggle="tooltip " data-placement="left" data-original-title="Kevin Mckoy">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Wow that sounds great.
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="left">
-                                                <span class="username">Yanique Robinson</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>56 secs ago
-                                                </small>
-                                                <span class="avatar available tooltips" data-toggle="tooltip " data-placement="right" data-original-title="Yanique Robinson">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Ok! We'll swing by your office at 5.
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="right">
-                                                <span class="username">Kevin Mckoy</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>3 secs ago
-                                                </small>
-                                                <span class="avatar tooltips" data-toggle="tooltip " data-placement="left" data-original-title="Kevin Mckoy">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Cool. I'l see you guys then.
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="left">
-                                                <span class="username">Yanique Robinson</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>56 secs ago
-                                                </small>
-                                                <span class="avatar available tooltips" data-toggle="tooltip " data-placement="right" data-original-title="Yanique Robinson">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Ok! We'll swing by your office at 5.
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="right">
-                                                <span class="username">Kevin Mckoy</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>3 secs ago
-                                                </small>
-                                                <span class="avatar tooltips" data-toggle="tooltip " data-placement="left" data-original-title="Kevin Mckoy">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Cool. I'l see you guys then.
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="left">
-                                                <span class="username">Yanique Robinson</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>56 secs ago
-                                                </small>
-                                                <span class="avatar available tooltips" data-toggle="tooltip " data-placement="right" data-original-title="Yanique Robinson">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Ok! We'll swing by your office at 5.
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="right">
-                                                <span class="username">Kevin Mckoy</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>3 secs ago
-                                                </small>
-                                                <span class="avatar tooltips" data-toggle="tooltip " data-placement="left" data-original-title="Kevin Mckoy">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Cool. I'l see you guys then.
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="left">
-                                                <span class="username">Yanique Robinson</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>56 secs ago
-                                                </small>
-                                                <span class="avatar available tooltips" data-toggle="tooltip " data-placement="right" data-original-title="Yanique Robinson">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Ok! We'll swing by your office at 5.
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="right">
-                                                <span class="username">Kevin Mckoy</span>
-                                                <small class="timestamp">
-                                                    <i class="fa fa-clock-o"></i>3 secs ago
-                                                </small>
-                                                <span class="avatar tooltips" data-toggle="tooltip " data-placement="left" data-original-title="Kevin Mckoy">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" class="img-circle">
-                                                </span>
-                                                <div class="body">
-                                                    <div class="message well well-sm">
-                                                        Cool. I'l see you guys then.
-                                                    </div>
-                                                </div>
-                                            </li>
+                                        <ul class="message-list pre-scrollable" style="max-height:452px;" id="messagesList">
                                         </ul>
                                     </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 265px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 187.092px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div>
                                 </div>
 
                                 <!--Send message-->
                                 <div class="compose-box">
-                                    <div class="row mr-1 ml-1" >
-                                            <textarea id="btn-input" class="form-control input-sm" placeholder="Type your message here..."></textarea>
+                                    <div class="row mr-1 ml-1">
+                                        <textarea id="btn-input" class="form-control input-sm" placeholder="Type your message here..."></textarea>
                                     </div>
                                     <div class="row mt-1">
                                         <div class="col-md-4"></div>
@@ -291,3 +179,6 @@
 
     </div>
 </div>
+
+
+<script src="~/js/chat.js"></script>

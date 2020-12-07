@@ -13,6 +13,11 @@ namespace FromLocalsToLocals.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
+        public bool UserRead { get; set; }
+        public bool ReceiverRead { get; set; }
+
+
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public virtual AppUser User { get; set; }
