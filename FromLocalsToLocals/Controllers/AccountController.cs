@@ -119,10 +119,9 @@ namespace FromLocalsToLocals.Controllers
             }
         }
 
-        public IActionResult Following()
+        public async Task<IActionResult> FollowingAsync()
         {
-            var userId = _userManager.GetUserId(User);
-            var user = _context.Users.Single(x => x.Id == userId);
+            var user = await _userManager.GetUserAsync(User);
             return View(user.Following.ToList());
         }
 
