@@ -10,13 +10,17 @@ namespace FromLocalsToLocals.Models.Services
     {
         Task AddPostAsync(Vendor vendor,Post post);
         Task CreateAsync(Vendor vendor);
+
         Task<Vendor> GetVendorAsync(int id);
+        Task<Vendor> GetVendorAsync(string userId, string title);
         Task<List<Vendor>> GetVendorsAsync(string searchString="", string vendorType = "");
         Task<List<Vendor>> GetVendorsAsync(string userId,string searchString="" , string vendorType="");
         Task<List<Vendor>> GetNewVendorsAsync(int count);
+        Task<List<Vendor>> GetPopularVendorsAsync(int count);
+
         Task AddWorkHoursAsync(WorkHours workHours);
         Task ChangeWorkHoursAsync(WorkHours workHours);
-        Task<Vendor> GetVendorAsync(string userId, string title);
+
 
         Task UpdateAsync(Vendor vendor);
         Task DeleteAsync(Vendor vendor);

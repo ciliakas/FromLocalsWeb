@@ -45,7 +45,6 @@ namespace FromLocalsToLocals.Models
         [IgnoreDataMember]
         public virtual Vendor Vendor { get; set; }
 
-
         public bool Equals([AllowNull] WorkHours other)
         {
             if (other == null)

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static FromLocalsToLocals.Utilities.TimeCalculator;
 
 namespace FromLocalsToLocals.Models.Services
 {
@@ -75,8 +74,7 @@ namespace FromLocalsToLocals.Models.Services
         {
             var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
 
-            List<WorkHours> vendorWorkHours = await _context.VendorWorkHours.Where(x => x.VendorID == id).ToListAsync();
-            vendor.VendorHours = vendorWorkHours;
+            vendor.VendorHours = await _context.VendorWorkHours.Where(x => x.VendorID == id).ToListAsync();
             return vendor;
         }
 
@@ -99,6 +97,12 @@ namespace FromLocalsToLocals.Models.Services
         {
             var list = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(count);
             return await list.ToListAsync();
+        }
+
+        public async Task<List<Vendor>> GetPopularVendorsAsync(int count)
+        {
+            var list = _context.Vendors.Where(x => (DateTime.UtcNow - x.LastClickDate).Days < -1).OrderByDescending(x => x.Popularity).Take(count);
+            return await list.ToListAsync(); 
         }
 
         public async Task AddWorkHoursAsync(WorkHours workHours)

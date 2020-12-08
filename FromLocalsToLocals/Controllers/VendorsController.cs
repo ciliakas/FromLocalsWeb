@@ -83,6 +83,10 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
+            vendor.Popularity++;
+            vendor.LastClickDate = DateTime.UtcNow;
+            await _vendorService.UpdateAsync(vendor);
+
             return View(vendor);
         }
 

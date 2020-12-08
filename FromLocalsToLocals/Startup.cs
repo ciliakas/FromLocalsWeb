@@ -103,8 +103,6 @@ namespace FromLocalsToLocals
 
         }
 
-
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -129,10 +127,6 @@ namespace FromLocalsToLocals
 
             app.UseNToastNotify();
 
-            //
-            
-            //
-
             //var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
@@ -144,8 +138,5 @@ namespace FromLocalsToLocals
                 endpoints.MapHub<NotificationHub>("/notificationHub");
             });
         }
-
-      
-
     }
 }
