@@ -139,9 +139,37 @@ namespace FromLocalsToLocals.Controllers
                 "picName" => await PicChange(model),
                 "accDetails" => await AccountDetailsChange(model),
                 "password" => await ChangePassword(model),
+                "subscriber" => await SubscribeNewsletter(model),
                 _ => View(),
             };
         }
+        private async Task<IActionResult> SubscribeNewsletter(ProfileVM model)
+        {
+            var userId = _userManager.GetUserId(User);
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            var resultsList = new List<IdentityResult>();
+
+            if (user.Subscribe == true)
+            {
+                user.Subscribe = false;
+                _toastNotification.AddInfoToastMessage("Newsletter unsubscribed!");
+            }
+            else
+            {
+                user.Subscribe = true;
+                _toastNotification.AddSuccessToastMessage("Newsletter subscribed!");
+            }
+
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            CheckForErrors(resultsList);
+            return Profile();
+
+        }
+
+
+
 
         private async Task<IActionResult> AccountDetailsChange(ProfileVM model)
         {
@@ -389,13 +417,16 @@ namespace FromLocalsToLocals.Controllers
 
              
                 var callbackUrl = Url.Action("ResetPassword", "Account",
-                new { user = user , code = code }, protocol: Request.Scheme); 
+                new { user = user , code = code }, protocol: Request.Scheme);
 
-                var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" +
+                var htmlContent = "<!DOCTYPE html><html><head></head><body style=\"background-color: #CCBA8B;\">" +
+                 "<table class=\"body-wrap\"  style=\"background-color: #CCBA8B;\" ><tr><td class=\"container\">" +
+                 "<table><tr><td align=\"center\" class=\"masthead\">" +
+                 "<a href=\"https://ibb.co/6HHkSvm\"><img src=\"https://i.ibb.co/0CCxLBc/appLogo.png\" alt=\"appLogo\" border=\"0\" /></a>" +
+                 "<h1>From Locals to Locals</h1></td></tr><tr><td class=\"content\"><h3> Please confirm your account by clicking this link: " + " <a href =\""
+                 + callbackUrl + "\">link</a> </body></html>" +
+                 "</td></tr></table></td></tr></table></body></html>";
 
-                                  _localizer["Please confirm your account by clicking this link:"] + 
-                                  " <a href =\""
-                                                 + callbackUrl + "\">link</a> </body></html>";
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
                 var response = await client.SendEmailAsync(msg);
             }

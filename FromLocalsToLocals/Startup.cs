@@ -25,14 +25,23 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Localization;
 using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
 using Microsoft.AspNetCore.Http;
+using Hangfire;
+using Hangfire.MemoryStorage;
 
 namespace FromLocalsToLocals
 {
     public class Startup
     {
+        public readonly AppDbContext _context;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+        }
+
+        public Startup(AppDbContext context)
+        {
+            _context = context;
         }
 
         public IConfiguration Configuration { get; }
@@ -101,11 +110,28 @@ namespace FromLocalsToLocals
 
             services.AddSignalR();
 
+            services.AddHangfire(configuration =>
+            configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+               .UseSimpleAssemblyNameTypeSerializer()
+               .UseRecommendedSerializerSettings()
+               .UseMemoryStorage());
+
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBackgroundJobClient backgroundJobs)
         {
+            app.UseHangfireDashboard();
+            var sendAll = new SendAllSubscribers(_context);
+
+            RecurringJob.AddOrUpdate(() => sendAll.SendingAll(), Cron.MinuteInterval(1));
+
+
+
             app.UseCookiePolicy();
             if (env.IsDevelopment())
             {
