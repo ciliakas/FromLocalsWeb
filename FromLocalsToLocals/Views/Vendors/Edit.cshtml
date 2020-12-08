@@ -9,8 +9,7 @@
 <h2 class="mt-4 " style="text-align: center;">@_localizer["Edit a Service"]</h2>
 <hr />
 <div class="ml-4 mb-3">
-    <!-- Space after arrow symbol is NEEDED-->
-    <a asp-action="MyVendors"><span class="fa fa-arrow-left"></span> @_localizer["Back to List"]</a>
+    <a asp-action="MyVendors"><span class="fa fa-arrow-left"></span> @_localizer["&nbsp;Back to List"]</a>
 </div>
 <div class="container">
     @Html.Partial("_ServiceAddEdit", Model)

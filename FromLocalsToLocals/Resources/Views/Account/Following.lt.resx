@@ -117,53 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All" xml:space="preserve">
-    <value>Visi</value>
+  <data name="Error occured when trying to unfollow vendor" xml:space="preserve">
+    <value>Įvyko klaida, bandant nebesekti pardavėjo</value>
   </data>
-  <data name="All Services" xml:space="preserve">
-    <value>Visos paslaugos</value>
+  <data name="Following" xml:space="preserve">
+    <value>Seka</value>
   </data>
-  <data name="But there might be some soon!" xml:space="preserve">
-    <value>Turėtų greitu laiku atsirasti!</value>
-  </data>
-  <data name="Car repair" xml:space="preserve">
-    <value>Servisas</value>
-  </data>
-  <data name="Filter" xml:space="preserve">
-    <value>Filtruoti</value>
-  </data>
-  <data name="Filters" xml:space="preserve">
-    <value>Filtrai</value>
-  </data>
-  <data name="Follow" xml:space="preserve">
-    <value>Sekti</value>
-  </data>
-  <data name="Items per page:" xml:space="preserve">
-    <value>Elementų puslapyje</value>
-  </data>
-  <data name="New Services" xml:space="preserve">
-    <value>Naujos paslaugos</value>
-  </data>
-  <data name="No new services:" xml:space="preserve">
-    <value>Naujų paslaugų nėra:</value>
-  </data>
-  <data name="No Reviews" xml:space="preserve">
-    <value>Apžvalgų nėra</value>
-  </data>
-  <data name="Random" xml:space="preserve">
-    <value>Atsitiktinai</value>
-  </data>
-  <data name="Read More" xml:space="preserve">
-    <value>Plačiau</value>
-  </data>
-  <data name="Reviews" xml:space="preserve">
-    <value>Apžvalgos</value>
-  </data>
-  <data name="Services in the past month registered on our site" xml:space="preserve">
-    <value>Šį mėnesį užregistruotos paslaugos</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Pavadinimas</value>
+  <data name="Image" xml:space="preserve">
+    <value>Nuotrauka</value>
   </data>
   <data name="Unfollow" xml:space="preserve">
     <value>Nebesekti</value>

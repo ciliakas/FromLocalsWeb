@@ -119,6 +119,12 @@ namespace FromLocalsToLocals.Controllers
             }
         }
 
+        public IActionResult Following()
+        {
+            var userId = _userManager.GetUserId(User);
+            var user = _context.Users.Single(x => x.Id == userId);
+            return View(user.Following.ToList());
+        }
 
         public IActionResult Profile()
         {

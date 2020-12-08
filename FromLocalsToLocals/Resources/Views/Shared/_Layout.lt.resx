@@ -129,6 +129,9 @@
   <data name="FAQ" xml:space="preserve">
     <value>DUK</value>
   </data>
+  <data name="Following" xml:space="preserve">
+    <value>Seka</value>
+  </data>
   <data name="Found a bug?&amp;nbsp;" xml:space="preserve">
     <value>Radote klaidą?&amp;nbsp;</value>
   </data>
