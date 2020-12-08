@@ -45,7 +45,7 @@
     </div>
     <hr />
 
-    <h3 class="mt-4 mb-2" style="text-align: center;">The Most Popular Services</h3>
+    <h3 class="mt-4 mb-2" style="text-align: center;">@_localizer["The Most Popular Services"]</h3>
     <hr />
     @if (Model.PopularVendors.Count() == 0)
     {
@@ -76,11 +76,11 @@
                                 case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                                 break;
 
-                            case "RuralTourism":<p class="text-muted text-uppercase">Rural tourism</p>
+                                case "RuralTourism":<p class="text-muted text-uppercase">@_localizer["Rural tourism"]</p>
                                 break;
 
-                            default: <p class="text-muted text-uppercase">@item.VendorTypeDb</p>
-                            break;
+                                default: <p class="text-muted text-uppercase">@item.VendorTypeDb</p>
+                                break;
                     }
                             <hr />
                             @if (item.ReviewsCount.Sum() == 0)

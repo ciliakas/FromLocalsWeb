@@ -67,7 +67,7 @@ else
                             case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                             break;
 
-                            case "RuralTourism":<p class="text-muted text-uppercase">Rural tourism</p>
+                            case "RuralTourism":<p class="text-muted text-uppercase">@_localizer["Rural tourism"]</p>
                             break;
 
                             default: <p class="text-muted text-uppercase">@vendor.VendorTypeDb</p>
@@ -160,7 +160,7 @@ else
     </div>
 }
 <h3 class="mt-4" style="text-align: center;"> @_localizer["All Services"]</h3>
-<p class="mt-2" style="text-align: center; font-size: 18px;">Experience all the finest products around you</p>
+<p class="mt-2" style="text-align: center; font-size: 18px;">@_localizer["Experience all the finest products around you"]</p>
 <hr />
 <p>
     <a type="button" data-toggle="collapse" href="#serviceFilter" role="button" aria-expanded="false" aria-controls="serviceFilter" style="color: black; font-size: 19px;">
@@ -220,7 +220,7 @@ else
                             case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                             break;
 
-                            case "RuralTourism":<p class="text-muted text-uppercase">Rural tourism</p>
+                            case "RuralTourism":<p class="text-muted text-uppercase">@_localizer["Rural tourism"]</p>
                             break;
 
                             default: <p class="text-muted text-uppercase">@Model.Vendors[i * itemsInRow + j].VendorTypeDb</p>

@@ -25,7 +25,7 @@
             <hr />
             <p>
                 <a type="button" data-toggle="collapse" href="#workHoursPanel" role="button" aria-expanded="false" aria-controls="workHoursPanel" style="color: black; font-size: 19px;">
-                    <img src="~/Assets/workHours.png" class="mr-2" style="width:30px; height:25px;" /> Choose your working hours
+                    <img src="~/Assets/workHours.png" class="mr-2" style="width:30px; height:25px;" /> @_localizer["Choose your working hours"]
                 </a>
             </p>
             <div class="collapse mt-2" id="workHoursPanel">
@@ -40,20 +40,19 @@
                                     <input class="form-check-input" type="checkbox" asp-for="VendorHours[i].IsWorking" id="@i"/>
                                     @switch (i)
                                     {
-                                        case 0:<span>Monday</span>
+                                        case 0:<span>@_localizer["Monday"]</span>
                                             break;
-                                        case 1: <span>Tuesday</span>
-                                            
+                                        case 1: <span>@_localizer["Tuesday"]</span>
                                             break;
-                                        case 2: <span>Wednesday</span>
+                                        case 2: <span>@_localizer["Wednesday"]</span>
                                             break;
-                                        case 3: <span>Thursday</span>
+                                        case 3: <span>@_localizer["Thursday"]</span>
                                             break;
-                                        case 4: <span>Friday</span>
+                                        case 4: <span>@_localizer["Friday"]</span>
                                             break;
-                                        case 5: <span>Saturday</span>
+                                        case 5: <span>@_localizer["Saturday"]</span>
                                             break;
-                                        default: <span>Sunday</span>
+                                        default: <span>@_localizer["Sunday"]</span>
                                             break;
                                     }
                                 </div>
@@ -61,7 +60,7 @@
                         </div>
                         <div class="col fromH_@i" style="display: none;">
                             <div class="form-group d-flex justify-content-between">
-                                <label class="mr-1">From </label>
+                                <label class="mr-1">@_localizer["From"] </label>
                                 <select class="form-control" style="max-width: 92px;" asp-for="VendorHours[i].OpenTime">
                                     @for (var hours = 8; hours < 21; hours++)
                                     {
@@ -75,7 +74,7 @@
                         </div>
                         <div class="col toH_@i" style="display: none;">
                             <div class="form d-flex justify-content-between">
-                                <label class="mr-1">To</label>
+                                <label class="mr-1">@_localizer["To"]</label>
                                 <select class="form-control" style="max-width: 92px;" asp-for="VendorHours[i].CloseTime">
                                     @for (var hours = 9; hours < 21; hours++)
                                     {
