@@ -443,9 +443,5 @@ namespace FromLocalsToLocals.Controllers
             return new ProfileVM(user.Email, user.UserName, user.Image);
         }
         #endregion
-
-
-      
-
     }
 }
