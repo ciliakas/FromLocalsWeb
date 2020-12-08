@@ -101,7 +101,7 @@ namespace FromLocalsToLocals.Models.Services
 
         public async Task<List<Vendor>> GetPopularVendorsAsync(int count)
         {
-            var list = _context.Vendors.Where(x => (DateTime.UtcNow - x.LastClickDate).Days < -1).OrderByDescending(x => x.Popularity).Take(count);
+            var list = _context.Vendors.Where(x => (DateTime.UtcNow - x.LastClickDate).Days < 7).OrderByDescending(x => x.Popularity).Take(count);
             return await list.ToListAsync(); 
         }
 
