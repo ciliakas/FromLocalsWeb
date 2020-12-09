@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Controllers
 {
+    [Authorize]
     public class ChatController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -26,8 +27,8 @@ namespace FromLocalsToLocals.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            return View(await _userManager.GetUserAsync(User));
+            var user = await _userManager.GetUserAsync(User);
+            return View(Tuple.Create(user,false));
         }
 
         [HttpPost]
@@ -91,6 +92,7 @@ namespace FromLocalsToLocals.Controllers
 
             return Json(new { success = true });
         }
+
 
     }
 

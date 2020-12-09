@@ -1,7 +1,10 @@
 ﻿using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Utilities.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,24 +12,27 @@ namespace FromLocalsToLocals.ViewComponents
 {
     public class ContactBody : ViewComponent
     {
-        private readonly AppDbContext _context;
-
-        public ContactBody(AppDbContext context)
+        public async Task<IViewComponentResult> InvokeAsync(string title,byte[] image,string lastMsg,string date, bool isRead)
         {
-            _context = context;
+            ContactBodyVM vm = new ContactBodyVM
+            {
+                Title = title,
+                Image = image,
+                LastMsg = lastMsg,
+                Date = date,
+                IsRead = isRead
+            };
+
+            return View(vm);
         }
 
-        public async Task<IActionResult> InvokeAsync(AppUser user)
+        public class ContactBodyVM
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-
-            }
-            return null;
-
+            public string Title { get; set; }
+            public byte[] Image { get; set; }
+            public string LastMsg { get; set; }
+            public string Date { get; set; }
+            public bool IsRead { get; set; }
         }
 
     }

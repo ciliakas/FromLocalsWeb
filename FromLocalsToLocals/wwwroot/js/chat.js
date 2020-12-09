@@ -38,6 +38,11 @@ function loadMessages(msg, userName, vendorTitle, fromVendors) {
 
     var html, currName, currImg;
 
+    console.log(msg);
+    msg.sort(function (a, b) {
+        new Date(a.date) - new Date(b.date);
+    });
+    console.log(msg);
 
     for (var i = 0; i < msg.length; i++) {
         var msgItem = document.createElement("li")

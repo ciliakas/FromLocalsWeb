@@ -1,185 +1,196 @@
-﻿@model AppUser
+﻿@model Tuple<AppUser, bool>
 
-
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="~/css/chat.css" rel="stylesheet" />
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12 mt-5">
-            <div class="panel panel-white border-top-green">
-                <div class="panel-body chat">
-                    <div class="row chat-wrapper">
-
-                        <!--Left side-->
-                        <div class="col-md-4">
-                            <div>
-                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 550px;">
-                                    <div class="chat-list-wrapper" style="overflow-y: auto; overflow-x:hidden" width: auto; height: 550px;">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <button onclick="mySentMsgs()" class="btn" style="width:100%">My sent</button>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <button onclick="myVendorsMsgs()" class="btn active" style="width:100%">My Vendors</button>
-                                            </div>
-                                        </div>
-                                        <hr class="m-0">
-                                    
-                                        <!--List of other vendors which user contacted-->
-                                        <ul id="mySentMsgs" class="chat-list" style="display:none">
-                                            @if (Model.Image != null)
-                                            {<li style="display:none">
-                                                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" alt="avatar" id="@Model.UserName-img" class="img-circle" style="display:none" />
-                                            </li>
-                                            }
-                                            else
-                                            {<li style="display:none">
-                                                 <img src="~/Assets/profile.png" id="@Model.UserName-img" alt="avatar" class="img-circle" style="display:none" />
-                                            </li>
-                                            }
-                                            @foreach (var c in Model.Contacts)
-                                            {
-
-                                                <li class="new" onclick='loadMessages(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.Messages)),@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.User.UserName)),@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.Vendor.Title)), false)'>
-                                                    <span class="avatar">
-                                                        @if (c.Vendor.Image != null)
-                                                        {
-                                                            <img src="data:image;base64,@System.Convert.ToBase64String(c.Vendor.Image)" id="@c.Vendor.Title-img" alt="avatar" class="img-circle" />
-                                                        }
-                                                        else
-                                                        {
-                                                            <img src="~/Assets/appLogo.png" id="@c.Vendor.Title-img" alt="avatar" class="img-circle" />
-                                                        }
-                                                    </span>
-                                                    <div class="body">
-                                                        <div class="header">
-                                                            <span class="username">@c.Vendor.Title</span>
-                                                            <small class="timestamp text-muted">
-                                                                <i class="fa fa-clock-o"></i>@c.Messages.Last().Date
-                                                            </small>
-                                                        </div>
-                                                        <p id>
-                                                            @c.Messages.Last().Text
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                            }
-                                        </ul>
+<div class="container mt-5">
+    <div class="row" style="border:solid 1px gray;border-top:solid 2px green;">
+        <div class="col-md-4" style="border-right:1px solid gray;">
+            <div class="row" style="border-bottom:1px solid gray;">
+                <div class="col-md-6 text-center">
+                    <a class="btn">Sent messages</a>
+                </div>
+                <div class="col-md-6 text-center">
+                    <a class="btn">My Vendors</a>
+                </div>
+            </div>
 
 
 
-                                        <!--List of user vendors that other users contacted -->
-                                        <div class="accordion active" id="listOfVendors">
-                                            @foreach (var v in Model.Vendors)
-                                            {
-                                                <div class="card">
-                                                    <div class="card-header" id="@v.Title + 'H'">
-                                                        <h5 class="mb-0">
-                                                            <button class="btn" type="button" data-toggle="collapse" data-target="#@v.Title" aria-expanded="true" aria-controls="collapseOne">
-                                                                @if (v.Image != null)
-                                                                {
-                                                                    <img src="data:image;base64,@System.Convert.ToBase64String(v.Image)" alt="avatar" id="@v.Title-img" class="img-circle" style="width:50px;height:50px;" />
-                                                                }
-                                                                else
-                                                                {
-                                                                    <img src="~/Assets/appLogo.png" id="@v.Title-img" alt="avatar" class="img-circle" style="width:50px;height:50px;" />
-                                                                }
-                                                                @v.Title
-                                                            </button>
-                                                        </h5>
-                                                    </div>
-
-                                                    <div id="@v.Title" class="collapse" aria-labelledby="@v.Title + 'H'" data-parent="#listOfVendors">
-                                                        <div class="card-body" style="padding:0;">
-                                                            <ul class="chat-list">
-                                                                @foreach (var c in v.Contacts)
-                                                                {
-
-                                                                    <li class="new" onclick='loadMessages(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.Messages)),@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.User.UserName)),@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(c.Vendor.Title)), true)'>
-                                                                        <span class="avatar">
-                                                                            @if (c.User.Image != null)
-                                                                            {
-                                                                                <img src="data:image;base64,@System.Convert.ToBase64String(c.User.Image)" alt="avatar" id="@c.User.UserName-img" class="img-circle" />
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <img src="~/Assets/profile.png" id="@c.User.UserName-img" alt="avatar" class="img-circle" />
-                                                                            }
-                                                                        </span>
-                                                                        <div class="body">
-                                                                            <div class="header">
-                                                                                <span class="username" style="color:black;">@c.User.UserName</span>
-                                                                                <small class="timestamp text-muted">
-                                                                                    <i class="fa fa-clock-o"></i>
-                                                                                    @c.Messages.Last().Date
-                                                                                </small>
-                                                                            </div>
-                                                                            <p>
-                                                                                @c.Messages.Last().Text
-                                                                                        </p>
-                                                                                    </div>
-                                                                                </li>
-
-
-                                                                            }
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        }
-                                                    </div>
+            <div class="inbox_chat">
+                <div class="chat_list active_chat">
+                    <div class="chat_people">
+                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                        <div class="chat_ib">
+                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                            <p>
+                                Test, which is a new approach to have all solutions
+                                astrology under one roof.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_list">
+                    <div class="chat_people">
+                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                        <div class="chat_ib">
+                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                            <p>
+                                Test, which is a new approach to have all solutions
+                                astrology under one roof.
+                            </p>
+                        </div>
+                    </div>
+                </div><div class="chat_list">
+                    <div class="chat_people">
+                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                        <div class="chat_ib">
+                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                            <p>
+                                Test, which is a new approach to have all solutions
+                                astrology under one roof.
+                            </p>
+                        </div>
+                    </div>
+                </div><div class="chat_list">
+                    <div class="chat_people">
+                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                        <div class="chat_ib">
+                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                            <p>
+                                Test, which is a new approach to have all solutions
+                                astrology under one roof.
+                            </p>
+                        </div>
+                    </div>
+                </div><div class="chat_list">
+                    <div class="chat_people">
+                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                        <div class="chat_ib">
+                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                            <p>
+                                Test, which is a new approach to have all solutions
+                                astrology under one roof.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
 
-                                                </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 478.639px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div>
-                                            </div>
-                                        </div>
 
-                                        <!--END Left side-->
-                                </div>
+                <div class="chat_list">
+                    <div class="chat_people">
+                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                        <div class="chat_ib">
+                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                            <p>
+                                Test, which is a new approach to have all solutions
+                                astrology under one roof.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_list">
+                    <div class="chat_people">
+                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                        <div class="chat_ib">
+                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                            <p>
+                                Test, which is a new approach to have all solutions
+                                astrology under one roof.
+                            </p>
 
-                                <!--Right side-->
-                                <div class="col-md-8">
-                                    <div id="chattingWith" style="font-size:20px;" class="text-center"></div>
-                                    <div>
-                                        <!--Messages-->
-                                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 452px;">
-                                            <div class="message-list-wrapper" style="overflow: hidden; width: auto; height: 452px;">
-                                                <ul class="message-list pre-scrollable" style="max-height:452px;" id="messagesList">
-                                                </ul>
-                                            </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 265px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 187.092px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div>
-                                        </div>
+                        </div>
+                    </div>
+                </div>
 
-                                        <!--Send message-->
-                                        <div class="compose-box" id="sendMsg" style="display:none;">
-                                            <div class="row mr-1 ml-1">
-                                                <textarea onkeyup="checkInput()" id="newMsg" class="form-control input-sm" placeholder="Type your message here..."></textarea>
-                                            </div>
-                                            <div class="row mt-1">
-                                                <div class="col-md-4"></div>
-                                                <div class="col-md-4">
-                                                    <button onclick="sendMessage()" id="postMsg" disabled class="btn btn-green btn-sm pull-right w-100" style="justify-content:center">
-                                                        <i class="fa fa-location-arrow"></i> Send
-                                                    </button>
-                                                </div>
-                                                <div class="col-md-4"></div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!--END Right side-->
-                                </div>
-
-
-                            </div>
-
-                     </div>
-                 </div>
-              </div>
-
+            </div>
         </div>
+        <div class="col-md-8">
+            <div class="row justify-content-center" style="font-size:20px;font-weight:600;border-top:2px solid green;border-bottom:1px solid gray">
+                Medis
+            </div>
+            <div class="msg_history">
+
+                <div class="incoming_msg">
+                    <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                    <div class="received_msg">
+                        <div class="received_withd_msg">
+                            <p>
+                                Test which is a new approach to have all
+                                solutions
+                            </p>
+                            <span class="time_date"> 11:01 AM    |    June 9</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="incoming_msg">
+                    <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                    <div class="received_msg">
+                        <div class="received_withd_msg">
+                            <p>
+                                Test which is a new approach to have all
+                                solutions
+                            </p>
+                            <span class="time_date"> 11:01 AM    |    June 9</span>
+                        </div>
+                    </div>
+                </div><div class="incoming_msg">
+                    <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                    <div class="received_msg">
+                        <div class="received_withd_msg">
+                            <p>
+                                Test which is a new approach to have all
+                                solutions
+                            </p>
+                            <span class="time_date"> 11:01 AM    |    June 9</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="outgoing_msg">
+                    <div class="sent_msg">
+                        <p>
+                            Test which is a new approach to have all
+                            solutions
+                        </p>
+                        <span class="time_date"> 11:01 AM    |    June 9</span>
+                    </div>
+                </div>
+                <div class="incoming_msg">
+                    <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                    <div class="received_msg">
+                        <div class="received_withd_msg">
+                            <p>Test, which is a new approach to have</p>
+                            <span class="time_date"> 11:01 AM    |    Yesterday</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="outgoing_msg">
+                    <div class="sent_msg">
+                        <p>Apollo University, Delhi, India Test</p>
+                        <span class="time_date"> 11:01 AM    |    Today</span>
+                    </div>
+                </div>
+                <div class="incoming_msg">
+                    <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                    <div class="received_msg">
+                        <div class="received_withd_msg">
+                            <p>
+                                We work directly with our designers and suppliers,
+                                and sell direct to you, which means quality, exclusive
+                                products, at a price anyone can afford.
+                            </p>
+                            <span class="time_date"> 11:01 AM    |    Today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="type_msg">
+                <div class="input_msg_write">
+                    <input type="text" class="write_msg" placeholder="Type a message">
+                    <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 </div>
-
-
-<script src="~/js/chat.js"></script>
