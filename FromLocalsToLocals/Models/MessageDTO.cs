@@ -7,19 +7,10 @@ namespace FromLocalsToLocals.Models
 {
     public class MessageDTO
     {
-        public string userName { get; set; }
-        public string vendorTitle { get; set; }
-        public string message { get; set; }
-        public bool isUserSender { get; set; }
-
-
-        public MessageDTO(string userName, string vendorTitle, string message, bool isUserSender)
-        {
-            this.userName = userName;
-            this.vendorTitle = vendorTitle;
-            this.message = message;
-            this.isUserSender = isUserSender;
-        }
-
+        public string Message { get; set; }
+        public bool IsUserTab { get; set; }
+        public int ContactId { get; set; }
+        public bool NewContact { get; set; }
+        public string NewContactVendorTitle { get; set; }
     }
 }

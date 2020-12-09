@@ -17,18 +17,16 @@ namespace FromLocalsToLocals.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
 
-
         public ChatController(UserManager<AppUser> userManager, AppDbContext context)
         {
             _userManager = userManager;
             _context = context;
         }
 
-
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string tabName)
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(Tuple.Create(user,false));
+            return View(Tuple.Create(user,tabName == "ISent"));
         }
 
         [HttpPost]
@@ -40,59 +38,77 @@ namespace FromLocalsToLocals.Controllers
                 return Json(new { success = false });
             }
             
-            if ((user.UserName != message.userName && message.isUserSender) || (!(user.Vendors.Any(x => x.Title == message.vendorTitle)) && !message.isUserSender)) {
+            Contact contact = null;
+            
+            if (message.IsUserTab)
+            {
+                contact = user.Contacts.FirstOrDefault(x=> x.ID == message.ContactId);
+            
+            }
+            else
+            {
+                user.Vendors.ToList().ForEach(x =>
+                {
+                    var c = x.Contacts.FirstOrDefault(y => y.ID == message.ContactId);
+                    if (c != null)
+                    {
+                        contact = c;
+                        return;
+                    }
+                });
+            }
+
+            if(contact == null || (contact.User == user && !message.IsUserTab))
+            {
                 return Json(new { success = false });
             }
 
-            Contact contact;
-            if (message.isUserSender)
-            {
-                contact = user.Contacts.FirstOrDefault(x => x.Vendor.Title == message.vendorTitle);
-            }
-            else
-            {
-                contact = user.Vendors.FirstOrDefault(x => x.Title == message.vendorTitle).Contacts.FirstOrDefault(x => x.Vendor.Title == message.vendorTitle);
-            }
-
-
-            if (contact == null)
-            {
-                var newContact = new Contact
+           try
+           {
+               contact.Messages.Add(new Message { Contact = contact, ContactID = contact.ID, IsUserSender = message.IsUserTab, Text = message.Message });
+                if (message.IsUserTab)
                 {
-                    Vendor = _context.Vendors.FirstOrDefault(x => x.Title == message.vendorTitle),
-                    User = user
-                };
-                var newMsg = new Message
-                {
-                    Text = message.message,
-                    IsUserSender = message.isUserSender,
-                    Contact = newContact
-                };
-            
-                _context.Contacts.Add(newContact);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                try
-                {
-                    contact.Messages.Add(new Message { Contact = contact, ContactID = contact.ID, IsUserSender = message.isUserSender, Text = message.message });
-                    _context.Update(contact);
-                    // _context.Messages.Add(new Message { Contact = contact, ContactID = contact.ID, IsUserSender = message.isUserSender, Text = message.message });
-                    await _context.SaveChangesAsync();
+                    contact.ReceiverRead = false;
                 }
-                catch (Exception ex)
+                else
                 {
-                    return Json(new { success = false });
-            
+                    contact.UserRead = false;
                 }
-            
-            }
-            
-
+                _context.Update(contact);
+               await _context.SaveChangesAsync();
+           }
+           catch (Exception ex)
+           {
+               return Json(new { success = false });
+           
+           }
+                     
             return Json(new { success = true });
         }
 
+        public async  Task<IActionResult> GetMessagesComponent(int contactId, bool isUserTab)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            Contact uContact = null;
+            if (isUserTab)
+            {
+                uContact = user.Contacts.FirstOrDefault(x => x.ID == contactId);
+            }
+            else
+            {
+                user.Vendors.ToList().ForEach(x => {
+                    var c =  x.Contacts.FirstOrDefault(y => y.ID == contactId);
+                    if(c != null)
+                    {
+                        uContact = c;
+                        return;
+                    }
+
+                });
+            }
+
+            return ViewComponent("Messages", new { contact = uContact, isUserTab = isUserTab });
+        }
 
     }
 

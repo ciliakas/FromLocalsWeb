@@ -1,30 +1,35 @@
 ﻿@model FromLocalsToLocals.ViewComponents.ContactBody.ContactBodyVM
 
-<style>
-    .text {
-        display: block;
-        width: 100px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-</style>
 
-<a href="#" class="list-group-item">
-     <div class="media">
-         <div class="pull-left">
-             @if (Model.Image != null)
-             {
-                 <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" alt="avatar" class="img-circle"/>
-             }
-             else
-             {
-                <img class="img-circle" src="~/Assets/profile.png" alt="avatar"/>
-             }
-         </div>
-         <div class="media-body">
-             <h4 class="media-heading">@Model.Title <small><i class="fa fa-clock-o"></i>@Model.Date</small></h4>
-             <small class="text">@Model.LastMsg</small>
-         </div>
-     </div>
-</a>
+<div class="chat_list" onclick="loadMessages(this)" id="@Model.ContactID">
+    <div class="chat_people">
+        <div class="chat_img">
+            @if (Model.Image != null)
+            {
+                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" alt="avatar" class="img-circle" />
+            }
+            else
+            {
+                <img class="img-circle" src="~/Assets/profile.png" alt="avatar" />
+            }
+        </div>
+        <div class="chat_ib">
+            <h5>@Model.Title <span class="chat_date"><i class="fa fa-clock-o"></i>@Model.Date</span></h5>
+            <p>
+                @Model.LastMsg
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    var isRead = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.IsRead))
+    var id = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ContactID))
+
+    $(document).ready(() => {
+        if (!isRead) {
+            var div = document.getElementById(id);
+            div.classList.add("unread_chat");
+        }
+    });
+</script>
