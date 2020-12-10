@@ -12,6 +12,9 @@ function loadMessages(obj) {
             $(".msg_send_btn").removeAttr('disabled');
             jsContactId = parseInt(obj.id);
             setViewToBottom();
+            clearTextField();
+            $(".active_chat").removeClass("active_chat");
+            obj.classList.add("active_chat");
         },
     });
    
@@ -30,14 +33,15 @@ function postMessage() {
             data: JSON.stringify({ Message: input, IsUserTab: userTab, ContactId: jsContactId }),
             datatype: 'json',
             success: function (result) {
-                loadNewMsg(input);
+                loadNewMyMsg(input);
                 setViewToBottom();
+                clearTextField();
             },
         });
     }
 }
 
-function loadNewMsg(msg) {
+function loadNewMyMsg(msg) {
     var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
     var newMsg = document.createElement("div");
     newMsg.classList.add("outgoing_msg");
@@ -51,8 +55,55 @@ function loadNewMsg(msg) {
     $("#msg_history").append(newMsg);
 }
 
+function clearTextField() {
+    document.getElementById("postMsgText").value = "";
+}
+
 function setViewToBottom() {
     var scrollBar = document.getElementById('msg_history');
     scrollBar.scrollTop = scrollBar.scrollHeight - scrollBar.offsetHeight;
-    document.getElementById("postMsgText").value = "";
+}
+
+
+//signalR
+var connectionToMsg = new signalR.HubConnectionBuilder().withUrl("/msgHub").build();
+
+connectionToMsg.on("sendNewMessage", (obj) => {
+    loadNewIncomingMsg(obj);
+    setViewToBottom();
+});
+
+connectionToMsg.start();
+
+function loadNewIncomingMsg(obj) {
+    var newObj = JSON.parse(obj);
+    console.log(newObj.ContactID);
+    
+    if (parseInt(newObj.ContactID) == jsContactId) {
+
+        var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        var img = `<img class="img-circle" src="/Assets/profile.png" alt="avatar" />`;
+        if (newObj.Image != null) {
+            img = `<img src="data:image;base64,${newObj.Image}" alt="avatar" class="img-circle" />`
+        } else if (obj.IsUserTab) {
+            img = `<img class="img-circle" src="/Assets/localSeller.png" alt="avatar" />`;
+        }
+
+        var newMsg = document.createElement("div");
+        newMsg.classList.add("incoming_msg");
+        newMsg.innerHTML = `
+            <div class="incoming_msg_img">
+            ${img}
+            </div>
+            <div class="received_msg">
+                 <div class="received_withd_msg">
+                     <p>
+                         ${newObj.Text}
+                     </p>
+                     <span class="time_date">${date}</span>
+                 </div>
+             </div>`;
+        console.log(newObj.Text);
+        $("#msg_history").append(newMsg);
+    }
 }

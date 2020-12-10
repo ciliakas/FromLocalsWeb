@@ -1,9 +1,12 @@
 ﻿using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +19,13 @@ namespace FromLocalsToLocals.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
+        private readonly IHubContext<MessageHub> _hubContext;
 
-        public ChatController(UserManager<AppUser> userManager, AppDbContext context)
+        public ChatController(UserManager<AppUser> userManager, AppDbContext context, IHubContext<MessageHub> hubContext)
         {
             _userManager = userManager;
             _context = context;
+            _hubContext = hubContext;
         }
 
         public async Task<IActionResult> Index(string tabName)
@@ -33,17 +38,21 @@ namespace FromLocalsToLocals.Controllers
         public async Task<IActionResult> CreateMessage([FromBody] MessageDTO message)
         {
             var user = await _userManager.GetUserAsync(User);
+            string userIdToSend = "";
+
             if(user == null)
             {
                 return Json(new { success = false });
             }
             
             Contact contact = null;
-            
+            NewMessageDTO dto = new NewMessageDTO() { Text = message.Message, ContactID = message.ContactId, IsUserTab=message.IsUserTab};
+
             if (message.IsUserTab)
             {
                 contact = user.Contacts.FirstOrDefault(x=> x.ID == message.ContactId);
-            
+                userIdToSend = contact.Vendor.UserID;
+                dto.Image = user.Image;
             }
             else
             {
@@ -53,6 +62,8 @@ namespace FromLocalsToLocals.Controllers
                     if (c != null)
                     {
                         contact = c;
+                        userIdToSend = contact.UserID;
+                        dto.Image = x.Image;
                         return;
                     }
                 });
@@ -82,9 +93,22 @@ namespace FromLocalsToLocals.Controllers
                return Json(new { success = false });
            
            }
+            
+            
+            await _hubContext.Clients.User(userIdToSend).SendAsync("sendNewMessage", JsonConvert.SerializeObject(dto));
                      
             return Json(new { success = true });
         }
+
+        private class NewMessageDTO
+        {
+            public string Text { get; set; }
+            public byte[] Image { get; set; }
+            public int ContactID { get; set; }
+            public bool IsUserTab { get; set; }
+        }
+
+
 
         public async  Task<IActionResult> GetMessagesComponent(int contactId, bool isUserTab)
         {

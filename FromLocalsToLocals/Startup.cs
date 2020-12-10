@@ -141,7 +141,9 @@ namespace FromLocalsToLocals
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapHub<NotificationHub>("/notificationHub");
+                endpoints.MapHub<NotiHub>("/notiHub");
+                endpoints.MapHub<MessageHub>("/msgHub");
+
             });
         }
 

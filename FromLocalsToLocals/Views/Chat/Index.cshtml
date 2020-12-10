@@ -16,7 +16,7 @@
             <div class="inbox_chat">
                 @if (Model.Item2)
                 {
-                    var contacts = Model.Item1.Contacts.OrderBy(x => x.Messages.OrderBy(y => y.Date));
+                    var contacts = Model.Item1.Contacts.OrderBy(x => x.Messages.OrderBy(y => y.Date).FirstOrDefault().Date).ToList();
                     foreach (var c in contacts)
                     {                       
                         @await Component.InvokeAsync("ContactBody", new { contact = c, title = c.Vendor.Title , image = c.Vendor.Image , userTab = true  });
@@ -29,7 +29,7 @@
                     {
                         if (v.Contacts.Count > 0)
                         {
-                        var contacts = v.Contacts.OrderBy(x => x.Messages.OrderBy(y => y.Date));
+                        var contacts = v.Contacts.OrderBy(x => x.Messages.OrderBy(y => y.Date).FirstOrDefault().Date).ToList();
 
                         <div class="card">
                             <div class="card-header" id="@v.Title H">
