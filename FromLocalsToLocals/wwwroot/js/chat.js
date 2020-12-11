@@ -1,5 +1,6 @@
 ﻿var jsContactId = -1;
 
+//Loads all the messages
 function loadMessages(obj) {
 
     $("#msg_history").empty();
@@ -15,11 +16,14 @@ function loadMessages(obj) {
             clearTextField();
             $(".active_chat").removeClass("active_chat");
             obj.classList.add("active_chat");
+
+            readMessage();
         },
     });
    
 }
 
+//Post new message to db
 function postMessage() {
     var input = document.getElementById("postMsgText").value;
 
@@ -41,6 +45,7 @@ function postMessage() {
     }
 }
 
+//Load new message writter by user
 function loadNewMyMsg(msg) {
     var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
     var newMsg = document.createElement("div");
@@ -53,6 +58,8 @@ function loadNewMyMsg(msg) {
                  <span class="time_date">${date}</span>
              </div>`;
     $("#msg_history").append(newMsg);
+
+    updateContact(jsContactId, msg , date);
 }
 
 function clearTextField() {
@@ -75,13 +82,15 @@ connectionToMsg.on("sendNewMessage", (obj) => {
 
 connectionToMsg.start();
 
+//Loads new message written by other person
 function loadNewIncomingMsg(obj) {
+    var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
     var newObj = JSON.parse(obj);
     console.log(newObj.ContactID);
     
     if (parseInt(newObj.ContactID) == jsContactId) {
+        readMessage();
 
-        var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
         var img = `<img class="img-circle" src="/Assets/profile.png" alt="avatar" />`;
         if (newObj.Image != null) {
             img = `<img src="data:image;base64,${newObj.Image}" alt="avatar" class="img-circle" />`
@@ -103,7 +112,39 @@ function loadNewIncomingMsg(obj) {
                      <span class="time_date">${date}</span>
                  </div>
              </div>`;
-        console.log(newObj.Text);
         $("#msg_history").append(newMsg);
+    } else {
+        var contactBody = document.getElementById(parseInt(newObj.ContactID));
+        contactBody.classList.add("unread_chat");
     }
+
+    updateContact(parseInt(newObj.ContactID) , newObj.Text , date);
+}
+
+
+//Sets UserRead and ReceiverRead to true
+function readMessage() {
+    $.ajax({
+        type: "POST",
+        url: `/Chat/ReadMessage`,
+        data: { contactId: jsContactId},
+        datatype: 'json'    
+    });
+
+    var contactBody = document.getElementById(jsContactId);
+    contactBody.classList.remove("unread_chat");
+}
+
+//Update message in Contact list
+function updateContact(contactId, text, date) {
+    var contactsBody = document.getElementById(contactId);
+
+    var contactDate = contactsBody.querySelector('.chat_date');
+    contactDate.innerHTML = `<i class="fa fa-clock-o"></i>${date}`;
+
+    var contactText = contactsBody.querySelector('p');
+    contactText.innerHTML = text;
+
+    console.log(date);
+
 }

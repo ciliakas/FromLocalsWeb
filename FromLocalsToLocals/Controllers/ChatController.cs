@@ -108,6 +108,17 @@ namespace FromLocalsToLocals.Controllers
             public bool IsUserTab { get; set; }
         }
 
+        [HttpPost]
+        public async Task ReadMessage(int contactId)
+        {
+            var contact = await _context.Contacts.FirstOrDefaultAsync(x => x.ID == contactId);
+            contact.ReceiverRead = true;
+            contact.UserRead = true;
+            _context.Contacts.Update(contact);
+            await _context.SaveChangesAsync();
+
+        }
+
 
 
         public async  Task<IActionResult> GetMessagesComponent(int contactId, bool isUserTab)

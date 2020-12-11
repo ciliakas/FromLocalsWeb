@@ -10,7 +10,14 @@
             }
             else
             {
-                <img class="img-circle" src="~/Assets/profile.png" alt="avatar" />
+                if (Model.UserTab)
+                {
+                    <img class="img-circle" src="~/Assets/localSeller.png" alt="avatar" />
+                }
+                else
+                {
+                    <img class="img-circle" src="~/Assets/profile.png" alt="avatar" />
+                }
             }
         </div>
         <div class="chat_ib">
