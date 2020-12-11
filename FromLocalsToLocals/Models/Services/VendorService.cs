@@ -1,10 +1,6 @@
 ﻿using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Utilities;
-using Geocoding;
 using Microsoft.EntityFrameworkCore;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using SuppLocals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +12,10 @@ namespace FromLocalsToLocals.Models.Services
     {
         private readonly AppDbContext _context;
 
-
         public VendorService(AppDbContext context)
         {
             _context = context;
         }
-
 
         public async Task AddPostAsync(Vendor vendor,Post post)
         {

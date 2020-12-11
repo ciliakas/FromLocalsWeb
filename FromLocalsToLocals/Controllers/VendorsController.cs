@@ -25,14 +25,16 @@ namespace FromLocalsToLocals.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly AppDbContext _context;
         private readonly IStringLocalizer<VendorsController> _localizer;
+        readonly IDataAdapterService _dataAdapterService;
 
-        public VendorsController(AppDbContext context,UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer)
+        public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorService vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IDataAdapterService dataAdapterService)
         {
             _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
             _vendorService = vendorService;
             _toastNotification = toastNotification;
             _context = context;
             _localizer = localizer;
+            _dataAdapterService = dataAdapterService;
         }
 
         [HttpGet]
@@ -155,7 +157,7 @@ namespace FromLocalsToLocals.Controllers
                         }
                         else
                         {
-                            TimeSpan timeSpan = new TimeSpan(-1);
+                            TimeSpan timeSpan = new TimeSpan(0);
                             WorkHours workHours = new WorkHours(vendor.ID, elem.Day, timeSpan, timeSpan);
                             await _vendorService.AddWorkHoursAsync(workHours);
                         }
@@ -258,13 +260,13 @@ namespace FromLocalsToLocals.Controllers
                         }
                         else
                         {
-                            TimeSpan timeSpan = new TimeSpan(-1);
+                            TimeSpan timeSpan = new TimeSpan(0);
                             WorkHours workHours = new WorkHours(vendor.ID, elem.Day, timeSpan, timeSpan);
                             await _vendorService.ChangeWorkHoursAsync(workHours);
                         }
                     }
 
-                    await _vendorService.UpdateAsync(vendor);
+                    await _dataAdapterService.UpdateVendorAsync(vendor);
                     _toastNotification.AddSuccessToastMessage(_localizer["Service Updated"]);
 
                     return RedirectToAction(nameof(MyVendors));

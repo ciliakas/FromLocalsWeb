@@ -97,6 +97,7 @@ namespace FromLocalsToLocals
             services.AddScoped<IVendorService, VendorService>();
             services.AddScoped<IReviewsService, ReviewsService>();
             services.AddScoped<IPostsService, PostsService>();
+            services.AddScoped<IDataAdapterService, DataAdapterService>();
 
 
             services.AddSignalR();
