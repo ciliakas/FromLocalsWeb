@@ -6,10 +6,10 @@
         <div class="col-md-4" style="border-right:1px solid gray;">
             <div class="row" style="border-bottom:1px solid gray;">
                 <div class="col-md-6 text-center">
-                    <a class="btn" asp-route-tabname="ISent" asp-controller="Chat" asp-action="Index">Sent messages</a>
+                    <a class="btn" id="ISent" asp-route-tabname="ISent" asp-controller="Chat" asp-action="Index">Sent messages</a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <a class="btn" asp-route-tabname="Vendors" asp-controller="Chat" asp-action="Index">My Vendors</a>
+                    <a class="btn" id="MyVendors" asp-route-tabname="Vendors" asp-controller="Chat" asp-action="Index">My Vendors</a>
                 </div>
             </div>
 
@@ -108,5 +108,14 @@
 <script>
     var newContactId = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item3.ID))
     var userTab = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item2))
+
+    $(document).ready(() => {
+        if (userTab) {
+            $("#ISent").addClass("selected_tab");
+        } else {
+            $("#MyVendors").addClass("selected_tab");
+        }
+    });
+
 </script>
 <script src="~/js/chat.js"></script>

@@ -165,3 +165,7 @@ ul {
 li :hover {
     cursor: pointer;
 }
+
+.selected_tab {
+    background: #e6d0a1;
+}
