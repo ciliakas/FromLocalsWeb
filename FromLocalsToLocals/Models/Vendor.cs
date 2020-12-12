@@ -82,13 +82,8 @@ namespace FromLocalsToLocals.Models
 
         [JsonIgnore]
         [IgnoreDataMember]
-<<<<<<< HEAD
         public virtual ICollection<Contact> Contacts { get; set; }
-
-
-=======
         public virtual ICollection<WorkHours> VendorHours { get; set; }
->>>>>>> bd1377bffce127a7980a1a0d5fdc80a5d249298a
 
         #region IComparable
 

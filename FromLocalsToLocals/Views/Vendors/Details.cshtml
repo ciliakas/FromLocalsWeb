@@ -8,14 +8,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var userForFeed = await userManager.GetUserAsync(User);
-<<<<<<< HEAD
     if (userForFeed !=null && userForFeed.Id != Model.User.Id) userForFeed = null;
 
-
-=======
     var timeSpan = new TimeSpan(0);
-    if (userForFeed.Id != Model.User.Id) userForFeed = null;
->>>>>>> bd1377bffce127a7980a1a0d5fdc80a5d249298a
+
 }
 @using static FromLocalsToLocals.Utilities.TimeCalculator
 @using Microsoft.EntityFrameworkCore
