@@ -9,6 +9,17 @@ namespace FromLocalsToLocals.Models
 {
     public class Contact
     {
+        public Contact()
+        { Messages = new List<Message>(); }
+
+        public Contact(AppUser user, Vendor receiver, bool userRead, bool receiverRead)
+        {
+            User = user;
+            Vendor = receiver;
+            UserRead = userRead;
+            ReceiverRead = receiverRead;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }

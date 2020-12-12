@@ -6,7 +6,8 @@ var params = new URLSearchParams(query);
 var activeT = params.get('ActiveTab');
 
 $(document).ready(() => {
-    loadPageData();
+    loadPageData(); loadPageData();
+
 });
 
 var feedScroll = document.getElementById('content1');
@@ -110,7 +111,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
     if (!owner) {
         var dto = { tab: "Users", id: id };
         console.log(dto);
-        contactS = `<span style="float:right"><a href='/Chat/Index/${dto}'>Contact</a></span>`;
+        contactS = `<span style="float:right"><a href='/Chat/Index?vendorId=${id}'>Contact</a></span>`;
     }
 
     var li = document.createElement('li');

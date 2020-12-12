@@ -1,21 +1,38 @@
 ﻿var jsContactId = -1;
 
+$(document).ready(() => {
+    var msgH = document.getElementById("msg_history");
+    if (msgH.innerHTML.trim().length != 0 || newContactId != -1) {
+        setViewToBottom();
+
+        jsContactId = newContactId;
+        console.log(newContactId);
+        if (jsContactId != -1) {
+            var cDiv = document.getElementById(jsContactId);
+            cDiv.classList.add("active_chat");
+        }
+    }
+});
+
 //Loads all the messages
 function loadMessages(obj) {
 
     $("#msg_history").empty();
     $.ajax({
         type: "GET",
-        url: `/Chat/GetMessagesComponent`,
-        data: { contactId: obj.id , isUserTab : userTab },
+        url: `/Chat/GetChatComponent`,
+        data: { contactId: obj.id, isUserTab: userTab, componentName:"Messages"},
         success: function (result) {
             $("#msg_history").html(result);
-            $(".msg_send_btn").removeAttr('disabled');
             jsContactId = parseInt(obj.id);
             setViewToBottom();
             clearTextField();
             $(".active_chat").removeClass("active_chat");
             obj.classList.add("active_chat");
+
+            var active = document.getElementsByClassName("active_chat")[0].querySelector("h5").innerHTML;
+            var chatW = document.getElementById("chatWith"); 
+            chatW.innerHTML = active.substr(0, active.indexOf('<span')); 
 
             readMessage();
         },
@@ -25,29 +42,34 @@ function loadMessages(obj) {
 
 //Post new message to db
 function postMessage() {
+    var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
     var input = document.getElementById("postMsgText").value;
-
-    if (input == "") {
-        alert("Cannot send an empty message");
+    
+    if (input == "" || jsContactId==-1) {
+        alert("Sorry you can't create a message");
     } else {
+
+        var mData = {Message: input, IsUserTab: userTab, ContactId: jsContactId};
+
         $.ajax({
             type: "POST",
             url: `/Chat/CreateMessage`,
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ Message: input, IsUserTab: userTab, ContactId: jsContactId }),
+            data: JSON.stringify(mData),
             datatype: 'json',
             success: function (result) {
-                loadNewMyMsg(input);
+                loadNewMyMsg(input, date);
                 setViewToBottom();
                 clearTextField();
+
+                updateContact(jsContactId, input, date);
             },
         });
     }
 }
 
-//Load new message writter by user
-function loadNewMyMsg(msg) {
-    var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+//Load new message writter by user to himself
+function loadNewMyMsg(msg,date) {
     var newMsg = document.createElement("div");
     newMsg.classList.add("outgoing_msg");
     newMsg.innerHTML = `
@@ -58,8 +80,6 @@ function loadNewMyMsg(msg) {
                  <span class="time_date">${date}</span>
              </div>`;
     $("#msg_history").append(newMsg);
-
-    updateContact(jsContactId, msg , date);
 }
 
 function clearTextField() {
@@ -72,7 +92,8 @@ function setViewToBottom() {
 }
 
 
-//signalR
+//------------------------signalR-------------------------------------------
+
 var connectionToMsg = new signalR.HubConnectionBuilder().withUrl("/msgHub").build();
 
 connectionToMsg.on("sendNewMessage", (obj) => {
@@ -82,20 +103,19 @@ connectionToMsg.on("sendNewMessage", (obj) => {
 
 connectionToMsg.start();
 
-//Loads new message written by other person
+//Load new message to vendor
 function loadNewIncomingMsg(obj) {
     var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
     var newObj = JSON.parse(obj);
-    console.log(newObj.ContactID);
-    
+
     if (parseInt(newObj.ContactID) == jsContactId) {
         readMessage();
 
-        var img = `<img class="img-circle" src="/Assets/profile.png" alt="avatar" />`;
+        var img = `<img class="img-circle" src="/Assets/localSeller.png" alt="avatar" />`;
         if (newObj.Image != null) {
             img = `<img src="data:image;base64,${newObj.Image}" alt="avatar" class="img-circle" />`
-        } else if (obj.IsUserTab) {
-            img = `<img class="img-circle" src="/Assets/localSeller.png" alt="avatar" />`;
+        } else if (newObj.IsUserTab) {
+            img = `<img class="img-circle" src="/Assets/profile.png" alt="avatar" />`;
         }
 
         var newMsg = document.createElement("div");
@@ -107,18 +127,24 @@ function loadNewIncomingMsg(obj) {
             <div class="received_msg">
                  <div class="received_withd_msg">
                      <p>
-                         ${newObj.Text}
+                         ${newObj.Message}
                      </p>
                      <span class="time_date">${date}</span>
                  </div>
              </div>`;
         $("#msg_history").append(newMsg);
+
+        updateContact(parseInt(newObj.ContactID), newObj.Message, date);
     } else {
         var contactBody = document.getElementById(parseInt(newObj.ContactID));
-        contactBody.classList.add("unread_chat");
+        if (contactBody == null) {
+            updateContact(parseInt(newObj.ContactID), newObj.Message, date, newObj.VendorTitle,false);
+        } else {
+            console.log("AAAA");
+            contactBody.classList.add("unread_chat");
+            updateContact(parseInt(newObj.ContactID), newObj.Message, date);
+        }
     }
-
-    updateContact(parseInt(newObj.ContactID) , newObj.Text , date);
 }
 
 
@@ -136,15 +162,31 @@ function readMessage() {
 }
 
 //Update message in Contact list
-function updateContact(contactId, text, date) {
+function updateContact(contactId, text, date, title, tab) {
+
     var contactsBody = document.getElementById(contactId);
 
-    var contactDate = contactsBody.querySelector('.chat_date');
-    contactDate.innerHTML = `<i class="fa fa-clock-o"></i>${date}`;
+    if (contactsBody == null) {
+        var vendorDiv = document.getElementById(title);
+        console.log(vendorDiv);
+        var mData = { contactId: contactId, isUserTab: tab, componentName:"ContactBody" };
 
-    var contactText = contactsBody.querySelector('p');
-    contactText.innerHTML = text;
+        $.ajax({
+            type: "POST",
+            url: `/Chat/GetChatComponent`,
+            data: mData,
+            success: function (result) {
+                var ulDiv = vendorDiv.querySelector("ul");
+                ulDiv.innerHTML = '<li>' + result + '</li>' + ulDiv.innerHTML;
+                var div = document.getElementById(contactId);
+                div.classList.add("unread_chat");
+            },
+        });
+    } else {
+        var contactDate = contactsBody.querySelector('.chat_date');
+        contactDate.innerHTML = `<i class="fa fa-clock-o"></i>${date}`;
 
-    console.log(date);
-
+        var contactText = contactsBody.querySelector('p');
+        contactText.innerHTML = text;
+    }
 }

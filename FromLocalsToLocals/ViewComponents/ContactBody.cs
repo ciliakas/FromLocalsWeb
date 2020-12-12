@@ -12,16 +12,26 @@ namespace FromLocalsToLocals.ViewComponents
 {
     public class ContactBody : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(Contact contact,string title,byte[] image, bool userTab)
+        public async Task<IViewComponentResult> InvokeAsync(Contact contact, bool userTab)
         {
-            var lastMsg = contact.Messages.OrderByDescending(x => x.Date).Take(1).First();
             var isRead = contact.ReceiverRead;
+            var title = contact.User.UserName;
+            var image = contact.User.Image;
             if (userTab)
             {
                 isRead = contact.UserRead;
+                title = contact.Vendor.Title;
+                image = contact.Vendor.Image;
             }
 
-            ContactBodyVM vm = new ContactBodyVM(contact.ID, title,image,lastMsg.Text,
+            if (contact.Messages== null || contact.Messages.Count == 0)
+            {
+                return View(new ContactBodyVM(contact.ID, title, image, "No Messages", "", true, true));
+            }
+
+            var lastMsg = contact.Messages.OrderByDescending(x => x.Date).Take(1).First();
+
+            var vm = new ContactBodyVM(contact.ID, title,image,lastMsg.Text,
                                                 lastMsg.Date,isRead,userTab);
 
             return View(vm);

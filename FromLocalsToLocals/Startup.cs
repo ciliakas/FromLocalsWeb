@@ -72,7 +72,7 @@ namespace FromLocalsToLocals
             
             services.AddDbContext<AppDbContext>(options =>
                 options.UseLazyLoadingProxies()
-                .UseNpgsql(Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Transient);
+                .UseNpgsql(Configuration.GetConnectionString("AppDbContext")));
 
 
             services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));

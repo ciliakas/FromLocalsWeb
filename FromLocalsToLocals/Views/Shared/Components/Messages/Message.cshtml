@@ -1,8 +1,5 @@
 ﻿@model FromLocalsToLocals.ViewComponents.Messages.MessagesVM
 
-
-
-
  @foreach (var m in Model.Messages)
  {
      if (!(Model.IsUserTab ^ m.IsUserSender))

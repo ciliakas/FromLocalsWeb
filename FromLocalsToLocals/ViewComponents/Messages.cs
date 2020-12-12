@@ -33,11 +33,21 @@ namespace FromLocalsToLocals.ViewComponents
 
             var vm = new MessagesVM
             {
-                Messages = contact.Messages.OrderBy(x => x.Date).ToList(),
                 IsUserTab = isUserTab,
                 Image = image,
                 Title = title           
             };
+
+            if (contact.Messages != null)
+            {
+                vm.Messages = contact.Messages.OrderBy(x => x.Date).ToList();
+
+            }
+            else
+            {
+                vm.Messages = new List<Message>();
+
+            }
 
             return View("Message", vm);
         }
