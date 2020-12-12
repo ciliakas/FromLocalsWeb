@@ -21,13 +21,13 @@ namespace FromLocalsToLocals.Controllers
     public class VendorsController : Controller
     {
         private readonly Lazy<UserManager<AppUser>> _userManager;
-        private readonly IVendorService _vendorService;
+        private readonly IVendorServiceEF _vendorService;
         private readonly IToastNotification _toastNotification;
         private readonly AppDbContext _context;
         private readonly IStringLocalizer<VendorsController> _localizer;
-        readonly IDataAdapterService _dataAdapterService;
+        readonly IVendorServiceADO _dataAdapterService;
 
-        public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorService vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IDataAdapterService dataAdapterService)
+        public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorServiceEF vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
         {
             _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
             _vendorService = vendorService;

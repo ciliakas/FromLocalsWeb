@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Models.Services
 {
-    public class VendorService : IVendorService
+    public class VendorServiceEF : IVendorServiceEF
     {
         private readonly AppDbContext _context;
 
-        public VendorService(AppDbContext context)
+        public VendorServiceEF(AppDbContext context)
         {
             _context = context;
         }

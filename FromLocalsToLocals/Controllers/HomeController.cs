@@ -24,14 +24,14 @@ namespace FromLocalsToLocals.Controllers
     {
         private readonly IToastNotification _toastNotification;
 
-        private readonly IVendorService _vendorService;
+        private readonly IVendorServiceEF _vendorService;
 
         private readonly IStringLocalizer<HomeController> _localizer;
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
 
 
-        public HomeController(AppDbContext context, IStringLocalizer<HomeController> localizer, IVendorService vendorService, IToastNotification toastNotification, UserManager<AppUser> userManager )
+        public HomeController(AppDbContext context, IStringLocalizer<HomeController> localizer, IVendorServiceEF vendorService, IToastNotification toastNotification, UserManager<AppUser> userManager )
         {
             _localizer = localizer;
             _vendorService = vendorService;

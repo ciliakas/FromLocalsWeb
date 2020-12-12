@@ -5,7 +5,7 @@ using System.Data;
 
 namespace FromLocalsToLocals.Models.Services
 {
-    public class DataAdapterService : IDataAdapterService
+    public class VendorServiceADO : IVendorServiceADO
     {
         const string connectionString = "Host=fromlocals-paulius-e731.aivencloud.com;Port=18477;UserId=avnadmin;Password=it2clu8afgd3uosp;SSLMode=Require;Trust Server Certificate=true;Database=defaultdb;";
 

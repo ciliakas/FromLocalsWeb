@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Models.Services
 {
-    public interface IVendorService
+    public interface IVendorServiceEF
     {
         Task AddPostAsync(Vendor vendor,Post post);
         Task CreateAsync(Vendor vendor);

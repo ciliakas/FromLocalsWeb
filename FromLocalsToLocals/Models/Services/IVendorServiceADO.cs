@@ -2,7 +2,7 @@
 
 namespace FromLocalsToLocals.Models.Services
 {
-    public interface IDataAdapterService
+    public interface IVendorServiceADO
     {
         Task UpdateVendorAsync(Vendor vendor);
     }

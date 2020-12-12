@@ -94,10 +94,10 @@ namespace FromLocalsToLocals
             });
 
             services.AddScoped<INotificationService, NotificationService>();
-            services.AddScoped<IVendorService, VendorService>();
+            services.AddScoped<IVendorServiceEF, VendorServiceEF>();
             services.AddScoped<IReviewsService, ReviewsService>();
             services.AddScoped<IPostsService, PostsService>();
-            services.AddScoped<IDataAdapterService, DataAdapterService>();
+            services.AddScoped<IVendorServiceADO, VendorServiceADO>();
 
 
             services.AddSignalR();
