@@ -30,7 +30,7 @@ namespace FromLocalsToLocals.Models
         [NotMapped]
         public bool IsWorking { get; set; }
 
-        [Required] 
+        [Required]
         public int VendorID { get; set; }
 
         [Required]
@@ -45,7 +45,6 @@ namespace FromLocalsToLocals.Models
         [IgnoreDataMember]
         public virtual Vendor Vendor { get; set; }
 
-
         public bool Equals([AllowNull] WorkHours other)
         {
             if (other == null)
@@ -57,3 +56,4 @@ namespace FromLocalsToLocals.Models
         }
     }
 }
+

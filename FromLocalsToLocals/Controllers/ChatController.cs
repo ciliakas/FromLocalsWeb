@@ -155,8 +155,5 @@ namespace FromLocalsToLocals.Controllers
 
             return ViewComponent(componentName, new { contact = uContact, isUserTab });
         }
-
     }
-
-
 }

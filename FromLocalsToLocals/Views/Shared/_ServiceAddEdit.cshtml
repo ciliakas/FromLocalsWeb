@@ -33,11 +33,11 @@
                 @for (var i = 0; i < 7; i++)
                 {
                     <div class="row" name="dayRow">
-                        <input asp-for="VendorHours[i].Day" value="@(i+1)" hidden/>
+                        <input asp-for="VendorHours[i].Day" value=@(i+1) hidden/>
                         <div class="col-4">
                             <div class="form-group" name="workDate">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" asp-for="VendorHours[i].IsWorking"/>
+                                    <input class="form-check-input" type="checkbox" asp-for="VendorHours[i].IsWorking" id="@i"/>
                                     @switch (i)
                                     {
                                         case 0:<span>Monday</span>
@@ -59,30 +59,29 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col fromH_@i" style="display: none;">
                             <div class="form-group d-flex justify-content-between">
                                 <label class="mr-1">From </label>
                                 <select class="form-control" style="max-width: 92px;" asp-for="VendorHours[i].OpenTime">
-                                    @for (var hours = 7; hours < 23; hours++)
+                                    @for (var hours = 8; hours < 21; hours++)
                                     {
                                         @for (var minutes = 0; minutes < 60; minutes += 30)
                                         {
-                                            <option value="@hours.ToString("00"):@minutes.ToString("00")">@hours.ToString("00"):@minutes.ToString("00")</option>
+                                            <option value=@hours.ToString("00"):@minutes.ToString("00")>@hours.ToString("00"):@minutes.ToString("00")</option>
                                         }
                                     }
                                 </select>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col toH_@i" style="display: none;">
                             <div class="form d-flex justify-content-between">
                                 <label class="mr-1">To</label>
                                 <select class="form-control" style="max-width: 92px;" asp-for="VendorHours[i].CloseTime">
-                                    @for (var hours = 7; hours < 23; hours++)
+                                    @for (var hours = 9; hours < 21; hours++)
                                     {
                                         @for (var minutes = 0; minutes < 60; minutes += 30)
                                         {
-                                            <option value="@hours.ToString("00"):@minutes.ToString("00")">@hours.ToString("00"):@minutes.ToString("00")</option>
-                                           
+                                            <option value=@hours.ToString("00"):@minutes.ToString("00")>@hours.ToString("00"):@minutes.ToString("00")</option>
                                         }
                                     }
                                 </select>
@@ -126,20 +125,17 @@
     var zoom = 6.4;
 
 
+    $(document).ready(function () {
+        $('input:checkbox').removeAttr('checked');
+    })
 
+    $("input").change(function () {
+        var panelFromHours = ".fromH_" + $(this).attr('id');
+        var panelToHours = ".toH_" + $(this).attr('id');
 
-
-    function getWorkHours() {
-        var rows = document.getElementsByName("dayRow");
-        for (var row of rows) {
-            var x = row.getElementsByTagName("INPUT");
-            var y = row.getElementById("fromHours");
-            alert(x[0].getAttribute('value'));
-            alert(y.value);
-            alert(y[1].options[y[1].selectedIndex].text);
-        }
-    }
-
+        $(panelFromHours).toggle();
+        $(panelToHours).toggle();    
+    });
 </script>
 <script src="~/js/createMap.js"></script>
 <script src="~/js/editServiceMap.js"></script>

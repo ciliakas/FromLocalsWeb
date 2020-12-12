@@ -53,6 +53,9 @@ namespace FromLocalsToLocals.Models
             private set { VendorType = value.ParseEnum<VendorType>(); }
         }
 
+        public int Popularity { get; set; }
+        public DateTime LastClickDate { get; set; }
+
         [NotMapped]
         public VendorType VendorType { get; set; }
         [NotMapped]
@@ -79,9 +82,13 @@ namespace FromLocalsToLocals.Models
 
         [JsonIgnore]
         [IgnoreDataMember]
+<<<<<<< HEAD
         public virtual ICollection<Contact> Contacts { get; set; }
 
 
+=======
+        public virtual ICollection<WorkHours> VendorHours { get; set; }
+>>>>>>> bd1377bffce127a7980a1a0d5fdc80a5d249298a
 
         #region IComparable
 
