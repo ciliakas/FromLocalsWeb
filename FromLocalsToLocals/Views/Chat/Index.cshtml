@@ -80,7 +80,10 @@
                 <span id="chatWith" style="font-weight:600;">
                 @if (Model.Item3.ID != -1)
                 {
-                     @Model.Item3.Vendor.Title
+                @Model.Item3.Vendor.Title }
+                else
+                {
+                   <p style="text-align:center">SELECT CONTACT</p>
                 }
                 </span></div><hr/>
             <div class="msg_history" id="msg_history">
@@ -88,6 +91,7 @@
                 {
                     @await Component.InvokeAsync("Messages", new { contact = Model.Item3, isUserTab = true });
                 }
+                
             </div>
             <div class="type_msg">
                 <div class="input_msg_write">
