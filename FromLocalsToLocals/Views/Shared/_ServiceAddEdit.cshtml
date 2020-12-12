@@ -34,7 +34,7 @@
                 {
                     <div class="row" name="dayRow">
                         <input asp-for="VendorHours[i].Day" value=@(i+1) hidden />
-                        @if (Model.VendorHours[i].IsWorking)
+                        @if (Model != null && Model.VendorHours[i].IsWorking)
                         {
                             <div class="col-4">
                                 <div class="form-group" name="workDate">
