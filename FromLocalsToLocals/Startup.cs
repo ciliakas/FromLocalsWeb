@@ -1,30 +1,21 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
-using Microsoft.AspNet.Identity;
 using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NToastNotify;
-using SendGrid.Helpers.Mail;
-using Microsoft.AspNetCore.Components;
 using FromLocalsToLocals.Models.Services;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Localization;
 using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
-using Microsoft.AspNetCore.Http;
 
 namespace FromLocalsToLocals
 {
@@ -101,7 +92,6 @@ namespace FromLocalsToLocals
 
 
             services.AddSignalR();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

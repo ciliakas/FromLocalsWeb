@@ -2,18 +2,24 @@
 using FromLocalsToLocals.Utilities;
 using System.Threading.Tasks;
 using System.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace FromLocalsToLocals.Models.Services
 {
     public class VendorServiceADO : IVendorServiceADO
     {
-        const string connectionString = "Host=fromlocals-paulius-e731.aivencloud.com;Port=18477;UserId=avnadmin;Password=it2clu8afgd3uosp;SSLMode=Require;Trust Server Certificate=true;Database=defaultdb;";
+        public VendorServiceADO(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
 
         public async Task UpdateVendorAsync(Vendor vendor)
         {
             try 
             {
-                using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+                using (NpgsqlConnection connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
                 {
                     connection.Open();
 
