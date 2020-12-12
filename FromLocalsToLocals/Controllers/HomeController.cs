@@ -13,9 +13,7 @@ using NToastNotify;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using FromLocalsToLocals.Models.ViewModels;
-using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using FromLocalsToLocals.Database;
 
 namespace FromLocalsToLocals.Controllers
@@ -38,13 +36,16 @@ namespace FromLocalsToLocals.Controllers
             _toastNotification = toastNotification;
             _userManager = userManager;
             _context = context;
-
         }
 
         public async Task<IActionResult> Index(HomeVM homeVM)
         {
-            homeVM.AllVendors = await _vendorService.GetVendorsAsync(null, "");
-            homeVM.PopularVendors = await _vendorService.GetPopularVendorsAsync(4);
+            homeVM.AllVendors = await _vendorService.GetVendorsAsync("", "");
+
+            var popularVendors = await _vendorService.GetPopularVendorsAsync(4);
+            popularVendors.ForEach(a => a.UpdateReviewsCount(_context));
+            homeVM.PopularVendors = popularVendors;
+
             return View(homeVM);
         }
 
