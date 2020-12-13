@@ -31,10 +31,10 @@ namespace FromLocalsToLocals.ViewComponents
 
             var lastMsg = contact.Messages.OrderByDescending(x => x.Date).Take(1).First();
 
-            var vm = new ContactBodyVM(contact.ID, title,image,lastMsg.Text,
-                                                lastMsg.Date,isRead,userTab);
+            var contactBodyVM = new ContactBodyVM(contact.ID, title,image,lastMsg.Text,
+                                                     lastMsg.Date,isRead,userTab);
 
-            return View(vm);
+            return View(contactBodyVM);
         }
 
         public class ContactBodyVM

@@ -59,7 +59,7 @@ namespace FromLocalsToLocals.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var userIdToSend = "";
-            var dto = new OutGoingMessageDTO() { Message = message.Message, ContactID = message.ContactId, IsUserTab = message.IsUserTab };
+            var outgoingMessage = new OutGoingMessageDTO() { Message = message.Message, ContactID = message.ContactId, IsUserTab = message.IsUserTab };
             Contact contact = null;
 
             if (message.IsUserTab)
@@ -71,7 +71,7 @@ namespace FromLocalsToLocals.Controllers
                     return Json(new{ success = false});
                 }
                 userIdToSend = contact.Vendor.UserID;
-                dto.Image = user.Image;
+                outgoingMessage.Image = user.Image;
                 
             }
             else
@@ -83,7 +83,7 @@ namespace FromLocalsToLocals.Controllers
                     {
                         contact = c;
                         userIdToSend = contact.UserID;
-                        dto.Image = x.Image;
+                        outgoingMessage.Image = x.Image;
                         return;
                     }
                 });
@@ -108,8 +108,8 @@ namespace FromLocalsToLocals.Controllers
                 return Json(new { success = false });
             }
 
-            dto.VendorTitle = contact.Vendor.Title;
-            await _hubContext.Clients.User(userIdToSend).SendAsync("sendNewMessage", JsonConvert.SerializeObject(dto));
+            outgoingMessage.VendorTitle = contact.Vendor.Title;
+            await _hubContext.Clients.User(userIdToSend).SendAsync("sendNewMessage", JsonConvert.SerializeObject(outgoingMessage));
            
             return Json(new { success = true });
         }

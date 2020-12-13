@@ -6,7 +6,6 @@ $(document).ready(() => {
         setViewToBottom();
 
         jsContactId = newContactId;
-        console.log(newContactId);
         if (jsContactId != -1) {
             var cDiv = document.getElementById(jsContactId);
             cDiv.classList.add("active_chat");
@@ -46,7 +45,7 @@ function postMessage() {
     var input = document.getElementById("postMsgText").value;
     
     if (input == "" || jsContactId==-1) {
-        alert("Sorry you can't create a message");
+        alert("Cannot send the message");
     } else {
 
         var mData = {Message: input, IsUserTab: userTab, ContactId: jsContactId};
@@ -140,7 +139,6 @@ function loadNewIncomingMsg(obj) {
         if (contactBody == null) {
             updateContact(parseInt(newObj.ContactID), newObj.Message, date, newObj.VendorTitle,false);
         } else {
-            console.log("AAAA");
             contactBody.classList.add("unread_chat");
             updateContact(parseInt(newObj.ContactID), newObj.Message, date);
         }
@@ -168,7 +166,6 @@ function updateContact(contactId, text, date, title, tab) {
 
     if (contactsBody == null) {
         var vendorDiv = document.getElementById(title);
-        console.log(vendorDiv);
         var mData = { contactId: contactId, isUserTab: tab, componentName:"ContactBody" };
 
         $.ajax({
