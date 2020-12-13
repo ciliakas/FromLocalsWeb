@@ -3,6 +3,7 @@ using FromLocalsToLocals.Utilities;
 using Geocoding;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +18,15 @@ namespace FromLocalsToLocals.Models
     {
         [NotMapped] public Location Location { get; set; }
 
-        public int[] ReviewsCount = {0, 0, 0, 0, 0};
+        public int[] ReviewsCount = new int[5];
+
+        [NotMapped]
+        public double ReviewsAverage 
+        {
+            get => CountAverage();
+            set => ReviewsAverage = value;
+        }
+
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -58,8 +67,6 @@ namespace FromLocalsToLocals.Models
 
         [NotMapped]
         public VendorType VendorType { get; set; }
-        [NotMapped]
-        public double Average { get; set; }
 
         public byte[] Image { get; set; }
 
@@ -92,7 +99,7 @@ namespace FromLocalsToLocals.Models
         {
             if (other == null) return 1;
 
-            return Average.CompareTo(other.Average);
+            return ReviewsAverage.CompareTo(other.ReviewsAverage);
         }
 
         public static bool operator >(Vendor operand1, Vendor operand2)
@@ -131,34 +138,28 @@ namespace FromLocalsToLocals.Models
 
         #endregion
 
-        public void UpdateReviewsCount(AppDbContext context)
-        {
-            var reviews = context.Reviews.Where(x => x.VendorID == ID).ToList();
-
-            for (var i = 0; i < 5; i++)
-            {
-                ReviewsCount[i] = 0;
-            }
-
-            reviews.ForEach(x => ReviewsCount[x.Stars - 1]++);
-
-            Average = CountAverage();
-        }
-
         public double CountAverage()
         {
-            var sum = 0;
-            for (var i = 0; i < 5; i++)
-            {
-                sum += ReviewsCount[i] * (i+1);
-            }
-
-            if (ReviewsCount.Sum() == 0)
+            if (Reviews.Count == 0)
             {
                 return 0;
             }
+                
+            var groupedRatings = Reviews.GroupBy(
+                             rev => rev.Stars,
+                             rev => rev.Stars,
+                             (star, arr) => new
+                             {
+                                 Star = star,
+                                 Count = arr.Count()
+                             });
 
-            return sum / (double)ReviewsCount.Sum();
+            foreach(var rating in groupedRatings)
+            {
+                ReviewsCount[rating.Star-1] = rating.Count; 
+            }
+            
+            return  groupedRatings.Aggregate(0,(result,element) => result + element.Star * element.Count)/(double)Reviews.Count;
         }
     }
 }

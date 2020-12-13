@@ -43,7 +43,6 @@ namespace FromLocalsToLocals.Controllers
             homeVM.AllVendors = await _vendorService.GetVendorsAsync("", "");
 
             var popularVendors = await _vendorService.GetPopularVendorsAsync(4);
-            popularVendors.ForEach(a => a.UpdateReviewsCount(_context));
             homeVM.PopularVendors = popularVendors;
 
             return View(homeVM);

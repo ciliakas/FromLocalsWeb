@@ -46,7 +46,6 @@ namespace FromLocalsToLocals.Controllers
         {
             var id = GetVendorID();
             var vendor = await _context.Vendors.FindAsync(id);
-            vendor.UpdateReviewsCount(_context);
 
             var reviews = await _reviewsService.GetReviewsAsync(id);
             var users = await _context.Users.ToListAsync();
@@ -96,7 +95,6 @@ namespace FromLocalsToLocals.Controllers
 
             }
 
-            vendor.UpdateReviewsCount(_context);
 
             return await Reviews();
         }

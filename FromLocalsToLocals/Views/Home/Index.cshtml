@@ -89,7 +89,7 @@
                             }
                             else
                             {
-                                @switch (@Math.Round(item.Average))
+                                @switch (@Math.Round(item.ReviewsAverage))
                                 {
                                     case 5:
                                         <p class="ml-3 ">
@@ -98,7 +98,7 @@
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
-                                            <span>@item.Average.ToString("0.0")</span>
+                                            <span>@item.ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                     case 4:
@@ -108,7 +108,7 @@
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star"></span>
-                                            <span>@item.Average.ToString("0.0")</span>
+                                            <span>@item.ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                     case 3:
@@ -118,7 +118,7 @@
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
-                                            <span>@item.Average.ToString("0.0")</span>
+                                            <span>@item.ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                     case 2:
@@ -128,7 +128,7 @@
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
-                                            <span>@item.Average.ToString("0.0")</span>
+                                            <span>@item.ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                     default:
@@ -138,7 +138,7 @@
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
-                                            <span>@item.Average.ToString("0.0")</span>
+                                            <span>@item.ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                 }

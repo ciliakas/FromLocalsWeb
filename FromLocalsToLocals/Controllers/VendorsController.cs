@@ -46,7 +46,7 @@ namespace FromLocalsToLocals.Controllers
             List<Vendor> newVendors = await _vendorService.GetNewVendorsAsync(count: 4);
 
             var vendors = await _vendorService.GetVendorsAsync(searchString, vendorType);
-            vendors.ForEach(a => a.UpdateReviewsCount(_context));
+            vendors.ForEach(x => x.CountAverage());
             _vendorService.Sort(vendors, orderType ?? "");
 
 
