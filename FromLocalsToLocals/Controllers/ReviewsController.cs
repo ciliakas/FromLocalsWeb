@@ -115,7 +115,7 @@ namespace FromLocalsToLocals.Controllers
                 Url = HttpContext.Request.Path.Value
             };
             
-             await _notificationService.AddNotificationAsync(notification);
+             _notificationService.AddNotification(notification);
              await _hubContext.Clients.All.SendAsync("displayNotification", "");
         }
 

@@ -140,10 +140,11 @@
             url: "/Notification/GetNotifications",
             traditional: true,
             contentType: "application/json;charset=utf-8",
-            success: function (data) {
-                var notifications = data;
+            success: function (oData) {
+                data = JSON.parse(oData);
+
                 $("#noti_Container").ikrNotificationCount({
-                    NotificationList: notifications,
+                    NotificationList: data,
                     ListBodyPropName: "NotiBody",
                     ControllerName: "Notifications",
                     ActionName: "AllNotifications",
@@ -151,7 +152,6 @@
                 });
             },
             error: function (xhr, status, error) {
-
             }
         });
     }

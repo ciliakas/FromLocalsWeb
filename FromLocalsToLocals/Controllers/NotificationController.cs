@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Models;
@@ -26,7 +27,9 @@ namespace FromLocalsToLocals.Controllers
         public JsonResult GetNotifications()
         {
             var userId = _userManager.GetUserId(User);
-            return Json(_notificationService.GetNotifications(userId));
+            var notifications = _notificationService.GetNotifications(userId);
+            
+            return Json(Newtonsoft.Json.JsonConvert.SerializeObject(notifications));
         }
 
         [HttpPost]
