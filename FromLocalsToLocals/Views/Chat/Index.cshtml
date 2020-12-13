@@ -6,10 +6,10 @@
         <div class="col-md-4" style="border-right:1px solid gray;">
             <div class="row" style="border-bottom:1px solid gray;">
                 <div class="col-md-6 text-center">
-                    <a class="btn" id="ISent" asp-route-tabname="ISent" asp-controller="Chat" asp-action="Index">Sent messages</a>
+                    <a class="btn" id="ISent" asp-route-tabname="ISent" asp-controller="Chat" asp-action="Index">Conversations</a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <a class="btn" id="MyVendors" asp-route-tabname="Vendors" asp-controller="Chat" asp-action="Index">My Vendors</a>
+                    <a class="btn" id="MyVendors" asp-route-tabname="Vendors" asp-controller="Chat" asp-action="Index">My Services</a>
                 </div>
             </div>
 
@@ -83,7 +83,7 @@
                 @Model.Item3.Vendor.Title }
                 else
                 {
-                   <p style="text-align:center">SELECT CONTACT</p>
+                   <p style="text-align:center">SELECT A CONVERSATION</p>
                 }
                 </span></div><hr/>
             <div class="msg_history" id="msg_history">
