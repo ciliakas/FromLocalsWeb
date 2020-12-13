@@ -21,18 +21,20 @@ namespace FromLocalsToLocals.Controllers
     public class VendorsController : Controller
     {
         private readonly Lazy<UserManager<AppUser>> _userManager;
-        private readonly IVendorService _vendorService;
+        private readonly IVendorServiceEF _vendorService;
         private readonly IToastNotification _toastNotification;
         private readonly AppDbContext _context;
         private readonly IStringLocalizer<VendorsController> _localizer;
+        readonly IVendorServiceADO _dataAdapterService;
 
-        public VendorsController(AppDbContext context,UserManager<AppUser> userManager,IVendorService vendorService,IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer)
+        public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorServiceEF vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
         {
             _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
             _vendorService = vendorService;
             _toastNotification = toastNotification;
             _context = context;
             _localizer = localizer;
+            _dataAdapterService = dataAdapterService;
         }
 
         [HttpGet]
@@ -149,14 +151,14 @@ namespace FromLocalsToLocals.Controllers
 
                             else
                             {
-                                WorkHours workHours = new WorkHours(vendor.ID, elem.Day, elem.OpenTime, elem.CloseTime);
+                                var workHours = new WorkHours(vendor.ID, elem.IsWorking, elem.Day, elem.OpenTime, elem.CloseTime);
                                 await _vendorService.AddWorkHoursAsync(workHours);
                             }
                         }
                         else
                         {
-                            TimeSpan timeSpan = new TimeSpan(-1);
-                            WorkHours workHours = new WorkHours(vendor.ID, elem.Day, timeSpan, timeSpan);
+                            var timeSpan = new TimeSpan(0);
+                            var workHours = new WorkHours(vendor.ID, elem.IsWorking, elem.Day, timeSpan, timeSpan);
                             await _vendorService.AddWorkHoursAsync(workHours);
                         }
                     }
@@ -194,7 +196,9 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            return View(new CreateEditVendorVM(vendor));
+            var workHours = _context.VendorWorkHours.Where(x => x.VendorID == vendor.ID).ToList();
+            
+            return View(new CreateEditVendorVM(vendor, workHours));
         }
 
         [HttpPost]
@@ -252,19 +256,19 @@ namespace FromLocalsToLocals.Controllers
 
                             else
                             {
-                                WorkHours workHours = new WorkHours(vendor.ID, elem.Day, elem.OpenTime, elem.CloseTime);
+                                var workHours = new WorkHours(vendor.ID, elem.IsWorking, elem.Day, elem.OpenTime, elem.CloseTime);
                                 await _vendorService.ChangeWorkHoursAsync(workHours);
                             }
                         }
                         else
                         {
-                            TimeSpan timeSpan = new TimeSpan(-1);
-                            WorkHours workHours = new WorkHours(vendor.ID, elem.Day, timeSpan, timeSpan);
+                            var timeSpan = new TimeSpan(0);
+                            var workHours = new WorkHours(vendor.ID, elem.IsWorking, elem.Day, timeSpan, timeSpan);
                             await _vendorService.ChangeWorkHoursAsync(workHours);
                         }
                     }
 
-                    await _vendorService.UpdateAsync(vendor);
+                    await _dataAdapterService.UpdateVendorAsync(vendor);
                     _toastNotification.AddSuccessToastMessage(_localizer["Service Updated"]);
 
                     return RedirectToAction(nameof(MyVendors));

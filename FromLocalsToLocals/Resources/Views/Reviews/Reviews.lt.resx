@@ -124,13 +124,13 @@
     <value>Remiantis</value>
   </data>
   <data name="Best reviewed" xml:space="preserve">
-    <value>Geriausiai įvertintas</value>
+    <value>Geriausiai įvertinti</value>
   </data>
   <data name="Comment" xml:space="preserve">
-    <value>Komentaras</value>
+    <value>Komentuoti</value>
   </data>
   <data name="Leave a review" xml:space="preserve">
-    <value>Palikti atsiliepimą</value>
+    <value>Palikite atsiliepimą</value>
   </data>
   <data name="Newest" xml:space="preserve">
     <value>Naujausi</value>
@@ -147,14 +147,17 @@
   <data name="Posted" xml:space="preserve">
     <value>Paskelbta</value>
   </data>
+  <data name="review(s)" xml:space="preserve">
+    <value>atsiliepimas(-ai)</value>
+  </data>
   <data name="Reviews" xml:space="preserve">
-    <value>Apžvalgos</value>
+    <value>Atsiliepimai</value>
   </data>
   <data name="Reviews about" xml:space="preserve">
-    <value>Apžvalgos apie</value>
+    <value>Atsiliepimai apie</value>
   </data>
   <data name="reviews." xml:space="preserve">
-    <value>apžvalgomis.</value>
+    <value>atsiliepimais.</value>
   </data>
   <data name="Show reply" xml:space="preserve">
     <value>Rodyti atsakymą</value>

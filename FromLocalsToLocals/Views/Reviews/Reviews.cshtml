@@ -14,7 +14,7 @@
             display: none;
         }
     </style>
-    <h2 class="text-center mt-4">@_localizer["Reviews about"]"@Model.Vendor.Title"</h2>
+    <h2 class="text-center mt-4">@_localizer["Reviews about"]" @Model.Vendor.Title"</h2>
     <hr />
     <div class="container-fluid">
         <div class="row align-content-lg-start">
@@ -234,7 +234,7 @@
 
                             <!-- Total reviews-->
                             <div class="card-header">
-                                @_localizer["Based on"]@Model.Vendor.ReviewsCount.Sum() @_localizer["reviews."]
+                                @_localizer["Based on"] @Model.Vendor.ReviewsCount.Sum() @_localizer["reviews."]
                             </div>
                             <ul class="list-group list-group-flush" onload="updateRatingCounts()">
                                 <!-- 5 star reviews-->
@@ -244,7 +244,7 @@
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star checked"></span>
-                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[4]) review(s)
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[4]) @_localizer["review(s)"]
                                 </li>
                                 <!-- 4 star reviews-->
                                 <li class="list-group-item">
@@ -253,7 +253,7 @@
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star"></span>
-                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[3]) review(s)
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[3]) @_localizer["review(s)"]
                                 </li>
                                 <!-- 3 star reviews-->
                                 <li class="list-group-item">
@@ -262,7 +262,7 @@
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
-                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[2]) review(s)
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[2]) @_localizer["review(s)"]
                                 </li>
                                 <!-- 2 star reviews-->
                                 <li class="list-group-item">
@@ -271,7 +271,7 @@
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
-                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[1]) review(s)
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[1]) @_localizer["review(s)"]
                                 </li>
                                 <!-- 1 star reviews-->
                                 <li class="list-group-item">
@@ -280,7 +280,7 @@
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
-                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[0]) review(s)
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[0]) @_localizer["review(s)"]
                                 </li>
                             </ul>
                         </div>

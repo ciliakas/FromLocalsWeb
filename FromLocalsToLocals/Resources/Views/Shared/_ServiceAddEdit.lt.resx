@@ -117,20 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Choose your working hours" xml:space="preserve">
+    <value>Pasirinkite darbo laiką</value>
+  </data>
   <data name="Confirm" xml:space="preserve">
     <value>Patvirtinti</value>
   </data>
   <data name="Confirm Location" xml:space="preserve">
     <value>Patvirtinti lokaciją</value>
   </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Penktadienis</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>Nuo</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Pirmadienis</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Šeštadienis</value>
+  </data>
   <data name="Show in the map" xml:space="preserve">
     <value>Rodyti žemėlapyje</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Sekmadienis</value>
   </data>
   <data name="Tell us about your shop..." xml:space="preserve">
     <value>Papasakokite apie savo paslaugą</value>
   </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Ketvirtadienis</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Pavadinimas</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>Iki</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Antradienis</value>
   </data>
   <data name="Type address..." xml:space="preserve">
     <value>Įveskite adresą...</value>
@@ -140,5 +167,8 @@
   </data>
   <data name="Vendor Type" xml:space="preserve">
     <value>Paslaugos tipas</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Trečiadienis</value>
   </data>
 </root>
