@@ -26,8 +26,32 @@ namespace FromLocalsToLocals.Controllers
         [HttpPost]
         public async Task<IActionResult> Follow(int? id)
         {
+           return await Following(id);
+        }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.Id==_userManager.GetUserId(User));
+        [HttpPost]
+        public async Task<IActionResult> Unfollow(int? id)
+        {
+
+            return await Unfollowing(id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Sekti(int? id)
+        {
+            return await Following(id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Nebesekti(int? id)
+        {
+            return await Unfollowing(id);
+        }
+
+
+        public async Task<IActionResult> Following(int? id)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User));
 
             if (id == null || user == null)
             {
@@ -41,7 +65,7 @@ namespace FromLocalsToLocals.Controllers
                 user.Following.Add(follower);
                 await _userManager.UpdateAsync(user);
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 return Json(new { success = false });
             }
@@ -49,10 +73,9 @@ namespace FromLocalsToLocals.Controllers
             return Json(new { success = true });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Unfollow(int? id)
+        public async Task<IActionResult> Unfollowing(int? id)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.Id == _userManager.GetUserId(User));
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User));
 
             if (id == null || user == null)
             {
@@ -66,7 +89,7 @@ namespace FromLocalsToLocals.Controllers
                 user.Following.Remove(followingVendor);
                 await _userManager.UpdateAsync(user);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(new { success = false });
             }

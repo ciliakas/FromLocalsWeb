@@ -145,11 +145,11 @@ else
                         {
                             if (user.Following.Any(x => x.VendorID == vendor.ID))
                             {
-                                <button data-follow="false" data-id="@vendor.ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">Unfollow</button>
+                                <button data-follow="false" data-id="@vendor.ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">@_localizer["Unfollow"]</button>
                             }
                             else
                             {
-                                <button data-follow="true" data-id="@vendor.ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">Follow</button>
+                                <button data-follow="true" data-id="@vendor.ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">@_localizer["Follow"]</button>
                             }
                         }
                     </div>
@@ -298,11 +298,11 @@ else
                         {
                             if (user.Following.Any(x => x.VendorID == Model.Vendors[i * itemsInRow + j].ID))
                             {
-                                <button data-follow="false" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">Unfollow</button>
+                                <button data-follow="false" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">@_localizer["Unfollow"]</button>
                             }
                             else
                             {
-                                <button data-follow="true" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">Follow</button>
+                                <button data-follow="true" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">@_localizer["Follow"]</button>
                             }
                         }
                     </div>

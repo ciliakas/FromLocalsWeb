@@ -154,11 +154,11 @@
                             {
                                 if (user.Following.Any(x => x.VendorID == item.ID))
                                 {
-                                    <button data-follow="false" data-id="@item.ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@item.ID)">Unfollow</button>
+                                    <button data-follow="false" data-id="@item.ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@item.ID)">@_localizer["Unfollow"]</button>
                                 }
                                 else
                                 {
-                                    <button data-follow="true" data-id="@item.ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@item.ID)">Follow</button>
+                                    <button data-follow="true" data-id="@item.ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@item.ID)">@_localizer["Follow"]</button>
                                 }
                             }
                         </div>
