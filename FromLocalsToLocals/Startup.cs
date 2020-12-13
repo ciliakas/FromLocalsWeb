@@ -63,7 +63,7 @@ namespace FromLocalsToLocals
             
             services.AddDbContext<AppDbContext>(options =>
                 options.UseLazyLoadingProxies()
-                .UseNpgsql(Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Transient);
+                .UseNpgsql(Configuration.GetConnectionString("AppDbContext")));
 
 
             services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
@@ -126,7 +126,9 @@ namespace FromLocalsToLocals
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapHub<NotificationHub>("/notificationHub");
+                endpoints.MapHub<NotiHub>("/notiHub");
+                endpoints.MapHub<MessageHub>("/msgHub");
+
             });
         }
     }
