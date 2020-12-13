@@ -61,6 +61,9 @@
     <EmbeddedResource Update="Resources\Views\Home\AboutUS.lt.resx">
       <Generator></Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\_Map.lt.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

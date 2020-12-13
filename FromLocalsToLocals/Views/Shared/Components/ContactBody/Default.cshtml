@@ -1,0 +1,42 @@
+﻿@model FromLocalsToLocals.ViewComponents.ContactBody.ContactBodyVM
+
+
+<div class="chat_list" onclick="loadMessages(this)" id="@Model.ContactID">
+    <div class="chat_people">
+        <div class="chat_img">
+            @if (Model.Image != null)
+            {
+                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" alt="avatar" class="img-circle" />
+            }
+            else
+            {
+                if (Model.UserTab)
+                {
+                    <img class="img-circle" src="~/Assets/localSeller.png" alt="avatar" />
+                }
+                else
+                {
+                    <img class="img-circle" src="~/Assets/profile.png" alt="avatar" />
+                }
+            }
+        </div>
+        <div class="chat_ib">
+            <h5>@Model.Title <span class="chat_date"><i class="fa fa-clock-o"></i>@Model.Date</span></h5>
+            <p>
+                @Model.LastMsg
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    var isRead = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.IsRead))
+    var id = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ContactID))
+
+    $(document).ready(() => {
+        if (!isRead) {
+            var div = document.getElementById(id);
+            div.classList.add("unread_chat");
+        }
+    });
+</script>

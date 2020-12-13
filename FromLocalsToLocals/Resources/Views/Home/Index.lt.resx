@@ -121,13 +121,10 @@
     <value>Atrask</value>
   </data>
   <data name="Discover all nearby vendors with just a few clicks." xml:space="preserve">
-    <value>Atrask visus artimiausius pardavėjus keliais mygtuko paspaudimais.</value>
+    <value>Atrask artimiausius pardavėjus keliais mygtuko paspaudimais.</value>
   </data>
   <data name="Experience all the finest products around you." xml:space="preserve">
     <value>Atrask geriausius tave supančius produktus.</value>
-  </data>
-  <data name="Get to know the locals" xml:space="preserve">
-    <value>Pažink vietinius gyventojus</value>
   </data>
   <data name="Go" xml:space="preserve">
     <value>Pirmyn</value>
@@ -138,13 +135,19 @@
   <data name="Join" xml:space="preserve">
     <value>Registracija</value>
   </data>
+  <data name="No reviews" xml:space="preserve">
+    <value>Atsiliepimų nėra</value>
+  </data>
   <data name="Read More" xml:space="preserve">
     <value>Plačiau</value>
   </data>
-  <data name="Register your initiative" xml:space="preserve">
-    <value>Užregistruok savo esybę</value>
+  <data name="Reviews" xml:space="preserve">
+    <value>Atsiliepimai</value>
   </data>
   <data name="Support your local sellers" xml:space="preserve">
     <value>Palaikyk vietinius pardavėjus</value>
+  </data>
+  <data name="The Most Popular Services" xml:space="preserve">
+    <value>Populiariausios paslaugos</value>
   </data>
 </root>

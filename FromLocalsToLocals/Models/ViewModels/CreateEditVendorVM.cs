@@ -19,13 +19,14 @@ namespace FromLocalsToLocals.Models.ViewModels
     {
         public CreateEditVendorVM() { }
 
-        public CreateEditVendorVM(Vendor vendor)
+        public CreateEditVendorVM(Vendor vendor, List<WorkHours> workHours)
         {
             ID = vendor.ID;
             Title = vendor.Title;
             About = vendor.About;
             Address = vendor.Address;
-            VendorType = vendor.VendorType;         
+            VendorType = vendor.VendorType;
+            VendorHours = workHours;
         }
 
         public int ID { get; set; }

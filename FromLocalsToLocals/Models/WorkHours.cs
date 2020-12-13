@@ -15,9 +15,10 @@ namespace FromLocalsToLocals.Models
 
         }
 
-        public WorkHours(int vendorID, int day, TimeSpan openTime, TimeSpan closeTime)
+        public WorkHours(int vendorID, bool isWorking, int day, TimeSpan openTime, TimeSpan closeTime)
         {
             VendorID = vendorID;
+            IsWorking = isWorking;
             Day = day;
             OpenTime = openTime;
             CloseTime = closeTime;
@@ -27,7 +28,6 @@ namespace FromLocalsToLocals.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [NotMapped]
         public bool IsWorking { get; set; }
 
         [Required]

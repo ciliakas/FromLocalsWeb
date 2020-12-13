@@ -3,15 +3,17 @@ using System;
 using FromLocalsToLocals.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FromLocalsToLocals.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201207102805_Chat")]
+    partial class Chat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,9 +68,6 @@ namespace FromLocalsToLocals.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
-
-                    b.Property<bool>("Subscribe")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
@@ -286,17 +285,11 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<byte[]>("Image")
                         .HasColumnType("bytea");
 
-                    b.Property<DateTime>("LastClickDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<double>("Latitude")
                         .HasColumnType("double precision");
 
                     b.Property<double>("Longitude")
                         .HasColumnType("double precision");
-
-                    b.Property<int>("Popularity")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -329,9 +322,6 @@ namespace FromLocalsToLocals.Migrations
 
                     b.Property<int>("Day")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("IsWorking")
-                        .HasColumnType("boolean");
 
                     b.Property<TimeSpan>("OpenTime")
                         .HasColumnType("interval");
@@ -570,7 +560,7 @@ namespace FromLocalsToLocals.Migrations
             modelBuilder.Entity("FromLocalsToLocals.Models.WorkHours", b =>
                 {
                     b.HasOne("FromLocalsToLocals.Models.Vendor", "Vendor")
-                        .WithMany("VendorHours")
+                        .WithMany()
                         .HasForeignKey("VendorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -657,8 +647,6 @@ namespace FromLocalsToLocals.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("VendorHours");
                 });
 #pragma warning restore 612, 618
         }

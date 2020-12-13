@@ -129,8 +129,14 @@
   <data name="Car repair" xml:space="preserve">
     <value>Servisas</value>
   </data>
+  <data name="Experience all the finest products around you" xml:space="preserve">
+    <value>Atrask geriausius tave supančius produktus</value>
+  </data>
   <data name="Filter" xml:space="preserve">
     <value>Filtruoti</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filtrai</value>
   </data>
   <data name="Items per page:" xml:space="preserve">
     <value>Elementų puslapyje</value>
@@ -142,16 +148,16 @@
     <value>Naujų paslaugų nėra:</value>
   </data>
   <data name="No Reviews" xml:space="preserve">
-    <value>Apžvalgų nėra</value>
+    <value>Atsiliepimų nėra</value>
   </data>
   <data name="Random" xml:space="preserve">
     <value>Atsitiktinai</value>
   </data>
   <data name="Read More" xml:space="preserve">
-    <value>Skaityti daugiau</value>
+    <value>Plačiau</value>
   </data>
   <data name="Reviews" xml:space="preserve">
-    <value>Apžvalgos</value>
+    <value>Atsiliepimai</value>
   </data>
   <data name="Services in the past month registered on our site" xml:space="preserve">
     <value>Šį mėnesį užregistruotos paslaugos</value>

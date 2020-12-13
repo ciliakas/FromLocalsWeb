@@ -3,15 +3,17 @@ using System;
 using FromLocalsToLocals.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FromLocalsToLocals.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201212173620_NewColumnInWork")]
+    partial class NewColumnInWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,9 +69,6 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Subscribe")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -92,35 +91,6 @@ namespace FromLocalsToLocals.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("FromLocalsToLocals.Models.Contact", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<int>("ReceiverID")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("ReceiverRead")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("UserRead")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ReceiverID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Contacts");
-                });
-
             modelBuilder.Entity("FromLocalsToLocals.Models.Follower", b =>
                 {
                     b.Property<string>("UserID")
@@ -134,33 +104,6 @@ namespace FromLocalsToLocals.Migrations
                     b.HasIndex("VendorID");
 
                     b.ToTable("Followers");
-                });
-
-            modelBuilder.Entity("FromLocalsToLocals.Models.Message", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<int>("ContactID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Date")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsUserSender")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ContactID");
-
-                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("FromLocalsToLocals.Models.Notification", b =>
@@ -476,25 +419,6 @@ namespace FromLocalsToLocals.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("FromLocalsToLocals.Models.Contact", b =>
-                {
-                    b.HasOne("FromLocalsToLocals.Models.Vendor", "Vendor")
-                        .WithMany("Contacts")
-                        .HasForeignKey("ReceiverID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FromLocalsToLocals.Models.AppUser", "User")
-                        .WithMany("Contacts")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("Vendor");
-                });
-
             modelBuilder.Entity("FromLocalsToLocals.Models.Follower", b =>
                 {
                     b.HasOne("FromLocalsToLocals.Models.AppUser", "User")
@@ -512,17 +436,6 @@ namespace FromLocalsToLocals.Migrations
                     b.Navigation("User");
 
                     b.Navigation("Vendor");
-                });
-
-            modelBuilder.Entity("FromLocalsToLocals.Models.Message", b =>
-                {
-                    b.HasOne("FromLocalsToLocals.Models.Contact", "Contact")
-                        .WithMany("Messages")
-                        .HasForeignKey("ContactID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("FromLocalsToLocals.Models.Notification", b =>
@@ -631,16 +544,9 @@ namespace FromLocalsToLocals.Migrations
 
             modelBuilder.Entity("FromLocalsToLocals.Models.AppUser", b =>
                 {
-                    b.Navigation("Contacts");
-
                     b.Navigation("Following");
 
                     b.Navigation("Vendors");
-                });
-
-            modelBuilder.Entity("FromLocalsToLocals.Models.Contact", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("FromLocalsToLocals.Models.Review", b =>
@@ -650,8 +556,6 @@ namespace FromLocalsToLocals.Migrations
 
             modelBuilder.Entity("FromLocalsToLocals.Models.Vendor", b =>
                 {
-                    b.Navigation("Contacts");
-
                     b.Navigation("Followers");
 
                     b.Navigation("Posts");

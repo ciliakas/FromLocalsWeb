@@ -16,6 +16,8 @@
     <link href="~/notification/ikr.notification.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+
 
     @*!--LeafLet CSS and Script-->*@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -72,7 +74,7 @@
                 </ul>
                 @if (signInManager.IsSignedIn(User))
                 {
-                    <a asp-controller="Chat" asp-action="Index"><img src="~/Assets/message.png" style="width:30px;height:30px;"></img></a>
+                    <a asp-controller="Chat" asp-route-tabname="ISent"  asp-action="Index"><img src="~/Assets/message.png" style="width:30px;height:30px;"></img></a>
                     <p id="noti_Container" class="m-3"></p>
                 }
                 <ul class="navbar-nav">
@@ -123,7 +125,6 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/notification/ikr.notificationPlugin.js"></script>
     @RenderSection("Scripts", required: false)
@@ -160,16 +161,16 @@
         getNotifications();
     })
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
+    var connectionToNoti = new signalR.HubConnectionBuilder().withUrl("/notiHub").build();
 
-    connection.on("displayNotification", () => {
+    connectionToNoti.on("displayNotification", () => {
         var elem = document.getElementById("noti_Container");
         elem.innerHTML = "";
         $("#noti_Container").ikrNotificationSetup();
         getNotifications();
     });
 
-    connection.start();
+    connectionToNoti.start();
 
 </script>
 
