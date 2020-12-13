@@ -48,7 +48,6 @@ namespace FromLocalsToLocals.Models.Services
             {
                 await e.ExceptionSender();
             }
-
         }
 
         public async Task DeleteAsync(Vendor vendor)
