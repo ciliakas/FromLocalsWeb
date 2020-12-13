@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Utilities
 {
-    public class NotificationHub : Hub
+    public class NotiHub : Hub
     {
 
 
