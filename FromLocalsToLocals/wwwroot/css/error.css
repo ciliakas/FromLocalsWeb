@@ -10,17 +10,17 @@
 
 body {
     background: -webkit-repeating-linear-gradient(-45deg, #ccccbbff, #ccba70ff, #ccba8bff, #ccbaa9ff, #ccccccff);
-    height: 100vh;
+    height:inherit;
     background-size: 400%;
 }
 
 .error-page {
-    position: absolute;
+    position: inherit;
     top: 10%;
     left: 17%;
     right: 17%;
     bottom: 20%;
-    display: flex;
+    display: inherit;
     align-items: center;
     justify-content: center;
     background: #fff;

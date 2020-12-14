@@ -121,8 +121,7 @@ namespace FromLocalsToLocals
         {
             app.UseHangfireDashboard();
             var sendAll = new SendAllSubscribers(_context);
-
-            RecurringJob.AddOrUpdate(() => sendAll.SendingAll(), Cron.MinuteInterval(1));
+            //RecurringJob.AddOrUpdate(() => sendAll.SendingAll(), Cron.MinuteInterval(1));
 
 
 

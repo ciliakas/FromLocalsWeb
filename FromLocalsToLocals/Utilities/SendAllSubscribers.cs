@@ -1,8 +1,4 @@
 using FromLocalsToLocals.Database;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using SuppLocals;
-using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +18,7 @@ namespace FromLocalsToLocals.Utilities
         {
             var users = _context.Users.ToList();
             var vendors = _context.Vendors;
-            var list = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(3);
+            var newVendorsList = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(3);
 
             StringBuilder msg = new StringBuilder();
 
@@ -30,23 +26,19 @@ namespace FromLocalsToLocals.Utilities
             {
                 msg.Append("At this time there is not new vendors");
             }
-
             else
             {
                 foreach (var u in users)
                 {
 
-                    if (u.Subscribe is true)
+                    if (u.Subscribe)
                     {
-                        foreach (var v in list)
+                        foreach (var v in newVendorsList)
                         {
-                            msg.Append(v.Title.ToString());
-                            msg.Append("    Vendor type: ");
-                            msg.Append(v.VendorType);
-                            msg.Append(" <br>");
+                            msg.Append(v.Title.ToString() + "    Vendor type: " + v.VendorType + " <br>");
                         }
+                        await SendMail.NewsLetterSender(msg.ToString(), u.Email);
                     }
-                    await SendMail.NewsLetterSender(msg.ToString(), u.Email);
                 }
             }
         }

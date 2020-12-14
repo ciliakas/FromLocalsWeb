@@ -145,11 +145,10 @@ namespace FromLocalsToLocals.Controllers
         }
         private async Task<IActionResult> SubscribeNewsletter(ProfileVM model)
         {
-            var userId = _userManager.GetUserId(User);
-            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            var user = await _userManager.GetUserAsync(User);
             var resultsList = new List<IdentityResult>();
 
-            if (user.Subscribe == true)
+            if (user.Subscribe)
             {
                 user.Subscribe = false;
                 _toastNotification.AddInfoToastMessage("Newsletter unsubscribed!");
