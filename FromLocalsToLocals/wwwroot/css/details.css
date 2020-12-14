@@ -1,0 +1,25 @@
+﻿img.serviceImg {
+    
+    box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+}
+
+div.hourColumn {
+    width: 200px;
+}
+div.dayColumn {
+    width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="serviceImg"] {
+        width: 90%;
+        height: 80%;
+    }
+    [class*="hourColumn"] {
+        width: 50%;
+    }
+    [class*="dayColumn"] {
+        width: 50%;
+    }
+}
