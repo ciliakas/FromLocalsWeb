@@ -13,9 +13,22 @@
                         fButtons[i].innerText = "Unfollow";
                         fButtons[i].className = "btn btn-outline-dark w-100 followBtn"
                     }
-                } else if (obj.innerText == "Unfollow") {
+                }
+                else if (obj.innerText == "Sekti") {
+                    for (var i = 0; i < fButtons.length; i++) {
+                        fButtons[i].innerText = "Nebesekti";
+                        fButtons[i].className = "btn btn-outline-dark w-100 followBtn"
+                    }
+                }
+                else if (obj.innerText == "Unfollow") {
                     for (var i = 0; i < fButtons.length; i++) {
                         fButtons[i].innerText = "Follow";
+                        fButtons[i].className = "btn btn-dark w-100 followBtn"
+                    }
+                }
+                else if (obj.innerText == "Nebesekti") {
+                    for (var i = 0; i < fButtons.length; i++) {
+                        fButtons[i].innerText = "Sekti";
                         fButtons[i].className = "btn btn-dark w-100 followBtn"
                     }
                 }

@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Controllers
@@ -103,7 +101,7 @@ namespace FromLocalsToLocals.Controllers
                 _context.Update(contact);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(new { success = false });
             }
@@ -125,8 +123,6 @@ namespace FromLocalsToLocals.Controllers
             await _context.SaveChangesAsync();
 
         }
-
-
 
         public async  Task<IActionResult> GetChatComponent(int contactId, bool isUserTab, string componentName)
         {

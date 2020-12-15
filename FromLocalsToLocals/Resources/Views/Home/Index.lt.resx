@@ -126,6 +126,9 @@
   <data name="Experience all the finest products around you." xml:space="preserve">
     <value>Atrask geriausius tave supančius produktus.</value>
   </data>
+  <data name="Follow" xml:space="preserve">
+    <value>Sekti</value>
+  </data>
   <data name="Go" xml:space="preserve">
     <value>Pirmyn</value>
   </data>
@@ -149,5 +152,8 @@
   </data>
   <data name="The Most Popular Services" xml:space="preserve">
     <value>Populiariausios paslaugos</value>
+  </data>
+  <data name="Unfollow" xml:space="preserve">
+    <value>Nebesekti</value>
   </data>
 </root>

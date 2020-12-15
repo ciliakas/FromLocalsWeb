@@ -134,8 +134,6 @@ namespace FromLocalsToLocals.Controllers
 
                     model.SetValuesToVendor(vendor);
 
-                    await _vendorService.CreateAsync(vendor);
-
                     var serviceOperatingHours = model.VendorHours;
 
                     foreach (var elem in serviceOperatingHours)
@@ -162,6 +160,8 @@ namespace FromLocalsToLocals.Controllers
                             await _vendorService.AddWorkHoursAsync(workHours);
                         }
                     }
+
+                    await _vendorService.CreateAsync(vendor);
 
                     _toastNotification.AddSuccessToastMessage(_localizer["Service Created"]);
                     return RedirectToAction("MyVendors");
