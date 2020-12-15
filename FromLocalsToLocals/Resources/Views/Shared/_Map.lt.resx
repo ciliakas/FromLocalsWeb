@@ -156,8 +156,9 @@
   <data name="Toys" xml:space="preserve">
     <value>Žaislai</value>
   </data>
-  <data name="Type service title..." xml:space="preserve">
+	<data name="Type service title..." xml:space="preserve">
     <value>Įveskite paslaugos pavadinimą...</value>
+	  </data>
   <data name="Service Types" xml:space="preserve">
     <value>Paslaugų tipai</value>
   </data>

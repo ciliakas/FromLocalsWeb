@@ -27,7 +27,7 @@ namespace FromLocalsToLocals.Controllers
         private readonly IStringLocalizer<FeedController> _localizer;
 
 
-        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService,
+        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorServiceEF vendorService,
                               IStringLocalizer<FeedController> localizer)
         {
             _context = context;
