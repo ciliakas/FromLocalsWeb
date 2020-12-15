@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Models.ViewModels;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Utilities.Enums;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
-using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Services.EF;
 
 namespace FromLocalsToLocals.Web.Controllers
 {
@@ -18,11 +18,11 @@ namespace FromLocalsToLocals.Web.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IToastNotification _toastNotification;
         private readonly IPostsService _postsService;
-        private readonly IVendorServiceEF _vendorService;
+        private readonly IVendorService _vendorService;
         private readonly AppDbContext _context;
 
 
-        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorServiceEF vendorService)
+        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService)
         {
             _context = context;
             _userManager = userManager;

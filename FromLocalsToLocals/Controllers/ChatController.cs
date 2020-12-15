@@ -1,5 +1,5 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Models;
 using FromLocalsToLocals.Web.Utilities;
 using Microsoft.AspNetCore.Authorization;

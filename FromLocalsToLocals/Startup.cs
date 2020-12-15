@@ -7,15 +7,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NToastNotify;
-using FromLocalsToLocals.Models.Services;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Localization;
 using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Utilities;
-using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Services.EF;
+using FromLocalsToLocals.Services.Ado;
 
 namespace FromLocalsToLocals.Web
 {
@@ -85,7 +85,7 @@ namespace FromLocalsToLocals.Web
             });
 
             services.AddScoped<INotificationService, NotificationService>();
-            services.AddScoped<IVendorServiceEF, VendorServiceEF>();
+            services.AddScoped<IVendorService, VendorService>();
             services.AddScoped<IReviewsService, ReviewsService>();
             services.AddScoped<IPostsService, PostsService>();
             services.AddScoped<IVendorServiceADO, VendorServiceADO>();

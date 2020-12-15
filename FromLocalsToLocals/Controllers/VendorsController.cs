@@ -12,10 +12,11 @@ using Microsoft.Extensions.Localization;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities.Enums;
 using FromLocalsToLocals.Utilities.Helpers;
-using FromLocalsToLocals.Web.Database;
-using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Models.ViewModels;
 using FromLocalsToLocals.Web.Utilities;
+using FromLocalsToLocals.Services.EF;
+using FromLocalsToLocals.Services.Ado;
 
 namespace FromLocalsToLocals.Web.Controllers
 {
@@ -23,13 +24,13 @@ namespace FromLocalsToLocals.Web.Controllers
     public class VendorsController : Controller
     {
         private readonly Lazy<UserManager<AppUser>> _userManager;
-        private readonly IVendorServiceEF _vendorService;
+        private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
         private readonly AppDbContext _context;
         private readonly IStringLocalizer<VendorsController> _localizer;
-        readonly IVendorServiceADO _dataAdapterService;
+        private readonly IVendorServiceADO _dataAdapterService;
 
-        public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorServiceEF vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
+        public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorService vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
         {
             _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
             _vendorService = vendorService;

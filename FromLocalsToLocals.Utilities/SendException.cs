@@ -4,7 +4,7 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Web.Utilities
+namespace FromLocalsToLocals.Utilities
 {
     public static  class SendException
     {

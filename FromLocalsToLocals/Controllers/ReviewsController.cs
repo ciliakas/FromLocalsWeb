@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Contracts.Events;
 using FromLocalsToLocals.Web.Models.ViewModels;
-using FromLocalsToLocals.Web.Database;
-using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Utilities;
+using FromLocalsToLocals.Services.EF;
 
 namespace FromLocalsToLocals.Web.Controllers
 {

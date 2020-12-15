@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 
-namespace FromLocalsToLocals.Web.Database
+namespace FromLocalsToLocals.Database
 {
     public class AppDbContext : IdentityDbContext<AppUser>
     {

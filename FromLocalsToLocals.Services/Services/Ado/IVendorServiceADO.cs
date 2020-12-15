@@ -1,7 +1,7 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Web.Models.Services
+namespace FromLocalsToLocals.Services.Ado
 {
     public interface IVendorServiceADO
     {

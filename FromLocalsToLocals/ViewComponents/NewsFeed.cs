@@ -1,11 +1,11 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities.Enums;
-using FromLocalsToLocals.Web.Database;
-using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Services.EF;
 
 namespace FromLocalsToLocals.Web.ViewComponents
 {

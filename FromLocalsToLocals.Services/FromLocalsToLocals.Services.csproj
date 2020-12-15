@@ -5,9 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="Services\" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
+    <PackageReference Include="Npgsql" Version="5.0.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FromLocalsToLocals.Contracts\FromLocalsToLocals.Contracts.csproj" />
+    <ProjectReference Include="..\FromLocalsToLocals.Database\FromLocalsToLocals.Database.csproj" />
+    <ProjectReference Include="..\FromLocalsToLocals.Utilities\FromLocalsToLocals.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,8 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-
-namespace FromLocalsToLocals.Web.Models.Services
+namespace FromLocalsToLocals.Services.EF
 {
     public class PostsService : IPostsService
     {

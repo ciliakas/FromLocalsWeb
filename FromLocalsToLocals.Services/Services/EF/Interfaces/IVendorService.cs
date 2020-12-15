@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Web.Models.Services
+namespace FromLocalsToLocals.Services.EF
 {
-    public interface IVendorServiceEF
+    public interface IVendorService
     {
         Task AddPostAsync(Vendor vendor,Post post);
         Task CreateAsync(Vendor vendor);

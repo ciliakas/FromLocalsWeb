@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Utilities.Helpers;
-using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Models.ViewModels;
 using FromLocalsToLocals.Web.Utilities;
 using Geocoding;

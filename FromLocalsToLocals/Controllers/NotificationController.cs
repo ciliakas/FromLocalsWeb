@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Web.Database;
-using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Services.EF;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

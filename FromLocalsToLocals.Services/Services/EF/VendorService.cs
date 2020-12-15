@@ -1,20 +1,19 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Web.Database;
-using FromLocalsToLocals.Web.Models.Services;
-using FromLocalsToLocals.Web.Utilities;
+using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Models.Services
+namespace FromLocalsToLocals.Services.EF
 {
-    public class VendorServiceEF : IVendorServiceEF
+    public class VendorService : IVendorService
     {
         private readonly AppDbContext _context;
 
-        public VendorServiceEF(AppDbContext context)
+        public VendorService(AppDbContext context)
         {
             _context = context;
         }

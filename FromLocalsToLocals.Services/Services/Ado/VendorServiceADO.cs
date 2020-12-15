@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Web.Models.Services;
-using FromLocalsToLocals.Web.Utilities;
+using FromLocalsToLocals.Utilities;
 
-namespace FromLocalsToLocals.Models.Services
+namespace FromLocalsToLocals.Services.Ado
 {
     public class VendorServiceADO : IVendorServiceADO
     {
@@ -21,7 +20,7 @@ namespace FromLocalsToLocals.Models.Services
         {
             try 
             {
-                using (NpgsqlConnection connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
+                using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
                 {
                     connection.Open();
 
