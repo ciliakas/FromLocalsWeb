@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Utilities
+namespace FromLocalsToLocals.Web.Utilities
 {
     public class NotiHub : Hub
     {

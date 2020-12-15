@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities;
-using FromLocalsToLocals.ViewModels;
+using FromLocalsToLocals.Utilities.Helpers;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models.ViewModels;
+using FromLocalsToLocals.Web.Utilities;
 using Geocoding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,10 +18,8 @@ using Microsoft.Extensions.Options;
 using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using SuppLocals;
-using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     public class AccountController : Controller
     {

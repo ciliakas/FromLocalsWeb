@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     [Authorize]
     public class NotificationController : Controller

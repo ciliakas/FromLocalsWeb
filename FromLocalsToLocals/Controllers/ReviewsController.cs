@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-using FromLocalsToLocals.Utilities;
 using System.Collections.Generic;
-using FromLocalsToLocals.Models.Services;
-using System.Diagnostics;
-using static FromLocalsToLocals.Models.Review;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Contracts.Events;
+using FromLocalsToLocals.Web.Models.ViewModels;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Web.Utilities;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     public class ReviewsController : Controller
     {

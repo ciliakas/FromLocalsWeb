@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using FromLocalsToLocals.Contracts.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Models
+namespace FromLocalsToLocals.Web.Models.Services
 {
     public interface INotificationService
     {

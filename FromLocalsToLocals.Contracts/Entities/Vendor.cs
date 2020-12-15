@@ -1,9 +1,8 @@
-﻿using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Utilities;
+﻿using FromLocalsToLocals.Utilities;
+using FromLocalsToLocals.Utilities.Enums;
 using Geocoding;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,7 +11,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace FromLocalsToLocals.Models
+namespace FromLocalsToLocals.Contracts.Entities
 {
     public class Vendor : IEquatable<Vendor>, IComparable<Vendor>
     {
@@ -21,7 +20,7 @@ namespace FromLocalsToLocals.Models
         public int[] ReviewsCount = new int[5];
 
         [NotMapped]
-        public double ReviewsAverage 
+        public double ReviewsAverage
         {
             get => CountAverage();
             set => ReviewsAverage = value;
@@ -33,9 +32,9 @@ namespace FromLocalsToLocals.Models
         public int ID { get; set; }
 
         [Required] public string UserID { get; set; }
-          
+
         [Required]
-        [Display(Name ="Title")]
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
         [Display(Name = "About")]
@@ -70,7 +69,7 @@ namespace FromLocalsToLocals.Models
 
         public byte[] Image { get; set; }
 
-        [JsonIgnore] 
+        [JsonIgnore]
         [IgnoreDataMember]
         [ForeignKey("UserID")]
         public virtual AppUser User { get; set; }
@@ -144,7 +143,7 @@ namespace FromLocalsToLocals.Models
             {
                 return 0;
             }
-                
+
             var groupedRatings = Reviews.GroupBy(
                              rev => rev.Stars,
                              rev => rev.Stars,
@@ -154,12 +153,12 @@ namespace FromLocalsToLocals.Models
                                  Count = arr.Count()
                              });
 
-            foreach(var rating in groupedRatings)
+            foreach (var rating in groupedRatings)
             {
-                ReviewsCount[rating.Star-1] = rating.Count; 
+                ReviewsCount[rating.Star - 1] = rating.Count;
             }
-            
-            return  groupedRatings.Aggregate(0,(result,element) => result + element.Star * element.Count)/(double)Reviews.Count;
+
+            return groupedRatings.Aggregate(0, (result, element) => result + element.Star * element.Count) / (double)Reviews.Count;
         }
     }
 }

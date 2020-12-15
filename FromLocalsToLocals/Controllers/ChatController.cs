@@ -1,6 +1,7 @@
-﻿using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Utilities;
+﻿using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models;
+using FromLocalsToLocals.Web.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +9,10 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     [Authorize]
     public class ChatController : Controller

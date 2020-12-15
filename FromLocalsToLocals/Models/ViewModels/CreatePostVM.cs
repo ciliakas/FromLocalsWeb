@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+﻿using FromLocalsToLocals.Contracts.Entities;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Models.ViewModels
+namespace FromLocalsToLocals.Web.Models.ViewModels
 {
     public class CreatePostVM
     {

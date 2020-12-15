@@ -1,8 +1,10 @@
 ﻿using Npgsql;
-using FromLocalsToLocals.Utilities;
 using System.Threading.Tasks;
 using System.Data;
 using Microsoft.Extensions.Configuration;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Web.Utilities;
 
 namespace FromLocalsToLocals.Models.Services
 {

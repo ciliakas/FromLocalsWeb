@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FromLocalsToLocals.Contracts.Entities;
 
-namespace FromLocalsToLocals.Models.ViewModels
+namespace FromLocalsToLocals.Web.Models.ViewModels
 {
     public class MessageVM
     {

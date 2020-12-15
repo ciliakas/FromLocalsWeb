@@ -2,21 +2,20 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Models.Services;
 using Microsoft.AspNetCore.Authorization;
-using FromLocalsToLocals.ViewModels;
-using SuppLocals;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using NToastNotify;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
-using FromLocalsToLocals.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Utilities.Helpers;
+using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models.ViewModels;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     public class HomeController : Controller
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Utilities
+namespace FromLocalsToLocals.Web.Utilities
 {
     public class PaginatedList<T> : List<T> where T:class
     {

@@ -1,9 +1,9 @@
-﻿@model IEnumerable<FromLocalsToLocals.Models.Vendor>
+﻿@model IEnumerable<FromLocalsToLocals.Contracts.Entities.Vendor>
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 
 @{
-    ViewBag.vendorTypes = Enum.GetNames(typeof(FromLocalsToLocals.Utilities.VendorType));
+    ViewBag.vendorTypes = Enum.GetNames(typeof(FromLocalsToLocals.Utilities.Enums.VendorType));
 }
 
 <div class="row" style="width:100%">

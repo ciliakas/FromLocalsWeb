@@ -1,11 +1,9 @@
-﻿using FromLocalsToLocals.Models.ViewModels;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
-namespace FromLocalsToLocals.Models
+namespace FromLocalsToLocals.Contracts.Entities
 {
     public class Post
     {

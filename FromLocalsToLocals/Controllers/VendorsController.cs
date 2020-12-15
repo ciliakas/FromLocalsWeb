@@ -1,21 +1,23 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
-using SuppLocals;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FromLocalsToLocals.Utilities;
-using FromLocalsToLocals.Models.Services;
 using NToastNotify;
-using FromLocalsToLocals.Models.ViewModels;
 using Microsoft.Extensions.Localization;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Utilities.Enums;
+using FromLocalsToLocals.Utilities.Helpers;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Web.Models.ViewModels;
+using FromLocalsToLocals.Web.Utilities;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     [Authorize]
     public class VendorsController : Controller

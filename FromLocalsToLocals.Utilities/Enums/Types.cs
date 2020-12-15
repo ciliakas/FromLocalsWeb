@@ -1,5 +1,5 @@
 ﻿
-namespace FromLocalsToLocals.Utilities
+namespace FromLocalsToLocals.Utilities.Enums
 {
     public enum VendorType
     {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace FromLocalsToLocals.ViewModels
+namespace FromLocalsToLocals.Web.Models.ViewModels
 {
     public class LoginVM
     {

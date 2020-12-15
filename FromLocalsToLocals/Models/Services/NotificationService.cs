@@ -1,11 +1,11 @@
-﻿using FromLocalsToLocals.Database;
-using Microsoft.EntityFrameworkCore;
+﻿using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Models
+namespace FromLocalsToLocals.Web.Models.Services
 {
     public class NotificationService : INotificationService
     {

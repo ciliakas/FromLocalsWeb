@@ -1,5 +1,7 @@
-﻿using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Utilities;
+﻿using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models.Services;
+using FromLocalsToLocals.Web.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

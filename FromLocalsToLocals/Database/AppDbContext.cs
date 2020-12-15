@@ -1,10 +1,10 @@
-﻿using FromLocalsToLocals.Models;
+﻿using FromLocalsToLocals.Contracts.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 
-namespace FromLocalsToLocals.Database
+namespace FromLocalsToLocals.Web.Database
 {
     public class AppDbContext : IdentityDbContext<AppUser>
     {

@@ -1,8 +1,8 @@
-﻿@model FromLocalsToLocals.Models.ReviewViewModel
+﻿@model FromLocalsToLocals.Web.Models.ViewModels.ReviewViewModel
 @inject UserManager<AppUser> userManager
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
-@using static FromLocalsToLocals.Utilities.TimeCalculator
+@using static FromLocalsToLocals.Web.Utilities.TimeCalculator
 
 @{
     ViewData["Title"] = _localizer["Reviews"];

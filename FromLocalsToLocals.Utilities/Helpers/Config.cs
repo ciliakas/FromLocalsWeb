@@ -1,7 +1,5 @@
 ﻿
-using System.Reflection.Metadata;
-
-namespace SuppLocals
+namespace FromLocalsToLocals.Utilities.Helpers
 {
     public class Config
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FromLocalsToLocals.Utilities
+namespace FromLocalsToLocals.Web.Utilities
 {
     public  class TimeCalculator 
     {

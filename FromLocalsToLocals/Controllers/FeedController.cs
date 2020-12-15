@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Models.Services;
-using FromLocalsToLocals.Models.ViewModels;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models.ViewModels;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NToastNotify;
+using FromLocalsToLocals.Web.Models.Services;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     public class FeedController : Controller
     {

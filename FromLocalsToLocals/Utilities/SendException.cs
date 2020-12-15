@@ -1,10 +1,10 @@
+using FromLocalsToLocals.Utilities.Helpers;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using SuppLocals;
 using System;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Utilities
+namespace FromLocalsToLocals.Web.Utilities
 {
     public static  class SendException
     {

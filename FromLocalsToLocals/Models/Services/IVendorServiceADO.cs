@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using FromLocalsToLocals.Contracts.Entities;
+using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Models.Services
+namespace FromLocalsToLocals.Web.Models.Services
 {
     public interface IVendorServiceADO
     {

@@ -1,13 +1,8 @@
-﻿using FromLocalsToLocals.Models.Services;
-using FromLocalsToLocals.Models.ViewModels;
-using FromLocalsToLocals.Models;
+﻿using FromLocalsToLocals.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.ViewComponents
+namespace FromLocalsToLocals.Web.ViewComponents
 {
     public class CreatePost : ViewComponent
     {

@@ -1,9 +1,7 @@
-﻿
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
-namespace FromLocalsToLocals.Models
+namespace FromLocalsToLocals.Contracts.Entities
 {
     public class Follower
     {

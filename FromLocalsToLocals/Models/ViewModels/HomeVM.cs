@@ -1,9 +1,8 @@
-﻿using System;
+﻿using FromLocalsToLocals.Contracts.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Models.ViewModels
+
+namespace FromLocalsToLocals.Web.Models.ViewModels
 {
     public class HomeVM
     {

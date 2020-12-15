@@ -1,10 +1,7 @@
-﻿using FromLocalsToLocals.Models;
+﻿using FromLocalsToLocals.Contracts.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.Utilities
+namespace FromLocalsToLocals.Contracts.Events
 {
     public class ReviewCreatedEventArgs : EventArgs
     {

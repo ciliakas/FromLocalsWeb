@@ -1,8 +1,9 @@
-using FromLocalsToLocals.Utilities;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
-namespace FromLocalsToLocals.Models
+namespace FromLocalsToLocals.Web.Models.ViewModels
 {
     public class VendorTypeViewModel
     {

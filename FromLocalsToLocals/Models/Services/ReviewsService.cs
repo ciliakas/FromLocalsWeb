@@ -1,10 +1,12 @@
-﻿using FromLocalsToLocals.Database;
+﻿using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Models.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static FromLocalsToLocals.Utilities.TimeCalculator;
+using static FromLocalsToLocals.Web.Utilities.TimeCalculator;
 
 namespace FromLocalsToLocals.Models.Services
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace FromLocalsToLocals.Models
+namespace FromLocalsToLocals.Web.Models.ViewModels
 {
     public class ErrorViewModel
     {

@@ -51,6 +51,12 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
+  
+ <ItemGroup>
+   <ProjectReference Include="..\FromLocalsToLocals.Contracts\FromLocalsToLocals.Contracts.csproj" />
+   <ProjectReference Include="..\FromLocalsToLocals.Services\FromLocalsToLocals.Services.csproj" />
+   <ProjectReference Include="..\FromLocalsToLocals.Utilities\FromLocalsToLocals.Utilities.csproj" />
+ </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\Controllers\AccountController.lt.resx">

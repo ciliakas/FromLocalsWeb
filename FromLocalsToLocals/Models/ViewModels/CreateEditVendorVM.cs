@@ -1,19 +1,11 @@
-﻿using FromLocalsToLocals.Utilities;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using FromLocalsToLocals.Database;
-using Geocoding;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Utilities.Enums;
 
-namespace FromLocalsToLocals.Models.ViewModels
+namespace FromLocalsToLocals.Web.Models.ViewModels
 {
     public class CreateEditVendorVM
     {

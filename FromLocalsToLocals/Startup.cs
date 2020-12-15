@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -15,9 +12,12 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Localization;
-using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.Database;
+using FromLocalsToLocals.Web.Utilities;
+using FromLocalsToLocals.Web.Models.Services;
 
-namespace FromLocalsToLocals
+namespace FromLocalsToLocals.Web
 {
     public class Startup
     {
