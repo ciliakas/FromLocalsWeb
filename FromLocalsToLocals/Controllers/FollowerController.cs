@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Database;
@@ -23,11 +22,13 @@ namespace FromLocalsToLocals.Controllers
             _userManager = userManager;
         }
 
+        
         [HttpPost]
+        [Route("/Follower/Follow/{id:int}")]
+        [Route("/Follower/Sekti/{id:int}")]
         public async Task<IActionResult> Follow(int? id)
         {
-
-            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.Id==_userManager.GetUserId(User));
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User));
 
             if (id == null || user == null)
             {
@@ -41,7 +42,7 @@ namespace FromLocalsToLocals.Controllers
                 user.Following.Add(follower);
                 await _userManager.UpdateAsync(user);
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 return Json(new { success = false });
             }
@@ -50,9 +51,11 @@ namespace FromLocalsToLocals.Controllers
         }
 
         [HttpPost]
+        [Route("/Follower/Unfollow/{id:int}")]
+        [Route("/Follower/Nebesekti/{id:int}")]
         public async Task<IActionResult> Unfollow(int? id)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.Id == _userManager.GetUserId(User));
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == _userManager.GetUserId(User));
 
             if (id == null || user == null)
             {
@@ -66,7 +69,7 @@ namespace FromLocalsToLocals.Controllers
                 user.Following.Remove(followingVendor);
                 await _userManager.UpdateAsync(user);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(new { success = false });
             }

@@ -22,7 +22,7 @@ namespace FromLocalsToLocals.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IToastNotification _toastNotification;
         private readonly IPostsService _postsService;
-        private readonly IVendorService _vendorService;
+        private readonly IVendorServiceEF _vendorService;
         private readonly AppDbContext _context;
         private readonly IStringLocalizer<FeedController> _localizer;
 

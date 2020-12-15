@@ -151,7 +151,7 @@
     <value>Naujų paslaugų nėra:</value>
   </data>
   <data name="No Reviews" xml:space="preserve">
-    <value>Apžvalgų nėra</value>
+    <value>Atsiliepimų nėra</value>
   </data>
   <data name="Random" xml:space="preserve">
     <value>Atsitiktinai</value>
@@ -160,7 +160,7 @@
     <value>Plačiau</value>
   </data>
   <data name="Reviews" xml:space="preserve">
-    <value>Apžvalgos</value>
+    <value>Atsiliepimai</value>
   </data>
   <data name="Rural tourism" xml:space="preserve">
     <value>Kaimo turizmas</value>

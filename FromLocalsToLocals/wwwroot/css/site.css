@@ -161,15 +161,6 @@ button.boxclose {
     counter-increment: rateme 1;
 }
 
-.collapse.navbar-collapse.myNav a {
-    border-bottom: 3px solid transparent;
-}
-
-.collapse.navbar-collapse.myNav a:hover {
-    border-bottom: 3px solid black;
-    border-radius: 2px;
-}
-
 img.userImage.mr-3{
     border-radius: 50%;
 }

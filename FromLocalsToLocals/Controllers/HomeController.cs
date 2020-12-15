@@ -13,9 +13,7 @@ using NToastNotify;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using FromLocalsToLocals.Models.ViewModels;
-using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using FromLocalsToLocals.Database;
 
 namespace FromLocalsToLocals.Controllers
@@ -24,27 +22,30 @@ namespace FromLocalsToLocals.Controllers
     {
         private readonly IToastNotification _toastNotification;
 
-        private readonly IVendorService _vendorService;
+        private readonly IVendorServiceEF _vendorService;
 
         private readonly IStringLocalizer<HomeController> _localizer;
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
 
 
-        public HomeController(AppDbContext context, IStringLocalizer<HomeController> localizer, IVendorService vendorService, IToastNotification toastNotification, UserManager<AppUser> userManager )
+        public HomeController(AppDbContext context, IStringLocalizer<HomeController> localizer, IVendorServiceEF vendorService, IToastNotification toastNotification, UserManager<AppUser> userManager )
         {
             _localizer = localizer;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
             _userManager = userManager;
             _context = context;
-
         }
 
         public async Task<IActionResult> Index(HomeVM homeVM)
         {
-            homeVM.AllVendors = await _vendorService.GetVendorsAsync(null, "");
-            homeVM.PopularVendors = await _vendorService.GetPopularVendorsAsync(4);
+            homeVM.AllVendors = await _vendorService.GetVendorsAsync("", "");
+
+            var popularVendors = await _vendorService.GetPopularVendorsAsync(4);
+            popularVendors.ForEach(a => a.UpdateReviewsCount(_context));
+            homeVM.PopularVendors = popularVendors;
+
             return View(homeVM);
         }
 

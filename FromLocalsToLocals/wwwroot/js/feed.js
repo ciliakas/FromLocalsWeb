@@ -6,7 +6,8 @@ var params = new URLSearchParams(query);
 var activeT = params.get('ActiveTab');
 
 $(document).ready(() => {
-    loadPageData();
+    loadPageData(); loadPageData();
+
 });
 
 var feedScroll = document.getElementById('content1');
@@ -60,8 +61,16 @@ function loadPageData() {
                 var image = data.value[i].image;
                 var vendorImage = data.value[i].vendor.image;
                 var vendorTitle = data.value[i].vendor.title;
+                var owner = false;
+                for (var j = 0; j < allUserVendors.length; j++) {
+                    if (allUserVendors[j].Title == vendorTitle) {
+                        owner = true;
+                        break;
+                    }
+                }
+                console.log(allUserVendors);
 
-                addPostItem(id, date, text, image, vendorImage, vendorTitle);
+                addPostItem(id, date, text, image, vendorImage, vendorTitle,owner);
 
             }
 
@@ -83,7 +92,7 @@ function loadPageData() {
 }
 
 
-function addPostItem(id, date, text, image, vendorImage, vendorTitle) {
+function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
     var vendorImageLine;
     var postImageLine = '';
 
@@ -96,6 +105,13 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle) {
         postImageLine = `<div class="row">
                                     <img src="data:image;base64,${image}" style="width: 100%; max-height: 250px;" />
                                </div>`;
+    }
+
+    var contactS="";
+    if (!owner) {
+        var dto = { tab: "Users", id: id };
+        console.log(dto);
+        contactS = `<span style="float:right"><a href='/Chat/Index?vendorId=${id}'>Contact</a></span>`;
     }
 
     var li = document.createElement('li');
@@ -111,6 +127,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle) {
                 <div class="timeline-header">
                     ${vendorImageLine}
                         <span class="username"><a href="/Vendors/Details/${id}">${vendorTitle}</a> <small></small></span>
+                        ${contactS}
                 </div>
                 <div class="timeline-content">
                     <p>

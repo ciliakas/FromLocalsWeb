@@ -25,8 +25,8 @@
         <div class="container-fluid" style="background-size: cover;">
             <section>
                 <div class="container" style="margin-top: 65px; margin-bottom: 65px;">
-                    <header>
-                        <p class="text-center text-capitalize mb-lg-1 font-weight-bold" style="font-size: 38px; font-family: 'Times New Roman'; color: white;">@_localizer["Support your local sellers"]</p>
+                    <header class="text-center">
+                        <span class="text-capitalize mb-lg-1 font-weight-bold" style="font-size: 38px; font-family: 'Times New Roman'; color: white;">@_localizer["Support your local sellers"]</span>
                     </header>
                     <footer class="text-center">
                         <a class="btn btn-danger" role="button" asp-area="" asp-controller="Vendors" asp-action="AllVendors" style="width: 130px;">@_localizer["Go"]</a>
@@ -37,7 +37,7 @@
         </div>
     </div>
     <p id="mapTitle" class="mt-3"></p>
-    <h4 class="mt-3 mb-3" style="text-align: center; font-weight: bold">@_localizer["Discover all nearby vendors with just a few clicks."]</h4>
+    <h4 class="mt-5 mb-3" style="text-align: center; font-weight: bold">@_localizer["Discover all nearby vendors with just a few clicks."]</h4>
     <div class="container">
         <div class="row mb-3 justify-content-center d-flex">
             @Html.Partial("_Map", Model.AllVendors)
@@ -76,16 +76,16 @@
                                 case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                                 break;
 
-                                case "RuralTourism":<p class="text-muted text-uppercase">@_localizer["Rural tourism"]</p>
+                                case "RuralTourism":<p class="text-muted text-uppercase">Rural tourism</p>
                                 break;
 
                                 default: <p class="text-muted text-uppercase">@item.VendorTypeDb</p>
                                 break;
-                    }
+                            }
                             <hr />
                             @if (item.ReviewsCount.Sum() == 0)
                             {
-                                <p class="font-italic">@_localizer["No Reviews"]</p>
+                                <p class="font-italic">@_localizer["No reviews"]</p>
                             }
                             else
                             {
@@ -154,11 +154,11 @@
                             {
                                 if (user.Following.Any(x => x.VendorID == item.ID))
                                 {
-                                    <button data-follow="false" data-id="@item.ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@item.ID)">Unfollow</button>
+                                    <button data-follow="false" data-id="@item.ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@item.ID)">@_localizer["Unfollow"]</button>
                                 }
                                 else
                                 {
-                                    <button data-follow="true" data-id="@item.ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@item.ID)">Follow</button>
+                                    <button data-follow="true" data-id="@item.ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@item.ID)">@_localizer["Follow"]</button>
                                 }
                             }
                         </div>

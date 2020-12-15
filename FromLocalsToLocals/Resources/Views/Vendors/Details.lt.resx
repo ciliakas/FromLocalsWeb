@@ -126,16 +126,46 @@
   <data name="Car repair" xml:space="preserve">
     <value>Servisas</value>
   </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Nedirbame</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Detalės</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Penktadieniais</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Pirmadieniais</value>
+  </data>
+  <data name="News Feed" xml:space="preserve">
+    <value>Naujienos</value>
   </data>
   <data name="No description provided" xml:space="preserve">
     <value>Aprašymo nėra</value>
   </data>
   <data name="Reviews" xml:space="preserve">
-    <value>Apžvalgos</value>
+    <value>Atsiliepimai</value>
   </data>
-  <data name="Service registered |" xml:space="preserve">
+  <data name="Saturday" xml:space="preserve">
+    <value>Šeštadieniais</value>
+  </data>
+  <data name="Service registered | " xml:space="preserve">
     <value>Paslauga užregistruota | </value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Sekmadieniais</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Ketvirtadieniais</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Antradieniais</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Trečiadieniais</value>
+  </data>
+  <data name="Working Hours" xml:space="preserve">
+    <value>Darbo laikas</value>
   </data>
 </root>

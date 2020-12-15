@@ -1,0 +1,58 @@
+﻿.dayColumn{
+    width: 30%;
+}
+
+.hourColumn {
+    width: 70%;
+}
+
+.collapse.navbar-collapse.myNav a {
+    border-bottom: 3px solid transparent;
+}
+
+.collapse.navbar-collapse.myNav a:hover {
+    border-bottom: 3px solid white;
+    border-radius: 2px;
+}
+
+.col1 {
+    width: 40%;
+}
+.col2 {
+    width: 47%;
+}
+
+.serviceImage {
+    height: 420px;
+    box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+}
+
+@media only screen and (max-width: 768px) {
+    /* For larger mobile phones: */
+    [class*="hourColumn"] {
+        width: 50%;
+    }
+    [class*="dayColumn"] {
+        width: 50%;
+    }
+    [class*="serviceImage"] {
+        margin-top: 15%;
+        margin-left: 5%;
+        margin-right: 5%;
+        height: 70%;
+    }
+    [class*="col1"] {
+        width: 100%;
+    }
+    [class*="col2"] {
+        width:100%;    
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    [class*="serviceImage"] {
+        width: 90%;
+        margin-top: 10%;
+        height: 90%;
+    }
+}

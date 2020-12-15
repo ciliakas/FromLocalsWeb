@@ -20,11 +20,11 @@ namespace FromLocalsToLocals.Controllers
         private readonly AppDbContext _context;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IHubContext<NotiHub> _hubContext;
         private readonly IReviewsService _reviewsService;
         private readonly INotificationService _notificationService;
 
-        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotificationHub> hubContext, IReviewsService reviewsService, INotificationService notificationService)
+        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotiHub> hubContext, IReviewsService reviewsService, INotificationService notificationService)
         {
             _context = context;
             _signInManager = signInManager;
@@ -115,7 +115,7 @@ namespace FromLocalsToLocals.Controllers
                 Url = HttpContext.Request.Path.Value
             };
             
-             await _notificationService.AddNotificationAsync(notification);
+             _notificationService.AddNotification(notification);
              await _hubContext.Clients.All.SendAsync("displayNotification", "");
         }
 

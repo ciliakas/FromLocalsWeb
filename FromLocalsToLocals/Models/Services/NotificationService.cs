@@ -1,4 +1,5 @@
 ﻿using FromLocalsToLocals.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,12 @@ namespace FromLocalsToLocals.Models
             return _context.Notifications.Where(n => n.OwnerId == toUserId).ToList();
         }
 
-        public async Task AddNotificationAsync(Notification notification)
+        public void AddNotification(Notification notification)
         {
             try
             {
                 _context.Notifications.Add(notification);
-                await _context.SaveChangesAsync();
+                _context.SaveChangesAsync().Wait();
             }
             catch(Exception ex)
             { throw ex; }
