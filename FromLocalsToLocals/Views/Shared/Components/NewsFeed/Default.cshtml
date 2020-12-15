@@ -4,16 +4,20 @@
 @inject IViewLocalizer _localizer
 
 
+    <head>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    </head>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div id="content1" onscroll="scrollFeedDetails()" class="content content-full-width newsFeedPanel"  >
+            <div id="content1" onscroll="scrollFeedDetails()" class="content content-full-width newsFeedPanel" data-aos="fade-left"  >
                 <!-- begin profile-content -->
                 <div class="profile-content">
                     <!-- begin tab-content -->
                     <div class="tab-content p-0">
                         <!-- begin #profile-post tab -->
-                        <div class="tab-pane fade active show" id="profile-post" data-aos="fade-left" >
+                        <div class="tab-pane fade active show" id="profile-post" >
                             <!-- begin timeline -->
                             <ul class="timeline" id="postsUL">
                        
@@ -86,3 +90,7 @@
     });
 </script>
 <script src="~/js/feed.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>

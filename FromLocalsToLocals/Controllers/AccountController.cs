@@ -418,11 +418,7 @@ namespace FromLocalsToLocals.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Account",
                 new { user = user , code = code }, protocol: Request.Scheme);
 
-                var htmlContent = "<!DOCTYPE html><html><head></head><body style=\"background-color: #CCBA8B;\">" +
-                 "<table class=\"body-wrap\"  style=\"background-color: #CCBA8B;\" ><tr><td class=\"container\">" +
-                 "<table><tr><td align=\"center\" class=\"masthead\">" +
-                 "<a href=\"https://ibb.co/6HHkSvm\"><img src=\"https://i.ibb.co/0CCxLBc/appLogo.png\" alt=\"appLogo\" border=\"0\" /></a>" +
-                 "<h1>From Locals to Locals</h1></td></tr><tr><td class=\"content\"><h3> Please confirm your account by clicking this link: " + " <a href =\""
+                var htmlContent = SendMail.htmlCodeForEmails + "</td></tr><tr><td class=\"content\"><h3> Please confirm your account by clicking this link: " + " <a href =\""
                  + callbackUrl + "\">link</a> </body></html>" +
                  "</td></tr></table></td></tr></table></body></html>";
 

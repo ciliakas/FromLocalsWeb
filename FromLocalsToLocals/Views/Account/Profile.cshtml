@@ -59,7 +59,18 @@
             </div>
             <hr />
 
-        </form>
+            @if (user != null)
+            {
+                if (user.Subscribe == true)
+                {
+                    <button data-follow="false" data-id="@user.Id" class="btn btn-outline-dark w-100 followBtn" onclick="subBtnClick(this,@user.Id)">Unfollow</button>
+                }
+                else
+                {
+                    <button data-follow="true" data-id="@user.Id" class="btn btn-dark w-100 followBtn" onclick="subBtnClick(this,@user.Id)">Follow</button>
+                }
+            }
+            </form>
     </div>
 
     <div class="col">

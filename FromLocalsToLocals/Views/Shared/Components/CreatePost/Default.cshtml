@@ -1,6 +1,10 @@
 ﻿@model FromLocalsToLocals.Models.ViewModels.CreatePostVM
 
 
+    <head>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    </head>
+
 <div class="container">
         <div id="content" class="content content-full-width">
             <div class="profile-content">
@@ -12,7 +16,7 @@
 
                                     <div class="timeline-body">
 
-                                        <div class="timeline-header">
+                                        <div class="timeline-header" >
                                             @if (!Model.DisplayInDetails)
                                             {
                                                 <select asp-for="@Model.VendorTitle">
@@ -49,3 +53,8 @@
             </div>
         </div>
 </div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
