@@ -77,7 +77,7 @@
         <h3>@_localizer["Account details"]</h3>
         <form asp-action="Profile" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label asp-for="Email"></label>
+                <label @_localizer["Email"]></label>
                 <input asp-for="Email" type="email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>

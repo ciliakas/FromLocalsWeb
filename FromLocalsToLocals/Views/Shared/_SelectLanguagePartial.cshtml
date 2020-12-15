@@ -16,10 +16,12 @@
 
 }
 
-<div class="form-group">
-    <form asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@Context.Request.Path" method="post">
+<form asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@Context.Request.Path" method="post">
+    <div class="form-group">
         <select style="background-color: #CCBA8B; border:hidden;" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"
                 onchange="this.form.submit();"></select>
-    </form>
-</div>
+    </div>
+</form>
+
+
 
