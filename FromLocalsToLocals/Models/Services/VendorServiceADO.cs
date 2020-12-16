@@ -3,6 +3,7 @@ using FromLocalsToLocals.Utilities;
 using System.Threading.Tasks;
 using System.Data;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace FromLocalsToLocals.Models.Services
 {
@@ -49,6 +50,56 @@ namespace FromLocalsToLocals.Models.Services
             }
 
             catch(NpgsqlException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
+        public async Task InsertWorkHoursAsync(WorkHours workHours)
+        {
+            try
+            {
+                using (NpgsqlConnection connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
+                {
+                    connection.Open();
+
+                    using(var insert = new NpgsqlCommand("INSERT INTO \"VendorWorkHours\" (\"ID\", \"VendorID\", \"IsWorking\", \"Day\", \"OpenTime\", \"CloseTime\")" +
+                        "VALUES (DEFAULT, @VendorID, @IsWorking, @Day, @OpentTime, @CloseTime)", connection))
+                    {
+                        insert.Parameters.AddWithValue("@VendorID", workHours.VendorID);
+                        insert.Parameters.AddWithValue("@IsWorking", workHours.IsWorking);
+                        insert.Parameters.AddWithValue("@Day", workHours.Day);
+                        insert.Parameters.AddWithValue("@OpentTime", workHours.OpenTime);
+                        insert.Parameters.AddWithValue("@CloseTime", workHours.CloseTime);
+
+                        insert.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            catch (NpgsqlException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
+        public async Task DeleteVendorAsync(Vendor vendor)
+        {
+            try
+            {
+                using (NpgsqlConnection connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
+                {
+                    connection.Open();
+
+                    using (var delete = new NpgsqlCommand("DELETE FROM \"Vendors\" WHERE \"ID\" = @Id", connection))
+                    {
+                        delete.Parameters.AddWithValue("@Id", vendor.ID);
+                        delete.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            catch (NpgsqlException e)
             {
                 await e.ExceptionSender();
             }

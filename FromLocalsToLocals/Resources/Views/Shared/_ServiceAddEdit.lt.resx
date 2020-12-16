@@ -141,6 +141,9 @@
   <data name="Show in the map" xml:space="preserve">
     <value>Rodyti žemėlapyje</value>
   </data>
+  <data name="Stationery" xml:space="preserve">
+    <value>Kanceliarija</value>
+  </data>
   <data name="Sunday" xml:space="preserve">
     <value>Sekmadienis</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="To" xml:space="preserve">
     <value>Iki</value>
+  </data>
+  <data name="Toys" xml:space="preserve">
+    <value>Žaislai</value>
   </data>
   <data name="Tuesday" xml:space="preserve">
     <value>Antradienis</value>

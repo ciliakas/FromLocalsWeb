@@ -116,11 +116,7 @@ namespace FromLocalsToLocals.Models.Services
             try
             {
                 var row = _context.VendorWorkHours.FirstOrDefault(x => x.VendorID == workHours.VendorID && x.Day == workHours.Day);
-                row.VendorID = workHours.VendorID;
-                row.Day = workHours.Day;
-                row.OpenTime = workHours.OpenTime;
-                row.CloseTime = workHours.CloseTime;
-                _context.VendorWorkHours.Update(row);
+                workHours.SetWorkHours(row); 
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException e)

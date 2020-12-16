@@ -14,6 +14,7 @@ using FromLocalsToLocals.Models.Services;
 using NToastNotify;
 using FromLocalsToLocals.Models.ViewModels;
 using Microsoft.Extensions.Localization;
+using Microsoft.EntityFrameworkCore;
 
 namespace FromLocalsToLocals.Controllers
 {
@@ -25,7 +26,7 @@ namespace FromLocalsToLocals.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly AppDbContext _context;
         private readonly IStringLocalizer<VendorsController> _localizer;
-        readonly IVendorServiceADO _dataAdapterService;
+        private readonly IVendorServiceADO _vendorServiceADO;
 
         public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorServiceEF vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
         {
@@ -34,7 +35,7 @@ namespace FromLocalsToLocals.Controllers
             _toastNotification = toastNotification;
             _context = context;
             _localizer = localizer;
-            _dataAdapterService = dataAdapterService;
+            _vendorServiceADO = dataAdapterService;
         }
 
         [HttpGet]
@@ -133,6 +134,7 @@ namespace FromLocalsToLocals.Controllers
                     vendor.Longitude = latLng.Item2;
 
                     model.SetValuesToVendor(vendor);
+                    await _vendorService.CreateAsync(vendor);
 
                     var serviceOperatingHours = model.VendorHours;
 
@@ -144,6 +146,7 @@ namespace FromLocalsToLocals.Controllers
                             {
                                 ModelState.AddModelError("", "Invalid work hours");
                                 _toastNotification.AddErrorToastMessage("Choose appropriate working hours");
+                                await _vendorService.DeleteAsync(vendor);
                                 return View(model);
                             }
 
@@ -157,11 +160,9 @@ namespace FromLocalsToLocals.Controllers
                         {
                             var timeSpan = new TimeSpan(0);
                             var workHours = new WorkHours(vendor.ID, elem.IsWorking, elem.Day, timeSpan, timeSpan);
-                            await _vendorService.AddWorkHoursAsync(workHours);
+                            await _vendorServiceADO.InsertWorkHoursAsync(workHours);
                         }
                     }
-
-                    await _vendorService.CreateAsync(vendor);
 
                     _toastNotification.AddSuccessToastMessage(_localizer["Service Created"]);
                     return RedirectToAction("MyVendors");
@@ -268,7 +269,7 @@ namespace FromLocalsToLocals.Controllers
                         }
                     }
 
-                    await _dataAdapterService.UpdateVendorAsync(vendor);
+                    await _vendorServiceADO.UpdateVendorAsync(vendor);
                     _toastNotification.AddSuccessToastMessage(_localizer["Service Updated"]);
 
                     return RedirectToAction(nameof(MyVendors));
@@ -278,7 +279,6 @@ namespace FromLocalsToLocals.Controllers
                     ModelState.AddModelError("", ex.Message);
                     _toastNotification.AddErrorToastMessage(ex.Message);
                 }
-
             }
 
             return View(model);
@@ -306,7 +306,16 @@ namespace FromLocalsToLocals.Controllers
 
             try
             {
-                await _vendorService.DeleteAsync(vendor);
+                try
+                {
+                    _context.Notifications.RemoveRange(_context.Notifications.Where(x => x.VendorId == vendor.ID));
+                    await _vendorServiceADO.DeleteVendorAsync(vendor);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    await e.ExceptionSender();
+                }
             }
             catch(Exception ex)
             {
