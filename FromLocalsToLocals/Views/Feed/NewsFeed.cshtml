@@ -1,4 +1,6 @@
-﻿@model FromLocalsToLocals.Models.ViewModels.FeedVM
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+@model FromLocalsToLocals.Models.ViewModels.FeedVM
 @inject UserManager<AppUser> userManager
 
 @{
@@ -17,8 +19,8 @@
         @if (user != null)
         {
             <div class="collapse navbar-collapse myNav" id="navbarNav">
-                <a class="text-center nav-link" style="font-size: 19px; width:50%;" asp-route-tabname="MyFeed" asp-controller="Feed" asp-action="SwitchTabs">My Feed</a>
-                <a class="text-center nav-link" style="font-size: 19px; width:50%;" asp-route-tabname="AllFeed" asp-controller="Feed" asp-action="SwitchTabs">All Feed</a>
+                <a class="text-center nav-link" style="font-size: 19px; width:50%;" asp-route-tabname="MyFeed" asp-controller="Feed" asp-action="SwitchTabs">@_localizer["My Feed"]</a>
+                <a class="text-center nav-link" style="font-size: 19px; width:50%;" asp-route-tabname="AllFeed" asp-controller="Feed" asp-action="SwitchTabs">@_localizer["All Feed"]</a>
             </div>
         }
     </nav>

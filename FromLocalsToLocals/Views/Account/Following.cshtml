@@ -1,0 +1,81 @@
+﻿@model IEnumerable<FromLocalsToLocals.Models.Follower>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
+@{
+    ViewData["Title"] = _localizer["Following"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-4" style="text-align: center;" id="myservices">@_localizer["Following"]</h2>
+<hr />
+
+<table class="table  table-striped table-hover" id="Table1">
+    <thead>
+        <tr>
+            <th style="text-align:center; font-size:x-large">
+                @_localizer["Image"]
+            </th>
+            <th style="text-align:center; font-size:x-large">
+                @Html.DisplayNameFor(model => model.Vendor.Title)
+            </th>
+            <th style="text-align:center; font-size:x-large">
+                @Html.DisplayNameFor(model => model.Vendor.VendorTypeDb)
+            </th>
+            <th style="text-align:center; font-size:x-large">
+                @Html.DisplayNameFor(model => model.Vendor.Address)
+            </th>
+            <th style="text-align:center">
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="height:30px">
+                <td style="vertical-align:top; text-align:center;">
+                    @if (item.Vendor.Image == null)
+                    {
+                        <img src="~/Assets/localSeller.png" style="width:50px ; height:50px; border-radius: 50%; align-self:center;" />
+                    }
+                    else
+                    {
+                        <img src="data:image;base64,@System.Convert.ToBase64String(item.Vendor.Image)" class="mt-3" style="width:50px; height: 50px; border-radius: 50%; align-self:center;" />
+                    }
+                </td>
+                <td style="vertical-align:middle; text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Vendor.Title)
+                </td>
+                <td style="vertical-align:middle; text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Vendor.VendorType)
+                </td>
+                <td style="vertical-align:middle; text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Vendor.Address)
+                </td>
+                <td style="vertical-align:middle; text-align:center;">
+                    <button href="#" data-id="@item.Vendor.ID" class="btn btn-outline-dark w-100 delete" onclick="unfollowBtnClick(@item.Vendor.ID)">@_localizer["Unfollow"]</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(".delete").on("click", function () {
+        var tr = $(this).closest('tr');
+        tr.remove();
+    });
+    function unfollowBtnClick(id) {
+
+        $.ajax({
+            type: "POST",
+            url: '/Follower/Unfollow/' + id,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (e) {
+                alert("Error occured when trying to unfollow vendor");
+            }
+        });
+    }
+</script>

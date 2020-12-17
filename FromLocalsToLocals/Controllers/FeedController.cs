@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using NToastNotify;
 
 namespace FromLocalsToLocals.Controllers
@@ -23,15 +24,18 @@ namespace FromLocalsToLocals.Controllers
         private readonly IPostsService _postsService;
         private readonly IVendorServiceEF _vendorService;
         private readonly AppDbContext _context;
+        private readonly IStringLocalizer<FeedController> _localizer;
 
 
-        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorServiceEF vendorService)
+        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorServiceEF vendorService,
+                              IStringLocalizer<FeedController> localizer)
         {
             _context = context;
             _userManager = userManager;
             _toastNotification = toastNotification;
             _postsService = postsService;
             _vendorService = vendorService;
+            _localizer = localizer;
 
         }
 
@@ -69,7 +73,7 @@ namespace FromLocalsToLocals.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _toastNotification.AddErrorToastMessage("Cannot create post with an empty message");
+                _toastNotification.AddErrorToastMessage(_localizer["Cannot create post with an empty message"]);
                 return Redirect(model.PostBackUrl);
             }
 
@@ -86,7 +90,7 @@ namespace FromLocalsToLocals.Controllers
                 }
                 catch (Exception)
                 {
-                    _toastNotification.AddErrorToastMessage("Something unexpected happened. Cannot create a post.");
+                    _toastNotification.AddErrorToastMessage(_localizer["Something unexpected happened. Cannot create a post."]);
                     return Redirect(model.PostBackUrl);
                 }
             }
