@@ -32,19 +32,19 @@ namespace FromLocalsToLocals.Utilities
         public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression)
         {
             var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
-            var values = Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
+            var enumValues = Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
 
-            var items =
-                values.Select(value => new SelectListItem
+            var newListOfEnumValues =
+                enumValues.Select(enumMember => new SelectListItem
                 {
-                    Text = value.ToString(),
-                    Value = value.ToString(),
-                    Selected = value.Equals(metadata.Model)
+                    Text = enumMember.ToString(),
+                    Value = enumMember.ToString(),
+                    Selected = enumMember.Equals(metadata.Model)
                 });
 
             return htmlHelper.DropDownListFor(
                 expression,
-                items
+                newListOfEnumValues
                 );
         }
     }
