@@ -117,9 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Beverages" xml:space="preserve">
+    <value>Gėrimai</value>
+  </data>
+  <data name="CarRepair" xml:space="preserve">
+    <value>Autoservisas</value>
+  </data>
+  <data name="Clothing" xml:space="preserve">
+    <value>Apranga</value>
+  </data>
+  <data name="Electronics" xml:space="preserve">
+    <value>Elektronika</value>
+  </data>
   <data name="Filter" xml:space="preserve">
     <value>Filtruoti</value>
   </data>
+  <data name="Flowers" xml:space="preserve">
+    <value>Gėlių salonas</value>
+  </data>
+  <data name="Food" xml:space="preserve">
+    <value>Maistas</value>
+  </data>
+  <data name="Footwear" xml:space="preserve">
+    <value>Avalynė</value>
+  </data>
+  <data name="Music" xml:space="preserve">
+    <value>Muzikos prekės</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Kita</value>
+  </data>
+  <data name="RuralTourism" xml:space="preserve">
+    <value>Kaimo turizmas</value>
+  </data>
+  <data name="Stationery" xml:space="preserve">
+    <value>Kanceliarinės prekės</value>
+  </data>
+  <data name="Toys" xml:space="preserve">
+    <value>Žaislai</value>
+  </data>
+	<data name="Type service title..." xml:space="preserve">
+    <value>Įveskite paslaugos pavadinimą...</value>
+	  </data>
   <data name="Service Types" xml:space="preserve">
     <value>Paslaugų tipai</value>
   </data>

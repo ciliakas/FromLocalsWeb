@@ -138,6 +138,21 @@
   <data name="Saturday" xml:space="preserve">
     <value>Šeštadienis</value>
   </data>
+  <data name="Food" xml:space="preserve">
+    <value>Maistas</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Penktadienis</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>Nuo</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Pirmadienis</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Šeštadienis</value>
+  </data>
   <data name="Show in the map" xml:space="preserve">
     <value>Rodyti žemėlapyje</value>
   </data>

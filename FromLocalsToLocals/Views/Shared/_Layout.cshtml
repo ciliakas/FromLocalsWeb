@@ -90,7 +90,8 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                 @if (signInManager.IsSignedIn(User))
                                 {
-                                    <a class="nav-link py-0" asp-controller="Account" asp-action="Profile"><i class="fa fa-cog"></i> @_localizer["Profile"]</a>
+                                    <a class="nav-link py-0" asp-controller="Account" asp-action="Profile"><i class="fa fa-cog"></i>@_localizer["Profile"]</a>
+                                    <a class="nav-link py-0" asp-controller="Account" asp-action="Following"><i class="fas fa-cog"></i>@_localizer["Following"]</a>
                                     <form method="post" asp-action="logout" asp-controller="Account">
                                         <button type="submit" class="nav-link btn btn-link py-0" style="width:auto;">
                                             <i class="fa fa-sign-out"></i> @_localizer["Logout"]
@@ -138,10 +139,11 @@
             url: "/Notification/GetNotifications",
             traditional: true,
             contentType: "application/json;charset=utf-8",
-            success: function (data) {
-                var notifications = data;
+            success: function (oData) {
+                data = JSON.parse(oData);
+
                 $("#noti_Container").ikrNotificationCount({
-                    NotificationList: notifications,
+                    NotificationList: data,
                     ListBodyPropName: "NotiBody",
                     ControllerName: "Notifications",
                     ActionName: "AllNotifications",
@@ -149,7 +151,6 @@
                 });
             },
             error: function (xhr, status, error) {
-
             }
         });
     }

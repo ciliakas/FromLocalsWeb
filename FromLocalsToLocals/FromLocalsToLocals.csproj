@@ -25,6 +25,7 @@
     <PackageReference Include="Geocoding.net" Version="3.6.1" />
     <PackageReference Include="GMap.NET.Core" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
@@ -51,10 +52,25 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
+  
+ <ItemGroup>
+   <Compile Update="Resources\VendorTypeEnum.Designer.cs">
+     <DesignTime>True</DesignTime>
+     <AutoGen>True</AutoGen>
+     <DependentUpon>VendorTypeEnum.resx</DependentUpon>
+   </Compile>
+ </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\Controllers\AccountController.lt.resx">
       <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\VendorTypeEnum.lt.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\VendorTypeEnum.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>VendorTypeEnum.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Home\AboutUS.lt.resx">
       <Generator></Generator>

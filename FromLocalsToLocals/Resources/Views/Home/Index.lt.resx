@@ -147,6 +147,12 @@
   <data name="Reviews" xml:space="preserve">
     <value>Atsiliepimai</value>
   </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Apžvalgos</value>
+  </data>
+  <data name="Rural tourism" xml:space="preserve">
+    <value>Kaimo turizmas</value>
+  </data>
   <data name="Support your local sellers" xml:space="preserve">
     <value>Palaikyk vietinius pardavėjus</value>
   </data>

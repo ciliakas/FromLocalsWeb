@@ -60,22 +60,23 @@
                 window.open('../' + defaultSettings.ControllerName + '/' + defaultSettings.ActionName + '', '_blank');
             });
 
-            var totalUnReadNoti = defaultSettings.NotificationList.filter(x => x.isRead == false).length;
+            var totalUnReadNoti = defaultSettings.NotificationList.filter(x => !x.isRead).length;
             $('#' + parentId + ' .ikrNoti_Counter').text(totalUnReadNoti);
             $('#' + parentId + ' .notiCounterOnHead').text(totalUnReadNoti);
             if (defaultSettings.NotificationList.length > 0) {
                 $.map(defaultSettings.NotificationList, function (item) {
+
                     var className = item.isRead ? "" : " ikrSingleNotiDivUnReadColor";
                     var sNotiFromPropName = $.trim(defaultSettings.NotiFromPropName) == "" ? "" : item[ikrLowerFirstLetter(defaultSettings.NotiFromPropName)];
-                    $("#" + parentId + " .ikrNotificationItems").append("<div class='ikrSingleNotiDiv" + className + "' notiId=" + item.notiId + ">" +
+                    $("#" + parentId + " .ikrNotificationItems").append("<div class='ikrSingleNotiDiv" + className + "' notiId=" + item.NotiId + ">" +
                         "<h4 class='ikrNotiFromPropName'>" + sNotiFromPropName + "</h4><a href='#'><span onclick='hide(this); return false' class='close'>X</span></a>" +
-                        "<div class='ikrNotificationBody'>" + item[ikrLowerFirstLetter(defaultSettings.ListBodyPropName)] + "</div>" +
-                        "<div class='ikrNofiCreatedDate'>" + formatDate(item[ikrLowerFirstLetter(defaultSettings.Date)]) + "</div>" +
+                        "<div class='ikrNotificationBody'>" + item.NotiBody + "</div>" +
+                        "<div class='ikrNofiCreatedDate'>" + formatDate(item.CreatedDate) + "</div>" +
                         "</div>");
                     $(".ikrNotificationBody").click(function () {
-                        if ($.trim(item.url) != "") {
+                        if ($.trim(item.Url) != "") {
                             hide(this);
-                            window.location.href = item.url;
+                            window.location.href = item.Url;
                         }
                     });
                 });
