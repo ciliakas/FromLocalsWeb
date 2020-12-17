@@ -68,7 +68,6 @@ namespace FromLocalsToLocals.Models.Services
             var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
 
             vendor.VendorHours = _context.VendorWorkHours.Where(x => x.VendorID == id).OrderBy(y => y.Day).ToList();
-            var m = 0;
             return vendor;
         }
 
@@ -163,5 +162,4 @@ namespace FromLocalsToLocals.Models.Services
             return await _context.Vendors.FirstOrDefaultAsync(x => x.Title == title && x.UserID == userId);
         }
     }
-
 }
