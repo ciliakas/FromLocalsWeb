@@ -64,11 +64,16 @@
                                 <div class="form-group d-flex justify-content-between">
                                     <label class="mr-1">@_localizer["From"] </label>
                                     <select class="form-control" style="max-width: 92px;" asp-for="VendorHours[i].OpenTime">
+                                        @{
+                                            var openTime = Model.VendorHours[i].OpenTime;
+                                            var currentOpenHours = openTime.Hours.ToString("00") + ":" + openTime.Minutes.ToString("00");
+                                        }
+                                        <option value=@currentOpenHours>@currentOpenHours</option>
                                         @for (var hours = 8; hours < 21; hours++)
                                         {
                                             @for (var minutes = 0; minutes < 60; minutes += 30)
                                             {
-                                                <option value="@hours.ToString("00"):@minutes.ToString("00")">@hours.ToString("00"):@minutes.ToString("00")</option>
+                                                <option value=@hours.ToString("00"):@minutes.ToString("00")>@hours.ToString("00"):@minutes.ToString("00")</option>
                                             }
                                         }
                                     </select>
@@ -78,11 +83,16 @@
                                 <div class="form d-flex justify-content-between">
                                     <label class="mr-1">@_localizer["To"]</label>
                                     <select class="form-control" style="max-width: 92px;" asp-for="VendorHours[i].CloseTime">
+                                        @{
+                                            var closeTime = Model.VendorHours[i].CloseTime;
+                                            var currentCloseHours = closeTime.Hours.ToString("00") + ":" + closeTime.Minutes.ToString("00");
+                                        }
+                                        <option value=@currentCloseHours>@currentCloseHours</option>
                                         @for (var hours = 9; hours < 21; hours++)
                                         {
                                             @for (var minutes = 0; minutes < 60; minutes += 30)
                                             {
-                                                <option value="@hours.ToString("00"):@minutes.ToString("00")">@hours.ToString("00"):@minutes.ToString("00")</option>
+                                                <option value=@hours.ToString("00"):@minutes.ToString("00")>@hours.ToString("00"):@minutes.ToString("00")</option>
                                             }
                                         }
                                     </select>

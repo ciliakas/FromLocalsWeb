@@ -160,7 +160,7 @@ namespace FromLocalsToLocals.Controllers
                         {
                             var timeSpan = new TimeSpan(0);
                             var workHours = new WorkHours(vendor.ID, elem.IsWorking, elem.Day, timeSpan, timeSpan);
-                            await _vendorServiceADO.InsertWorkHoursAsync(workHours);
+                            await _vendorService.AddWorkHoursAsync(workHours);
                         }
                     }
 
@@ -197,7 +197,7 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            var workHours = _context.VendorWorkHours.Where(x => x.VendorID == vendor.ID).ToList();
+            var workHours = _context.VendorWorkHours.Where(x => x.VendorID == vendor.ID).OrderBy(y => y.Day).ToList();
             
             return View(new CreateEditVendorVM(vendor, workHours));
         }

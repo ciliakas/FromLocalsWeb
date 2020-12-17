@@ -55,9 +55,10 @@ namespace FromLocalsToLocals.Models
             return (VendorID == other.VendorID && Day == other.Day && OpenTime == other.OpenTime && CloseTime == other.CloseTime);
         }
 
-        public void SetWorkHours (WorkHours workHours)
+        public void SetWorkHours(WorkHours workHours)
         {
             workHours.VendorID = VendorID;
+            workHours.IsWorking = IsWorking;
             workHours.Day = Day;
             workHours.OpenTime = OpenTime;
             workHours.CloseTime = CloseTime;
