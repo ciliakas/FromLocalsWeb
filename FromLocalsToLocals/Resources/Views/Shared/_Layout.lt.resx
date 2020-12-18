@@ -132,8 +132,8 @@
   <data name="Following" xml:space="preserve">
     <value>Sekami</value>
   </data>
-  <data name="Found a bug?&amp;nbsp;" xml:space="preserve">
-    <value>Radote klaidą?&amp;nbsp;</value>
+  <data name="Found a bug?" xml:space="preserve">
+    <value>Radote klaidą?</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Pradinis</value>
@@ -155,8 +155,5 @@
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profilis</value>
-  </data>
-  <data name="Report it" xml:space="preserve">
-    <value>Praneškite</value>
   </data>
 </root>

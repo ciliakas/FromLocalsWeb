@@ -86,10 +86,18 @@ namespace FromLocalsToLocals.Controllers
                 return NotFound();
             }
 
-            vendor.Popularity++;
-            vendor.LastClickDate = DateTime.UtcNow;
-            await _vendorService.UpdateAsync(vendor);
+            await _vendorService.UpdatePopularityAsync(vendor);
 
+            try 
+            {
+                vendor.FollowerCount = _context.Followers.Where(y => y.VendorID == vendor.ID).Count();
+            }
+            catch(Exception e)
+            {
+                await e.ExceptionSender();
+            }
+
+            var m = 0;
             return View(vendor);
         }
 
@@ -160,7 +168,7 @@ namespace FromLocalsToLocals.Controllers
                         {
                             var timeSpan = new TimeSpan(0);
                             var workHours = new WorkHours(vendor.ID, elem.IsWorking, elem.Day, timeSpan, timeSpan);
-                            await _vendorService.AddWorkHoursAsync(workHours);
+                            await _vendorServiceADO.InsertWorkHoursAsync(workHours);
                         }
                     }
 

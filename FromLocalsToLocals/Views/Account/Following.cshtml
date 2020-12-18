@@ -50,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.Vendor.Address)
                 </td>
                 <td class="text-center">
-                    <button href="#" data-id="@item.Vendor.ID" class="btn btn-outline-dark w-100 delete" onclick="unfollowBtnClick(@item.Vendor.ID)">@_localizer["Unfollow"]</button>
+                    <button data-id="@item.Vendor.ID" class="btn btn-outline-dark w-100 delete" onclick="unfollowBtnClick(@item.Vendor.ID)">@_localizer["Unfollow"]</button>
                 </td>
             </tr>
         }

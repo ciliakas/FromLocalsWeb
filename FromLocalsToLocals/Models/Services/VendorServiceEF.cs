@@ -67,7 +67,7 @@ namespace FromLocalsToLocals.Models.Services
         {
             var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
 
-            vendor.VendorHours = _context.VendorWorkHours.Where(x => x.VendorID == id).OrderBy(y => y.Day).ToList();
+            vendor.VendorHours = _context.VendorWorkHours.Where(x => x.VendorID == id).OrderBy(y => y.Day).ToList(); 
             return vendor;
         }
 
@@ -110,6 +110,22 @@ namespace FromLocalsToLocals.Models.Services
                 await e.ExceptionSender();
             }
         }
+
+        public async Task UpdatePopularityAsync(Vendor vendor)
+        {
+            try
+            {
+                vendor.Popularity++;
+                vendor.LastClickDate = DateTime.UtcNow;
+                await UpdateAsync(vendor);
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
+
 
         public async Task ChangeWorkHoursAsync(WorkHours workHours)
         {

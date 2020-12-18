@@ -12,7 +12,7 @@
     <!-- Space after arrow symbol is NEEDED-->
     <a asp-action="MyVendors" class="text-dark"><span class="fa fa-arrow-left"></span> @_localizer["&nbsp;Back to List"]</a>
 </div>
-<div class="container">
-    @Html.Partial("_ServiceAddEdit", Model)
+<div class="container-fluid">
+    @await Html.PartialAsync("_ServiceAddEdit", Model)
 </div>
 

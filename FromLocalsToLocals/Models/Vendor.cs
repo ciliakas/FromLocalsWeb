@@ -88,6 +88,9 @@ namespace FromLocalsToLocals.Models
         [IgnoreDataMember]
         public virtual ICollection<WorkHours> VendorHours { get; set; }
 
+        [NotMapped]
+        public int FollowerCount { get; set; }
+
         #region IComparable
 
 
