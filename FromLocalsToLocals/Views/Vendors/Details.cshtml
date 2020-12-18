@@ -56,7 +56,7 @@
                         <p>@_localizer["Service registered | "]@CalcRelativeTime(Model.DateCreated)</p>
                     </div>
                 </div>
-                <div class="col-3 mt-4">
+                <div class="col-3 mt-3">
                     <div class="float-right m-2">
                         <h5 class="text-center">@Model.FollowerCount</h5>
                         <span class="text-center">@_localizer["Followers"]</span>
@@ -104,19 +104,19 @@
                         @switch (item.Day)
                         {
                             case 1:<p>@_localizer["Monday"]</p>
-                            break;
-                            case 2: <p>@_localizer["Tuesday"]</p>
-                            break;
-                            case 3: <p>@_localizer["Wednesday"]</p>
-                            break;
-                            case 4: <p>@_localizer["Thursday"]</p>
-                            break;
-                            case 5: <p>@_localizer["Friday"]</p>
-                            break;
-                            case 6: <p>@_localizer["Saturday"]</p>
-                            break;
-                            default: <p>@_localizer["Sunday"]</p>
-                            break;
+                                break;
+                            case 2:<p>@_localizer["Tuesday"]</p>
+                                break;
+                            case 3:<p>@_localizer["Wednesday"]</p>
+                                break;
+                            case 4:<p>@_localizer["Thursday"]</p>
+                                break;
+                            case 5:<p>@_localizer["Friday"]</p>
+                                break;
+                            case 6:<p>@_localizer["Saturday"]</p>
+                                break;
+                            default:<p>@_localizer["Sunday"]</p>
+                                break;
                        }
                     </div>
                     <div class="hourColumn">
