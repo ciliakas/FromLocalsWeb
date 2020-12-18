@@ -8,19 +8,19 @@
         success: function (m) {
             if (m.success) {
                 if (obj.innerText == "Follow") {
-                    fButton.innerText = "Unfollow";
+                    fButton.innerHTML = "Unfollow";
                     fButton.className = "btn btn-outline-primary w-100 followBtn";
                 }
                 else if (obj.innerText == "Sekti") {
-                    fButton.innerText = "Nebesekti";
+                    fButton.innerHTML = "Nebesekti";
                     fButton.className = "btn btn-outline-primary w-100 followBtn";
                 }
                 else if (obj.innerText == "Unfollow") {
-                    fButton.innerText = "Follow";
+                    fButton.innerHTML = "Follow";
                     fButton.className = "btn btn-primary w-100 followBtn";
                 }
                 else if (obj.innerText == "Nebesekti") {
-                    fButton.innerText = "Sekti";
+                    fButton.innerHTML = "Sekti";
                     fButton.className = "btn btn-primary w-100 followBtn";
                 }
             } else {
