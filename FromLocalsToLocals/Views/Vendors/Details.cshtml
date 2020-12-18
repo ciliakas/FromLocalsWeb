@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-3 mt-3">
                     <div class="float-right m-2">
-                        <h4 class="text-center">@Model.FollowerCount</h4>
+                        <h4 class="text-center" id="followerCount">@Model.FollowerCount</h4>
                         <span class="text-center">@_localizer["Followers"]</span>
                     </div>
                 </div>
@@ -81,11 +81,11 @@
                     <div class="col mr-2 ml-2">
                         @if (currentUser.Following.Any(x => x.VendorID == Model.ID))
                         {
-                            <button data-follow="false" data-id="@Model.ID" class="btn btn-outline-primary w-100 followBtn" onclick="followBtnClick(this,@Model.ID)">@_localizer["Unfollow"]</button>
+                            <button data-follow="false" data-id="@Model.ID" class="btn btn-outline-primary w-100" id="followButn" onclick="followBtnClick(this,@Model.ID)">@_localizer["Unfollow"]</button>
                         }
                         else
                         {
-                            <button data-follow="true" data-id="@Model.ID" class="btn btn-primary w-100 followBtn" onclick="followBtnClick(this,@Model.ID)">@_localizer["Follow"]</button>
+                            <button data-follow="true" data-id="@Model.ID" class="btn btn-primary w-100" id="followButn" onclick="followBtnClick(this,@Model.ID)">@_localizer["Follow"]</button>
                         }
                     </div>
                     <div class="col mr-2 ml-2">
