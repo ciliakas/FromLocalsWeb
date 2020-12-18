@@ -40,13 +40,13 @@
                         @switch (Model.VendorType)
                         {
                             case FromLocalsToLocals.Utilities.VendorType.CarRepair:<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
-                            break;
+                                break;
 
-                        case FromLocalsToLocals.Utilities.VendorType.RuralTourism:<p class="text-muted text-uppercase">Rural tourism</p>
-                            break;
+                            case FromLocalsToLocals.Utilities.VendorType.RuralTourism:<p class="text-muted text-uppercase">Rural tourism</p>
+                                break;
 
-                        default: <p class="text-muted text-uppercase">@Model.VendorType</p>
-                        break;
+                            default: <p class="text-muted text-uppercase">@Model.VendorType</p>
+                                break;
                         }
                     </div>
                     <div class="row" style="margin-top: -15px;">
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-3 mt-3">
                     <div class="float-right m-2">
-                        <h5 class="text-center">@Model.FollowerCount</h5>
+                        <h4 class="text-center">@Model.FollowerCount</h4>
                         <span class="text-center">@_localizer["Followers"]</span>
                     </div>
                 </div>

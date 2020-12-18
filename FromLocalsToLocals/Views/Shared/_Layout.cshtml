@@ -40,12 +40,6 @@
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/Assets/appLogo.png" width="90" height="40" />
             </a>
-            <div class="iconPanel">
-                @if (signInManager.IsSignedIn(User))
-                {
-                    <a asp-controller="Chat" asp-route-tabname="ISent" asp-action="Index"><img src="~/Assets/message.png" style="width:30px;height:30px;" /></a>
-                }
-            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -80,7 +74,7 @@
                 <ul class="navbar-nav">
                     @if (signInManager.IsSignedIn(User))
                     {
-                        <li class="nav-item text-center mt-2 mr-2 chatIcon">
+                        <li class="nav-item text-center mt-2 mr-2">
                             <a asp-controller="Chat" asp-route-tabname="ISent" asp-action="Index"><img src="~/Assets/message.png" style="width:30px;height:30px;" /></a>
                         </li>
                         <li class="nav-item text-center">
@@ -142,7 +136,7 @@
 </html>
 
 <script type="text/javascript">
-    function getNotifications() {
+    function getNotifications(element) {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -168,6 +162,7 @@
     $(document).ready(function () {
         $("#noti_Container").ikrNotificationSetup();
         getNotifications();
+
     })
 
     var connectionToNoti = new signalR.HubConnectionBuilder().withUrl("/notiHub").build();
