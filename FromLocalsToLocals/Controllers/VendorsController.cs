@@ -102,7 +102,6 @@ namespace FromLocalsToLocals.Web.Controllers
                 await e.ExceptionSender();
             }
 
-            var m = 0;
             return View(vendor);
         }
 
