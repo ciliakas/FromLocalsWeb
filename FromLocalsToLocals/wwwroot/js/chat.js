@@ -52,7 +52,7 @@ function postMessage() {
 
         $.ajax({
             type: "POST",
-            url: `/Chat/CreateMessage`,
+            url: `/api/Chat/CreateMessage`,
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(mData),
             datatype: 'json',
@@ -106,16 +106,14 @@ connectionToMsg.start();
 function loadNewIncomingMsg(obj) {
     var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
     var newObj = JSON.parse(obj);
-    console.log(newObj);
-    console.log(newObj.message);
 
-    if (parseInt(newObj.contactID) == jsContactId) {
+    if (parseInt(newObj.ContactID) == jsContactId) {
         readMessage();
 
         var img = `<img class="img-circle" src="/Assets/localSeller.png" alt="avatar" />`;
-        if (newObj.image != null) {
-            img = `<img src="data:image;base64,${newObj.image}" alt="avatar" class="img-circle" />`
-        } else if (newObj.isUserTab) {
+        if (newObj.Image != null) {
+            img = `<img src="data:image;base64,${newObj.Image}" alt="avatar" class="img-circle" />`
+        } else if (newObj.IsUserTab) {
             img = `<img class="img-circle" src="/Assets/profile.png" alt="avatar" />`;
         }
 
@@ -128,21 +126,21 @@ function loadNewIncomingMsg(obj) {
             <div class="received_msg">
                  <div class="received_withd_msg">
                      <p>
-                         ${newObj.message}
+                         ${newObj.Message}
                      </p>
                      <span class="time_date">${date}</span>
                  </div>
              </div>`;
         $("#msg_history").append(newMsg);
 
-        updateContact(parseInt(newObj.contactID), newObj.message, date);
+        updateContact(parseInt(newObj.ContactID), newObj.Message, date);
     } else {
-        var contactBody = document.getElementById(parseInt(newObj.contactID));
+        var contactBody = document.getElementById(parseInt(newObj.ContactID));
         if (contactBody == null) {
-            updateContact(parseInt(newObj.contactID), newObj.message, date, newObj.vendorTitle,false);
+            updateContact(parseInt(newObj.ContactID), newObj.Message, date, newObj.VendorTitle,false);
         } else {
             contactBody.classList.add("unread_chat");
-            updateContact(parseInt(newObj.contactID), newObj.message, date);
+            updateContact(parseInt(newObj.ContactID), newObj.Message, date);
         }
     }
 }
@@ -155,7 +153,7 @@ function readMessage() {
 
     $.ajax({
         type: "POST",
-        url: `/Chat/ReadMessage`,
+        url: `/api/Chat/ReadMessage`,
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({ ContactId: jsContactId}),
         datatype: 'json'

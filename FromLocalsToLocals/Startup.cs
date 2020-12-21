@@ -16,10 +16,8 @@ using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Utilities;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Services.Ado;
-using Microsoft.AspNetCore.Http;
 using Hangfire;
 using Hangfire.MemoryStorage;
-using FromLocalsToLocals.Web.Utilities.Jwt;
 using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Web
@@ -95,8 +93,6 @@ namespace FromLocalsToLocals.Web
                 config.LoginPath = "/Account/Login";
             });
 
-            services.AddHttpClient();
-
 
             services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
             {
@@ -111,10 +107,6 @@ namespace FromLocalsToLocals.Web
             services.AddScoped<IVendorServiceADO, VendorServiceADO>();
             services.AddScoped<IChatService, ChatService>();
             services.AddScoped<IFollowerService, FollowerService>();
-
-
-            services.AddSingleton<ITokenService, TokenService>();
-            services.AddSingleton<IWebApiClient, WebApiClient>();
 
             services.AddSignalR();
 

@@ -14,12 +14,6 @@
         float: right;
     }
 
-.chat_ib p {
-    font-size: 14px;
-    color: #989898;
-    margin: auto
-}
-
 .chat_img {
     float: left;
     width: 15%;
@@ -40,8 +34,12 @@
 }
 
     .chat_ib p {
-        text-overflow: ellipsis;
+        font-size: 14px;
+        color: #989898;
+        margin:15px 0px 0px 0px;
+        white-space: nowrap;
         overflow: hidden;
+        text-overflow: ellipsis;
     }
 
 .chat_people {

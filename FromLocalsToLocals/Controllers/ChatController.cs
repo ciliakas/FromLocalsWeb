@@ -2,7 +2,6 @@
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Web.Utilities;
-using FromLocalsToLocals.Web.Utilities.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,17 +21,12 @@ namespace FromLocalsToLocals.Web.Controllers
         private readonly IVendorService _vendorService;
         private readonly IChatService _chatService;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IHubContext<MessageHub> _hubContext;
-        private readonly IWebApiClient _webApiClient;
 
-        public ChatController(IChatService chatService,IVendorService vendorService ,UserManager<AppUser> userManager,
-            IHubContext<MessageHub> hubContext, IWebApiClient webApiClient)
+        public ChatController(IChatService chatService,IVendorService vendorService ,UserManager<AppUser> userManager)
         {
             _chatService = chatService;
             _vendorService = vendorService;
             _userManager = userManager;
-            _hubContext = hubContext;
-            _webApiClient = webApiClient;
         }
 
         public async Task<IActionResult> Index(string tabName, int vendorId)
@@ -57,45 +51,6 @@ namespace FromLocalsToLocals.Web.Controllers
             }
 
             return View(Tuple.Create(user,tabName == "ISent",new Contact { ID = -1 }));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateMessage([FromBody] IncomingMessageDTO messageDto)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var client = _webApiClient.GetClient(user);
-
-                var response = await client.PostAsync("/api/Chat/CreateMessage", 
-                    new StringContent(JsonConvert.SerializeObject(messageDto), Encoding.UTF8, "application/json"));
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseMessage = await response.Content.ReadAsStringAsync();
-                    var outGoingMessageDto = JsonConvert.DeserializeObject<OutGoingMessageDTO>(responseMessage);
-                    await _hubContext.Clients.User(outGoingMessageDto.UserToSendId).SendAsync("sendNewMessage", responseMessage);
-                }
-
-            }
-            catch
-            {
-                return BadRequest();
-            }
-
-            return Ok();
-        }
-
-
-        [HttpPost]
-        public async Task ReadMessage([FromBody] ContactIdDTO contactDto)
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            var client = _webApiClient.GetClient(user);
-
-            await client.PostAsync("/api/Chat/ReadMessage",
-                new StringContent(JsonConvert.SerializeObject(contactDto), Encoding.UTF8, "application/json"));
         }
 
         public async Task<IActionResult> GetChatComponent(int contactId, bool isUserTab, string componentName)
