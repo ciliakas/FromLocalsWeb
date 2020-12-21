@@ -14,7 +14,7 @@
     var vendorType = Html.ViewContext.HttpContext.Request.Query["vendorType"];
     var searchString = Html.ViewContext.HttpContext.Request.Query["searchString"];
     var itemCount = Html.ViewContext.HttpContext.Request.Query["itemCount"];
-    var itemCountDouble = (!string.IsNullOrEmpty(itemCount)) ? double.Parse(itemCount) : 8;
+    var itemCountDouble = (!string.IsNullOrEmpty(itemCount)) ? double.Parse(itemCount) : 20;
 
     var user = await usermanager.GetUserAsync(User);
 }
@@ -23,15 +23,13 @@
     <style>
         .card {
             overflow: hidden;
-            max-height: 470px;
-            min-height: 470px;
+            max-height: 450px;
+            min-height: 450px;
             max-width: 290px;
             min-width: 250px;
             box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
         }
     </style>
-
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 @{
     var itemsInRow = 4; // Make sure its divisible by 12
@@ -51,10 +49,8 @@ else
     <div class="row" style="background-color: #CCBA8B;">
         @foreach (var vendor in Model.NewVendors)
         {
-
-            <div class="col-sm-@(12 / itemsInRow) mb-3 mt-3 d-flex justify-content-center">
-                <div class="card" data-aos="fade-up" style="width:inherit; height:inherit; background-color: #F7F7F7;">
-
+            <div class="col-sm-@(12 / itemsInRow) mb-3 mt-3 d-flex justify-content-center" style="min-width:300px;">
+                <div class="card" style="width:inherit; height:inherit; background-color: #F7F7F7;">
                     @if (vendor.Image == null)
                     {
                         <img src="~/Assets/localSeller.png" class="mt-3" style="width:160px ; height:150px; border-radius: 50%; align-self:center;" />
@@ -71,12 +67,12 @@ else
                             case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                             break;
 
-                        case "RuralTourism":<p class="text-muted text-uppercase">Rural tourism</p>
-                            break;
-
-                        default: <p class="text-muted text-uppercase">@vendor.VendorTypeDb</p>
+                        case "RuralTourism":<p class="text-muted text-uppercase">@_localizer["Rural tourism"]</p>
                         break;
-                }
+
+                    default: <p class="text-muted text-uppercase">@vendor.VendorTypeDb</p>
+                    break;
+            }
                         <hr />
                         @if (vendor.ReviewsCount.Sum() == 0)
                         {
@@ -145,17 +141,6 @@ else
                             <a asp-route-id="Vendor/@vendor.ID" asp-controller="Reviews" asp-action="Reviews"
                                class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Reviews"]</a>
                         </div>
-                        @if (user != null && !user.Vendors.Any(x => x.ID == vendor.ID))
-                        {
-                            if (user.Following.Any(x => x.VendorID == vendor.ID))
-                            {
-                                <button data-follow="false" data-id="@vendor.ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">@_localizer["Unfollow"]</button>
-                            }
-                            else
-                            {
-                                <button data-follow="true" data-id="@vendor.ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">@_localizer["Follow"]</button>
-                            }
-                        }
                     </div>
                 </div>
             </div>
@@ -207,7 +192,7 @@ else
             @for (int j = 0; j < itemsInRow && i * itemsInRow + j < vendorCount; j++)
             {
                 <div class="col-sm-@(12 / itemsInRow) mb-2 d-flex justify-content-center">
-                    <div class="card"  data-aos="fade-up" style="width:inherit; height:inherit; background-color: #F7F7F7;">
+                    <div class="card" style="width:inherit; height:inherit; background-color: #F7F7F7;">
                         @if (Model.Vendors[i * itemsInRow + j].Image == null)
                         {
                             <img src="~/Assets/localSeller.png" class="mt-3" style="width:160px ; height:150px; border-radius: 50%; align-self:center;" />
@@ -224,12 +209,12 @@ else
                                 case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
                                 break;
 
-                            case "RuralTourism":<p class="text-muted text-uppercase">Rural tourism</p>
-                                break;
-
-                            default: <p class="text-muted text-uppercase">@Model.Vendors[i * itemsInRow + j].VendorTypeDb</p>
+                            case "RuralTourism":<p class="text-muted text-uppercase">@_localizer["Rural tourism"]</p>
                             break;
-                    }
+
+                        default: <p class="text-muted text-uppercase">@Model.Vendors[i * itemsInRow + j].VendorTypeDb</p>
+                        break;
+                }
                             <hr />
                             @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
                             {
@@ -237,8 +222,59 @@ else
                             }
                             else
                             {
-
-                                <button data-follow="false" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">@_localizer["Unfollow"]</button>
+                                @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].Average))
+                                {
+                                    case 5:
+                                        <p class="ml-3 ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                        </p>
+                                        break;
+                                    case 4:
+                                        <p class="ml-3">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                        </p>
+                                        break;
+                                    case 3:
+                                        <p class="ml-3">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                        </p>
+                                        break;
+                                    case 2:
+                                        <p class="ml-3">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                        </p>
+                                        break;
+                                    default:
+                                        <p class="ml-3">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                        </p>
+                                        break;
+                                }
                             }
                             <hr />
                             <div class="navbar" style="align-content:center">
@@ -247,11 +283,6 @@ else
                                 <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews"
                                    class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Reviews"]</a>
                             </div>
-                            @if (user != null && !user.Vendors.Any(x => x.ID == Model.Vendors[i * itemsInRow + j].ID))
-                            {
-
-                                <button data-follow="true" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">@_localizer["Follow"]</button>
-                            }
                         </div>
                     </div>
                 </div>
@@ -274,9 +305,3 @@ else
         <a class="page-link" href="@Url.Action("AllVendors", new {itemCount=itemCount, searchString = searchString , vendorType=vendorType ,page = (Model.Vendors.PageIndex + 1) } )">>></a>
     </li>
 </ul>
-
-<script src="~/js/following.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    AOS.init();
-</script>
