@@ -1,5 +1,7 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,6 +18,15 @@ namespace FromLocalsToLocals.Services.EF
         public PostsService(AppDbContext context)
         {
             _context = context;
+        }
+
+        public async Task CreatePost(string text, Vendor vendor , IFormFile image)
+        {
+             var post = new Post(text, vendor, image.ConvertToBytes());
+
+             _context.Posts.Add(post);
+             await _context.SaveChangesAsync();
+             //await _vendorService.AddPostAsync(selectedVendor, post);
         }
 
         public async Task<IActionResult> GetAllPostsAsync(int skip, int take)

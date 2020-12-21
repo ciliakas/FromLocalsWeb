@@ -1,13 +1,6 @@
 ﻿
-namespace FromLocalsToLocals.Web.Models
-{
-    public class IncomingMessageDTO
-    {
-        public string Message { get; set; }
-        public bool IsUserTab { get; set; }
-        public int ContactId { get; set; }
-    }
-
+namespace FromLocalsToLocals.Contracts.DTO {
+    
     public class OutGoingMessageDTO
     {
         public string Message { get; set; }
@@ -15,5 +8,8 @@ namespace FromLocalsToLocals.Web.Models
         public int ContactID { get; set; }
         public byte[] Image { get; set; }
         public string VendorTitle { get; set; }
+        public string UserToSendId { get; set; }
+    
     }
+    
 }

@@ -1,9 +1,22 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FromLocalsToLocals.Database;
 using Microsoft.OpenApi.Models;
+using FromLocalsToLocals.Services.EF;
+using FromLocalsToLocals.Contracts.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.IdentityModel.Tokens.Jwt;
+using IdentityServer4.AccessTokenValidation;
+using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using FromLocalsToLocals.Utilities.Helpers;
 
 namespace FromLocalsToLocals.API
 {
@@ -16,13 +29,36 @@ namespace FromLocalsToLocals.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseLazyLoadingProxies()
+                        .UseNpgsql(Configuration.GetConnectionString("AppDbContext")));
+            
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.SignIn.RequireConfirmedEmail = false;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
-            services.AddSwaggerGen(c =>
-                            c.SwaggerDoc("v1", new OpenApiInfo { Title = "FromLocalsToLocals", Version = "v1" }));
+            services.AddAuthentication()
+                .AddJwtBearer(config =>
+                {
+                    config.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = MvcClientConstants.Issuer,
+                        ValidAudience = MvcClientConstants.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(MvcClientConstants.Key))
+                    };
+                });
+
+            services.AddScoped<IChatService, ChatService>();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,15 +67,11 @@ namespace FromLocalsToLocals.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>c.SwaggerEndpoint("/swagger/v1/swagger.json", "FromLocalsToLocals API"));
-
             }
-            
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -3,7 +3,7 @@ using FromLocalsToLocals.Web.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
-namespace FromLocalsToLocals.Web.Models.ViewModels
+namespace FromLocalsToLocals.Web.ViewModels
 {
     public class VendorTypeViewModel
     {

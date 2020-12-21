@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Contracts.Events;
-using FromLocalsToLocals.Web.Models.ViewModels;
+using FromLocalsToLocals.Web.ViewModels;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Utilities;
 using FromLocalsToLocals.Services.EF;
@@ -17,17 +17,17 @@ namespace FromLocalsToLocals.Web.Controllers
 {
     public class ReviewsController : Controller
     {
-        private readonly AppDbContext _context;
-        private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly IHubContext<NotiHub> _hubContext;
         private readonly IReviewsService _reviewsService;
         private readonly INotificationService _notificationService;
+        private readonly IVendorService _vendorService;
 
-        public ReviewsController(AppDbContext context, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHubContext<NotiHub> hubContext, IReviewsService reviewsService, INotificationService notificationService)
+        public ReviewsController(UserManager<AppUser> userManager, IHubContext<NotiHub> hubContext,
+            IReviewsService reviewsService, INotificationService notificationService,
+            IVendorService vendorService)
         {
-            _context = context;
-            _signInManager = signInManager;
+            _vendorService = vendorService;
             _userManager = userManager;
             _hubContext = hubContext;
             _reviewsService = reviewsService;
@@ -45,14 +45,12 @@ namespace FromLocalsToLocals.Web.Controllers
         public async Task<IActionResult> Reviews()
         {
             var id = GetVendorID();
-            var vendor = await _context.Vendors.FindAsync(id);
 
+            var vendor = await _vendorService.GetVendorAsync(id);
             var reviews = await _reviewsService.GetReviewsAsync(id);
-            var users = await _context.Users.ToListAsync();
+            var users = await _userManager.Users.ToListAsync();
 
-            var anonym = new AppUser{UserName = "Anonimas"};
-            
-            users.Add(anonym);
+            users.Add(new AppUser { UserName = "Anonimas" });
 
             var model = new ReviewViewModel
             {
@@ -71,7 +69,7 @@ namespace FromLocalsToLocals.Web.Controllers
         public async Task<IActionResult> Reviews(ReviewViewModel model)
         {
             var id = GetVendorID();
-            var vendor = await _context.Vendors.FindAsync(id);
+            var vendor = await _vendorService.GetVendorAsync(id);
             var user = await _userManager.GetUserAsync(User);
 
             if (vendor == null)
@@ -91,10 +89,8 @@ namespace FromLocalsToLocals.Web.Controllers
                 var commentId = int.Parse(Request.Form["listItemCount"]);
                 var stars     = int.Parse(Request.Form["starRating"]);
                 var userName = (user != null) ? user.UserName : "Anonimas";
-                var review = new Review(id, commentId, userName, Request.Form["comment"], stars , vendor.Title);
-
+                new Review(id, commentId, userName, Request.Form["comment"], stars , vendor.Title);
             }
-
 
             return await Reviews();
         }
@@ -102,10 +98,11 @@ namespace FromLocalsToLocals.Web.Controllers
         private async Task NotifyUserWithNewReview(object sender , ReviewCreatedEventArgs e )
         {
             var id = GetVendorID();
+            var ownerId = (await _vendorService.GetVendorAsync(id)).UserID;
 
             var notification = new Notification
             {
-                OwnerId = _context.Vendors.FirstOrDefault(v => v.ID == id).UserID,
+                OwnerId = ownerId,
                 VendorId = id,
                 CreatedDate = DateTime.UtcNow,
                 Review = e.Review,
@@ -114,7 +111,7 @@ namespace FromLocalsToLocals.Web.Controllers
             };
             
              _notificationService.AddNotification(notification);
-             await _hubContext.Clients.All.SendAsync("displayNotification", "");
+             await _hubContext.Clients.Users(ownerId).SendAsync("displayNotification", "");
         }
 
         private int GetVendorID()

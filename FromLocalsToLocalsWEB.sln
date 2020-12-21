@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FromLocalsToLocals.Services
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FromLocalsToLocals.Utilities", "FromLocalsToLocals.Utilities\FromLocalsToLocals.Utilities.csproj", "{E3DF913E-D4DC-4C5A-A20A-A8D5C2121FAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FromLocalsToLocals.Database", "FromLocalsToLocals.Database\FromLocalsToLocals.Database.csproj", "{AD9D7BF4-E4A2-4A2D-90EE-6269DDF84008}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FromLocalsToLocals.Database", "FromLocalsToLocals.Database\FromLocalsToLocals.Database.csproj", "{AD9D7BF4-E4A2-4A2D-90EE-6269DDF84008}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

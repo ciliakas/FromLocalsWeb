@@ -13,7 +13,7 @@ using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities.Enums;
 using FromLocalsToLocals.Utilities.Helpers;
 using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Web.Models.ViewModels;
+using FromLocalsToLocals.Web.ViewModels;
 using FromLocalsToLocals.Web.Utilities;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Services.Ado;
@@ -23,19 +23,21 @@ namespace FromLocalsToLocals.Web.Controllers
     [Authorize]
     public class VendorsController : Controller
     {
-        private readonly Lazy<UserManager<AppUser>> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
-        private readonly AppDbContext _context;
         private readonly IStringLocalizer<VendorsController> _localizer;
         private readonly IVendorServiceADO _dataAdapterService;
+        private readonly AppDbContext _context;
 
-        public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorService vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
+        public VendorsController(AppDbContext context, UserManager<AppUser> userManager,
+            IVendorService vendorService, IToastNotification toastNotification,
+            IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
         {
-            _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
+            _context = context;
+            _userManager = userManager;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
-            _context = context;
             _localizer = localizer;
             _dataAdapterService = dataAdapterService;
         }
@@ -69,7 +71,7 @@ namespace FromLocalsToLocals.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> MyVendors()
         {
-            return View(await _vendorService.GetVendorsAsync( userId : _userManager.Value.GetUserId(User)));
+            return View(await _vendorService.GetVendorsAsync( userId : _userManager.GetUserId(User)));
         }
 
         [HttpGet]
@@ -126,9 +128,9 @@ namespace FromLocalsToLocals.Web.Controllers
                         return View(model);
                     }
 
-                    var user = await _userManager.Value.GetUserAsync(User);
+                    var user = await _userManager.GetUserAsync(User);
                     user.VendorsCount++;
-                    await _userManager.Value.UpdateAsync(user);
+                    await _userManager.UpdateAsync(user);
 
                     var vendor = new Vendor();
                     vendor.UserID = user.Id;
@@ -323,7 +325,7 @@ namespace FromLocalsToLocals.Web.Controllers
 
         private bool ValidUser(string id)
         {
-            return id == _userManager.Value.GetUserId(User);
+            return id == _userManager.GetUserId(User);
         }
         #endregion
     }

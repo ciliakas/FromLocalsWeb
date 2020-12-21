@@ -69,7 +69,10 @@ namespace FromLocalsToLocals.Services.EF
         {
             var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
 
-            vendor.VendorHours = await _context.VendorWorkHours.Where(x => x.VendorID == id).ToListAsync();
+            if (vendor != null)
+            {
+                vendor.VendorHours = await _context.VendorWorkHours.Where(x => x.VendorID == id).ToListAsync();
+            }
             return vendor;
         }
 

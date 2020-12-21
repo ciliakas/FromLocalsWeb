@@ -16,6 +16,8 @@ using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Utilities;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Services.Ado;
+using FromLocalsToLocals.Utilities.Helpers;
+using FromLocalsToLocals.Web.Utilities.Jwt;
 
 namespace FromLocalsToLocals.Web
 {
@@ -60,13 +62,12 @@ namespace FromLocalsToLocals.Web
             });
             services.AddControllersWithViews();
             services.AddRazorPages();
-            
+           
+            services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
+
             services.AddDbContext<AppDbContext>(options =>
                 options.UseLazyLoadingProxies()
                 .UseNpgsql(Configuration.GetConnectionString("AppDbContext")));
-
-
-            services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
                 {
@@ -74,8 +75,17 @@ namespace FromLocalsToLocals.Web
                     options.Password.RequireDigit = false;
                     options.Password.RequireUppercase = false;
                     options.SignIn.RequireConfirmedEmail = false;
-                }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+                })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "Identity.Cookie";
+                config.LoginPath = "/Account/Login";
+            });
+
+            services.AddHttpClient();
 
 
             services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
@@ -89,12 +99,16 @@ namespace FromLocalsToLocals.Web
             services.AddScoped<IReviewsService, ReviewsService>();
             services.AddScoped<IPostsService, PostsService>();
             services.AddScoped<IVendorServiceADO, VendorServiceADO>();
+            services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IFollowerService, FollowerService>();
 
+
+            services.AddSingleton<ITokenService, TokenService>();
+            services.AddSingleton<IWebApiClient, WebApiClient>();
 
             services.AddSignalR();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCookiePolicy();
@@ -102,12 +116,7 @@ namespace FromLocalsToLocals.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -118,7 +127,6 @@ namespace FromLocalsToLocals.Web
 
             app.UseNToastNotify();
 
-            //var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseEndpoints(endpoints =>

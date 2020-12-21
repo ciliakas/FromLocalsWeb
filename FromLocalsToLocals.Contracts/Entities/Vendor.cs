@@ -89,6 +89,9 @@ namespace FromLocalsToLocals.Contracts.Entities
         [JsonIgnore]
         [IgnoreDataMember]
         public virtual ICollection<Contact> Contacts { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual ICollection<WorkHours> VendorHours { get; set; }
 
         #region IComparable

@@ -6,12 +6,12 @@ var params = new URLSearchParams(query);
 var activeT = params.get('ActiveTab');
 
 $(document).ready(() => {
-    loadPageData(); loadPageData();
+    loadPageData();
 
 });
 
 var feedScroll = document.getElementById('content1');
-var pageCount = 5;
+var pageCount = 8;
 
 function scrollFeedDetails() {
     if (feedScroll.scrollTop + feedScroll.offsetHeight + 150 >= feedScroll.scrollHeight && !loading && details) {

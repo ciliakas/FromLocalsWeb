@@ -1,15 +1,19 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Web.Models;
+﻿using FromLocalsToLocals.Contracts.DTO;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Web.Utilities;
+using FromLocalsToLocals.Web.Utilities.Jwt;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Web.Controllers
@@ -17,21 +21,26 @@ namespace FromLocalsToLocals.Web.Controllers
     [Authorize]
     public class ChatController : Controller
     {
+        private readonly IVendorService _vendorService;
+        private readonly IChatService _chatService;
         private readonly UserManager<AppUser> _userManager;
-        private readonly AppDbContext _context;
         private readonly IHubContext<MessageHub> _hubContext;
+        private readonly IWebApiClient _webApiClient;
 
-        public ChatController(UserManager<AppUser> userManager, AppDbContext context, IHubContext<MessageHub> hubContext)
+        public ChatController(IChatService chatService,IVendorService vendorService ,UserManager<AppUser> userManager,
+            IHubContext<MessageHub> hubContext, IWebApiClient webApiClient)
         {
+            _chatService = chatService;
+            _vendorService = vendorService;
             _userManager = userManager;
-            _context = context;
             _hubContext = hubContext;
+            _webApiClient = webApiClient;
         }
 
         public async Task<IActionResult> Index(string tabName ,int vendorId)
         {
             var user = await _userManager.GetUserAsync(User);
-            var vendor = await _context.Vendors.FirstOrDefaultAsync(x => x.ID == vendorId);
+            var vendor = await _vendorService.GetVendorAsync(vendorId);
 
             //User cannot chat with vendors that belongs to him
             if (vendorId !=0 && vendor != null && !user.Vendors.Any(x=> x.ID == vendorId))
@@ -44,8 +53,7 @@ namespace FromLocalsToLocals.Web.Controllers
 
                 contact = new Contact(user,vendor,true,false);
 
-                _context.Contacts.Add(contact);
-                await _context.SaveChangesAsync();
+                await _chatService.CreateContact(contact);
 
                 return View(Tuple.Create(user, true, contact));   
             }
@@ -54,80 +62,45 @@ namespace FromLocalsToLocals.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMessage([FromBody] IncomingMessageDTO message)
+        public async Task<IActionResult> CreateMessage([FromBody] IncomingMessageDTO messageDto)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var userIdToSend = "";
-            var outgoingMessage = new OutGoingMessageDTO() { Message = message.Message, ContactID = message.ContactId, IsUserTab = message.IsUserTab };
-            Contact contact = null;
-
-            if (message.IsUserTab)
-            {
-                
-                contact = user.Contacts.FirstOrDefault(x => x.ID == message.ContactId);
-                if(contact == null)
-                {
-                    return Json(new{ success = false});
-                }
-                userIdToSend = contact.Vendor.UserID;
-                outgoingMessage.Image = user.Image;
-                
-            }
-            else
-            {
-                user.Vendors.ToList().ForEach(x =>
-                {
-                    var c = x.Contacts.FirstOrDefault(y => y.ID == message.ContactId);
-                    if (c != null)
-                    {
-                        contact = c;
-                        userIdToSend = contact.UserID;
-                        outgoingMessage.Image = x.Image;
-                        return;
-                    }
-                });
-            }
-
-            if (contact == null)
-            {
-                return Json(new { success = false });
-            }
-
             try
             {
-                contact.Messages.Add(new Message { Contact = contact, IsUserSender = message.IsUserTab, Text = message.Message });
-                contact.ReceiverRead = !message.IsUserTab;
-                contact.UserRead = message.IsUserTab;
-           
-                _context.Update(contact);
-                await _context.SaveChangesAsync();
+                var user = await _userManager.GetUserAsync(User);
+                var client = _webApiClient.GetClient(user);
+
+                var response = await client.PostAsync("/api/Chat/CreateMessage", 
+                    new StringContent(JsonConvert.SerializeObject(messageDto), Encoding.UTF8, "application/json"));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseMessage = await response.Content.ReadAsStringAsync();
+                    var outGoingMessageDto = JsonConvert.DeserializeObject<OutGoingMessageDTO>(responseMessage);
+                    await _hubContext.Clients.User(outGoingMessageDto.UserToSendId).SendAsync("sendNewMessage", responseMessage);
+                }
+
             }
-            catch (Exception ex)
+            catch
             {
-                return Json(new { success = false });
+                return BadRequest();
             }
 
-            outgoingMessage.VendorTitle = contact.Vendor.Title;
-            await _hubContext.Clients.User(userIdToSend).SendAsync("sendNewMessage", JsonConvert.SerializeObject(outgoingMessage));
-           
-            return Json(new { success = true });
+            return Ok();
         }
 
 
         [HttpPost]
-        public async Task ReadMessage(int contactId)
+        public async Task ReadMessage([FromBody] ContactIdDTO contactDto)
         {
-            var contact = await _context.Contacts.FirstOrDefaultAsync(x => x.ID == contactId);
-            contact.ReceiverRead = true;
-            contact.UserRead = true;
-            _context.Contacts.Update(contact);
-            await _context.SaveChangesAsync();
+            var user = await _userManager.GetUserAsync(User);
 
+            var client = _webApiClient.GetClient(user);
+
+            await client.PostAsync("/api/Chat/ReadMessage",
+                new StringContent(JsonConvert.SerializeObject(contactDto), Encoding.UTF8, "application/json"));
         }
 
-
-
-        public async  Task<IActionResult> GetChatComponent(int contactId, bool isUserTab, string componentName)
+        public async Task<IActionResult> GetChatComponent(int contactId, bool isUserTab, string componentName)
         {
             var user = await _userManager.GetUserAsync(User);
             Contact uContact = null;
@@ -149,10 +122,13 @@ namespace FromLocalsToLocals.Web.Controllers
             }
             if (uContact == null)
             {
-                return Json(new { success = false });
+                return BadRequest();
             }
 
             return ViewComponent(componentName, new { contact = uContact, isUserTab });
         }
+  
+        
+    
     }
 }

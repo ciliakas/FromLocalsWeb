@@ -1,6 +1,6 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
 
-namespace FromLocalsToLocals.Web.Models.ViewModels
+namespace FromLocalsToLocals.Web.ViewModels
 {
     public class MessageVM
     {

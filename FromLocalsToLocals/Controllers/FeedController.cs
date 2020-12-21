@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Web.Models.ViewModels;
+using FromLocalsToLocals.Web.ViewModels;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -19,12 +19,10 @@ namespace FromLocalsToLocals.Web.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly IPostsService _postsService;
         private readonly IVendorService _vendorService;
-        private readonly AppDbContext _context;
 
 
-        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService)
+        public FeedController(UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService)
         {
-            _context = context;
             _userManager = userManager;
             _toastNotification = toastNotification;
             _postsService = postsService;
@@ -40,7 +38,8 @@ namespace FromLocalsToLocals.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllPostsAsync(int skip, int itemsCount)
         {
-            return Json(await _postsService.GetAllPostsAsync(skip, itemsCount));
+            var x = await _postsService.GetAllPostsAsync(skip, itemsCount);
+            return Json(x);
         }
         [HttpGet]
         public async Task<IActionResult> GetFollowingPostsAsync(string userId,int skip, int itemsCount)
@@ -70,22 +69,17 @@ namespace FromLocalsToLocals.Web.Controllers
                 return Redirect(model.PostBackUrl);
             }
 
-            var userId = _userManager.GetUserId(User);
-            var selectedVendor = await _vendorService.GetVendorAsync(userId, model.VendorTitle);
-
-            if (selectedVendor != null)
+            try
             {
-                try
-                {
-                    var post = new Post(model.Text, selectedVendor, model.Image.ConvertToBytes());
-                    await _vendorService.AddPostAsync(selectedVendor,post);
+                var userId = _userManager.GetUserId(User);
+                var selectedVendor = await _vendorService.GetVendorAsync(userId, model.VendorTitle);
 
-                }
-                catch (Exception)
-                {
-                    _toastNotification.AddErrorToastMessage("Something unexpected happened. Cannot create a post.");
-                    return Redirect(model.PostBackUrl);
-                }
+                await _postsService.CreatePost(model.Text, selectedVendor, model.Image);
+            }
+            catch
+            {
+                _toastNotification.AddErrorToastMessage("Something unexpected happened. Cannot create a post.");
+                return Redirect(model.PostBackUrl);
             }
 
             model.Text = "";

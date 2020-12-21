@@ -1,7 +1,7 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities.Enums;
 using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Web.Models.ViewModels;
+using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

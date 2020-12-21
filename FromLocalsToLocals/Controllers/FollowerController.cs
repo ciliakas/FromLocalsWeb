@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using System.Web.Helpers;
 using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Services.EF;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FromLocalsToLocals.Web.Controllers
 {
@@ -14,63 +12,38 @@ namespace FromLocalsToLocals.Web.Controllers
     public class FollowerController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly AppDbContext _context;
+        private readonly IFollowerService _followerService;
 
-        public FollowerController(UserManager<AppUser> userManager, AppDbContext context)
+        public FollowerController(UserManager<AppUser> userManager, IFollowerService followerService)
         {
-            _context = context;
             _userManager = userManager;
+            _followerService = followerService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Follow(int? id)
         {
+            var user = await _userManager.GetUserAsync(User);
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.Id==_userManager.GetUserId(User));
-
-            if (id == null || user == null)
+            if (!await _followerService.Follow(user, id))
             {
-                return Json(new { success = false });
+                return BadRequest();
             }
 
-            var vendor = await _context.Vendors.FirstOrDefaultAsync(x => x.ID == id);
-            var follower = new Follower(user, vendor);
-            try
-            {
-                user.Following.Add(follower);
-                await _userManager.UpdateAsync(user);
-            }
-            catch(Exception ex)
-            {
-                return Json(new { success = false });
-            }
-
-            return Json(new { success = true });
+            return Json(new{});
         }
 
         [HttpPost]
         public async Task<IActionResult> Unfollow(int? id)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.Id == _userManager.GetUserId(User));
+            var user = await _userManager.GetUserAsync(User);
 
-            if (id == null || user == null)
+            if (!await _followerService.Unfollow(user, id))
             {
-                return Json(new { success = false });
+                return BadRequest();
             }
 
-            var followingVendor = user.Following.FirstOrDefault(x => x.VendorID == id);
-
-            try
-            {
-                user.Following.Remove(followingVendor);
-                await _userManager.UpdateAsync(user);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false });
-            }
-
-            return Json(new { success = true });
+            return Json(new {});
         }
     }
 }

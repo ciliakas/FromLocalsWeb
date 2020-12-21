@@ -1,4 +1,4 @@
-﻿@model FromLocalsToLocals.Web.Models.ViewModels.FeedVM
+﻿@model FromLocalsToLocals.Web.ViewModels.FeedVM
 @inject UserManager<AppUser> userManager
 
 @{
@@ -26,7 +26,7 @@
 
 @if (user != null && user.Vendors.Count > 0)
 {
-    @await Component.InvokeAsync("CreatePost", new FromLocalsToLocals.Web.Models.ViewModels.CreatePostVM { User = user, DisplayInDetails = false })
+    @await Component.InvokeAsync("CreatePost", new FromLocalsToLocals.Web.ViewModels.CreatePostVM { User = user, DisplayInDetails = false })
 }
-@await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Web.Models.ViewModels.FeedVM { ActiveUser = user, DisplayInDetails = false })
+@await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Web.ViewModels.FeedVM { ActiveUser = user, DisplayInDetails = false })
 

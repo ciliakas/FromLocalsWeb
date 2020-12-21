@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace FromLocalsToLocals.Web.Models.ViewModels
+namespace FromLocalsToLocals.Web.ViewModels
 {
     public class ReviewViewModel
     {

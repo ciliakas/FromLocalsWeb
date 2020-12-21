@@ -7,10 +7,7 @@ namespace FromLocalsToLocals.Services.EF
     public interface INotificationService
     {
         void AddNotification(Notification notification);
-        Task DeleteNotificationAsync(int notificationId);
-        Task DeleteNotificationAsync(Notification notification);
-        Task DeleteAllNotificationsAsync(AppUser user);
-
+        Task<bool> DeleteNotificationAsync(string userId, int? notificationId);
         List<Notification> GetNotifications(string toUserId);
     }
 }

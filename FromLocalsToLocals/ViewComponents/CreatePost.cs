@@ -1,4 +1,4 @@
-﻿using FromLocalsToLocals.Web.Models.ViewModels;
+﻿using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

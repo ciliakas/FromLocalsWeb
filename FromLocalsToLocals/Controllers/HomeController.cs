@@ -11,9 +11,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Identity;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities.Helpers;
-using FromLocalsToLocals.Services;
 using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Web.Models.ViewModels;
+using FromLocalsToLocals.Web.ViewModels;
 using FromLocalsToLocals.Services.EF;
 
 namespace FromLocalsToLocals.Web.Controllers
@@ -25,17 +24,14 @@ namespace FromLocalsToLocals.Web.Controllers
         private readonly IVendorService _vendorService;
 
         private readonly IStringLocalizer<HomeController> _localizer;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly AppDbContext _context;
 
 
-        public HomeController(AppDbContext context, IStringLocalizer<HomeController> localizer, IVendorService vendorService, IToastNotification toastNotification, UserManager<AppUser> userManager )
+        public HomeController(IStringLocalizer<HomeController> localizer, IVendorService vendorService,
+            IToastNotification toastNotification)
         {
             _localizer = localizer;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
-            _userManager = userManager;
-            _context = context;
         }
 
         public async Task<IActionResult> Index(HomeVM homeVM)

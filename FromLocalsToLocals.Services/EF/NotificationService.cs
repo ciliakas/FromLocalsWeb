@@ -1,5 +1,6 @@
 ﻿using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,42 +33,23 @@ namespace FromLocalsToLocals.Services.EF
             { throw ex; }
         }
 
-        public async Task DeleteAllNotificationsAsync(AppUser user)
+        public async Task<bool> DeleteNotificationAsync(string userId, int? notificationId)
         {
+            var noti = await _context.Notifications.FirstOrDefaultAsync(m => m.NotiId == notificationId);
+
+            if (noti == null || noti.OwnerId != userId)
+            {
+                return false;
+            }
+
             try
             {
-                _context.Notifications.RemoveRange(_context.Notifications.Where(n => n.OwnerId == user.Id));
+                _context.Notifications.Remove(noti);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
-            { throw ex; }
-
-        }
-
-        public async Task DeleteNotificationAsync(int notificationId)
-        {
-            try
-            {
-                _context.Notifications.Remove(_context.Notifications.FirstOrDefault(n => n.NotiId == notificationId));
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            { throw ex; }
-            
-        }
-
-        public async Task DeleteNotificationAsync(Notification notification)
-        {
-            try
-            {
-                _context.Notifications.Remove(notification);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex; 
-            }
-       
+            catch
+            { return false; }
+            return true;
         }
 
     }
