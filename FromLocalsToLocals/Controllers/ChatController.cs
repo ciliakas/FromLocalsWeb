@@ -3,12 +3,10 @@ using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Web.Utilities;
 using FromLocalsToLocals.Web.Utilities.Jwt;
-using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -37,13 +35,13 @@ namespace FromLocalsToLocals.Web.Controllers
             _webApiClient = webApiClient;
         }
 
-        public async Task<IActionResult> Index(string tabName ,int vendorId)
+        public async Task<IActionResult> Index(string tabName, int vendorId)
         {
             var user = await _userManager.GetUserAsync(User);
             var vendor = await _vendorService.GetVendorAsync(vendorId);
 
             //User cannot chat with vendors that belongs to him
-            if (vendorId !=0 && vendor != null && !user.Vendors.Any(x=> x.ID == vendorId))
+            if (vendorId != 0 && vendor != null && !user.Vendors.Any(x=> x.ID == vendorId))
             {
                 var contact = user.Contacts.FirstOrDefault(x => x.ReceiverID == vendorId);
                 if(contact != null)

@@ -7,18 +7,14 @@
 @{
     ViewData["Title"] = _localizer["Reviews"];
 }
+<link rel="stylesheet" href="~/css/reviewWindow.css">
 
 <body>
-    <style>
-        ul li:nth-child(n+11) {
-            display: none;
-        }
-    </style>
-    <h2 class="text-center mt-4">@_localizer["Reviews about"]" @Model.Vendor.Title"</h2>
+    <h2 class="text-center mt-4">@_localizer["Reviews about"] "@Model.Vendor.Title"</h2>
     <hr />
     <div class="container-fluid">
         <div class="row align-content-lg-start">
-            <div class="col-8">
+            <div class="reviewColumn ml-3 mr-3">
                 <div class="row">
                     @if (Model.Reviews.Count() != 0)
                     {
@@ -35,7 +31,7 @@
                             </div>
                         </p>
                     }
-                    <div class="card w-100 mr-4 ml-2 pre-scrollable" id="reviewsDisplay">
+                    <div class="card w-100 mr-2 ml-2 pre-scrollable" id="reviewsDisplay">
                         <ul class="list-group list-group-flush" id="allReviews">
                             @if (Model.Reviews.Count() == 0)
                             {
@@ -223,7 +219,7 @@
                 }
             </div>
 
-            <div class="col float-lg-right">
+            <div class="col float-lg-right mb-3">
                 <div class="row float-lg-right">
                     <div class="container float-lg-right">
                         <div class="card">

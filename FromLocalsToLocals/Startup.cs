@@ -16,16 +16,26 @@ using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.Utilities;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Services.Ado;
-using FromLocalsToLocals.Utilities.Helpers;
+using Microsoft.AspNetCore.Http;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using FromLocalsToLocals.Web.Utilities.Jwt;
+using FromLocalsToLocals.Utilities;
 
 namespace FromLocalsToLocals.Web
 {
     public class Startup
     {
+        public readonly AppDbContext _context;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+        }
+
+        public Startup(AppDbContext context)
+        {
+            _context = context;
         }
 
         public IConfiguration Configuration { get; }
@@ -107,10 +117,28 @@ namespace FromLocalsToLocals.Web
             services.AddSingleton<IWebApiClient, WebApiClient>();
 
             services.AddSignalR();
+
+            services.AddHangfire(configuration =>
+            configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+               .UseSimpleAssemblyNameTypeSerializer()
+               .UseRecommendedSerializerSettings()
+               .UseMemoryStorage());
+
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBackgroundJobClient backgroundJobs)
         {
+            app.UseHangfireDashboard();
+            var sendAll = new SendAllSubscribers(_context);
+            //RecurringJob.AddOrUpdate(() => sendAll.SendingAll(), Cron.MinuteInterval(1));
+
+
+
             app.UseCookiePolicy();
             if (env.IsDevelopment())
             {

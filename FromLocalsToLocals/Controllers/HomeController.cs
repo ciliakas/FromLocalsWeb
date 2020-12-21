@@ -20,9 +20,7 @@ namespace FromLocalsToLocals.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IToastNotification _toastNotification;
-
         private readonly IVendorService _vendorService;
-
         private readonly IStringLocalizer<HomeController> _localizer;
 
 

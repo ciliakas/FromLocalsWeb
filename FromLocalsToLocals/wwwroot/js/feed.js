@@ -7,7 +7,6 @@ var activeT = params.get('ActiveTab');
 
 $(document).ready(() => {
     loadPageData();
-
 });
 
 var feedScroll = document.getElementById('content1');
@@ -85,7 +84,7 @@ function loadPageData() {
             loading = false;
         },
         error: function (err) {
-            alert("Sorry something wen wrong..");
+            alert("Sorry something went wrong..");
             loading = false;
         }
     });
@@ -107,13 +106,6 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
                                </div>`;
     }
 
-    var contactS="";
-    if (!owner) {
-        var dto = { tab: "Users", id: id };
-        console.log(dto);
-        contactS = `<span style="float:right"><a href='/Chat/Index?vendorId=${id}'>Contact</a></span>`;
-    }
-
     var li = document.createElement('li');
     li.classList.add("postsL");
 
@@ -127,7 +119,6 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
                 <div class="timeline-header">
                     ${vendorImageLine}
                         <span class="username"><a href="/Vendors/Details/${id}">${vendorTitle}</a> <small></small></span>
-                        ${contactS}
                 </div>
                 <div class="timeline-content">
                     <p>

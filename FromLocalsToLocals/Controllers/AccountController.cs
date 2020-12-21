@@ -118,6 +118,11 @@ namespace FromLocalsToLocals.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> FollowingAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return View(user.Following.ToList());
+        }
         public async Task<IActionResult> Profile()
         {
             return View(GetNewProfileVM(await _userManager.GetUserAsync(User)));
@@ -132,9 +137,36 @@ namespace FromLocalsToLocals.Web.Controllers
                 "picName" => await PicChange(model),
                 "accDetails" => await AccountDetailsChange(model),
                 "password" => await ChangePassword(model),
+                "subscriber" => await SubscribeNewsletter(model),
                 _ => View(),
             };
         }
+        private async Task<IActionResult> SubscribeNewsletter(ProfileVM model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var resultsList = new List<IdentityResult>();
+
+            if (user.Subscribe)
+            {
+                user.Subscribe = false;
+                _toastNotification.AddInfoToastMessage("Newsletter unsubscribed!");
+            }
+            else
+            {
+                user.Subscribe = true;
+                _toastNotification.AddSuccessToastMessage("Newsletter subscribed!");
+            }
+
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            CheckForErrors(resultsList);
+
+            return RedirectToAction("Profile");
+        }
+
+
+
 
         private async Task<IActionResult> AccountDetailsChange(ProfileVM model)
         {
@@ -380,13 +412,12 @@ namespace FromLocalsToLocals.Web.Controllers
 
              
                 var callbackUrl = Url.Action("ResetPassword", "Account",
-                new { user = user , code = code }, protocol: Request.Scheme); 
+                new { user = user , code = code }, protocol: Request.Scheme);
 
-                var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" +
+                var htmlContent = SendMail.htmlCodeForEmails + "</td></tr><tr><td class=\"content\"><h3> Please confirm your account by clicking this link: " + " <a href =\""
+                 + callbackUrl + "\">link</a> </body></html>" +
+                 "</td></tr></table></td></tr></table></body></html>";
 
-                                  _localizer["Please confirm your account by clicking this link:"] + 
-                                  " <a href =\""
-                                                 + callbackUrl + "\">link</a> </body></html>";
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
                 var response = await client.SendEmailAsync(msg);
             }

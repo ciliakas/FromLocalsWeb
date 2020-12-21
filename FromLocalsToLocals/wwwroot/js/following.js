@@ -1,6 +1,7 @@
 ﻿function followBtnClick(obj, id) {
+    var fButton = document.getElementById("followButn");
+    var followerCount = document.getElementById("followerCount");
 
-    var fButtons = $(`.followBtn[data-id='${id}']`);;
     $.ajax({
         type: "POST",
         url: '/Follower/' + obj.innerText + '/' + id,
@@ -8,15 +9,25 @@
         dataType: "json",
         success: function (m) {
                 if (obj.innerText == "Follow") {
-                    for (var i = 0; i < fButtons.length; i++) {
-                        fButtons[i].innerText = "Unfollow";
-                        fButtons[i].className = "btn btn-outline-dark w-100 followBtn"
-                    }
-                } else if (obj.innerText == "Unfollow") {
-                    for (var i = 0; i < fButtons.length; i++) {
-                        fButtons[i].innerText = "Follow";
-                        fButtons[i].className = "btn btn-dark w-100 followBtn"
-                    }
+                    fButton.innerHTML = "Unfollow";
+                    fButton.className = "btn btn-outline-primary w-100 followBtn";
+                    followerCount.innerHTML = parseInt(followerCount.innerHTML, 10) + 1;
+                }
+
+                else if (obj.innerText == "Sekti") {
+                    fButton.innerHTML = "Nebesekti";
+                    fButton.className = "btn btn-outline-primary w-100 followBtn";
+                    followerCount.innerHTML = parseInt(followerCount.innerHTML, 10) + 1;
+                }
+                else if (obj.innerText == "Unfollow") {
+                    fButton.innerHTML = "Follow";
+                    fButton.className = "btn btn-primary w-100 followBtn";
+                    followerCount.innerHTML = parseInt(followerCount.innerHTML, 10) - 1;
+                }
+                else if (obj.innerText == "Nebesekti") {
+                    fButton.innerHTML = "Sekti";
+                    fButton.className = "btn btn-primary w-100 followBtn";
+                    followerCount.innerHTML = parseInt(followerCount.innerHTML, 10) - 1;
                 }
             
         },

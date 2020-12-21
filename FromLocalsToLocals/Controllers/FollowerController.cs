@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using System.Web.Helpers;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Services.EF;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +19,10 @@ namespace FromLocalsToLocals.Web.Controllers
             _followerService = followerService;
         }
 
+        
         [HttpPost]
+        [Route("/Follower/Follow/{id:int}")]
+        [Route("/Follower/Sekti/{id:int}")]
         public async Task<IActionResult> Follow(int? id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -34,6 +36,8 @@ namespace FromLocalsToLocals.Web.Controllers
         }
 
         [HttpPost]
+        [Route("/Follower/Unfollow/{id:int}")]
+        [Route("/Follower/Nebesekti/{id:int}")]
         public async Task<IActionResult> Unfollow(int? id)
         {
             var user = await _userManager.GetUserAsync(User);

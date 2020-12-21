@@ -15,6 +15,7 @@ namespace FromLocalsToLocals.Services.EF
         Task<List<Vendor>> GetVendorsAsync(string userId,string searchString="" , string vendorType="");
         Task<List<Vendor>> GetNewVendorsAsync(int count);
         Task<List<Vendor>> GetPopularVendorsAsync(int count);
+        Task UpdatePopularityAsync(Vendor vendor);
 
         Task AddWorkHoursAsync(WorkHours workHours);
         Task ChangeWorkHoursAsync(WorkHours workHours);

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.ViewModels;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Utilities.Enums;
@@ -10,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using FromLocalsToLocals.Services.EF;
+using Microsoft.Extensions.Localization;
 
 namespace FromLocalsToLocals.Web.Controllers
 {
@@ -19,14 +18,16 @@ namespace FromLocalsToLocals.Web.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly IPostsService _postsService;
         private readonly IVendorService _vendorService;
+        private readonly IStringLocalizer<FeedController> _localizer;
 
 
-        public FeedController(UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService)
+        public FeedController(UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService, IStringLocalizer<FeedController> localizer)
         {
             _userManager = userManager;
             _toastNotification = toastNotification;
             _postsService = postsService;
             _vendorService = vendorService;
+            _localizer = localizer;
 
         }
 
@@ -65,7 +66,7 @@ namespace FromLocalsToLocals.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _toastNotification.AddErrorToastMessage("Cannot create post with an empty message");
+                _toastNotification.AddErrorToastMessage(_localizer["Cannot create post with an empty message"]);
                 return Redirect(model.PostBackUrl);
             }
 

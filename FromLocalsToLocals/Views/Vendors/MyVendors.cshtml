@@ -7,56 +7,54 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="mt-4" style="text-align: center;" id="myservices">@_localizer["My Services"]</h2>
+<h2 class="mt-4 text-center" id="myservices">@_localizer["My Services"]</h2>
 <hr />
 <p>
-    <!--Space after plus symbol is NEEDED-->
     <a class="btn btn-primary mt-3 mb-3" asp-action="Create"><span class="fa fa-plus"></span> @_localizer["Add a service"]</a>
 </p>
-<table class="table" id="Table1">
+<table class="table table-hover table-responsive-md" id="Table1">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
+            <th class="text-center" style="min-width: 200px;">
                 @Html.DisplayNameFor(model => model.Address)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.VendorTypeDb)
             </th>
-            <th></th>
+            <th class="text-center" style="min-width: 220px;"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
 
                 @switch (item.VendorTypeDb)
                 {
                     case "CarRepair":
-                        <td>Car Repair</td>
+                        <td class="text-center">Car Repair</td>
                         break;
 
                     case "RuralTourism":
-                        <td>Rural Tourism</td>
+                        <td class="text-center">Rural Tourism</td>
                         break;
 
                     default:
-                        <td>
+                        <td class="text-center">
                             @Html.DisplayFor(modelItem => item.VendorTypeDb)
                         </td>
                         break;
                 }
-
-                <td>
+                <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@item.ID">@_localizer["Edit"]</a> |
                     <a asp-action="Details" asp-route-id="@item.ID">@_localizer["Details"]</a> |
                     <a href="#" data-target="#deleteModal" data-toggle="modal" class="identifyingClass" data-title="@item.Title" data-id="@item.ID">@_localizer["Delete"]</a>
@@ -69,13 +67,13 @@
     <div class="modal-dialog modal-dialog-centered" role="dialog">
         <div class="modal-content">
             <div class="modal-body">
-                @_localizer["Are you sure you want to delete "]<span name="vendorTitle" id="vendorTitle" value=""></span>"?
+                @_localizer["Are you sure you want to delete "]<span name="vendorTitle" id="vendorTitle" value=""></span>?
             </div>
             <div class="modal-footer">
                 <button type="button" class="close btn btn-default" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">@_localizer["Cancel"]</span>
                 </button>
-                <a type="button" class="btn btn-danger">@_localizer["Delete"]</a>
+                <a href="#" type="button" class="btn btn-danger">@_localizer["Delete"]</a>
             </div>
         </div>
     </div>
