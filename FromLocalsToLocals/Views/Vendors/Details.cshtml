@@ -8,7 +8,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var userForFeed = await userManager.GetUserAsync(User);
-    if (userForFeed !=null && userForFeed.Id != Model.User.Id) userForFeed = null;
+    var currentUser = await userManager.GetUserAsync(User);
+    if (userForFeed != null && userForFeed.Id != Model.User.Id) userForFeed = null;
 
     var timeSpan = new TimeSpan(0);
 
@@ -16,42 +17,51 @@
 @using static FromLocalsToLocals.Utilities.TimeCalculator
 
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
-<link rel="stylesheet" href="~/css/Posts.css"/>
-<link rel="stylesheet" href="~/css/details.css" type="text/css"/>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/Posts.css" />
+<link rel="stylesheet" href="~/css/details.css" type="text/css" />
 
-<h2 class="mt-4"></h2>
-<div class="row">
+<div class="row mt-4">
     <div class="col1 m-lg-5 d-flex justify-content-center">
-            @if (Model.Image == null)
-            {
-                <img src="~/Assets/localSeller.png" class="serviceImage"/>
-            }
-            else
-            {
-                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" class="serviceImage"/>
-            }
+        @if (Model.Image == null)
+        {
+            <img src="~/Assets/localSeller.png" class="serviceImage" />
+        }
+        else
+        {
+            <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" class="serviceImage" />
+        }
     </div>
     <div class="col2 m-3">
         <div class="m-4">
             <div class="row">
-                @switch (Model.VendorType)
-                {
-                    case FromLocalsToLocals.Utilities.VendorType.CarRepair:<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
-                    break;
+                <div class="col-9">
+                    <div class="row">
+                        @switch (Model.VendorType)
+                        {
+                            case FromLocalsToLocals.Utilities.VendorType.CarRepair:<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
+                                break;
 
-                    case FromLocalsToLocals.Utilities.VendorType.RuralTourism:<p class="text-muted text-uppercase">Rural tourism</p>
-                    break;
+                            case FromLocalsToLocals.Utilities.VendorType.RuralTourism:<p class="text-muted text-uppercase">Rural tourism</p>
+                                break;
 
-                    default: <p class="text-muted text-uppercase">@Model.VendorType</p>
-                    break;
-                }
-            </div>
-            <div class="row" style="margin-top: -15px;">
-                <h2>@Model.Title</h2>
-            </div>
-            <div class="row mb-3">
-                <p>@_localizer["Service registered | "]@CalcRelativeTime(Model.DateCreated)</p>
+                            default: <p class="text-muted text-uppercase">@Model.VendorType</p>
+                                break;
+                        }
+                    </div>
+                    <div class="row" style="margin-top: -15px;">
+                        <h2>@Model.Title</h2>
+                    </div>
+                    <div class="row">
+                        <p>@_localizer["Service registered | "]@CalcRelativeTime(Model.DateCreated)</p>
+                    </div>
+                </div>
+                <div class="col-3 mt-3">
+                    <div class="float-right m-2">
+                        <h4 class="text-center" id="followerCount">@Model.FollowerCount</h4>
+                        <span class="text-center">@_localizer["Followers"]</span>
+                    </div>
+                </div>
             </div>
             <hr />
             <div class="row">
@@ -64,6 +74,25 @@
                     <p class="font-italic">@Model.About</p>
                 }
             </div>
+            @if (currentUser != null && !currentUser.Vendors.Any(x => x.ID == Model.ID))
+            {
+                <hr />
+                <div class="row">
+                    <div class="col mr-2 ml-2">
+                        @if (currentUser.Following.Any(x => x.VendorID == Model.ID))
+                        {
+                            <button data-follow="false" data-id="@Model.ID" class="btn btn-outline-primary w-100" id="followButn" onclick="followBtnClick(this,@Model.ID)">@_localizer["Unfollow"]</button>
+                        }
+                        else
+                        {
+                            <button data-follow="true" data-id="@Model.ID" class="btn btn-primary w-100" id="followButn" onclick="followBtnClick(this,@Model.ID)">@_localizer["Follow"]</button>
+                        }
+                    </div>
+                    <div class="col mr-2 ml-2">
+                        <a class="btn btn-outline-dark w-100" href="/Chat/Index?vendorId=@Model.ID">@_localizer["Message"]</a>
+                    </div>
+                </div>
+            }
             <hr />
             <div class="row mt-1 mb-3">
                 <h4>@_localizer["Working Hours"]</h4>
@@ -76,19 +105,19 @@
                         {
                             case 1:<p>@_localizer["Monday"]</p>
                                 break;
-                            case 2: <p>@_localizer["Tuesday"]</p>
+                            case 2:<p>@_localizer["Tuesday"]</p>
                                 break;
-                            case 3: <p>@_localizer["Wednesday"]</p>
+                            case 3:<p>@_localizer["Wednesday"]</p>
                                 break;
-                            case 4: <p>@_localizer["Thursday"]</p>
+                            case 4:<p>@_localizer["Thursday"]</p>
                                 break;
-                            case 5: <p>@_localizer["Friday"]</p>
+                            case 5:<p>@_localizer["Friday"]</p>
                                 break;
-                            case 6: <p>@_localizer["Saturday"]</p>
+                            case 6:<p>@_localizer["Saturday"]</p>
                                 break;
-                            default: <p>@_localizer["Sunday"]</p>
+                            default:<p>@_localizer["Sunday"]</p>
                                 break;
-                        }
+                       }
                     </div>
                     <div class="hourColumn">
                         @if (item.OpenTime > timeSpan && item.CloseTime > timeSpan)
@@ -102,7 +131,6 @@
                     </div>
                 </div>
             }
-
             <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark mt-4" style="color: gray; border-radius: 4px;">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -143,6 +171,7 @@
     var center = [vendor.Latitude, vendor.Longitude];
     var zoom = 13;
 </script>
+<script src="~/js/following.js"></script>
 <script src="~/js/createMap.js"></script>
 <script>
     var marker = L.marker(center);

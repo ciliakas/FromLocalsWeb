@@ -21,9 +21,7 @@ namespace FromLocalsToLocals.Controllers
     public class HomeController : Controller
     {
         private readonly IToastNotification _toastNotification;
-
         private readonly IVendorServiceEF _vendorService;
-
         private readonly IStringLocalizer<HomeController> _localizer;
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;

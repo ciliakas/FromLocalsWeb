@@ -23,8 +23,8 @@
     <style>
         .card {
             overflow: hidden;
-            max-height: 470px;
-            min-height: 470px;
+            max-height: 450px;
+            min-height: 450px;
             max-width: 290px;
             min-width: 250px;
             box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
@@ -141,17 +141,6 @@ else
                             <a asp-route-id="Vendor/@vendor.ID" asp-controller="Reviews" asp-action="Reviews"
                                class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Reviews"]</a>
                         </div>
-                        @if (user != null && !user.Vendors.Any(x => x.ID == vendor.ID))
-                        {
-                            if (user.Following.Any(x => x.VendorID == vendor.ID))
-                            {
-                                <button data-follow="false" data-id="@vendor.ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">@_localizer["Unfollow"]</button>
-                            }
-                            else
-                            {
-                                <button data-follow="true" data-id="@vendor.ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@vendor.ID)">@_localizer["Follow"]</button>
-                            }
-                        }
                     </div>
                 </div>
             </div>
@@ -294,17 +283,6 @@ else
                             <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews"
                                class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Reviews"]</a>
                         </div>
-                        @if (user != null && !user.Vendors.Any(x => x.ID == Model.Vendors[i * itemsInRow + j].ID))
-                        {
-                            if (user.Following.Any(x => x.VendorID == Model.Vendors[i * itemsInRow + j].ID))
-                            {
-                                <button data-follow="false" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-outline-dark w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">@_localizer["Unfollow"]</button>
-                            }
-                            else
-                            {
-                                <button data-follow="true" data-id="@Model.Vendors[i * itemsInRow + j].ID" class="btn btn-dark w-100 followBtn" onclick="followBtnClick(this,@Model.Vendors[i * itemsInRow + j].ID)">@_localizer["Follow"]</button>
-                            }
-                        }
                     </div>
                     </div>
                 </div>
@@ -327,5 +305,3 @@ else
         <a class="page-link" href="@Url.Action("AllVendors", new {itemCount=itemCount, searchString = searchString , vendorType=vendorType ,page = (Model.Vendors.PageIndex + 1) } )">>></a>
     </li>
 </ul>
-
-<script src="~/js/following.js"></script>
