@@ -55,7 +55,7 @@ namespace FromLocalsToLocals.Controllers
             {
                 Types = new SelectList(typesOfVendors),
                 OrderTypes = new SelectList(typesOfOrdering),
-                Vendors = PaginatedList<Vendor>.Create(vendors, page ?? 1, itemCount ?? 20),
+                Vendors = PaginatedList<Vendor>.Create(vendors, page ?? 1, itemCount ?? 8),
                 NewVendors = newVendors
             };
 

@@ -3,8 +3,28 @@
 @model FromLocalsToLocals.ViewModels.ProfileVM
 @inject UserManager<AppUser> userManager;
 
+@{
+    var user = await userManager.GetUserAsync(User);
+}
+
 <head>
     <link href="~/css/revealEye.css" rel="stylesheet" type="text/css">
+    <style>
+        .follow-btn {
+            display: block;
+            text-align: center;
+            font: normal 1.6em "Helvetica Neue", helvetica, sans-serif;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            border-radius: 6px;
+            border: none !important;
+            padding: 10px 20px;
+            color: #fff !important;
+            cursor: pointer;
+            font-size: 16px;
+            background: grey
+        }
+    </style>
 </head>
 
 <div asp-validation-summary="All" class="text-danger mt-3" style="font-size: 22px;"></div>
@@ -13,11 +33,11 @@
         <form asp-action="Profile" method="post" enctype="multipart/form-data">
             @if (Model.Image == null)
             {
-                <img id="image_upload_preview" src="~/Assets/profile.png" style="max-width: 450px; max-height: 600px;" />
+                <img class="img-fluid rounded" id="image_upload_preview" src="~/Assets/profile.png" style="width: inherit; max-width: 50%; max-height: 50%;  min-height:250px; min-width:250px;" />
             }
             else
             {
-                <img class="rounded" id="image_upload_preview" src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" style="width: inherit; max-height: 350px;" />
+                <img class="img-fluid rounded" id="image_upload_preview" src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" style="width: inherit; max-height: 50%; max-width: 50%; min-height:250px; min-width:250px;" />
             }
 
             <hr />
@@ -27,8 +47,21 @@
                 </div>
                 <button type="submit" class="btn btn-success" name="submitBtn" value="picName">@_localizer["Save changes"]</button>
             </div>
-        </form>
+
+
+            <hr />
+            <div>
+                <button value="subscriber" type="submit" name="submitBtn" id="myButton"
+                        class="btn btn-primary form-inline" style="background-color: #CCBA8B; border: 2px #CCBA8B;">
+                    <span>Subscriber for newsletters!</span>
+                </button>
+
+            </div>
+            <hr />
+
+            </form>
     </div>
+
     <div class="col">
         <h3>@_localizer["Account details"]</h3>
         <form asp-action="Profile" method="post" enctype="multipart/form-data">
@@ -63,7 +96,7 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary mt-3" name="submitBtn" value="password">@_localizer["Change password"]</button>
-</form>
+        </form>
     </div>
 </div>
 <script>
@@ -79,6 +112,50 @@
     $("#changePhoto").change(function () {
         changePic(this);
     });
+
+    var flag_clicked = false;
+
+    if ( == true) {
+        var flag_clicked = true;
+    }
+
+    $('#myButton').click(function () {
+        if (flag_clicked) {
+            $(this)
+                .find('span')
+                .text('Follow')
+                .end()
+                .css('backgroundColor', 'gray');
+            flag_clicked = false;
+        } else {
+            $(this)
+                .find('span')
+                .text('following')
+                .end()
+                .css('backgroundColor', 'green');
+
+            flag_clicked = true;
+        }
+    }).hover(function () {
+        if (flag_clicked) {
+            $(this)
+                .find('span')
+                .text('unfollow')
+                .end()
+                .css('backgroundColor', 'red');
+        }
+    },
+        function () {
+            if (flag_clicked) {
+                $(this)
+                    .find('span')
+                    .text('following')
+                    .end()
+                    .css('backgroundColor', 'green');
+            }
+
+        });
 </script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="~/js/revealEye.js"></script>
+

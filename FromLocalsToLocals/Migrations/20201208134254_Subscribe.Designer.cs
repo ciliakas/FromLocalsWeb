@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FromLocalsToLocals.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201207205952_NewColumns")]
-    partial class NewColumns
+    [Migration("20201208134254_Subscribe")]
+    partial class Subscribe
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,6 +68,9 @@ namespace FromLocalsToLocals.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
+
+                    b.Property<bool>("Subscribe")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
@@ -229,11 +232,17 @@ namespace FromLocalsToLocals.Migrations
                     b.Property<byte[]>("Image")
                         .HasColumnType("bytea");
 
+                    b.Property<DateTime>("LastClickDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("double precision");
 
                     b.Property<double>("Longitude")
                         .HasColumnType("double precision");
+
+                    b.Property<int>("Popularity")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -474,7 +483,7 @@ namespace FromLocalsToLocals.Migrations
             modelBuilder.Entity("FromLocalsToLocals.Models.WorkHours", b =>
                 {
                     b.HasOne("FromLocalsToLocals.Models.Vendor", "Vendor")
-                        .WithMany()
+                        .WithMany("VendorHours")
                         .HasForeignKey("VendorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -552,6 +561,8 @@ namespace FromLocalsToLocals.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("VendorHours");
                 });
 #pragma warning restore 612, 618
         }

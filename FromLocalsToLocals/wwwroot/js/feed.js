@@ -6,8 +6,7 @@ var params = new URLSearchParams(query);
 var activeT = params.get('ActiveTab');
 
 $(document).ready(() => {
-    loadPageData(); loadPageData();
-
+    loadPageData(); 
 });
 
 var feedScroll = document.getElementById('content1');
