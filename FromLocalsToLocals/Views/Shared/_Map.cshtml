@@ -16,7 +16,7 @@
             @foreach (var x in ViewBag.vendorTypes)
             {
                 <input type="checkbox" id=@x value=@x checked onchange="vendorTypeOnChange(this)" />
-                <label for="vehicle1">@x</label><br>
+                <label for="vehicle1">@_localizer[@x]</label><br>
             }
         </div><br />
         <div class="mt-3">

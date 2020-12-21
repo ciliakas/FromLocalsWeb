@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back to List" xml:space="preserve">
-    <value>Grįžti į sąrašą</value>
+  <data name="&amp;nbsp;Back to List" xml:space="preserve">
+    <value>&amp;nbsp;Grįžti į sąrašą</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Redaguoti</value>

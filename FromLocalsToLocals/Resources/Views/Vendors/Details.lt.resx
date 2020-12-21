@@ -132,8 +132,17 @@
   <data name="Details" xml:space="preserve">
     <value>Detalės</value>
   </data>
+  <data name="Follow" xml:space="preserve">
+    <value>Sekti</value>
+  </data>
+  <data name="Followers" xml:space="preserve">
+    <value>Sekėjų</value>
+  </data>
   <data name="Friday" xml:space="preserve">
     <value>Penktadieniais</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Susisiekti</value>
   </data>
   <data name="Monday" xml:space="preserve">
     <value>Pirmadieniais</value>
@@ -161,6 +170,9 @@
   </data>
   <data name="Tuesday" xml:space="preserve">
     <value>Antradieniais</value>
+  </data>
+  <data name="Unfollow" xml:space="preserve">
+    <value>Nebesekti</value>
   </data>
   <data name="Wednesday" xml:space="preserve">
     <value>Trečiadieniais</value>

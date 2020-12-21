@@ -119,6 +119,11 @@ namespace FromLocalsToLocals.Controllers
             }
         }
 
+        public async Task<IActionResult> FollowingAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return View(user.Following.ToList());
+        }
 
         public IActionResult Profile()
         {

@@ -27,13 +27,13 @@ namespace FromLocalsToLocals.Controllers
             _hubContext = hubContext;
         }
 
-        public async Task<IActionResult> Index(string tabName ,int vendorId)
+        public async Task<IActionResult> Index(string tabName, int vendorId)
         {
             var user = await _userManager.GetUserAsync(User);
             var vendor = await _context.Vendors.FirstOrDefaultAsync(x => x.ID == vendorId);
 
             //User cannot chat with vendors that belongs to him
-            if (vendorId !=0 && vendor != null && !user.Vendors.Any(x=> x.ID == vendorId))
+            if (vendorId != 0 && vendor != null && !user.Vendors.Any(x=> x.ID == vendorId))
             {
                 var contact = user.Contacts.FirstOrDefault(x => x.ReceiverID == vendorId);
                 if(contact != null)

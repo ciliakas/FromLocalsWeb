@@ -162,6 +162,9 @@
   <data name="Reviews" xml:space="preserve">
     <value>Atsiliepimai</value>
   </data>
+  <data name="Rural tourism" xml:space="preserve">
+    <value>Kaimo turizmas</value>
+  </data>
   <data name="Services in the past month registered on our site" xml:space="preserve">
     <value>Šį mėnesį užregistruotos paslaugos</value>
   </data>

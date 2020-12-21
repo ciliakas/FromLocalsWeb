@@ -117,13 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About Us" xml:space="preserve">
-    <value>Apie mus</value>
+  <data name="Beverages" xml:space="preserve">
+    <value>Gėrimai</value>
   </data>
-  <data name="Our aim to support local vendors, both during and after the coronavirus crisis. We seek to prove that local vendors offer the same price and quality for products also offered by big companies." xml:space="preserve">
-    <value>Mūsų pagrindinis tikslas - palaikyti vietinius pardavėjus šiuo sunkiu laikotarpiu. Stengiamės parodyti, jog vietiniai pardavėjai siūlo tokias pat palankias kainas ir geros kokybės produktus kaip ir didelės kompanijos.</value>
+  <data name="CarRepair" xml:space="preserve">
+    <value>Autoservisas</value>
   </data>
-  <data name="We want to remind people of their local sellers and introduce them to newcomers." xml:space="preserve">
-    <value>Mes norime priminti žmonėms apie vietinius pardavėjus ir supažindinti su naujais.</value>
+  <data name="Clothing" xml:space="preserve">
+    <value>Apranga</value>
+  </data>
+  <data name="Electronics" xml:space="preserve">
+    <value>Elektronika</value>
+  </data>
+  <data name="Flowers" xml:space="preserve">
+    <value>Gėlių salonas</value>
+  </data>
+  <data name="Food" xml:space="preserve">
+    <value>Maistas</value>
+  </data>
+  <data name="Footwear" xml:space="preserve">
+    <value>Avalynė</value>
+  </data>
+  <data name="Music" xml:space="preserve">
+    <value>Muzikos prekės</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Kita</value>
+  </data>
+  <data name="RuralTourism" xml:space="preserve">
+    <value>Kaimo turizmas</value>
+  </data>
+  <data name="Stationery" xml:space="preserve">
+    <value>Kanceliarinės prekės</value>
+  </data>
+  <data name="Toys" xml:space="preserve">
+    <value>Žaislai</value>
   </data>
 </root>

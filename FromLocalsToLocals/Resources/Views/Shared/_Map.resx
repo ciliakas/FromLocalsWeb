@@ -117,13 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About Us" xml:space="preserve">
-    <value>Apie mus</value>
+  <data name="CarRepair" xml:space="preserve">
+    <value>Car repair</value>
   </data>
-  <data name="Our aim to support local vendors, both during and after the coronavirus crisis. We seek to prove that local vendors offer the same price and quality for products also offered by big companies." xml:space="preserve">
-    <value>Mūsų pagrindinis tikslas - palaikyti vietinius pardavėjus šiuo sunkiu laikotarpiu. Stengiamės parodyti, jog vietiniai pardavėjai siūlo tokias pat palankias kainas ir geros kokybės produktus kaip ir didelės kompanijos.</value>
-  </data>
-  <data name="We want to remind people of their local sellers and introduce them to newcomers." xml:space="preserve">
-    <value>Mes norime priminti žmonėms apie vietinius pardavėjus ir supažindinti su naujais.</value>
+  <data name="RuralTourism" xml:space="preserve">
+    <value>Rural tourism</value>
   </data>
 </root>

@@ -67,7 +67,7 @@ namespace FromLocalsToLocals.Models.Services
         {
             var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
 
-            vendor.VendorHours = await _context.VendorWorkHours.Where(x => x.VendorID == id).ToListAsync();
+            vendor.VendorHours = _context.VendorWorkHours.Where(x => x.VendorID == id).OrderBy(y => y.Day).ToList(); 
             return vendor;
         }
 
@@ -111,16 +111,28 @@ namespace FromLocalsToLocals.Models.Services
             }
         }
 
+        public async Task UpdatePopularityAsync(Vendor vendor)
+        {
+            try
+            {
+                vendor.Popularity++;
+                vendor.LastClickDate = DateTime.UtcNow;
+                await UpdateAsync(vendor);
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
+
+
         public async Task ChangeWorkHoursAsync(WorkHours workHours)
         {
             try
             {
                 var row = _context.VendorWorkHours.FirstOrDefault(x => x.VendorID == workHours.VendorID && x.Day == workHours.Day);
-                row.VendorID = workHours.VendorID;
-                row.Day = workHours.Day;
-                row.OpenTime = workHours.OpenTime;
-                row.CloseTime = workHours.CloseTime;
-                _context.VendorWorkHours.Update(row);
+                workHours.SetWorkHours(row); 
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException e)
@@ -166,5 +178,4 @@ namespace FromLocalsToLocals.Models.Services
             return await _context.Vendors.FirstOrDefaultAsync(x => x.Title == title && x.UserID == userId);
         }
     }
-
 }
