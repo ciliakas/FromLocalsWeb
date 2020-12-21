@@ -3,7 +3,11 @@
 @{
     ViewData["Title"] = _localizer["About Us"];
 }
-<link rel="stylesheet" href="~/css/aboutUs.css"/>
+
+<head>
+<link rel="stylesheet" href="~/css/aboutUs.css" />
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
 
 <h2 class="mt-4" style="text-align: center; font-size: 30px;">@_localizer["About Us"]</h2>
 <hr />
@@ -14,8 +18,15 @@
             @_localizer["Our aim to support local vendors, both during and after the coronavirus crisis. We seek to prove that local vendors offer the same price and quality for products also offered by big companies."]
             @_localizer["We want to remind people of their local sellers and introduce them to newcomers."]
         </div>
-        <div class="col mt-3 mb-4">
+        <div class="col mt-3 mb-4" data-aos="flip-left">
             <img src="~/Assets/helping.png" style="width:inherit; max-height: 580px;" />
         </div>
     </div>
 </div>
+
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    AOS.init();
+</script>

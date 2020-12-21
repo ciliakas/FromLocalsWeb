@@ -14,11 +14,10 @@
     var vendorType = Html.ViewContext.HttpContext.Request.Query["vendorType"];
     var searchString = Html.ViewContext.HttpContext.Request.Query["searchString"];
     var itemCount = Html.ViewContext.HttpContext.Request.Query["itemCount"];
-    var itemCountDouble = (!string.IsNullOrEmpty(itemCount)) ? double.Parse(itemCount) : 20;
+    var itemCountDouble = (!string.IsNullOrEmpty(itemCount)) ? double.Parse(itemCount) : 8;
 
     var user = await usermanager.GetUserAsync(User);
 }
-
 <head>
     <style>
         .card {
@@ -30,6 +29,9 @@
             box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
         }
     </style>
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 </head>
 @{
     var itemsInRow = 4; // Make sure its divisible by 12
@@ -50,7 +52,7 @@ else
         @foreach (var vendor in Model.NewVendors)
         {
             <div class="col-sm-@(12 / itemsInRow) mb-3 mt-3 d-flex justify-content-center" style="min-width:300px;">
-                <div class="card" style="width:inherit; height:inherit; background-color: #F7F7F7;">
+                <div class="card" data-aos="fade-up" style="width:inherit; height:inherit; background-color: #F7F7F7;">
                     @if (vendor.Image == null)
                     {
                         <img src="~/Assets/localSeller.png" class="mt-3" style="width:160px ; height:150px; border-radius: 50%; align-self:center;" />
@@ -192,7 +194,7 @@ else
             @for (int j = 0; j < itemsInRow && i * itemsInRow + j < vendorCount; j++)
             {
                 <div class="col-sm-@(12 / itemsInRow) mb-2 d-flex justify-content-center">
-                    <div class="card" style="width:inherit; height:inherit; background-color: #F7F7F7;">
+                    <div class="card" data-aos="fade-up" style="width:inherit; height:inherit; background-color: #F7F7F7;">
                         @if (Model.Vendors[i * itemsInRow + j].Image == null)
                         {
                             <img src="~/Assets/localSeller.png" class="mt-3" style="width:160px ; height:150px; border-radius: 50%; align-self:center;" />
@@ -291,7 +293,8 @@ else
     }
 }
 <hr />
-<ul class="pagination">
+
+<ul class="pagination ">
     <li class="page-item @prevDisabled">
         <a class="page-link" href="@Url.Action("AllVendors", new {itemCount=itemCount, searchString = searchString , vendorType=vendorType , page = (Model.Vendors.PageIndex - 1) } )"><<</a>
     </li>
@@ -305,3 +308,9 @@ else
         <a class="page-link" href="@Url.Action("AllVendors", new {itemCount=itemCount, searchString = searchString , vendorType=vendorType ,page = (Model.Vendors.PageIndex + 1) } )">>></a>
     </li>
 </ul>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    AOS.init();
+</script>
