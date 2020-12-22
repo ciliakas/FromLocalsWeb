@@ -5,12 +5,26 @@ var query = window.location.search;
 var params = new URLSearchParams(query);
 var activeT = params.get('ActiveTab');
 
+
+function imageUpload(obj) {
+    var fileName = obj.value;
+    var fileNameArr = fileName.split('\\');
+    console.log(fileNameArr);
+    if (fileNameArr.length > 1) {
+        $("#selectedPhotoName").html(fileNameArr[fileNameArr.length - 1]);
+        $("#selectPhotoBtnText").html("Change Photo");
+    } else {
+        $("#selectedPhotoName").html("");
+        $("#selectPhotoBtnText").html("Add Photo");
+    }
+};
+
 $(document).ready(() => {
     loadPageData();
 });
 
 var feedScroll = document.getElementById('content1');
-var pageCount = 4;
+var pageCount = 8;
 
 function scrollFeedDetails() {
     if (feedScroll.scrollTop + feedScroll.offsetHeight + 150 >= feedScroll.scrollHeight && !loading && details) {
