@@ -14,10 +14,7 @@
     var timeSpan = new TimeSpan(0);
 
 }
-
 @using static FromLocalsToLocals.Web.Utilities.TimeCalculator
-@using Microsoft.EntityFrameworkCore
-
 
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -38,16 +35,18 @@
     <div class="col2 m-3">
         <div class="m-4">
             <div class="row">
-                @switch (Model.VendorType)
-                {
-                    case FromLocalsToLocals.Utilities.Enums.VendorType.CarRepair:<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
-                    break;
+                <div class="col-9">
+                    <div class="row">
+                        @switch (Model.VendorType)
+                        {
+                            case FromLocalsToLocals.Utilities.Enums.VendorType.CarRepair:<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
+                            break;
 
-                    case FromLocalsToLocals.Utilities.Enums.VendorType.RuralTourism:<p class="text-muted text-uppercase">Rural tourism</p>
-                    break;
+                        case FromLocalsToLocals.Utilities.Enums.VendorType.RuralTourism:<p class="text-muted text-uppercase">Rural tourism</p>
+                            break;
 
-                    default: <p class="text-muted text-uppercase">@Model.VendorType</p>
-                    break;
+                        default: <p class="text-muted text-uppercase">@Model.VendorType</p>
+                        break;
                 }
                     </div>
                     <div class="row" style="margin-top: -15px;">
@@ -132,24 +131,14 @@
                     </div>
                 </div>
             }
-            <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark mt-4" style="color: gray; border-radius: 4px;">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse myNav" id="navbarNav">
-                    <ul class="navbar-nav justify-content-center w-100">
-                        <li class="nav-item text-center" style="width: 33%;">
-                            <a class="nav-link" id="address" style="font-size: 19px;" onclick="showMap()">@_localizer["Address"]</a>
-                        </li>
-                        <li class="nav-item text-center" style="width: 33%;">
-                            <a class="nav-link" id="feedBtn" style="font-size: 19px;" onclick="showFeed()">@_localizer["News Feed"]</a>
-                        </li>
-                        <li class="nav-item text-center" style="width: 33%;">
-                            <a class="nav-link" style="font-size: 19px;" asp-route-id="Vendor/@Model.ID" asp-controller="Reviews" asp-action="Reviews">@_localizer["Reviews"]</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+        <div class="row">
+            <div class="btn-group btn-group-lg w-100" role="group" aria-label="Large button group">
+                <button class="btn btn-outline-dark w-100 tabsText" id="address" onclick="showMap()" style="white-space: nowrap;">Address</button>
+                <button id="feedBtn" class="btn btn-outline-dark w-100 tabsText" onclick="showFeed()" style="white-space: nowrap;">News Feed</button>
+                <a class="btn btn-outline-dark w-100 tabsText" href="/Reviews/Reviews/Vendor%2F33" style="white-space: nowrap;">Reviews</a>
+            </div>
+
+        </div>
             <div class="row mt-3 mb-3" id="map" style="height:250px;">
                 <p><b>@_localizer["Address:&nbsp;"]</b>@Model.Address</p>
                 <div id="mapid" style="width: 100%; height: 90%;"></div>
