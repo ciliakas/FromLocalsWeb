@@ -120,6 +120,9 @@
   <data name="Close" xml:space="preserve">
     <value>Uždaryti</value>
   </data>
+  <data name="Forgot your password?" xml:space="preserve">
+    <value>Pamiršote slaptažodį?</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Prisijungti</value>
   </data>
