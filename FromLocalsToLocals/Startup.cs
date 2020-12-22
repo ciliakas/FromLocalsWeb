@@ -45,10 +45,7 @@ namespace FromLocalsToLocals.Web
                 options.CheckConsentNeeded = context => true;
                 //options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddLocalization(opts =>
-            {
-                opts.ResourcesPath = "Resources";
-            });
+ 
 
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
