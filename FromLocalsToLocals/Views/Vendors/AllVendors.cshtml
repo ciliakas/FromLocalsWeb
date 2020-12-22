@@ -54,17 +54,7 @@ else
                     <div class="card-body">
                         <h5 class="card-title" style="margin:0px;">@vendor.Title</h5>
                         <hr />
-                        @switch (vendor.VendorTypeDb)
-                        {
-                            case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
-                            break;
-
-                        case "RuralTourism":<p class="text-muted text-uppercase">@_localizer["Rural tourism"]</p>
-                        break;
-
-                    default: <p class="text-muted text-uppercase">@vendor.VendorTypeDb</p>
-                    break;
-            }
+                        <p class="text-muted text-uppercase">@_localizer[@vendor.VendorTypeDb]</p>
                         <hr />
                         @if (vendor.ReviewsCount.Sum() == 0)
                         {
@@ -176,6 +166,7 @@ else
 
     @if (vendorCount == 0)
     {
+
         <div class="row d-flex justify-content-center">
             <img src="~/Assets/suchEmpty.png" style="width:80%;" />
         </div>
@@ -212,6 +203,7 @@ else
                                 break;
                             }
                                 <hr />
+
                             @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
                             {
                                 <p class="font-italic">@_localizer["No Reviews"]</p>

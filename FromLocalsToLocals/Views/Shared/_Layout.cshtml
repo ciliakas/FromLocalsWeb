@@ -37,9 +37,11 @@
     <header>
         @await Component.InvokeAsync("NToastNotify")
         <nav class="navbar navbar-expand-lg navbar-toggleable-sm navbar-light" style="background-color: #CCBA8B; font-size: 17px;">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="~/Assets/appLogo.png" width="90" height="40" />
-            </a>
+            <div id="navHeader" style="display:flex;flex-wrap:wrap;">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/Assets/appLogo.png" width="90" height="40" />
+                </a>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -71,13 +73,13 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="NewsFeed">@_localizer["News Feed"]</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
+                <ul class="navbar-nav" id="iconsNavBar">
                     @if (signInManager.IsSignedIn(User))
                     {
-                        <li class="nav-item text-center mt-2 mr-2">
+                        <li class="nav-item text-center mt-2 mr-2" style="list-style : none;" id="tabChatIcon">
                             <a asp-controller="Chat" asp-route-tabname="ISent" asp-action="Index"><img src="~/Assets/message.png" style="width:30px;height:30px;" /></a>
                         </li>
-                        <li class="nav-item text-center">
+                        <li class="nav-item text-center" style="list-style : none;">
                             <div id="noti_Container" class="mt-3"></div>
                         </li>
                     }
@@ -162,6 +164,7 @@
     $(document).ready(function () {
         $("#noti_Container").ikrNotificationSetup();
         getNotifications();
+        navbarModificationsOnResize();
 
     })
 

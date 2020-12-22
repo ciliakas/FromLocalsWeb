@@ -107,7 +107,9 @@ function loadPageData() {
                         break;
                     }
                 }
-                console.log(allUserVendors);
+
+                date = date.substring(0, date.length - 3);
+
 
                 addPostItem(id, date, text, image, vendorImage, vendorTitle,owner);
 
@@ -177,7 +179,7 @@ function addLastItem(vendorTitle, dateCreated, details) {
 
     if (details) {
         displayDateCreated = `<div class="timeline-time">
-                                            <span style="float:right" class="time">${dateCreated}</span>
+                                            <span style="float:right" class="time"></span>
                                        </div>`;
 
         lastItemP = `<p>${vendorTitle} was created</p>`
@@ -194,7 +196,7 @@ function addLastItem(vendorTitle, dateCreated, details) {
                             <a href="javascript:;">&nbsp;</a>
                         </div>
                         <div class="timeline-body">
-                            ${lastItemP}
+                            ${dateCreated} ${lastItemP}
                         </div>
                      </li>`;
 

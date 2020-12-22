@@ -39,23 +39,9 @@
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
-
-                @switch (item.VendorTypeDb)
-                {
-                    case "CarRepair":
-                        <td class="text-center">Car Repair</td>
-                        break;
-
-                    case "RuralTourism":
-                        <td class="text-center">Rural Tourism</td>
-                        break;
-
-                    default:
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.VendorTypeDb)
-                        </td>
-                        break;
-                }
+                <td class="text-center">
+                    @_localizer[@item.VendorTypeDb]
+                </td>
                 <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@item.ID">@_localizer["Edit"]</a> |
                     <a asp-action="Details" asp-route-id="@item.ID">@_localizer["Details"]</a> |
