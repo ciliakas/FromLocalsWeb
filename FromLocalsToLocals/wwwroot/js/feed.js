@@ -177,7 +177,7 @@ function addLastItem(vendorTitle, dateCreated, details) {
 
     if (details) {
         displayDateCreated = `<div class="timeline-time">
-                                            <span style="float:rigth class="time">${dateCreated}</span>
+                                            <span style="float:right" class="time">${dateCreated}</span>
                                        </div>`;
 
         lastItemP = `<p>${vendorTitle} was created</p>`
