@@ -37,7 +37,9 @@
             <div class="row">
                 <div class="col-9">
                     <div class="row">
+
                         <p class="text-muted text-uppercase">@_localizer[@Model.VendorTypeDb]</p>
+
                     </div>
                     <div class="row" style="margin-top: -15px;">
                         <h2>@Model.Title</h2>
@@ -95,19 +97,25 @@
                         {
                             case 1:<p>@_localizer["Monday"]</p>
                             break;
-                        case 2:<p>@_localizer["Tuesday"]</p>
-                        break;
-                    case 3:<p>@_localizer["Wednesday"]</p>
-                    break;
-                case 4:<p>@_localizer["Thursday"]</p>
-                break;
-            case 5:<p>@_localizer["Friday"]</p>
-            break;
-        case 6:<p>@_localizer["Saturday"]</p>
-        break;
-    default:<p>@_localizer["Sunday"]</p>
-    break;
-}
+
+                            case 2:<p>@_localizer["Tuesday"]</p>
+                            break;
+
+                            case 3:<p>@_localizer["Wednesday"]</p>
+                            break;
+
+                            case 4:<p>@_localizer["Thursday"]</p>
+                            break;
+
+                            case 5:<p>@_localizer["Friday"]</p>
+                            break;
+
+                            case 6:<p>@_localizer["Saturday"]</p>
+                            break;
+
+                            default:<p>@_localizer["Sunday"]</p>
+                            break;
+                        }
                     </div>
                     <div class="hourColumn">
                         @if (item.OpenTime > timeSpan && item.CloseTime > timeSpan)
@@ -121,6 +129,7 @@
                     </div>
                 </div>
             }
+
         <div class="row">
             <div class="btn-group btn-group-lg w-100" role="group" aria-label="Large button group">
                 <button class="btn btn-outline-dark w-100 tabsText" id="address" onclick="showMap()" style="white-space: nowrap;">Address</button>
@@ -129,6 +138,7 @@
             </div>
 
         </div>
+
             <div class="row mt-3 mb-3" id="map" style="height:250px;">
                 <p><b>@_localizer["Address:&nbsp;"]</b>@Model.Address</p>
                 <div id="mapid" style="width: 100%; height: 90%;"></div>
