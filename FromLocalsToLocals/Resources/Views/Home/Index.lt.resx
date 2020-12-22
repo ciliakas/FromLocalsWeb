@@ -117,17 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Beverages" xml:space="preserve">
+    <value>Gėrimai</value>
+  </data>
+  <data name="CarRepair" xml:space="preserve">
+    <value>Autoservisas</value>
+  </data>
+  <data name="Clothing" xml:space="preserve">
+    <value>Apranga</value>
+  </data>
   <data name="Discover" xml:space="preserve">
     <value>Atrask</value>
   </data>
   <data name="Discover all nearby vendors with just a few clicks." xml:space="preserve">
     <value>Atrask artimiausius pardavėjus keliais mygtuko paspaudimais.</value>
   </data>
+  <data name="Electronics" xml:space="preserve">
+    <value>Elektronika</value>
+  </data>
   <data name="Experience all the finest products around you." xml:space="preserve">
     <value>Atrask geriausius tave supančius produktus.</value>
   </data>
+  <data name="Flowers" xml:space="preserve">
+    <value>Gėlių salonas</value>
+  </data>
   <data name="Follow" xml:space="preserve">
     <value>Sekti</value>
+  </data>
+  <data name="Food" xml:space="preserve">
+    <value>Maistas</value>
+  </data>
+  <data name="Footwear" xml:space="preserve">
+    <value>Avalynė</value>
   </data>
   <data name="Go" xml:space="preserve">
     <value>Pirmyn</value>
@@ -138,14 +159,17 @@
   <data name="Join" xml:space="preserve">
     <value>Registracija</value>
   </data>
+  <data name="Music" xml:space="preserve">
+    <value>Muzikos prekės</value>
+  </data>
   <data name="No reviews" xml:space="preserve">
     <value>Atsiliepimų nėra</value>
   </data>
+  <data name="Other" xml:space="preserve">
+    <value>Kita</value>
+  </data>
   <data name="Read More" xml:space="preserve">
     <value>Plačiau</value>
-  </data>
-  <data name="Reviews" xml:space="preserve">
-    <value>Atsiliepimai</value>
   </data>
   <data name="Reviews" xml:space="preserve">
     <value>Apžvalgos</value>
@@ -153,11 +177,20 @@
   <data name="Rural tourism" xml:space="preserve">
     <value>Kaimo turizmas</value>
   </data>
+  <data name="RuralTourism" xml:space="preserve">
+    <value>Kaimo turizmas</value>
+  </data>
+  <data name="Stationery" xml:space="preserve">
+    <value>Kanceliarinės prekės</value>
+  </data>
   <data name="Support your local sellers" xml:space="preserve">
     <value>Palaikyk vietinius pardavėjus</value>
   </data>
   <data name="The Most Popular Services" xml:space="preserve">
     <value>Populiariausios paslaugos</value>
+  </data>
+  <data name="Toys" xml:space="preserve">
+    <value>Žaislai</value>
   </data>
   <data name="Unfollow" xml:space="preserve">
     <value>Nebesekti</value>
