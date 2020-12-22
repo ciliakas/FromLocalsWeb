@@ -1,11 +1,11 @@
-using FromLocalsToLocals.Resources;
+using FromLocalsToLocals.Utilities.Resources;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace FromLocalsToLocals.Utilities.Enums
 {
 
-    [TypeConverter(typeof(Resources.VendorTypeEnum))]
+    [TypeConverter(typeof(VendorTypeEnum))]
     public enum VendorType
     {
         [Display(Name = "Food", ResourceType = typeof(VendorTypeEnum))]

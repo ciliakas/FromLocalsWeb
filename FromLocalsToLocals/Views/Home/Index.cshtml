@@ -82,7 +82,7 @@
                         <div class="card-body">
                             <h5 class="card-title" style="margin:0px;">@item.Title</h5>
                             <hr />
-                            <p class="text-muted text-uppercase">@item.VendorTypeDb</p>
+                            <p class="text-muted text-uppercase">@_localizer[@item.VendorTypeDb]</p>
                             <hr />
                             @if (item.ReviewsCount.Sum() == 0)
                             {

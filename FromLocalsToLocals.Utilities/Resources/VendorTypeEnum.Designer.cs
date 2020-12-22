@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FromLocalsToLocals.Resources {
+namespace FromLocalsToLocals.Utilities.Resources {
     using System;
     
     
