@@ -1,17 +1,13 @@
-﻿using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Models.Services;
-using FromLocalsToLocals.Models.ViewModels;
+﻿using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities.Enums;
-using Microsoft.AspNetCore.Identity;
+using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Services.EF;
 
-namespace FromLocalsToLocals.ViewComponents
+namespace FromLocalsToLocals.Web.ViewComponents
 {
     public class NewsFeed : ViewComponent
     {

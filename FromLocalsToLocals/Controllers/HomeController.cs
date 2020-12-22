@@ -2,38 +2,34 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Models.Services;
 using Microsoft.AspNetCore.Authorization;
-using FromLocalsToLocals.ViewModels;
-using SuppLocals;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using NToastNotify;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
-using FromLocalsToLocals.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Utilities.Helpers;
 using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Web.ViewModels;
+using FromLocalsToLocals.Services.EF;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IToastNotification _toastNotification;
-        private readonly IVendorServiceEF _vendorService;
+        private readonly IVendorService _vendorService;
         private readonly IStringLocalizer<HomeController> _localizer;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly AppDbContext _context;
 
 
-        public HomeController(AppDbContext context, IStringLocalizer<HomeController> localizer, IVendorServiceEF vendorService, IToastNotification toastNotification, UserManager<AppUser> userManager )
+        public HomeController(IStringLocalizer<HomeController> localizer, IVendorService vendorService,
+            IToastNotification toastNotification)
         {
             _localizer = localizer;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
-            _userManager = userManager;
-            _context = context;
         }
 
         public async Task<IActionResult> Index(HomeVM homeVM)
@@ -41,7 +37,6 @@ namespace FromLocalsToLocals.Controllers
             homeVM.AllVendors = await _vendorService.GetVendorsAsync("", "");
 
             var popularVendors = await _vendorService.GetPopularVendorsAsync(4);
-            popularVendors.ForEach(a => a.UpdateReviewsCount(_context));
             homeVM.PopularVendors = popularVendors;
 
             return View(homeVM);

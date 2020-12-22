@@ -1,4 +1,4 @@
-﻿@model FromLocalsToLocals.Models.ViewModels.CreateEditVendorVM
+﻿@model FromLocalsToLocals.Web.ViewModels.CreateEditVendorVM
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 
@@ -174,8 +174,9 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VendorType" class="control-label mr-1">@_localizer["Vendor Type"]:</label>
-                <select asp-for="VendorType" asp-items="@Html.GetEnumSelectList<FromLocalsToLocals.Utilities.VendorType>()"></select>
+                <label asp-for="VendorType" class="control-label">@_localizer["Vendor Type"]</label>
+                @Html.DropDownListFor(m => m.VendorType,
+                     new SelectList(Enum.GetValues(typeof(FromLocalsToLocals.Utilities.Enums.VendorType))))
             </div>
 
             <div class="form-group">

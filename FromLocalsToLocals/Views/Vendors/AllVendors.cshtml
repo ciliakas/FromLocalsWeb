@@ -1,4 +1,4 @@
-﻿@model FromLocalsToLocals.Models.VendorTypeViewModel
+﻿@model FromLocalsToLocals.Web.ViewModels.VendorTypeViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 @inject UserManager<AppUser> usermanager
@@ -72,7 +72,7 @@ else
                         }
                         else
                         {
-                            @switch (@Math.Round(vendor.Average))
+                            @switch (@Math.Round(vendor.ReviewsAverage))
                             {
                                 case 5:
                                     <p class="ml-3 ">
@@ -81,7 +81,7 @@ else
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
-                                        <span>@vendor.Average.ToString("0.0")</span>
+                                        <span>@vendor.ReviewsAverage.ToString("0.0")</span>
                                     </p>
                                     break;
                                 case 4:
@@ -91,7 +91,7 @@ else
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star"></span>
-                                        <span>@vendor.Average.ToString("0.0")</span>
+                                        <span>@vendor.ReviewsAverage.ToString("0.0")</span>
                                     </p>
                                     break;
                                 case 3:
@@ -101,7 +101,7 @@ else
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
-                                        <span>@vendor.Average.ToString("0.0")</span>
+                                        <span>@vendor.ReviewsAverage.ToString("0.0")</span>
                                     </p>
                                     break;
                                 case 2:
@@ -111,7 +111,7 @@ else
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
-                                        <span>@vendor.Average.ToString("0.0")</span>
+                                        <span>@vendor.ReviewsAverage.ToString("0.0")</span>
                                     </p>
                                     break;
                                 default:
@@ -121,7 +121,7 @@ else
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
-                                        <span>@vendor.Average.ToString("0.0")</span>
+                                        <span>@vendor.ReviewsAverage.ToString("0.0")</span>
                                     </p>
                                     break;
                             }
@@ -204,7 +204,7 @@ else
                             }
                             else
                             {
-                                @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].Average))
+                                @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].ReviewsAverage))
                                 {
                                     case 5:
                                         <p class="ml-3 ">
@@ -213,7 +213,7 @@ else
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
-                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                     case 4:
@@ -223,7 +223,7 @@ else
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star"></span>
-                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                     case 3:
@@ -233,7 +233,7 @@ else
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
-                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                     case 2:
@@ -243,7 +243,7 @@ else
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
-                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                     default:
@@ -253,7 +253,7 @@ else
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
-                                            <span>@Model.Vendors[i * itemsInRow + j].Average.ToString("0.0")</span>
+                                            <span>@Model.Vendors[i * itemsInRow + j].ReviewsAverage.ToString("0.0")</span>
                                         </p>
                                         break;
                                 }

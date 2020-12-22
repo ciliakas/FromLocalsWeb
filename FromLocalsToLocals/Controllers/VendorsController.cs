@@ -1,39 +1,44 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
-using SuppLocals;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FromLocalsToLocals.Utilities;
-using FromLocalsToLocals.Models.Services;
 using NToastNotify;
-using FromLocalsToLocals.Models.ViewModels;
 using Microsoft.Extensions.Localization;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Utilities.Enums;
+using FromLocalsToLocals.Utilities.Helpers;
+using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Web.ViewModels;
+using FromLocalsToLocals.Web.Utilities;
+using FromLocalsToLocals.Services.EF;
+using FromLocalsToLocals.Services.Ado;
 using Microsoft.EntityFrameworkCore;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     [Authorize]
     public class VendorsController : Controller
     {
-        private readonly Lazy<UserManager<AppUser>> _userManager;
-        private readonly IVendorServiceEF _vendorService;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IVendorService _vendorService;
         private readonly IToastNotification _toastNotification;
-        private readonly AppDbContext _context;
         private readonly IStringLocalizer<VendorsController> _localizer;
+        private readonly AppDbContext _context;
         private readonly IVendorServiceADO _vendorServiceADO;
 
-        public VendorsController(AppDbContext context, UserManager<AppUser> userManager, IVendorServiceEF vendorService, IToastNotification toastNotification, IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
+        public VendorsController(AppDbContext context, UserManager<AppUser> userManager,
+            IVendorService vendorService, IToastNotification toastNotification,
+            IStringLocalizer<VendorsController> localizer, IVendorServiceADO dataAdapterService)
         {
-            _userManager = new Lazy<UserManager<AppUser>>(() => userManager);
+            _context = context;
+            _userManager = userManager;
             _vendorService = vendorService;
             _toastNotification = toastNotification;
-            _context = context;
             _localizer = localizer;
             _vendorServiceADO = dataAdapterService;
         }
@@ -47,7 +52,7 @@ namespace FromLocalsToLocals.Controllers
             List<Vendor> newVendors = await _vendorService.GetNewVendorsAsync(count: 4);
 
             var vendors = await _vendorService.GetVendorsAsync(searchString, vendorType);
-            vendors.ForEach(a => a.UpdateReviewsCount(_context));
+            vendors.ForEach(x => x.CountAverage());
             _vendorService.Sort(vendors, orderType ?? "");
 
 
@@ -67,7 +72,7 @@ namespace FromLocalsToLocals.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> MyVendors()
         {
-            return View(await _vendorService.GetVendorsAsync( userId : _userManager.Value.GetUserId(User)));
+            return View(await _vendorService.GetVendorsAsync( userId : _userManager.GetUserId(User)));
         }
 
         [HttpGet]
@@ -97,7 +102,6 @@ namespace FromLocalsToLocals.Controllers
                 await e.ExceptionSender();
             }
 
-            var m = 0;
             return View(vendor);
         }
 
@@ -132,9 +136,9 @@ namespace FromLocalsToLocals.Controllers
                         return View(model);
                     }
 
-                    var user = await _userManager.Value.GetUserAsync(User);
+                    var user = await _userManager.GetUserAsync(User);
                     user.VendorsCount++;
-                    await _userManager.Value.UpdateAsync(user);
+                    await _userManager.UpdateAsync(user);
 
                     var vendor = new Vendor();
                     vendor.UserID = user.Id;
@@ -337,7 +341,7 @@ namespace FromLocalsToLocals.Controllers
 
         private bool ValidUser(string id)
         {
-            return id == _userManager.Value.GetUserId(User);
+            return id == _userManager.GetUserId(User);
         }
         #endregion
     }

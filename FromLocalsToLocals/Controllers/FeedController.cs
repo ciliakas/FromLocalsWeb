@@ -1,34 +1,28 @@
-﻿using System;
-using System.Threading.Tasks;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
-using FromLocalsToLocals.Models.Services;
-using FromLocalsToLocals.Models.ViewModels;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Web.ViewModels;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using NToastNotify;
+using FromLocalsToLocals.Services.EF;
+using Microsoft.Extensions.Localization;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     public class FeedController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IToastNotification _toastNotification;
         private readonly IPostsService _postsService;
-        private readonly IVendorServiceEF _vendorService;
-        private readonly AppDbContext _context;
+        private readonly IVendorService _vendorService;
         private readonly IStringLocalizer<FeedController> _localizer;
 
 
-        public FeedController(AppDbContext context, UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorServiceEF vendorService,
-                              IStringLocalizer<FeedController> localizer)
+        public FeedController(UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService, IStringLocalizer<FeedController> localizer)
         {
-            _context = context;
             _userManager = userManager;
             _toastNotification = toastNotification;
             _postsService = postsService;
@@ -45,7 +39,8 @@ namespace FromLocalsToLocals.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllPostsAsync(int skip, int itemsCount)
         {
-            return Json(await _postsService.GetAllPostsAsync(skip, itemsCount));
+            var x = await _postsService.GetAllPostsAsync(skip, itemsCount);
+            return Json(x);
         }
         [HttpGet]
         public async Task<IActionResult> GetFollowingPostsAsync(string userId,int skip, int itemsCount)
@@ -75,22 +70,17 @@ namespace FromLocalsToLocals.Controllers
                 return Redirect(model.PostBackUrl);
             }
 
-            var userId = _userManager.GetUserId(User);
-            var selectedVendor = await _vendorService.GetVendorAsync(userId, model.VendorTitle);
-
-            if (selectedVendor != null)
+            try
             {
-                try
-                {
-                    var post = new Post(model.Text, selectedVendor, model.Image.ConvertToBytes());
-                    await _vendorService.AddPostAsync(selectedVendor,post);
+                var userId = _userManager.GetUserId(User);
+                var selectedVendor = await _vendorService.GetVendorAsync(userId, model.VendorTitle);
 
-                }
-                catch (Exception)
-                {
-                    _toastNotification.AddErrorToastMessage(_localizer["Something unexpected happened. Cannot create a post."]);
-                    return Redirect(model.PostBackUrl);
-                }
+                await _postsService.CreatePost(model.Text, selectedVendor, model.Image);
+            }
+            catch
+            {
+                _toastNotification.AddErrorToastMessage("Something unexpected happened. Cannot create a post.");
+                return Redirect(model.PostBackUrl);
             }
 
             model.Text = "";

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities;
-using FromLocalsToLocals.ViewModels;
+using FromLocalsToLocals.Utilities.Helpers;
+using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Web.ViewModels;
+using FromLocalsToLocals.Web.Utilities;
 using Geocoding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,30 +18,27 @@ using Microsoft.Extensions.Options;
 using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using SuppLocals;
-using SendGridAccount = FromLocalsToLocals.Utilities.SendGridAccount;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly AppDbContext _context;
         private readonly IToastNotification _toastNotification;
         private readonly SendGridAccount _userOptions;
         private readonly IStringLocalizer<AccountController> _localizer;
+        private readonly AppDbContext _context;
 
-        delegate bool MyPredicate<in T>(T arg);
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
                                  AppDbContext context, IToastNotification toastNotification,
                                  IOptions<SendGridAccount>  userOptions, IStringLocalizer<AccountController> localizer)
         {
+            _context = context;
             _localizer = localizer;
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
             _toastNotification = toastNotification;
             _userOptions = userOptions.Value;
         }
@@ -124,15 +123,9 @@ namespace FromLocalsToLocals.Controllers
             var user = await _userManager.GetUserAsync(User);
             return View(user.Following.ToList());
         }
-
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            var userId = _userManager.GetUserId(User);
-            var user = _context.Users.Single(x => x.Id == userId);
-
-            var model = GetNewProfileVM(user);
-
-            return View(model);
+            return View(GetNewProfileVM(await _userManager.GetUserAsync(User)));
         }
 
         [HttpPost]
@@ -168,8 +161,8 @@ namespace FromLocalsToLocals.Controllers
             await _context.SaveChangesAsync();
 
             CheckForErrors(resultsList);
-            return Profile();
 
+            return RedirectToAction("Profile");
         }
 
 
@@ -177,8 +170,7 @@ namespace FromLocalsToLocals.Controllers
 
         private async Task<IActionResult> AccountDetailsChange(ProfileVM model)
         {
-            var userId = _userManager.GetUserId(User);
-            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            var user = await _userManager.GetUserAsync(User);
             var oldModel = GetNewProfileVM(user);
             var resultsList = new List<IdentityResult>();
 
@@ -220,13 +212,12 @@ namespace FromLocalsToLocals.Controllers
             }
 
             CheckForErrors(resultsList);
-            return Profile();
+            return RedirectToAction("Profile");
         }
 
         private async Task<IActionResult> PicChange(ProfileVM model)
         {
-            var userId = _userManager.GetUserId(User);
-            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            var user = await _userManager.GetUserAsync(User);
             var oldModel = GetNewProfileVM(user);
             var resultsList = new List<IdentityResult>();
 
@@ -234,7 +225,7 @@ namespace FromLocalsToLocals.Controllers
             {
                 ModelState.AddModelError("", _localizer["Invalid profile image"]);
                 _toastNotification.AddErrorToastMessage(_localizer["Invalid profile image"]);
-                return Profile();
+                return RedirectToAction("Profile");
             }
 
             if (model.ImageFile.ValidImage())
@@ -250,12 +241,12 @@ namespace FromLocalsToLocals.Controllers
             }
 
             CheckForErrors(resultsList);
-            return Profile();
+            return RedirectToAction("Profile");
         }
 
         private async Task<IActionResult> ChangePassword(ProfileVM model)
         {
-            MyPredicate<string[]> StringArrNull = (s) =>
+            Predicate<string[]> StringArrNull = (s) =>
             {
                 foreach (var i in s)
                 {
@@ -282,7 +273,7 @@ namespace FromLocalsToLocals.Controllers
                 InvalidPassword(_localizer["Password must be at least 6 characters long"], () => { return model.NewPassword.Length < Config.minPasswordLength; }) ||
                 InvalidPassword(_localizer["Passwords do not match"], () => { return model.NewPassword != model.ConfirmPassword; })) 
             {
-                return Profile();
+                return RedirectToAction("Profile");
             }
 
             var user = await _userManager.GetUserAsync(User);
@@ -294,13 +285,13 @@ namespace FromLocalsToLocals.Controllers
                 {
                     ModelState.AddModelError("", error.Description);
                 }
-                return Profile();
+                return RedirectToAction("Profile");
             }
 
             await _signInManager.RefreshSignInAsync(user);
             _toastNotification.AddSuccessToastMessage(_localizer["Password changed successfully"]);
 
-            return Profile();
+            return RedirectToAction("Profile");
         }
 
         [HttpGet]

@@ -1,8 +1,8 @@
-﻿@model FromLocalsToLocals.Models.ReviewViewModel
+﻿@model FromLocalsToLocals.Web.ViewModels.ReviewViewModel
 @inject UserManager<AppUser> userManager
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
-@using static FromLocalsToLocals.Utilities.TimeCalculator
+@using static FromLocalsToLocals.Web.Utilities.TimeCalculator
 
 @{
     ViewData["Title"] = _localizer["Reviews"];
@@ -224,8 +224,8 @@
                     <div class="container float-lg-right">
                         <div class="card">
                             <div class="card-body">
-                                <h6 class="card-subtitle mb-2 text-muted text-center" style="font-size: 25px;">@_localizer["Overall"]</h6>
-                                <p class="average" id="average">@Model.Vendor.Average.ToString("0.0")<span class="five">/5</span></p>
+                                <h6 class="card-subtitle mb-2 text-muted" style="text-align: center; font-size: 25px;">@_localizer["Overall"]</h6>
+                                <p class="average" id="average">@Model.Vendor.ReviewsAverage.ToString("0.0")<span class="five">/5</span></p>
                             </div>
 
                             <!-- Total reviews-->

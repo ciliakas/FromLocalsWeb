@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Models;
+using FromLocalsToLocals.Services.EF;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace FromLocalsToLocals.Controllers
+namespace FromLocalsToLocals.Web.Controllers
 {
     [Authorize]
     public class NotificationController : Controller
     {
         private readonly INotificationService _notificationService;
         private readonly UserManager<AppUser> _userManager;
-        private readonly AppDbContext _context;
 
-        public NotificationController(INotificationService notificationService, UserManager<AppUser> userManager, AppDbContext context)
+        public NotificationController(INotificationService notificationService, UserManager<AppUser> userManager)
         {
-            _context = context;
             _notificationService = notificationService;
             _userManager = userManager;
         }
@@ -36,28 +33,12 @@ namespace FromLocalsToLocals.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteItem(int? id)
         {
-            if (id == null)
+            if (id == null || !await _notificationService.DeleteNotificationAsync(_userManager.GetUserId(User), id))
             {
-                return Json(new { success = false });
+                return BadRequest();
             }
 
-            var noti = await _context.Notifications.FirstOrDefaultAsync(m => m.NotiId == id);
-
-            if (noti == null || noti.OwnerId != _userManager.GetUserId(User))
-            {
-                return Json(new { success = false });
-            }
-
-            try
-            {
-                await _notificationService.DeleteNotificationAsync(noti);
-            }
-            catch
-            {
-                return Json(new { success = false });
-            }
-            
-            return Json(new { success = true });
+            return Json(new {});
         }
     }
 }
