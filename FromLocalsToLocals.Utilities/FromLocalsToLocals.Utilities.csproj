@@ -11,4 +11,19 @@
     <PackageReference Include="SendGrid" Version="9.21.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\VendorTypeEnum.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VendorTypeEnum.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\VendorTypeEnum.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>VendorTypeEnum.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
