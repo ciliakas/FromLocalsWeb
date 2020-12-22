@@ -123,20 +123,41 @@
   <data name="Address:&amp;nbsp;" xml:space="preserve">
     <value>Adresas:&amp;nbsp;</value>
   </data>
+  <data name="Beverages" xml:space="preserve">
+    <value>Gėrimai</value>
+  </data>
   <data name="Car repair" xml:space="preserve">
     <value>Servisas</value>
+  </data>
+  <data name="CarRepair" xml:space="preserve">
+    <value>Autoservisas</value>
   </data>
   <data name="Closed" xml:space="preserve">
     <value>Nedirbame</value>
   </data>
+  <data name="Clothing" xml:space="preserve">
+    <value>Apranga</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Detalės</value>
+  </data>
+  <data name="Electronics" xml:space="preserve">
+    <value>Elektronika</value>
+  </data>
+  <data name="Flowers" xml:space="preserve">
+    <value>Gėlių salonas</value>
   </data>
   <data name="Follow" xml:space="preserve">
     <value>Sekti</value>
   </data>
   <data name="Followers" xml:space="preserve">
     <value>Sekėjų</value>
+  </data>
+  <data name="Food" xml:space="preserve">
+    <value>Maistas</value>
+  </data>
+  <data name="Footwear" xml:space="preserve">
+    <value>Avalynė</value>
   </data>
   <data name="Friday" xml:space="preserve">
     <value>Penktadieniais</value>
@@ -147,14 +168,23 @@
   <data name="Monday" xml:space="preserve">
     <value>Pirmadieniais</value>
   </data>
+  <data name="Music" xml:space="preserve">
+    <value>Muzikos prekės</value>
+  </data>
   <data name="News Feed" xml:space="preserve">
     <value>Naujienos</value>
   </data>
   <data name="No description provided" xml:space="preserve">
     <value>Aprašymo nėra</value>
   </data>
+  <data name="Other" xml:space="preserve">
+    <value>Kita</value>
+  </data>
   <data name="Reviews" xml:space="preserve">
     <value>Atsiliepimai</value>
+  </data>
+  <data name="RuralTourism" xml:space="preserve">
+    <value>Kaimo turizmas</value>
   </data>
   <data name="Saturday" xml:space="preserve">
     <value>Šeštadieniais</value>
@@ -162,11 +192,17 @@
   <data name="Service registered | " xml:space="preserve">
     <value>Paslauga užregistruota | </value>
   </data>
+  <data name="Stationery" xml:space="preserve">
+    <value>Kanceliarinės prekės</value>
+  </data>
   <data name="Sunday" xml:space="preserve">
     <value>Sekmadieniais</value>
   </data>
   <data name="Thursday" xml:space="preserve">
     <value>Ketvirtadieniais</value>
+  </data>
+  <data name="Toys" xml:space="preserve">
+    <value>Žaislai</value>
   </data>
   <data name="Tuesday" xml:space="preserve">
     <value>Antradieniais</value>

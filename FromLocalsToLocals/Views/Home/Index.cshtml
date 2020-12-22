@@ -73,17 +73,7 @@
                         <div class="card-body">
                             <h5 class="card-title" style="margin:0px;">@item.Title</h5>
                             <hr />
-                            @switch (item.VendorTypeDb)
-                            {
-                                case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
-                                break;
-
-                            case "RuralTourism":<p class="text-muted text-uppercase">Rural tourism</p>
-                                break;
-
-                            default: <p class="text-muted text-uppercase">@item.VendorTypeDb</p>
-                            break;
-                    }
+                            <p class="text-muted text-uppercase">@item.VendorTypeDb</p>
                             <hr />
                             @if (item.ReviewsCount.Sum() == 0)
                             {
