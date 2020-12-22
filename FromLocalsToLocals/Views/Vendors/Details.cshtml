@@ -97,19 +97,25 @@
                         {
                             case 1:<p>@_localizer["Monday"]</p>
                             break;
-                        case 2:<p>@_localizer["Tuesday"]</p>
-                        break;
-                    case 3:<p>@_localizer["Wednesday"]</p>
-                    break;
-                case 4:<p>@_localizer["Thursday"]</p>
-                break;
-            case 5:<p>@_localizer["Friday"]</p>
-            break;
-        case 6:<p>@_localizer["Saturday"]</p>
-        break;
-    default:<p>@_localizer["Sunday"]</p>
-    break;
-}
+
+                            case 2:<p>@_localizer["Tuesday"]</p>
+                            break;
+
+                            case 3:<p>@_localizer["Wednesday"]</p>
+                            break;
+
+                            case 4:<p>@_localizer["Thursday"]</p>
+                            break;
+
+                            case 5:<p>@_localizer["Friday"]</p>
+                            break;
+
+                            case 6:<p>@_localizer["Saturday"]</p>
+                            break;
+
+                            default:<p>@_localizer["Sunday"]</p>
+                            break;
+                        }
                     </div>
                     <div class="hourColumn">
                         @if (item.OpenTime > timeSpan && item.CloseTime > timeSpan)
