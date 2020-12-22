@@ -117,64 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add a service" xml:space="preserve">
-    <value>Pridėti paslaugą</value>
-  </data>
-  <data name="Are you sure you want to delete" xml:space="preserve">
-    <value>Ar jus tikrai norite pašalinti</value>
-  </data>
-  <data name="Beverages" xml:space="preserve">
-    <value>Gėrimai</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Atšaukti</value>
-  </data>
   <data name="CarRepair" xml:space="preserve">
-    <value>Autoservisas</value>
-  </data>
-  <data name="Clothing" xml:space="preserve">
-    <value>Apranga</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Panaikinti</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Detalės</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Redaguoti</value>
-  </data>
-  <data name="Electronics" xml:space="preserve">
-    <value>Elektronika</value>
-  </data>
-  <data name="Flowers" xml:space="preserve">
-    <value>Gėlių salonas</value>
-  </data>
-  <data name="Food" xml:space="preserve">
-    <value>Maistas</value>
-  </data>
-  <data name="Footwear" xml:space="preserve">
-    <value>Avalynė</value>
-  </data>
-  <data name="Music" xml:space="preserve">
-    <value>Muzikos prekės</value>
-  </data>
-  <data name="My Services" xml:space="preserve">
-    <value>Mano paslaugos</value>
-  </data>
-  <data name="MyVendors" xml:space="preserve">
-    <value>ManoPaslaugos</value>
-  </data>
-  <data name="Other" xml:space="preserve">
-    <value>Kita</value>
+    <value>Car repair</value>
   </data>
   <data name="RuralTourism" xml:space="preserve">
-    <value>Kaimo turizmas</value>
-  </data>
-  <data name="Stationery" xml:space="preserve">
-    <value>Kanceliarinės prekės</value>
-  </data>
-  <data name="Toys" xml:space="preserve">
-    <value>Žaislai</value>
+    <value>Rural tourism</value>
   </data>
 </root>
