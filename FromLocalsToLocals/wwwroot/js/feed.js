@@ -107,7 +107,9 @@ function loadPageData() {
                         break;
                     }
                 }
-                console.log(allUserVendors);
+
+                date = date.substring(0, date.length - 3);
+
 
                 addPostItem(id, date, text, image, vendorImage, vendorTitle,owner);
 
