@@ -20,14 +20,22 @@ function loadMessages(obj) {
     $.ajax({
         type: "GET",
         url: `/Chat/GetChatComponent`,
-        data: { contactId: obj.id, isUserTab: userTab, componentName:"Messages"},
+        data: { contactId: obj.id, isUserTab: userTab, componentName: "Messages" },
+        beforeSend: function () {
+
+            clearTextField();
+
+            $("#msg_history").html(`<div class="loader"></div>`);
+            $(".active_chat").removeClass("active_chat");
+
+            document.getElementById("chatWith").innerText ="LOADING CONVERSATION"; 
+        },
         success: function (result) {
             $("#msg_history").html(result);
             jsContactId = parseInt(obj.id);
             setViewToBottom();
-            clearTextField();
-            $(".active_chat").removeClass("active_chat");
             obj.classList.add("active_chat");
+
 
             var active = document.getElementsByClassName("active_chat")[0].querySelector("h5").innerHTML;
             var chatW = document.getElementById("chatWith"); 

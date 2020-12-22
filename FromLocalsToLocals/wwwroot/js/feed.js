@@ -10,7 +10,7 @@ $(document).ready(() => {
 });
 
 var feedScroll = document.getElementById('content1');
-var pageCount = 8;
+var pageCount = 4;
 
 function scrollFeedDetails() {
     if (feedScroll.scrollTop + feedScroll.offsetHeight + 150 >= feedScroll.scrollHeight && !loading && details) {
@@ -46,7 +46,33 @@ function loadPageData() {
         method: 'get',
         dataType: "json",
         data: mdata,
+        beforeSend: function () {
+
+            var lelem = document.getElementsByClassName("lastPost");
+            if (lelem.length == 0) {
+
+
+                var div = document.createElement('li');
+                div.id = "feedLoader";
+                div.innerHTML = `<li>
+                        <div class="timeline-body" style="height:150px;background:transparent;">
+                            <div class="loader"></div>
+                        </div>
+                     </li>`;
+
+
+                document.getElementById('postsUL').appendChild(div);
+
+            }
+        },
         success: function (data) {
+
+            var feedLoader = document.getElementById("feedLoader");
+
+            if (feedLoader != null) {
+                feedLoader.remove();
+            }
+
 
             var lelem = document.getElementsByClassName("lastPost");
             if (lelem.length != 0) {
@@ -109,9 +135,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
     var li = document.createElement('li');
     li.classList.add("postsL");
 
-    li.innerHTML = `<div class="timeline-time">
-                            <span class="time">${date}</span>
-                        </div>
+    li.innerHTML = `
             <div class="timeline-icon">
                 <a href="javascript:;">&nbsp;</a>
             </div>
@@ -119,6 +143,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
                 <div class="timeline-header">
                     ${vendorImageLine}
                         <span class="username"><a href="/Vendors/Details/${id}">${vendorTitle}</a> <small></small></span>
+                        <span class="time">${date}</span>
                 </div>
                 <div class="timeline-content">
                     <p>
@@ -138,7 +163,7 @@ function addLastItem(vendorTitle, dateCreated, details) {
 
     if (details) {
         displayDateCreated = `<div class="timeline-time">
-                                            <span class="time">${dateCreated}</span>
+                                            <span style="float:rigth class="time">${dateCreated}</span>
                                        </div>`;
 
         lastItemP = `<p>${vendorTitle} was created</p>`
@@ -146,7 +171,7 @@ function addLastItem(vendorTitle, dateCreated, details) {
 
     } else {
         lastItemP = `<p>No more posts...</p>`
-    }
+    };
 
     var li = document.createElement('li');
     li.classList.add("lastPost");
@@ -160,5 +185,4 @@ function addLastItem(vendorTitle, dateCreated, details) {
                      </li>`;
 
     document.getElementById('postsUL').appendChild(li);
-
 }

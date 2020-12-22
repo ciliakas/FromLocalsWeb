@@ -34,7 +34,11 @@
                                     </div>
                                     <div class="timeline-footer">
                                         <div class="=row">
-                                            <input asp-for="Image" class="btn" value="Add Image" type="file" />
+                                            <label class="btn btn-primary" style="margin:0px;">
+                                                <i class="fa fa-image"></i> 
+                                                    Add Photo
+                                                    <input type="file" style="display: none;" name="image" asp-for="Image">
+                                            </label>
                                             <input type="submit" class="btn btn-success" value="POST">
                                         </div>
                                     </div>
