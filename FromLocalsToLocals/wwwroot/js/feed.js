@@ -5,12 +5,26 @@ var query = window.location.search;
 var params = new URLSearchParams(query);
 var activeT = params.get('ActiveTab');
 
+
+function imageUpload(obj) {
+    var fileName = obj.value;
+    var fileNameArr = fileName.split('\\');
+    console.log(fileNameArr);
+    if (fileNameArr.length > 1) {
+        $("#selectedPhotoName").html(fileNameArr[fileNameArr.length - 1]);
+        $("#selectPhotoBtnText").html("Change Photo");
+    } else {
+        $("#selectedPhotoName").html("");
+        $("#selectPhotoBtnText").html("Add Photo");
+    }
+};
+
 $(document).ready(() => {
-    loadPageData(); 
+    loadPageData();
 });
 
 var feedScroll = document.getElementById('content1');
-var pageCount = 5;
+var pageCount = 8;
 
 function scrollFeedDetails() {
     if (feedScroll.scrollTop + feedScroll.offsetHeight + 150 >= feedScroll.scrollHeight && !loading && details) {
@@ -46,7 +60,33 @@ function loadPageData() {
         method: 'get',
         dataType: "json",
         data: mdata,
+        beforeSend: function () {
+
+            var lelem = document.getElementsByClassName("lastPost");
+            if (lelem.length == 0) {
+
+
+                var div = document.createElement('li');
+                div.id = "feedLoader";
+                div.innerHTML = `<li>
+                        <div class="timeline-body" style="height:150px;background:transparent;">
+                            <div class="loader"></div>
+                        </div>
+                     </li>`;
+
+
+                document.getElementById('postsUL').appendChild(div);
+
+            }
+        },
         success: function (data) {
+
+            var feedLoader = document.getElementById("feedLoader");
+
+            if (feedLoader != null) {
+                feedLoader.remove();
+            }
+
 
             var lelem = document.getElementsByClassName("lastPost");
             if (lelem.length != 0) {
@@ -67,7 +107,9 @@ function loadPageData() {
                         break;
                     }
                 }
-                console.log(allUserVendors);
+
+                date = date.substring(0, date.length - 3);
+
 
                 addPostItem(id, date, text, image, vendorImage, vendorTitle,owner);
 
@@ -109,9 +151,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
     var li = document.createElement('li');
     li.classList.add("postsL");
 
-    li.innerHTML = `<div class="timeline-time">
-                            <span class="time">${date}</span>
-                        </div>
+    li.innerHTML = `
             <div class="timeline-icon">
                 <a href="javascript:;">&nbsp;</a>
             </div>
@@ -119,6 +159,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
                 <div class="timeline-header">
                     ${vendorImageLine}
                         <span class="username"><a href="/Vendors/Details/${id}">${vendorTitle}</a> <small></small></span>
+                        <span class="time">${date}</span>
                 </div>
                 <div class="timeline-content">
                     <p>
@@ -138,7 +179,7 @@ function addLastItem(vendorTitle, dateCreated, details) {
 
     if (details) {
         displayDateCreated = `<div class="timeline-time">
-                                            <span class="time">${dateCreated}</span>
+                                            <span style="float:right" class="time"></span>
                                        </div>`;
 
         lastItemP = `<p>${vendorTitle} was created</p>`
@@ -146,7 +187,7 @@ function addLastItem(vendorTitle, dateCreated, details) {
 
     } else {
         lastItemP = `<p>No more posts...</p>`
-    }
+    };
 
     var li = document.createElement('li');
     li.classList.add("lastPost");
@@ -155,10 +196,9 @@ function addLastItem(vendorTitle, dateCreated, details) {
                             <a href="javascript:;">&nbsp;</a>
                         </div>
                         <div class="timeline-body">
-                            ${lastItemP}
+                            ${dateCreated} ${lastItemP}
                         </div>
                      </li>`;
 
     document.getElementById('postsUL').appendChild(li);
-
 }

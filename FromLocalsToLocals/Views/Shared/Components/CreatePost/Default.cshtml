@@ -1,4 +1,4 @@
-﻿@model FromLocalsToLocals.Models.ViewModels.CreatePostVM
+﻿@model FromLocalsToLocals.Web.ViewModels.CreatePostVM
 
 
 <div class="container">
@@ -34,9 +34,14 @@
                                     </div>
                                     <div class="timeline-footer">
                                         <div class="=row">
-                                            <input asp-for="Image" class="btn" value="Add Image" type="file" />
+                                            <label class="btn btn-primary" style="margin:0px;">
+                                                <i class="fa fa-image"></i>
+                                                <span id="selectPhotoBtnText">Add Photo</span>
+                                                <input onchange="imageUpload(this)" id="imageInput" type="file" style="display: none;" name="image" asp-for="Image">
+                                            </label>
                                             <input type="submit" class="btn btn-success" value="POST">
                                         </div>
+                                        <div id="selectedPhotoName"></div>
                                     </div>
                                 </div>
                             </form>

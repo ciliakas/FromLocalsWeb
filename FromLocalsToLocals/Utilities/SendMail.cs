@@ -1,8 +1,6 @@
-using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Utilities.Helpers;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using SuppLocals;
-using System;
 using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Utilities

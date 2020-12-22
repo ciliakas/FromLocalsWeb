@@ -1,11 +1,10 @@
-﻿using FromLocalsToLocals.Models;
+﻿using FromLocalsToLocals.Contracts.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FromLocalsToLocals.ViewComponents
+namespace FromLocalsToLocals.Web.ViewComponents
 {
     public class Messages: ViewComponent
     {

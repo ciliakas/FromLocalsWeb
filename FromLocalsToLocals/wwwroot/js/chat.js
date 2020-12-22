@@ -20,14 +20,22 @@ function loadMessages(obj) {
     $.ajax({
         type: "GET",
         url: `/Chat/GetChatComponent`,
-        data: { contactId: obj.id, isUserTab: userTab, componentName:"Messages"},
+        data: { contactId: obj.id, isUserTab: userTab, componentName: "Messages" },
+        beforeSend: function () {
+
+            clearTextField();
+
+            $("#msg_history").html(`<div class="loader"></div>`);
+            $(".active_chat").removeClass("active_chat");
+
+            document.getElementById("chatWith").innerText ="LOADING CONVERSATION"; 
+        },
         success: function (result) {
             $("#msg_history").html(result);
             jsContactId = parseInt(obj.id);
             setViewToBottom();
-            clearTextField();
-            $(".active_chat").removeClass("active_chat");
             obj.classList.add("active_chat");
+
 
             var active = document.getElementsByClassName("active_chat")[0].querySelector("h5").innerHTML;
             var chatW = document.getElementById("chatWith"); 
@@ -52,7 +60,7 @@ function postMessage() {
 
         $.ajax({
             type: "POST",
-            url: `/Chat/CreateMessage`,
+            url: `/api/Chat/CreateMessage`,
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(mData),
             datatype: 'json',
@@ -148,25 +156,26 @@ function loadNewIncomingMsg(obj) {
 
 //Sets UserRead and ReceiverRead to true
 function readMessage() {
-    $.ajax({
-        type: "POST",
-        url: `/Chat/ReadMessage`,
-        data: { contactId: jsContactId},
-        datatype: 'json'    
-    });
-
     var contactBody = document.getElementById(jsContactId);
     contactBody.classList.remove("unread_chat");
+
+    $.ajax({
+        type: "POST",
+        url: `/api/Chat/ReadMessage`,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ ContactId: jsContactId}),
+        datatype: 'json'
+    });
 }
 
 //Update message in Contact list
-function updateContact(contactId, text, date, title, tab) {
+function updateContact(ucontactId, text, date, title, tab) {
 
-    var contactsBody = document.getElementById(contactId);
+    var contactsBody = document.getElementById(ucontactId);
 
     if (contactsBody == null) {
         var vendorDiv = document.getElementById(title);
-        var mData = { contactId: contactId, isUserTab: tab, componentName:"ContactBody" };
+        var mData = { contactId: ucontactId, isUserTab: tab, componentName:"ContactBody" };
 
         $.ajax({
             type: "POST",
@@ -175,7 +184,7 @@ function updateContact(contactId, text, date, title, tab) {
             success: function (result) {
                 var ulDiv = vendorDiv.querySelector("ul");
                 ulDiv.innerHTML = '<li>' + result + '</li>' + ulDiv.innerHTML;
-                var div = document.getElementById(contactId);
+                var div = document.getElementById(ucontactId);
                 div.classList.add("unread_chat");
             },
         });

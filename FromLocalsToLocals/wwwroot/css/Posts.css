@@ -27,7 +27,7 @@
         position: absolute;
         left: 0;
         width: 18%;
-        text-align: right;
+        text-align: left;
         top: 30px
     }
 
@@ -76,7 +76,8 @@
         background: #fff;
         position: relative;
         padding: 20px 25px;
-        border-radius: 6px
+        border-radius: 6px;
+        min-width:200px;
     }
 
         .timeline .timeline-body:before {
@@ -102,7 +103,10 @@
 .timeline-header {
     padding-bottom: 21px;
     border-bottom: 1px solid #e2e7eb;
-    line-height: 30px
+    line-height: 30px;
+    display:flex;
+    flex-wrap : wrap;
+
 }
 
     .timeline-header .userimage {
@@ -156,3 +160,15 @@
         .timeline-footer a:not(.btn):hover {
             color: #2d353c
         }
+
+@media (max-width:768px ) {
+
+    .time {
+        font-size: 14px;
+        margin-left:1px;
+    }
+
+    .timeline .timeline-body {
+        margin-left: 25%;
+    }
+}
