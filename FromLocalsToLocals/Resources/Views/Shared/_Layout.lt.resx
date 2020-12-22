@@ -156,4 +156,7 @@
   <data name="Profile" xml:space="preserve">
     <value>Profilis</value>
   </data>
+  <data name="Registration" xml:space="preserve">
+    <value>Registracija</value>
+  </data>
 </root>

@@ -191,17 +191,7 @@ else
                                 <div class="card-body">
                                 <h5 class="card-title" style="margin:0px;">@Model.Vendors[i * itemsInRow + j].Title</h5>
                                 <hr />
-                                @switch (Model.Vendors[i * itemsInRow + j].VendorTypeDb)
-                                {
-                                    case "CarRepair":<p class="text-muted text-uppercase">@_localizer["Car repair"]</p>
-                                    break;
-
-                                case "RuralTourism":<p class="text-muted text-uppercase">@_localizer["Rural tourism"]</p>
-                                break;
-
-                                default: <p class="text-muted text-uppercase">@Model.Vendors[i * itemsInRow + j].VendorTypeDb</p>
-                                break;
-                            }
+                                <p class="text-muted text-uppercase">@_localizer[@Model.Vendors[i * itemsInRow + j].VendorTypeDb]</p>
                                 <hr />
 
                             @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
