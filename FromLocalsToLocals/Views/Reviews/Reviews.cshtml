@@ -225,11 +225,11 @@
                         <div class="card">
                             <div class="card-body">
                                 <h6 class="card-subtitle mb-2 text-muted" style="text-align: center; font-size: 25px;">@_localizer["Overall"]</h6>
-                                <p class="average" id="average">@Model.Vendor.ReviewsAverage.ToString("0.0")<span class="five">/5</span></p>
+                                <p class="average"  style="text-align:center;" id="average">@Model.Vendor.ReviewsAverage.ToString("0.0")<span class="five">/5</span></p>
                             </div>
 
                             <!-- Total reviews-->
-                            <div class="card-header">
+                            <div class="card-header" style="text-align:center;">
                                 @_localizer["Based on"] @Model.Vendor.ReviewsCount.Sum() @_localizer["reviews."]
                             </div>
                             <ul class="list-group list-group-flush" onload="updateRatingCounts()">
