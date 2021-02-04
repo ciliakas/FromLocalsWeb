@@ -22,12 +22,14 @@ namespace FromLocalsToLocals.Web.Controllers
         private readonly IReviewsService _reviewsService;
         private readonly INotificationService _notificationService;
         private readonly IVendorService _vendorService;
+        private readonly AppDbContext _context;
 
         public ReviewsController(UserManager<AppUser> userManager, IHubContext<NotiHub> hubContext,
             IReviewsService reviewsService, INotificationService notificationService,
-            IVendorService vendorService)
+            IVendorService vendorService , AppDbContext context)
         {
             _vendorService = vendorService;
+            _context = context;
             _userManager = userManager;
             _hubContext = hubContext;
             _reviewsService = reviewsService;
@@ -98,20 +100,21 @@ namespace FromLocalsToLocals.Web.Controllers
         private async Task NotifyUserWithNewReview(object sender , ReviewCreatedEventArgs e )
         {
             var id = GetVendorID();
-            var ownerId = (await _vendorService.GetVendorAsync(id)).UserID;
+            var ownerID = _context.Vendors.FirstOrDefault(v => v.ID == id).UserID;
 
             var notification = new Notification
             {
-                OwnerId = ownerId,
+                OwnerId = ownerID,
                 VendorId = id,
                 CreatedDate = DateTime.UtcNow,
                 Review = e.Review,
                 NotiBody = $"{e.Review.SenderUsername} gave {e.Review.Stars} stars to '{e.VendorTitle}'.",
                 Url = HttpContext.Request.Path.Value
             };
-            
-             _notificationService.AddNotification(notification);
-             await _hubContext.Clients.Users(ownerId).SendAsync("displayNotification", "");
+
+
+            _notificationService.AddNotification(notification);
+            await _hubContext.Clients.Users(ownerID).SendAsync("displayNotification", "");
         }
 
         private int GetVendorID()

@@ -12,8 +12,7 @@ namespace FromLocalsToLocals.Utilities.Helpers
             Console.WriteLine(address);
             try
             {
-                var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "&language=lt&key=" +
-                          Config.Google_Api_Key;
+                var uri = Config.Host + "forward?access_key=" + Config.MapApiKey + "&query=" + address + "&limit=1&output=json";
 
                 var client = new HttpClient();
                 var response = await client.GetAsync(uri);
@@ -22,7 +21,7 @@ namespace FromLocalsToLocals.Utilities.Helpers
 
                 var o = JObject.Parse(responseBody);
 
-                var data = Tuple.Create((double) o.SelectToken("results[0].geometry.location.lat") , (double) o.SelectToken("results[0].geometry.location.lng"));
+                var data = Tuple.Create((double) o.SelectToken("data[0].latitude") , (double) o.SelectToken("data[0].longitude"));
 
                 return data;
             }

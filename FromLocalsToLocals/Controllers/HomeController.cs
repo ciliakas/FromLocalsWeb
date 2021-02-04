@@ -83,7 +83,7 @@ namespace FromLocalsToLocals.Web.Controllers
                 if (!string.IsNullOrWhiteSpace(model.TextBug)) {
                     await Execute();
                     _toastNotification.AddSuccessToastMessage(_localizer["Report message send succesfully!"]);
-                    return View("Index");
+                    return RedirectToAction(nameof(Index));
                 }
 
                 else

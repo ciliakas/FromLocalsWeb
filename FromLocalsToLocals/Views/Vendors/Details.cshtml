@@ -134,7 +134,7 @@
             <div class="btn-group btn-group-lg w-100" role="group" aria-label="Large button group">
                 <button class="btn btn-outline-dark w-100 tabsText" id="address" onclick="showMap()" style="white-space: nowrap;">Address</button>
                 <button id="feedBtn" class="btn btn-outline-dark w-100 tabsText" onclick="showFeed()" style="white-space: nowrap;">News Feed</button>
-                <a class="btn btn-outline-dark w-100 tabsText" href="/Reviews/Reviews/Vendor%2F33" style="white-space: nowrap;">Reviews</a>
+                <a class="btn btn-outline-dark w-100 tabsText" href=@("/Reviews/Reviews/Vendor%2F"+ @Model.ID.ToString()) style="white-space: nowrap;">Reviews</a>
             </div>
 
         </div>
