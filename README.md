@@ -1,8 +1,9 @@
 From Locals To Locals
 --------------------------------------------------------------------------------------
 
-Team members:
-Paulius Bertašius, Lukas Staučė, Justinas Maniušis, Karolis Smaznovas
+The team:
+
+Arnas Rimkus, Deividas Kučinskas, Matas Lazdauskas, Gytis Bečalis
 
 Notes for other teams:
   - To start the program run FromLocalsToLocalsWeb.sln
