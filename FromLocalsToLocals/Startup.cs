@@ -71,8 +71,7 @@ namespace FromLocalsToLocals.Web
             services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseLazyLoadingProxies()
-                .UseNpgsql(Configuration.GetConnectionString("AppDbContext")));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
                 {
