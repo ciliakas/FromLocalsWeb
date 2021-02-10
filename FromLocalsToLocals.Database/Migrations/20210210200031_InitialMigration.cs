@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FromLocalsToLocals.Database.Migrations
 {
-    public partial class NewDb : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,7 +55,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     RoleId = table.Column<string>(type: "text", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
@@ -76,7 +76,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
@@ -161,7 +161,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     UserID = table.Column<string>(type: "text", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     About = table.Column<string>(type: "text", nullable: true),
@@ -190,7 +190,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     UserRead = table.Column<bool>(type: "boolean", nullable: false),
                     ReceiverRead = table.Column<bool>(type: "boolean", nullable: false),
                     UserID = table.Column<string>(type: "text", nullable: false),
@@ -242,7 +242,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     PostID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     VendorID = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: true),
@@ -264,7 +264,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     VendorID = table.Column<int>(type: "integer", nullable: false),
                     CommentID = table.Column<int>(type: "integer", nullable: false),
                     SenderUsername = table.Column<string>(type: "text", nullable: false),
@@ -291,7 +291,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     IsWorking = table.Column<bool>(type: "boolean", nullable: false),
                     VendorID = table.Column<int>(type: "integer", nullable: false),
                     Day = table.Column<int>(type: "integer", nullable: false),
@@ -314,7 +314,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Text = table.Column<string>(type: "text", nullable: false),
                     Date = table.Column<string>(type: "text", nullable: true),
                     IsUserSender = table.Column<bool>(type: "boolean", nullable: false),
@@ -336,7 +336,7 @@ namespace FromLocalsToLocals.Database.Migrations
                 columns: table => new
                 {
                     NotiId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     OwnerId = table.Column<string>(type: "text", nullable: true),
                     VendorId = table.Column<int>(type: "integer", nullable: false),
                     Url = table.Column<string>(type: "text", nullable: true),

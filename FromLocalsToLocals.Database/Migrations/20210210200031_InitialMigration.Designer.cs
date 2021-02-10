@@ -10,14 +10,14 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FromLocalsToLocals.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210202002941_NewDb")]
-    partial class NewDb
+    [Migration("20210210200031_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityByDefaultColumns()
+                .UseSerialColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
@@ -99,7 +99,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<int>("ReceiverID")
                         .HasColumnType("integer");
@@ -143,7 +143,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<int>("ContactID")
                         .HasColumnType("integer");
@@ -170,7 +170,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("NotiId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
@@ -202,7 +202,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("PostID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<string>("Date")
                         .HasColumnType("text");
@@ -228,7 +228,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<int>("CommentID")
                         .HasColumnType("integer");
@@ -272,7 +272,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<string>("About")
                         .HasColumnType("text");
@@ -324,7 +324,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<TimeSpan>("CloseTime")
                         .HasColumnType("interval");
@@ -379,7 +379,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -403,7 +403,7 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .UseSerialColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
