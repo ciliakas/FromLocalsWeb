@@ -67,13 +67,12 @@ namespace FromLocalsToLocals.Web
                 };
             });
             services.AddControllersWithViews();
-            services.AddRazorPages();
-           
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+
             services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
-                    options => options.SetPostgresVersion(new Version(9, 6))));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
                 {
