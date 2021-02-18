@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -71,7 +72,8 @@ namespace FromLocalsToLocals.Web
             services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                    options => options.SetPostgresVersion(new Version(9, 6))));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
                 {

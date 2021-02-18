@@ -145,7 +145,7 @@ namespace FromLocalsToLocals.Contracts.Entities
 
         public double CountAverage()
         {
-            if (Reviews.Count == 0)
+            if (Reviews == null || Reviews.Count == 0)
             {
                 return 0;
             }
