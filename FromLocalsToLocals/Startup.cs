@@ -72,7 +72,7 @@ namespace FromLocalsToLocals.Web
             services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                options.UseNpgsql(Configuration.GetConnectionString("AppDbContext"),
                     options => options.SetPostgresVersion(new Version(9, 6))));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
