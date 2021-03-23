@@ -1,8 +1,9 @@
 From Locals To Locals
 --------------------------------------------------------------------------------------
 
-Team members:
-Paulius Bertašius, Lukas Staučė, Justinas Maniušis, Karolis Smaznovas
+The team:
+
+Arnas Rimkus, Deividas Kučinskas, Matas Lazdauskas, Gytis Bečalis
 
 New Team members:
 Gytis Bečalis, 
