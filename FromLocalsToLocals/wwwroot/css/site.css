@@ -177,6 +177,10 @@ img.userImage.mr-3{
     margin-left: auto;
 }
 
+.report-post {
+    background-color: #CCBA8B;
+}
+
 .loader {
     border-top: 16px solid #cc9900;
     border-right: 16px solid #666699;
