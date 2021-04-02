@@ -6,7 +6,7 @@ The team:
 Arnas Rimkus, Deividas Kučinskas, Matas Lazdauskas, Gytis Bečalis
 
 New Team members:
-Gytis Bečalis, 
+Arnas Rimkus, 
 
 Notes for other teams:
   - To start the program run FromLocalsToLocalsWeb.sln
