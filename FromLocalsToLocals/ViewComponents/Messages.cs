@@ -1,20 +1,16 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FromLocalsToLocals.Web.ViewComponents
 {
-    public class Messages: ViewComponent
+    public class Messages : ViewComponent
     {
-
         public async Task<IViewComponentResult> InvokeAsync(Contact contact, bool isUserTab)
         {
-            if(contact == null)
-            {
-                return null;
-            }
+            if (contact == null) return null;
 
             byte[] image;
             string title;
@@ -34,19 +30,13 @@ namespace FromLocalsToLocals.Web.ViewComponents
             {
                 IsUserTab = isUserTab,
                 Image = image,
-                Title = title           
+                Title = title
             };
 
             if (contact.Messages != null)
-            {
                 vm.Messages = contact.Messages.OrderBy(x => x.Date).ToList();
-
-            }
             else
-            {
                 vm.Messages = new List<Message>();
-
-            }
 
             return View("Message", vm);
         }
@@ -55,9 +45,8 @@ namespace FromLocalsToLocals.Web.ViewComponents
         {
             public IEnumerable<Message> Messages { get; set; }
             public bool IsUserTab { get; set; }
-            public byte[] Image {get;set;}
+            public byte[] Image { get; set; }
             public string Title { get; set; }
         }
-
     }
 }

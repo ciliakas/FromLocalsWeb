@@ -1,9 +1,7 @@
-﻿
-
-namespace FromLocalsToLocals.Contracts.DTO
+﻿namespace FromLocalsToLocals.Contracts.DTO
 {
-    public class ContactIdDTO 
-    { 
+    public class ContactIdDTO
+    {
         public int ContactID { get; set; }
     }
 }

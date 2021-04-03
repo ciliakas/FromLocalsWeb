@@ -1,56 +1,59 @@
 ﻿using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Web.ViewModels;
+using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Utilities.Enums;
+using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
-using FromLocalsToLocals.Services.EF;
 using Microsoft.Extensions.Localization;
+using NToastNotify;
 
 namespace FromLocalsToLocals.Web.Controllers
 {
     public class FeedController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IToastNotification _toastNotification;
-        private readonly IPostsService _postsService;
-        private readonly IVendorService _vendorService;
         private readonly IStringLocalizer<FeedController> _localizer;
+        private readonly IPostsService _postsService;
+        private readonly IToastNotification _toastNotification;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IVendorService _vendorService;
 
 
-        public FeedController(UserManager<AppUser> userManager, IToastNotification toastNotification, IPostsService postsService, IVendorService vendorService, IStringLocalizer<FeedController> localizer)
+        public FeedController(UserManager<AppUser> userManager, IToastNotification toastNotification,
+            IPostsService postsService, IVendorService vendorService, IStringLocalizer<FeedController> localizer)
         {
             _userManager = userManager;
             _toastNotification = toastNotification;
             _postsService = postsService;
             _vendorService = vendorService;
             _localizer = localizer;
-
         }
 
         [HttpGet]
         public IActionResult NewsFeed(FeedVM model)
         {
             return View(model);
-        } 
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllPostsAsync(int skip, int itemsCount)
         {
             var x = await _postsService.GetAllPostsAsync(skip, itemsCount);
             return Json(x);
         }
+
         [HttpGet]
-        public async Task<IActionResult> GetFollowingPostsAsync(string userId,int skip, int itemsCount)
+        public async Task<IActionResult> GetFollowingPostsAsync(string userId, int skip, int itemsCount)
         {
-            return Json(await _postsService.GetFollowingPostsAsync(userId,skip, itemsCount));
+            return Json(await _postsService.GetFollowingPostsAsync(userId, skip, itemsCount));
         }
+
         [HttpGet]
         public async Task<IActionResult> GetVendorPostsAsync(int vendorId, int skip, int itemsCount)
         {
-            return Json(await _postsService.GetVendorPostsAsync(vendorId,skip, itemsCount));
+            return Json(await _postsService.GetVendorPostsAsync(vendorId, skip, itemsCount));
         }
 
         [Authorize]

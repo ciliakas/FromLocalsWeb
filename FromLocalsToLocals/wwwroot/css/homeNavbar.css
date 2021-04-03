@@ -1,22 +1,14 @@
-﻿.iconPanel {
-    display: none;
-}
-.notiIcon {
-    display: block;
-}
-.chatIcon {
-    display: block;
-}
+﻿.iconPanel { display: none; }
+
+.notiIcon { display: block; }
+
+.chatIcon { display: block; }
 
 @media only screen and (max-width: 991px) {
     /* For non desktop screens: */
-    .iconPanel {
-        display: block;
-    }
-    .chatIcon {
-        display: none;
-    }
-    .notiIcon {
-        display: none;
-    }
+    .iconPanel { display: block; }
+
+    .chatIcon { display: none; }
+
+    .notiIcon { display: none; }
 }

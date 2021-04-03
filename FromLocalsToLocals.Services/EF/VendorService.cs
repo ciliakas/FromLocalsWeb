@@ -1,11 +1,11 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Utilities;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace FromLocalsToLocals.Services.EF
 {
@@ -18,7 +18,7 @@ namespace FromLocalsToLocals.Services.EF
             _context = context;
         }
 
-        public async Task AddPostAsync(Vendor vendor,Post post)
+        public async Task AddPostAsync(Vendor vendor, Post post)
         {
             vendor.Posts.Add(post);
             _context.Update(vendor);
@@ -30,12 +30,14 @@ namespace FromLocalsToLocals.Services.EF
             switch (order)
             {
                 case "MostLiked":
-                    vendors.Sort(delegate (Vendor t1, Vendor t2) { return (-1) * t1.CompareTo(t2); });
+                    vendors.Sort(delegate(Vendor t1, Vendor t2) { return -1 * t1.CompareTo(t2); });
                     break;
                 case "LeastLiked":
-                    vendors.Sort(delegate (Vendor t1, Vendor t2) { return t1.CompareTo(t2); });
+                    vendors.Sort(delegate(Vendor t1, Vendor t2) { return t1.CompareTo(t2); });
                     break;
-            };
+            }
+
+            ;
         }
 
         public async Task CreateAsync(Vendor vendor)
@@ -45,7 +47,7 @@ namespace FromLocalsToLocals.Services.EF
                 _context.Vendors.Add(vendor);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateException e)
+            catch (DbUpdateException e)
             {
                 await e.ExceptionSender();
             }
@@ -64,30 +66,29 @@ namespace FromLocalsToLocals.Services.EF
                 await e.ExceptionSender();
             }
         }
+
         public async Task<Vendor> GetVendorAsync(int id)
         {
             var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
-           
-            if(vendor != null)
-            {
+
+            if (vendor != null)
                 vendor.VendorHours = _context.VendorWorkHours.Where(x => x.VendorID == id).OrderBy(y => y.Day).ToList();
-            }
             return vendor;
         }
 
-        public async Task<List<Vendor>> GetVendorsAsync(string searchString="", string vendorType="")
+        public async Task<List<Vendor>> GetVendorsAsync(string searchString = "", string vendorType = "")
         {
             var vendors = from v in _context.Vendors
-                                          select v;
+                select v;
             return await FilterVendorsListAsync(vendors, searchString, vendorType);
         }
 
-        public async Task<List<Vendor>> GetVendorsAsync(string userId, string searchString="",string vendorType="")
+        public async Task<List<Vendor>> GetVendorsAsync(string userId, string searchString = "", string vendorType = "")
         {
             var vendors = from v in _context.Vendors
-                          where v.UserID == userId
-                                          select v;
-            return await FilterVendorsListAsync(vendors,searchString,vendorType);
+                where v.UserID == userId
+                select v;
+            return await FilterVendorsListAsync(vendors, searchString, vendorType);
         }
 
         public async Task<List<Vendor>> GetNewVendorsAsync(int count)
@@ -98,8 +99,9 @@ namespace FromLocalsToLocals.Services.EF
 
         public async Task<List<Vendor>> GetPopularVendorsAsync(int count)
         {
-            var list = _context.Vendors.Where(x => (DateTime.UtcNow - x.LastClickDate).Days < 7).OrderByDescending(x => x.Popularity).Take(count);
-            return await list.ToListAsync(); 
+            var list = _context.Vendors.Where(x => (DateTime.UtcNow - x.LastClickDate).Days < 7)
+                .OrderByDescending(x => x.Popularity).Take(count);
+            return await list.ToListAsync();
         }
 
         public async Task AddWorkHoursAsync(WorkHours workHours)
@@ -130,13 +132,13 @@ namespace FromLocalsToLocals.Services.EF
         }
 
 
-
         public async Task ChangeWorkHoursAsync(WorkHours workHours)
         {
             try
             {
-                var row = _context.VendorWorkHours.FirstOrDefault(x => x.VendorID == workHours.VendorID && x.Day == workHours.Day);
-                workHours.SetWorkHours(row); 
+                var row = _context.VendorWorkHours.FirstOrDefault(x =>
+                    x.VendorID == workHours.VendorID && x.Day == workHours.Day);
+                workHours.SetWorkHours(row);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException e)
@@ -164,22 +166,17 @@ namespace FromLocalsToLocals.Services.EF
             return _context.Vendors.Any(e => e.ID == id);
         }
 
-        private async Task<List<Vendor>> FilterVendorsListAsync(IQueryable<Vendor> vendors, string searchString = "", string vendorType = "")
-        {
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                vendors = vendors.Where(s => s.Title.Contains(searchString));
-            }
-            if (!string.IsNullOrEmpty(vendorType))
-            {
-                vendors = vendors.Where(x => x.VendorTypeDb == vendorType);
-            }
-            return await vendors.ToListAsync();
-        }
-
         public async Task<Vendor> GetVendorAsync(string userId, string title)
         {
             return await _context.Vendors.FirstOrDefaultAsync(x => x.Title == title && x.UserID == userId);
+        }
+
+        private async Task<List<Vendor>> FilterVendorsListAsync(IQueryable<Vendor> vendors, string searchString = "",
+            string vendorType = "")
+        {
+            if (!string.IsNullOrEmpty(searchString)) vendors = vendors.Where(s => s.Title.Contains(searchString));
+            if (!string.IsNullOrEmpty(vendorType)) vendors = vendors.Where(x => x.VendorTypeDb == vendorType);
+            return await vendors.ToListAsync();
         }
     }
 }

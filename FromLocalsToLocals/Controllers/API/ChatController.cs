@@ -1,4 +1,5 @@
-﻿using FromLocalsToLocals.Contracts.DTO;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.DTO;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Web.Utilities;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Web.Controllers.API
 {
@@ -15,16 +15,16 @@ namespace FromLocalsToLocals.Web.Controllers.API
     public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;
-        private readonly UserManager<AppUser> _userManager;
         private readonly IHubContext<MessageHub> _hubContext;
+        private readonly UserManager<AppUser> _userManager;
 
 
-        public ChatController(IChatService chatService, UserManager<AppUser> userManager,IHubContext<MessageHub> hubContext)
+        public ChatController(IChatService chatService, UserManager<AppUser> userManager,
+            IHubContext<MessageHub> hubContext)
         {
             _chatService = chatService;
             _userManager = userManager;
             _hubContext = hubContext;
-
         }
 
         [HttpPost]
@@ -42,7 +42,8 @@ namespace FromLocalsToLocals.Web.Controllers.API
                 return BadRequest();
             }
 
-            await _hubContext.Clients.User(outgoingMessageDto.UserToSendId).SendAsync("sendNewMessage", JsonConvert.SerializeObject(outgoingMessageDto));
+            await _hubContext.Clients.User(outgoingMessageDto.UserToSendId)
+                .SendAsync("sendNewMessage", JsonConvert.SerializeObject(outgoingMessageDto));
 
             return Ok(outgoingMessageDto);
         }
@@ -60,6 +61,7 @@ namespace FromLocalsToLocals.Web.Controllers.API
             {
                 return BadRequest();
             }
+
             return Ok();
         }
     }

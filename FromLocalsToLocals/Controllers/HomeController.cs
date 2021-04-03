@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using FromLocalsToLocals.Services.EF;
+using FromLocalsToLocals.Utilities.Helpers;
+using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using NToastNotify;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using NToastNotify;
-using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Identity;
-using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Utilities.Helpers;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Web.ViewModels;
-using FromLocalsToLocals.Services.EF;
 
 namespace FromLocalsToLocals.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IStringLocalizer<HomeController> _localizer;
         private readonly IToastNotification _toastNotification;
         private readonly IVendorService _vendorService;
-        private readonly IStringLocalizer<HomeController> _localizer;
 
 
         public HomeController(IStringLocalizer<HomeController> localizer, IVendorService vendorService,
@@ -34,7 +32,7 @@ namespace FromLocalsToLocals.Web.Controllers
 
         public async Task<IActionResult> Index(HomeVM homeVM)
         {
-            homeVM.AllVendors = await _vendorService.GetVendorsAsync("", "");
+            homeVM.AllVendors = await _vendorService.GetVendorsAsync();
 
             var popularVendors = await _vendorService.GetPopularVendorsAsync(4);
             homeVM.PopularVendors = popularVendors;
@@ -71,7 +69,7 @@ namespace FromLocalsToLocals.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
         [HttpPost]
@@ -80,17 +78,15 @@ namespace FromLocalsToLocals.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!string.IsNullOrWhiteSpace(model.TextBug)) {
+                if (!string.IsNullOrWhiteSpace(model.TextBug))
+                {
                     await Execute();
                     _toastNotification.AddSuccessToastMessage(_localizer["Report message send succesfully!"]);
                     return RedirectToAction(nameof(Index));
                 }
 
-                else
-                {
-                    _toastNotification.AddErrorToastMessage(_localizer["Report message can not be empty!"]);
-                    return View();
-                }
+                _toastNotification.AddErrorToastMessage(_localizer["Report message can not be empty!"]);
+                return View();
             }
 
             async Task Execute()
@@ -101,16 +97,15 @@ namespace FromLocalsToLocals.Web.Controllers
 
                 var from = new EmailAddress("fromlocalstolocals@gmail.com", "Bug reporter");
                 var subject = "Found bug";
-                var to = new EmailAddress(email , "Dear User");
+                var to = new EmailAddress(email, "Dear User");
                 var plainTextContent = "";
 
                 var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>" + model.TextBug;
-      
+
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
                 var response = await client.SendEmailAsync(msg);
             }
 
-  
 
             return View();
         }
@@ -121,8 +116,8 @@ namespace FromLocalsToLocals.Web.Controllers
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(30) }
-                );
+                new CookieOptions {Expires = DateTimeOffset.UtcNow.AddDays(30)}
+            );
 
             return LocalRedirect(returnUrl);
         }

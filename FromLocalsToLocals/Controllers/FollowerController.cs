@@ -10,8 +10,8 @@ namespace FromLocalsToLocals.Web.Controllers
     [Authorize]
     public class FollowerController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly IFollowerService _followerService;
+        private readonly UserManager<AppUser> _userManager;
 
         public FollowerController(UserManager<AppUser> userManager, IFollowerService followerService)
         {
@@ -19,7 +19,7 @@ namespace FromLocalsToLocals.Web.Controllers
             _followerService = followerService;
         }
 
-        
+
         [HttpPost]
         [Route("/Follower/Follow/{id:int}")]
         [Route("/Follower/Sekti/{id:int}")]
@@ -27,12 +27,9 @@ namespace FromLocalsToLocals.Web.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if (!await _followerService.Follow(user, id))
-            {
-                return BadRequest();
-            }
+            if (!await _followerService.Follow(user, id)) return BadRequest();
 
-            return Json(new{});
+            return Json(new { });
         }
 
         [HttpPost]
@@ -42,12 +39,9 @@ namespace FromLocalsToLocals.Web.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if (!await _followerService.Unfollow(user, id))
-            {
-                return BadRequest();
-            }
+            if (!await _followerService.Unfollow(user, id)) return BadRequest();
 
-            return Json(new {});
+            return Json(new { });
         }
     }
 }

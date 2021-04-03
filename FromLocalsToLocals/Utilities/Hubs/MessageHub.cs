@@ -3,6 +3,6 @@
 namespace FromLocalsToLocals.Web.Utilities
 {
     public class MessageHub : Hub
-    { 
+    {
     }
 }

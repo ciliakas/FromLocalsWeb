@@ -1,6 +1,5 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
+using FromLocalsToLocals.Contracts.Entities;
 
 namespace FromLocalsToLocals.Web.ViewModels
 {

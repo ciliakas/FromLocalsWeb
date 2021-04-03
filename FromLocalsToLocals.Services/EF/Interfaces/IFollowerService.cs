@@ -1,5 +1,5 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
 
 namespace FromLocalsToLocals.Services.EF
 {
@@ -7,6 +7,5 @@ namespace FromLocalsToLocals.Services.EF
     {
         Task<bool> Follow(AppUser user, int? vendorId);
         Task<bool> Unfollow(AppUser user, int? vendorId);
-
     }
 }

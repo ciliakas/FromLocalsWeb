@@ -11,9 +11,8 @@ namespace FromLocalsToLocals.Contracts.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [Required]
-        public string Text { get; set; }
-         
+        [Required] public string Text { get; set; }
+
         public string Date { get; set; }
 
         public bool IsUserSender { get; set; }
@@ -23,6 +22,6 @@ namespace FromLocalsToLocals.Contracts.Entities
         [ForeignKey("ContactID")]
         [JsonIgnore]
         [IgnoreDataMember]
-        public virtual  Contact Contact { get; set; }
+        public virtual Contact Contact { get; set; }
     }
 }

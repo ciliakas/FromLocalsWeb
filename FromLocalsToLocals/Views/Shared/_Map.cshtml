@@ -1,37 +1,40 @@
-﻿@model IEnumerable<FromLocalsToLocals.Contracts.Entities.Vendor>
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Newtonsoft.Json
+@using FromLocalsToLocals.Utilities.Enums
+@model IEnumerable<Vendor>
 @inject IViewLocalizer _localizer
 
 @{
-    ViewBag.vendorTypes = Enum.GetNames(typeof(FromLocalsToLocals.Utilities.Enums.VendorType));
+    ViewBag.vendorTypes = Enum.GetNames(typeof(VendorType));
 }
 
-<div class="row" style="width:100%">
+<div class="row" style="width: 100%">
     <div class="col-sm-9">
-        <div id="mapid" style="height: 400px;position: relative; outline: none;"></div>
+        <div id="mapid" style="height: 400px; outline: none; position: relative;"></div>
     </div>
     <div class="col-sm-3 mt-3">
         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#vendorTypeCollapse" aria-expanded="false" aria-controls="vendorTypeCollapse">@_localizer["Service Types"]</button>
         <div class="collapse mt-2" id="vendorTypeCollapse">
             @foreach (var x in ViewBag.vendorTypes)
             {
-                <input type="checkbox" id=@x value=@x checked onchange="vendorTypeOnChange(this)" />
-                <label for="vehicle1">@_localizer[@x]</label><br>
+                <input type="checkbox" id=@x value=@x checked onchange="vendorTypeOnChange(this)"/>
+                <label for="vehicle1">@_localizer[x]</label>
+                <br>
             }
-        </div><br />
+        </div><br/>
         <div class="mt-3">
             <p>
-                <input type="checkbox" id="useDistanceFilter" onchange="useDistanceFilterChange(this)" />
+                <input type="checkbox" id="useDistanceFilter" onchange="useDistanceFilterChange(this)"/>
                 <label for="useDistanceFilter">@_localizer["Use distance filter"]</label>
             </p>
-            <p id="locError" style="display:none"></p>
-            <input id="distanceSlider" type="range" min="1" max="200" value="100" style="display:none" oninput="drawCircle(this.value)" />
+            <p id="locError" style="display: none"></p>
+            <input id="distanceSlider" type="range" min="1" max="200" value="100" style="display: none" oninput="drawCircle(this.value)"/>
         </div>
         <div>
             <form asp-controller="Home" asp-action="Index">
                 <div>
                     <input type="text" name="SearchString" class="form-control" placeholder=@_localizer["Title..."]>
-                    <input type="submit" value=@_localizer["Filter"] class="btn btn-success mt-3" />
+                    <input type="submit" value=@_localizer["Filter"] class="btn btn-success mt-3"/>
                 </div>
             </form>
         </div>
@@ -39,10 +42,9 @@
 </div>
 
 
-
 <script type="text/javascript">
-    var allVendors = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
-    var vendorTypes = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.vendorTypes));
+    var allVendors = @Html.Raw(JsonConvert.SerializeObject(Model));
+    var vendorTypes = @Html.Raw(JsonConvert.SerializeObject(ViewBag.vendorTypes));
     var center = [55.385550, 24.046824];
     var zoom = 6.4;
 </script>
