@@ -1,38 +1,39 @@
-﻿
+﻿@model FromLocalsToLocals.Web.ViewModels.AdminViewModel
+
 <div class="row justify-content-center">
     <h3 class="mt-5 mb-2">Amount of received reports: ę</h3>
 </div>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReportModal">
     Launch demo report
 </button>
-
+<h1>@Model.Reports.Count</h1>
 
 <div class="row justify-content-center">
-    <div class="card report-post text-dark mt-3 mb-3 col-9">
-        <div class="card-header">
-            2021-04-01 20:00:00 UTC
+        <div class="card report-post text-dark mt-3 mb-3 col-9">
+            <div class="card-header">
+                2021-04-01 20:00:00 UTC
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Spam</h5>
+                <p class="card-text">USERNAME</p>
+                <a href="#" class="btn btn-primary">Go to</a>
+                <a href="#" class="btn btn-danger">Remove post</a>
+                <a href="#" class="btn btn-success">Decline review</a>
+            </div>
         </div>
-        <div class="card-body">
-            <h5 class="card-title">Spam</h5>
-            <p class="card-text">USERNAME</p>
-            <a href="#" class="btn btn-primary">Go to</a>
-            <a href="#" class="btn btn-danger">Remove post</a>
-            <a href="#" class="btn btn-success">Decline review</a>
+        <div class="card report-post text-dark mt-3 mb-3 col-9">
+            <div class="card-header">
+                2021-04-02 20:00:00 UTC
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Nudity</h5>
+                <p class="card-text">USERNAME</p>
+                <a href="#" class="btn btn-primary">Go to</a>
+                <a href="#" class="btn btn-danger">Remove post</a>
+                <a href="#" class="btn btn-success">Decline review</a>
+            </div>
         </div>
     </div>
-    <div class="card report-post text-dark mt-3 mb-3 col-9">
-        <div class="card-header">
-            2021-04-02 20:00:00 UTC
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Nudity</h5>
-            <p class="card-text">USERNAME</p>
-            <a href="#" class="btn btn-primary">Go to</a>
-            <a href="#" class="btn btn-danger">Remove post</a>
-            <a href="#" class="btn btn-success">Decline review</a>
-        </div>
-    </div>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="createReportModal" tabindex="-1" role="dialog" aria-labelledby="createReportModal" aria-hidden="true">
@@ -53,7 +54,7 @@
                         <option value="1">Spam</option>
                         <option value="2">Scam</option>
                         <option value="3">Nudity</option>
-                    </select> 
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
