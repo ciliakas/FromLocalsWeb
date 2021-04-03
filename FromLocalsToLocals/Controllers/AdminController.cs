@@ -32,12 +32,12 @@ namespace FromLocalsToLocals.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult>  ReportPage()
         {
-            var reports = await _context.Reports.ToListAsync();
-            var model = new AdminViewModel
-            {
-                Reports = reports
-            };
-            return View(model);
+           // var reports = await _context.Reports.ToListAsync();
+            // var model = new AdminViewModel
+            // {
+            //     Reports = reports
+            // };
+            // return View(model);
         }
 
         [HttpPost]
