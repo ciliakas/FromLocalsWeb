@@ -1,11 +1,14 @@
 From Locals To Locals
 --------------------------------------------------------------------------------------
 
-Team members:
-Paulius Bertašius, Lukas Staučė, Justinas Maniušis, Karolis Smaznovas
+The team:
+
+Arnas Rimkus, Deividas Kučinskas, Matas Lazdauskas, Gytis Bečalis
 
 New Team members:
-Gytis Bečalis, 
+Arnas Rimkus, Gytis Bečalis
+
+The team #2: Jaroslav Kochanovskis
 
 Notes for other teams:
   - To start the program run FromLocalsToLocalsWeb.sln
@@ -13,3 +16,4 @@ Notes for other teams:
   - Take into consideration that a postgresql (PSQL) database was used.
   - If any quesions arise, just message Rangatin.
   
+![GitHub Super-Linter](https://github.com/ciliakas/FromLocalsWeb/workflows/Lint%20Code%20Base/badge.svg)
