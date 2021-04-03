@@ -16,3 +16,4 @@ Notes for other teams:
   - Take into consideration that a postgresql (PSQL) database was used.
   - If any quesions arise, just message Rangatin.
   
+![GitHub Super-Linter](https://github.com/ciliakas/FromLocalsWeb/workflows/Lint%20Code%20Base/badge.svg)
