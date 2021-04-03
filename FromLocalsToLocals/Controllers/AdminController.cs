@@ -1,4 +1,5 @@
-﻿using FromLocalsToLocals.Utilities.Enums;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,13 @@ namespace FromLocalsToLocals.Web.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly AppDbContext _context;
+
+        public AdminController(AppDbContext context)
+        {
+            _context = context;
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
@@ -19,5 +27,15 @@ namespace FromLocalsToLocals.Web.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateReport()
+        {
+
+        }
+
+
+
     }
 }
