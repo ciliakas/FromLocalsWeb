@@ -1,17 +1,15 @@
 .card {
-    overflow: hidden;
-    max-height: 450px;
-    min-height: 450px;
-    max-width: 290px;
-    min-width: 140px;
     box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+    max-height: 450px;
+    max-width: 290px;
+    min-height: 450px;
+    min-width: 140px;
+    overflow: hidden;
 }
 
 .card-picture {
-    width: 160px;
-    height: 150px;
-    border-radius: 50%;
     align-self: center;
+    border-radius: 50%;
+    height: 150px;
+    width: 160px;
 }
-
-

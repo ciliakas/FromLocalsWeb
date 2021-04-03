@@ -1,26 +1,26 @@
-﻿@model FromLocalsToLocals.Web.ViewModels.FeedVM
-@using static FromLocalsToLocals.Web.Utilities.TimeCalculator
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Newtonsoft.Json
+@model FromLocalsToLocals.Web.ViewModels.FeedVM
 @inject IViewLocalizer _localizer
 
 
-    <head>
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    </head>
+<head>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div id="content1" onscroll="scrollFeedDetails()" class="content content-full-width newsFeedPanel" data-aos="fade-left"  >
+            <div id="content1" onscroll="scrollFeedDetails()" class="content content-full-width newsFeedPanel" data-aos="fade-left">
                 <!-- begin profile-content -->
                 <div class="profile-content">
                     <!-- begin tab-content -->
                     <div class="tab-content p-0">
                         <!-- begin #profile-post tab -->
-                        <div class="tab-pane fade active show" id="profile-post" >
+                        <div class="tab-pane fade active show" id="profile-post">
                             <!-- begin timeline -->
                             <ul class="timeline" id="postsUL">
-                       
+
                             </ul>
                             <!-- end timeline -->
                         </div>
@@ -33,12 +33,13 @@
         </div>
     </div>
 </div>
-@{ 
+@{
     int vId;
     string vTitle;
     string vDate;
     IEnumerable<Vendor> vendors = new List<Vendor>();
-    if (Model.Vendor == null) {
+    if (Model.Vendor == null)
+    {
         vId = 0;
         vTitle = "";
         vDate = "";
@@ -72,15 +73,15 @@
     var allUserVendors;
 
     $(document).ready(() => {
-        details = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DisplayInDetails))
-            tab = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ActiveTab))
-            userID = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(userID))
-            allUserVendors = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(vendors));
+        details = @Html.Raw(JsonConvert.SerializeObject(Model.DisplayInDetails));
+        tab = @Html.Raw(JsonConvert.SerializeObject(Model.ActiveTab));
+        userID = @Html.Raw(JsonConvert.SerializeObject(userID));
+        allUserVendors = @Html.Raw(JsonConvert.SerializeObject(vendors));
 
         if (details) {
-            vendorID = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(vId))
-            vendorTitleImp = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(vTitle))
-            vendorDate = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(vDate))
+            vendorID = @Html.Raw(JsonConvert.SerializeObject(vId));
+            vendorTitleImp = @Html.Raw(JsonConvert.SerializeObject(vTitle));
+            vendorDate = @Html.Raw(JsonConvert.SerializeObject(vDate));
 
             $(".newsFeedPanel").addClass("pre-scrollable");
         }

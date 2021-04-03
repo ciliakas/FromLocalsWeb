@@ -1,4 +1,4 @@
-﻿$(window).resize( () => navbarModificationsOnResize());
+﻿$(window).resize(() => navbarModificationsOnResize());
 
 function navbarModificationsOnResize() {
     var width = $(window).width();

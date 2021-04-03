@@ -1,5 +1,5 @@
-@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
+@using Microsoft.AspNetCore.Mvc.Localization
 @model FromLocalsToLocals.Web.ViewModels.ProfileVM
 @inject UserManager<AppUser> userManager;
 
@@ -11,18 +11,18 @@
     <link href="~/css/revealEye.css" rel="stylesheet" type="text/css">
     <style>
         .follow-btn {
-            display: block;
-            text-align: center;
-            font: normal 1.6em "Helvetica Neue", helvetica, sans-serif;
-            -webkit-border-radius: 6px;
             -moz-border-radius: 6px;
-            border-radius: 6px;
+            -webkit-border-radius: 6px;
+            background: grey;
             border: none !important;
-            padding: 10px 20px;
+            border-radius: 6px;
             color: #fff !important;
             cursor: pointer;
+            display: block;
+            font: normal 1.6em "Helvetica Neue", helvetica, sans-serif;
             font-size: 16px;
-            background: grey
+            padding: 10px 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -33,23 +33,23 @@
         <form asp-action="Profile" method="post" enctype="multipart/form-data">
             @if (Model.Image == null)
             {
-                <img class="img-fluid rounded" id="image_upload_preview" src="~/Assets/profile.png" style="width: inherit; max-width: 50%; max-height: 50%;  min-height:250px; min-width:250px;" />
+                <img class="img-fluid rounded" id="image_upload_preview" src="~/Assets/profile.png" style="max-height: 50%; max-width: 50%; min-height: 250px; min-width: 250px; width: inherit;"/>
             }
             else
             {
-                <img class="img-fluid rounded" id="image_upload_preview" src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" style="width: inherit; max-height: 50%; max-width: 50%; min-height:250px; min-width:250px;" />
+                <img class="img-fluid rounded" id="image_upload_preview" src="data:image;base64,@Convert.ToBase64String(Model.Image)" style="max-height: 50%; max-width: 50%; min-height: 250px; min-width: 250px; width: inherit;"/>
             }
 
-            <hr />
+            <hr/>
             <div class="form-inline mt-3">
                 <div class="form-group mx-sm-3" style="background-color: white; border-radius: 4px;">
-                    <input asp-for="ImageFile" class="form-control-file" type="file" id="changePhoto" />
+                    <input asp-for="ImageFile" class="form-control-file" type="file" id="changePhoto"/>
                 </div>
                 <button type="submit" class="btn btn-success" name="submitBtn" value="picName">@_localizer["Save changes"]</button>
             </div>
 
 
-            <hr />
+            <hr/>
             <div>
                 <button value="subscriber" type="submit" name="submitBtn" id="myButton"
                         class="btn btn-primary form-inline" style="background-color: #CCBA8B; border: 2px #CCBA8B;">
@@ -57,9 +57,9 @@
                 </button>
 
             </div>
-            <hr />
+            <hr/>
 
-            </form>
+        </form>
     </div>
 
     <div class="col">
@@ -67,32 +67,32 @@
         <form asp-action="Profile" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label @_localizer["Email"]></label>
-                <input asp-for="Email" type="email" class="form-control" />
+                <input asp-for="Email" type="email" class="form-control"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label>@_localizer["Username"]</label>
-                <input asp-for="UserName" class="form-control" />
+                <input asp-for="UserName" class="form-control"/>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary" name="submitBtn" value="accDetails">@_localizer["Save changes"]</button>
-            <hr />
+            <hr/>
         </form>
         <h3 class="mt-3">@_localizer["Password settings"]</h3>
         <form asp- asp-action="Profile" method="post">
             <div class="form-group, wrapper">
                 <label>@_localizer["Current password"]</label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group, wrapper">
                 <label>@_localizer["New password"]</label>
-                <input asp-for="NewPassword" class="form-control" />
+                <input asp-for="NewPassword" class="form-control"/>
                 <span asp-validation-for="NewPassword" class="text-danger"></span>
             </div>
             <div class="form-group, wrapper">
                 <label>@_localizer["Confirm new password"]</label>
-                <input asp-for="ConfirmPassword" class="form-control" />
+                <input asp-for="ConfirmPassword" class="form-control"/>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary mt-3" name="submitBtn" value="password">@_localizer["Change password"]</button>
@@ -103,23 +103,26 @@
     function changePic(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 $('#image_upload_preview').attr('src', e.target.result);
-            }
+            };
             reader.readAsDataURL(input.files[0]);
         }
     }
-    $("#changePhoto").change(function () {
+
+    $("#changePhoto").change(function() {
         changePic(this);
     });
 
     var flag_clicked = false;
 
-    if ( == true) {
+    if (==
+    true);
+    {
         var flag_clicked = true;
     }
 
-    $('#myButton').click(function () {
+    $('#myButton').click(function() {
         if (flag_clicked) {
             $(this)
                 .find('span')
@@ -136,16 +139,16 @@
 
             flag_clicked = true;
         }
-    }).hover(function () {
-        if (flag_clicked) {
-            $(this)
-                .find('span')
-                .text('unfollow')
-                .end()
-                .css('backgroundColor', 'red');
-        }
-    },
-        function () {
+    }).hover(function() {
+            if (flag_clicked) {
+                $(this)
+                    .find('span')
+                    .text('unfollow')
+                    .end()
+                    .css('backgroundColor', 'red');
+            }
+        },
+        function() {
             if (flag_clicked) {
                 $(this)
                     .find('span')
@@ -158,4 +161,3 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="~/js/revealEye.js"></script>
-

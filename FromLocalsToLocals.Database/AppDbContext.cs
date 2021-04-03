@@ -1,15 +1,16 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
+﻿using System;
+using FromLocalsToLocals.Contracts.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
 
 namespace FromLocalsToLocals.Database
 {
     public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options){
+            : base(options)
+        {
             ChangeTracker.Tracked += OnEntityTracked;
         }
 
@@ -27,48 +28,39 @@ namespace FromLocalsToLocals.Database
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Follower>()
-                .HasKey(bc => new { bc.UserID, bc.VendorID });
+                .HasKey(bc => new {bc.UserID, bc.VendorID});
             modelBuilder.Entity<Follower>()
-              .HasOne(u => u.User)
-              .WithMany(u => u.Following)
-              .HasForeignKey(bc => bc.UserID).IsRequired().OnDelete(DeleteBehavior.Restrict);
+                .HasOne(u => u.User)
+                .WithMany(u => u.Following)
+                .HasForeignKey(bc => bc.UserID).IsRequired().OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Follower>()
                 .HasOne(bc => bc.Vendor)
                 .WithMany(c => c.Followers)
                 .HasForeignKey(bc => bc.VendorID).IsRequired().OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Contact>()
-              .HasOne(u => u.User)
-              .WithMany(u => u.Contacts)
-              .HasForeignKey(bc => bc.UserID).IsRequired().OnDelete(DeleteBehavior.Restrict);
+                .HasOne(u => u.User)
+                .WithMany(u => u.Contacts)
+                .HasForeignKey(bc => bc.UserID).IsRequired().OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Contact>()
                 .HasOne(bc => bc.Vendor)
                 .WithMany(c => c.Contacts)
                 .HasForeignKey(bc => bc.ReceiverID).IsRequired().OnDelete(DeleteBehavior.Restrict);
-
         }
 
         private void OnEntityTracked(object sender, EntityTrackedEventArgs e)
         {
             if (!e.FromQuery && e.Entry.State == EntityState.Added && e.Entry.Entity is Review review)
-            {
                 review.Date = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
-            }
-            
+
             else if (!e.FromQuery && e.Entry.State == EntityState.Added && e.Entry.Entity is Vendor vendor)
-            {
                 vendor.DateCreated = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
-            }
 
             else if (!e.FromQuery && e.Entry.State == EntityState.Added && e.Entry.Entity is Post post)
-            {
                 post.Date = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
-            }
 
             else if (!e.FromQuery && e.Entry.State == EntityState.Added && e.Entry.Entity is Message msg)
-            {
                 msg.Date = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
-            }
         }
     }
 }

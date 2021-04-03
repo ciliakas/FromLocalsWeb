@@ -1,5 +1,5 @@
-﻿@model FromLocalsToLocals.Web.ViewModels.CreateEditVendorVM
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model FromLocalsToLocals.Web.ViewModels.CreateEditVendorVM
 @inject IViewLocalizer _localizer
 @{
     ViewData["Title"] = _localizer["Edit"];
@@ -7,12 +7,13 @@
 }
 
 <h2 class="mt-4 " style="text-align: center;">@_localizer["Edit a Service"]</h2>
-<hr />
+<hr/>
 <div class="ml-4 mb-3">
     <!-- Space after arrow symbol is NEEDED-->
-    <a asp-action="MyVendors" class="text-dark"><span class="fa fa-arrow-left"></span> @_localizer["&nbsp;Back to List"]</a>
+    <a asp-action="MyVendors" class="text-dark">
+        <span class="fa fa-arrow-left"></span> @_localizer["&nbsp;Back to List"]
+    </a>
 </div>
 <div class="container-fluid">
     @await Html.PartialAsync("_ServiceAddEdit", Model)
 </div>
-

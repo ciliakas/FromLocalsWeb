@@ -1,19 +1,17 @@
-using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace FromLocalsToLocals.Web.ViewModels
 {
     public class LoginVM
     {
-        [Required]
-        public string Username { get; set; }
+        [Required] public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me")]
-        public bool RememberMe { get; set; }
+        [Display(Name = "Remember me")] public bool RememberMe { get; set; }
     }
 
     public class ForgotPasswordViewModel
@@ -26,12 +24,9 @@ namespace FromLocalsToLocals.Web.ViewModels
 
     public class RegisterVM
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Required] [EmailAddress] public string Email { get; set; }
 
-        [Required]
-        public string Username { get; set; }
+        [Required] public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -42,12 +37,13 @@ namespace FromLocalsToLocals.Web.ViewModels
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
     public class ProfileVM
     {
         public ProfileVM()
         {
-
         }
+
         public ProfileVM(string email, string username, byte[] img)
         {
             Email = email;
@@ -56,7 +52,7 @@ namespace FromLocalsToLocals.Web.ViewModels
         }
 
         [DataType(DataType.EmailAddress)]
-        [Display(Name ="Email")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         public string UserName { get; set; }
@@ -80,8 +76,7 @@ namespace FromLocalsToLocals.Web.ViewModels
 
     public class ResetPasswordVM
     {
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        [DataType(DataType.EmailAddress)] public string Email { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
@@ -92,6 +87,7 @@ namespace FromLocalsToLocals.Web.ViewModels
         [Display(Name = "Confirm new password")]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
+
         public string Code { get; set; }
     }
 

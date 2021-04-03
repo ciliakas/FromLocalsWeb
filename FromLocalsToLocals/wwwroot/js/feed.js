@@ -3,12 +3,12 @@ var loading = false;
 
 var query = window.location.search;
 var params = new URLSearchParams(query);
-var activeT = params.get('ActiveTab');
+var activeT = params.get("ActiveTab");
 
 
 function imageUpload(obj) {
     var fileName = obj.value;
-    var fileNameArr = fileName.split('\\');
+    var fileNameArr = fileName.split("\\");
     console.log(fileNameArr);
     if (fileNameArr.length > 1) {
         $("#selectedPhotoName").html(fileNameArr[fileNameArr.length - 1]);
@@ -23,7 +23,7 @@ $(document).ready(() => {
     loadPageData();
 });
 
-var feedScroll = document.getElementById('content1');
+var feedScroll = document.getElementById("content1");
 var pageCount = 8;
 
 function scrollFeedDetails() {
@@ -32,54 +32,53 @@ function scrollFeedDetails() {
     }
 };
 
-$(window).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() + 250 >= $(document).height() && !loading && !details  ) {
+$(window).scroll(function() {
+    if ($(window).scrollTop() + $(window).height() + 250 >= $(document).height() && !loading && !details) {
         loadPageData();
     }
 });
 
 function loadPageData() {
     loading = true;
-    
+
     var alreadyShowing = document.getElementsByClassName("postsL").length;
 
-    var mUrl = '/Feed/GetAllPosts';
+    var mUrl = "/Feed/GetAllPosts";
     var mdata = { skip: alreadyShowing, itemsCount: pageCount };
     if (details) {
-        mUrl = '/Feed/GetVendorPosts';
-        mdata = { vendorId : vendorID ,skip: alreadyShowing, itemsCount: pageCount };
-    } else if (activeT == 'MyFeed') {
-        mUrl = '/Feed/GetFollowingPosts';
-        mdata = { userId: userID , skip: alreadyShowing, itemsCount: pageCount };
+        mUrl = "/Feed/GetVendorPosts";
+        mdata = { vendorId: vendorID, skip: alreadyShowing, itemsCount: pageCount };
+    } else if (activeT == "MyFeed") {
+        mUrl = "/Feed/GetFollowingPosts";
+        mdata = { userId: userID, skip: alreadyShowing, itemsCount: pageCount };
     }
-    
 
 
     $.ajax({
         url: mUrl,
-        method: 'get',
+        method: "get",
         dataType: "json",
         data: mdata,
-        beforeSend: function () {
+        beforeSend: function() {
 
             var lelem = document.getElementsByClassName("lastPost");
             if (lelem.length == 0) {
 
 
-                var div = document.createElement('li');
+                var div = document.createElement("li");
                 div.id = "feedLoader";
                 div.innerHTML = `<li>
-                        <div class="timeline-body" style="height:150px;background:transparent;">
-                            <div class="loader"></div>
-                        </div>
-                     </li>`;
+                                     <div class="timeline-body" style="height:150px;background:transparent;">
+                                         <div class="loader"></div>
+                                     </div>
+                                 </li>`;
 
 
-                document.getElementById('postsUL').appendChild(div);
+                document.getElementById("postsUL").appendChild(div);
 
             }
         },
-        success: function (data) {
+        success: function(data) {
 
             var feedLoader = document.getElementById("feedLoader");
 
@@ -111,7 +110,7 @@ function loadPageData() {
                 date = date.substring(0, date.length - 3);
 
 
-                addPostItem(id, date, text, image, vendorImage, vendorTitle,owner);
+                addPostItem(id, date, text, image, vendorImage, vendorTitle, owner);
 
             }
 
@@ -125,7 +124,7 @@ function loadPageData() {
 
             loading = false;
         },
-        error: function (err) {
+        error: function(err) {
             alert("Sorry something went wrong..");
             loading = false;
         }
@@ -133,9 +132,9 @@ function loadPageData() {
 }
 
 
-function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
+function addPostItem(id, date, text, image, vendorImage, vendorTitle, owner) {
     var vendorImageLine;
-    var postImageLine = '';
+    var postImageLine = "";
 
     if (vendorImage == null) {
         vendorImageLine = `<span class="userimage"><img src="/Assets/localSeller.png" alt=""></span>`;
@@ -148,7 +147,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
                                </div>`;
     }
 
-    var li = document.createElement('li');
+    var li = document.createElement("li");
     li.classList.add("postsL");
 
     li.innerHTML = `
@@ -158,7 +157,8 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
             <div class="timeline-body">
                 <div class="timeline-header">
                     ${vendorImageLine}
-                        <span class="username"><a href="/Vendors/Details/${id}">${vendorTitle}</a> <small></small></span>
+                        <span class="username"><a href="/Vendors/Details/${id}">${vendorTitle
+        }</a> <small></small></span>
                         <span class="time">${date}</span>
                 </div>
                 <div class="timeline-content">
@@ -169,7 +169,7 @@ function addPostItem(id, date, text, image, vendorImage, vendorTitle,owner) {
                 </div>
             </div>`;
 
-    document.getElementById('postsUL').appendChild(li);
+    document.getElementById("postsUL").appendChild(li);
 }
 
 function addLastItem(vendorTitle, dateCreated, details) {
@@ -182,14 +182,14 @@ function addLastItem(vendorTitle, dateCreated, details) {
                                             <span style="float:right" class="time"></span>
                                        </div>`;
 
-        lastItemP = `<p>${vendorTitle} was created</p>`
+        lastItemP = `<p>${vendorTitle} was created</p>`;
 
 
     } else {
-        lastItemP = `<p>No more posts...</p>`
+        lastItemP = `<p>No more posts...</p>`;
     };
 
-    var li = document.createElement('li');
+    var li = document.createElement("li");
     li.classList.add("lastPost");
     li.innerHTML = `<li> ${displayDateCreated}
                         <div class="timeline-icon">
@@ -200,5 +200,5 @@ function addLastItem(vendorTitle, dateCreated, details) {
                         </div>
                      </li>`;
 
-    document.getElementById('postsUL').appendChild(li);
+    document.getElementById("postsUL").appendChild(li);
 }

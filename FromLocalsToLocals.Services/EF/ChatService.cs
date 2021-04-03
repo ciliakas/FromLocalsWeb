@@ -1,10 +1,10 @@
-﻿using FromLocalsToLocals.Contracts.DTO;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.DTO;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Services.EF
 {
@@ -19,20 +19,16 @@ namespace FromLocalsToLocals.Services.EF
 
         public async Task<OutGoingMessageDTO> AddMessageToContact(AppUser user, IncomingMessageDTO message)
         {
-            var outgoingMessage = new OutGoingMessageDTO() { Message = message.Message, ContactID = message.ContactId, IsUserTab = message.IsUserTab };
+            var outgoingMessage = new OutGoingMessageDTO
+                {Message = message.Message, ContactID = message.ContactId, IsUserTab = message.IsUserTab};
             Contact contact = null;
 
             if (message.IsUserTab)
             {
-
                 contact = user.Contacts.FirstOrDefault(x => x.ID == message.ContactId);
-                if (contact == null)
-                {
-                    throw new Exception("This contact doesn't 'belong' to this user");
-                }
+                if (contact == null) throw new Exception("This contact doesn't 'belong' to this user");
                 outgoingMessage.UserToSendId = contact.Vendor.UserID;
                 outgoingMessage.Image = user.Image;
-
             }
             else
             {
@@ -44,14 +40,14 @@ namespace FromLocalsToLocals.Services.EF
                         contact = c;
                         outgoingMessage.UserToSendId = contact.UserID;
                         outgoingMessage.Image = x.Image;
-                        return;
                     }
                 });
             }
 
             try
             {
-                contact.Messages.Add(new Message { Text = message.Message , Contact = contact, IsUserSender = message.IsUserTab });
+                contact.Messages.Add(new Message
+                    {Text = message.Message, Contact = contact, IsUserSender = message.IsUserTab});
                 contact.ReceiverRead = !message.IsUserTab;
                 contact.UserRead = message.IsUserTab;
 
@@ -59,7 +55,6 @@ namespace FromLocalsToLocals.Services.EF
                 await _context.SaveChangesAsync();
 
                 outgoingMessage.VendorTitle = contact.Vendor.Title;
-
             }
             catch (Exception ex)
             {
@@ -84,11 +79,9 @@ namespace FromLocalsToLocals.Services.EF
                 contact.UserRead = true;
                 _context.Contacts.Update(contact);
                 await _context.SaveChangesAsync();
-
             }
             catch
             {
-                return;
             }
         }
     }

@@ -1,16 +1,17 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace FromLocalsToLocals.Contracts.Entities
 {
     public class Post
     {
         public Post()
-        { }
+        {
+        }
 
-        public Post(string text , Vendor vendor, byte[] image = null)
+        public Post(string text, Vendor vendor, byte[] image = null)
         {
             Vendor = vendor;
             VendorID = vendor.ID;
@@ -35,6 +36,5 @@ namespace FromLocalsToLocals.Contracts.Entities
         [JsonIgnore]
         [IgnoreDataMember]
         public virtual Vendor Vendor { get; set; }
-
     }
 }

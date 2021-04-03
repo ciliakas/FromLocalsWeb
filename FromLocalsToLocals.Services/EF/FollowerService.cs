@@ -1,11 +1,9 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Services.EF
 {
@@ -14,7 +12,7 @@ namespace FromLocalsToLocals.Services.EF
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
 
-        public FollowerService(AppDbContext context,UserManager<AppUser> userManager)
+        public FollowerService(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -23,11 +21,9 @@ namespace FromLocalsToLocals.Services.EF
         public async Task<bool> Follow(AppUser user, int? vendorId)
         {
             if (vendorId == null || user == null
-                || user.Vendors.Any(x => x.ID == vendorId)
-                || user.Following.Any(x => x.VendorID == vendorId))
-            {
+                                 || user.Vendors.Any(x => x.ID == vendorId)
+                                 || user.Following.Any(x => x.VendorID == vendorId))
                 return false;
-            }
 
             var vendor = await _context.Vendors.FirstOrDefaultAsync(x => x.ID == vendorId);
             var follower = new Follower(user, vendor);
@@ -47,10 +43,8 @@ namespace FromLocalsToLocals.Services.EF
         public async Task<bool> Unfollow(AppUser user, int? vendorId)
         {
             if (vendorId == null || user == null
-                || !user.Following.Any(x => x.VendorID == vendorId))
-            {
+                                 || !user.Following.Any(x => x.VendorID == vendorId))
                 return false;
-            }
 
             try
             {

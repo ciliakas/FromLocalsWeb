@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Web.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
 
 namespace FromLocalsToLocals.Web.ViewModels
 {

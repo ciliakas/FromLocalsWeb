@@ -1,13 +1,9 @@
 @media all and (max-width: 768px) {
     table tr th:nth-child(2),
-    table tr td:nth-child(2) {
-        display: none;
-    }
+    table tr td:nth-child(2) { display: none; }
 }
 
 @media all and (max-width: 768px) {
     table tr th:nth-child(3),
-    table tr td:nth-child(3) {
-        display: none;
-    }
+    table tr td:nth-child(3) { display: none; }
 }

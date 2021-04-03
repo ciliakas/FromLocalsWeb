@@ -1,127 +1,113 @@
 .ikrNoti_Button {
-    width: 22px;
+    cursor: pointer;
+    display: block;
     height: 22px;
     line-height: 22px;
     margin: -3px 10px 0 10px;
-    cursor: pointer;
-    display: block;
+    width: 22px;
 }
 
 .ikrNoti_Counter {
-    display: block;
-    position: absolute;
-    background: #e1141e;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 400;
-    padding: 1px 3px;
-    margin: -8px 0 0 25px;
-    border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
+    background: #e1141e;
+    border-radius: 2px;
+    color: #fff;
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    margin: -8px 0 0 25px;
+    padding: 1px 3px;
+    position: absolute;
     z-index: 1
 }
 
 .ikrNotifications {
+    -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, .2);
+    background: #fff;
+    border: solid 1px rgba(100, 100, 100, .2);
     display: none;
-    width: 170px;
+    left: -130px;
     position: absolute;
     top: 30px;
-    left: -130px;
-    background: #fff;
-    border: solid 1px rgba(100,100,100,.2);
-    -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.2);
+    width: 170px;
     z-index: 1000
 }
 
-    .ikrNotifications:before {
-        content: '';
-        display: block;
-        width: 0;
-        height: 0;
-        color: transparent;
-        border: 10px solid #ccc;
-        border-color: transparent transparent #fff;
-        margin-top: -20px;
-        margin-left: 140px;
-    }
+.ikrNotifications:before {
+    border: 10px solid #ccc;
+    border-color: transparent transparent #fff;
+    color: transparent;
+    content: '';
+    display: block;
+    height: 0;
+    margin-left: 140px;
+    margin-top: -20px;
+    width: 0;
+}
 
-    .ikrNotifications h3 {
-        display: block;
-        color: #333;
-        background: #fff;
-        font-weight: 700;
-        padding: 8px;
-        margin: 0;
-        font-size:12px;
-        border-bottom: solid 1px rgba(100,100,100,.3);
-    }
+.ikrNotifications h3 {
+    background: #fff;
+    border-bottom: solid 1px rgba(100, 100, 100, .3);
+    color: #333;
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0;
+    padding: 8px;
+}
 
-    .ikrNotifications .ikrSeeAll {
-        background: #f6f7f8;
-        padding: 8px;
-        font-size: 12px;
-        font-weight: 700;
-        border-top: solid 1px rgba(100,100,100,.3);
-        text-align: center
-    }
+.ikrNotifications .ikrSeeAll {
+    background: #f6f7f8;
+    border-top: solid 1px rgba(100, 100, 100, .3);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px;
+    text-align: center
+}
 
-        .ikrNotifications .ikrSeeAll a {
-            color: #3b5998
-        }
+.ikrNotifications .ikrSeeAll a { color: #3b5998 }
 
-            .ikrNotifications .ikrSeeAll a:hover {
-                background: #f6f7f8;
-                color: #3b5998;
-                text-decoration: underline
-            }
+.ikrNotifications .ikrSeeAll a:hover {
+    background: #f6f7f8;
+    color: #3b5998;
+    text-decoration: underline
+}
 
 .ikrNotificationItems {
+    background-color: #f0f8ff;
     height: 300px;
     overflow-y: scroll;
-    background-color: #f0f8ff
 }
 
 .ikrSingleNotiDiv {
     border-top: 1px solid #ccc;
-    margin-bottom: 0px;
+    color: #000;
     cursor: pointer;
-    color: #000
+    margin-bottom: 0px;
 }
 
-.ikrSingleNotiDivUnReadColor {
-    color: #c00
-}
+.ikrSingleNotiDivUnReadColor { color: #c00 }
 
 .ikrNotificationTitle {
     font-weight: 500;
     margin-left: 5px
 }
 
-.ikrNotificationBody {
-    margin: 0 15px 0 5px
-}
+.ikrNotificationBody { margin: 0 15px 0 5px }
+
 .ikrNofiCreatedDate {
-    text-align: right;
-    margin-right: 10px;
     font-size: 13px;
-}
-.ikrNotiFromPropName {
+    margin-right: 10px;
     text-align: right;
 }
 
-::-webkit-scrollbar {
-    width: 2px
-}
+.ikrNotiFromPropName { text-align: right; }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1
-}
+::-webkit-scrollbar { width: 2px }
 
-::-webkit-scrollbar-thumb {
-    background: #888
-}
+::-webkit-scrollbar-track { background: #f1f1f1 }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555
-    }
+::-webkit-scrollbar-thumb { background: #888 }
+
+::-webkit-scrollbar-thumb:hover { background: #555 }

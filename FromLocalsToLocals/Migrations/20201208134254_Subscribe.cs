@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FromLocalsToLocals.Migrations
 {
@@ -7,21 +6,19 @@ namespace FromLocalsToLocals.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.AddColumn<bool>(
-                name: "Subscribe",
-                table: "AspNetUsers",
-                type: "boolean",
+                "Subscribe",
+                "AspNetUsers",
+                "boolean",
                 nullable: false,
                 defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.DropColumn(
-                name: "Subscribe",
-                table: "AspNetUsers");
+                "Subscribe",
+                "AspNetUsers");
         }
     }
 }

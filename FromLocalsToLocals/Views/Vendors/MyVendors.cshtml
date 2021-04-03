@@ -1,5 +1,5 @@
-﻿@model IEnumerable<FromLocalsToLocals.Contracts.Entities.Vendor>
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<Vendor>
 @inject IViewLocalizer _localizer
 
 @{
@@ -10,45 +10,47 @@
 <link href="~/css/removeColumn.css" rel="stylesheet" type="text/css">
 
 <h2 class="mt-4 text-center" id="myservices">@_localizer["My Services"]</h2>
-<hr />
+<hr/>
 <p>
-    <a class="btn btn-primary mt-3 mb-3" asp-action="Create"><span class="fa fa-plus"></span> @_localizer["Add a service"]</a>
+    <a class="btn btn-primary mt-3 mb-3" asp-action="Create">
+        <span class="fa fa-plus"></span> @_localizer["Add a service"]
+    </a>
 </p>
 <table class="table table-hover table-responsive-md" id="Table1">
     <thead>
-        <tr>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th class="text-center" style="min-width: 200px;">
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.VendorTypeDb)
-            </th>
-            <th class="text-center" style="min-width: 220px;"></th>
-        </tr>
+    <tr>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th class="text-center" style="min-width: 200px;">
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.VendorTypeDb)
+        </th>
+        <th class="text-center" style="min-width: 220px;"></th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td class="text-center">
-                    @_localizer[@item.VendorTypeDb]
-                </td>
-                <td class="text-center">
-                    <a asp-action="Edit" asp-route-id="@item.ID">@_localizer["Edit"]</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">@_localizer["Details"]</a> |
-                    <a href="#" data-target="#deleteModal" data-toggle="modal" class="identifyingClass" data-title="@item.Title" data-id="@item.ID">@_localizer["Delete"]</a>
-                </td>
-            </tr>
-        }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td class="text-center">
+                @_localizer[item.VendorTypeDb]
+            </td>
+            <td class="text-center">
+                <a asp-action="Edit" asp-route-id="@item.ID">@_localizer["Edit"]</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">@_localizer["Details"]</a> |
+                <a href="#" data-target="#deleteModal" data-toggle="modal" class="identifyingClass" data-title="@item.Title" data-id="@item.ID">@_localizer["Delete"]</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
@@ -68,14 +70,11 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
-        $(".identifyingClass").click(function () {
+    $(function() {
+        $(".identifyingClass").click(function() {
             var vendorId = $(this).data('id');
             document.getElementById("vendorTitle").textContent = $(this).data('title');
             $('.modal-footer a').attr('href', '/Vendors/Delete/' + vendorId);
-        })
+        });
     });
 </script>
-
-
-

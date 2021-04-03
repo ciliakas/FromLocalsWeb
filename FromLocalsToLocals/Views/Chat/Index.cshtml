@@ -1,10 +1,11 @@
-﻿@model Tuple<AppUser, bool, Contact>
+﻿@using Newtonsoft.Json
+@model Tuple<AppUser, bool, Contact>
 
-<link href="~/css/chat.css" rel="stylesheet" />
+<link href="~/css/chat.css" rel="stylesheet"/>
 <div class="container mt-4">
-    <div class="row" style="border:solid 1px gray;border-top:solid 2px green;">
-        <div class="col-md-4" style="border-right:1px solid gray;">
-            <div class="row" style="border-bottom:1px solid gray;">
+    <div class="row" style="border: solid 1px gray; border-top: solid 2px green;">
+        <div class="col-md-4" style="border-right: 1px solid gray;">
+            <div class="row" style="border-bottom: 1px solid gray;">
                 <div class="col-md-6 text-center">
                     <a class="btn" id="ISent" asp-route-tabname="ISent" asp-controller="Chat" asp-action="Index">Conversations</a>
                 </div>
@@ -25,78 +26,86 @@
                     }
                     foreach (var c in contacts)
                     {
-                        @await Component.InvokeAsync("ContactBody", new { contact = c, title = c.Vendor.Title , image = c.Vendor.Image , userTab = true  });
+                        @await Component.InvokeAsync("ContactBody", new {contact = c, title = c.Vendor.Title, image = c.Vendor.Image, userTab = true})
+                        ;
                     }
                 }
                 else
                 {
-                <div class="accordion active" id="listOfVendors">
-                    @foreach (var v in Model.Item1.Vendors)
-                    {
-                        if (v.Contacts.Count > 0)
+                    <div class="accordion active" id="listOfVendors">
+                        @foreach (var v in Model.Item1.Vendors)
                         {
-                            var contacts = v.Contacts.Where(x => x.Messages.Count > 0)
+                            if (v.Contacts.Count > 0)
+                            {
+                                var contacts = v.Contacts.Where(x => x.Messages.Count > 0)
                                     .OrderBy(x => x.Messages.OrderBy(y => y.Date).FirstOrDefault().Date)
                                     .Concat(v.Contacts.Where(x => x.Messages.Count == 0)).ToList();
-                        <div class="card">
-                            <div class="card-header" id="@v.Title H">
-                                <h5 class="mb-0">
-                                    <button class="btn" type="button" data-toggle="collapse" data-target="#@v.Title" aria-expanded="true" aria-controls="collapseOne">
-                                        @if (v.Image != null)
-                                        {
-                                             <img src="data:image;base64,@System.Convert.ToBase64String(v.Image)" alt="avatar" id="@v.Title-img" class="img-circle" style="width:50px;height:50px;" /> }
-                                        else
-                                        {
-                                             <img src="~/Assets/appLogo.png" id="@v.Title-img" alt="avatar" class="img-circle" style="width:50px;height:50px;" />}
-                                        @v.Title
-                                    </button>
-                                </h5>
-                            </div>
+                                <div class="card">
+                                    <div class="card-header" id="@v.Title H">
+                                        <h5 class="mb-0">
+                                            <button class="btn" type="button" data-toggle="collapse" data-target="#@v.Title" aria-expanded="true" aria-controls="collapseOne">
+                                                @if (v.Image != null)
+                                                {
+                                                    <img src="data:image;base64,@Convert.ToBase64String(v.Image)" alt="avatar" id="@v.Title-img" class="img-circle" style="height: 50px; width: 50px;"/>
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Assets/appLogo.png" id="@v.Title-img" alt="avatar" class="img-circle" style="height: 50px; width: 50px;"/>
+                                                }
+                                                @v.Title
+                                            </button>
+                                        </h5>
+                                    </div>
 
-                            <div id="@v.Title" class="collapse" aria-labelledby="@v.Title H" data-parent="#listOfVendors">
-                                <div class="card-body">
-                                    <ul>
-                                    @foreach (var c in contacts)
-                                    {
-                                        if (c.Messages.Count > 0)
-                                        {
-                                            <li>
-                                                @await Component.InvokeAsync("ContactBody", new { contact = c, title = c.User.UserName, image = c.User.Image, userTab = false })
-                                            </li>
-                                        }
-                                    }
-                                    </ul>
+                                    <div id="@v.Title" class="collapse" aria-labelledby="@v.Title H" data-parent="#listOfVendors">
+                                        <div class="card-body">
+                                            <ul>
+                                                @foreach (var c in contacts)
+                                                {
+                                                    if (c.Messages.Count > 0)
+                                                    {
+                                                        <li>
+                                                            @await Component.InvokeAsync("ContactBody", new {contact = c, title = c.User.UserName, image = c.User.Image, userTab = false})
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            }
                         }
-                    }
-                </div>
+                    </div>
                 }
             </div>
         </div>
-        <div class="col-md-8" style="border-top: 2px solid green; border-bottom: 1px solid gray;">
-            <div style="text-align:center;" >
-                <span id="chatWith" style="font-weight:600;">
+        <div class="col-md-8" style="border-bottom: 1px solid gray; border-top: 2px solid green;">
+            <div style="text-align: center;">
+                <span id="chatWith" style="font-weight: 600;">
+                    @if (Model.Item3.ID != -1)
+                    {
+                        @Model.Item3.Vendor.Title
+                    }
+                    else
+                    {
+                        <p style="text-align: center">SELECT A CONVERSATION</p>
+                    }
+                </span>
+            </div><hr/>
+            <div class="msg_history" id="msg_history">
                 @if (Model.Item3.ID != -1)
                 {
-                @Model.Item3.Vendor.Title }
-                else
-                {
-                   <p style="text-align:center">SELECT A CONVERSATION</p>
+                    @await Component.InvokeAsync("Messages", new {contact = Model.Item3, isUserTab = true})
+                    ;
                 }
-                </span></div><hr/>
-            <div class="msg_history" id="msg_history">
-                @if(Model.Item3.ID != -1)
-                {
-                    @await Component.InvokeAsync("Messages", new { contact = Model.Item3, isUserTab = true });
-                }
-                
+
             </div>
             <div class="type_msg">
                 <div class="input_msg_write">
-                    <textarea type="text" class="write_msg" id="postMsgText" placeholder="Type a message" style="width:89%;"></textarea>
-                    <button onclick="postMessage()" class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                    <textarea type="text" class="write_msg" id="postMsgText" placeholder="Type a message" style="width: 89%;"></textarea>
+                    <button onclick="postMessage()" class="msg_send_btn" type="button">
+                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -105,8 +114,8 @@
     </div>
 </div>
 <script>
-    var newContactId = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item3.ID))
-    var userTab = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item2))
+    var newContactId = @Html.Raw(JsonConvert.SerializeObject(Model.Item3.ID));
+    var userTab = @Html.Raw(JsonConvert.SerializeObject(Model.Item2));
 
     $(document).ready(() => {
         if (userTab) {
