@@ -105,8 +105,7 @@ namespace FromLocalsToLocals.Contracts.Entities
 
             foreach (var rating in groupedRatings) ReviewsCount[rating.Star - 1] = rating.Count;
 
-            return groupedRatings.Aggregate(0, (result, element) => result + element.Star * element.Count) /
-                   (double) Reviews.Count;
+            return groupedRatings.Aggregate(0, (result, element) => result + element.Star * element.Count) / (double)Reviews.Count;
         }
 
         #region IComparable
