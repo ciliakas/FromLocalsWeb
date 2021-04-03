@@ -8,6 +8,8 @@ Arnas Rimkus, Deividas Kučinskas, Matas Lazdauskas, Gytis Bečalis
 New Team members:
 Arnas Rimkus, Gytis Bečalis
 
+The team #2: Jaroslav Kochanovskis
+
 Notes for other teams:
   - To start the program run FromLocalsToLocalsWeb.sln
   - Database connection string is stored in the user secrets. Change it according to you demands. 
