@@ -1,11 +1,11 @@
-﻿using FromLocalsToLocals.Contracts.Events;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using FromLocalsToLocals.Contracts.Events;
+using Newtonsoft.Json;
 
 namespace FromLocalsToLocals.Contracts.Entities
 {
@@ -13,8 +13,8 @@ namespace FromLocalsToLocals.Contracts.Entities
     {
         public Review()
         {
-
         }
+
         public Review(int id, int commentId, string username, string comment, int stars, string vendorTitle)
         {
             VendorID = id;
@@ -56,18 +56,13 @@ namespace FromLocalsToLocals.Contracts.Entities
         [IgnoreDataMember]
         public virtual Vendor Vendor { get; set; }
 
-        [JsonIgnore]
-        [IgnoreDataMember]
-        public virtual ICollection<Notification> Notifications { get; set; }
+        [JsonIgnore] [IgnoreDataMember] public virtual ICollection<Notification> Notifications { get; set; }
 
         public bool Equals([AllowNull] Review other)
         {
-            if (other == null)
-            {
-                return false;
-            }
+            if (other == null) return false;
 
-            return (VendorID == other.VendorID && SenderUsername == other.SenderUsername && Text == other.Text);
+            return VendorID == other.VendorID && SenderUsername == other.SenderUsername && Text == other.Text;
         }
     }
 }

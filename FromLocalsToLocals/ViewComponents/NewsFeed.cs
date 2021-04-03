@@ -1,18 +1,18 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Utilities.Enums;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Services.EF;
+using FromLocalsToLocals.Utilities.Enums;
 using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using FromLocalsToLocals.Services.EF;
 
 namespace FromLocalsToLocals.Web.ViewComponents
 {
     public class NewsFeed : ViewComponent
     {
-        private readonly IPostsService _postsService;
         private readonly AppDbContext _context;
+        private readonly IPostsService _postsService;
 
         public NewsFeed(IPostsService postsService, AppDbContext context)
         {
@@ -28,13 +28,15 @@ namespace FromLocalsToLocals.Web.ViewComponents
                     model.Posts = new List<Post>();
                     break;
                 case FeedTabs.VendorFeed:
-                     model.Posts = new List<Post>();// await _context.Posts.Where(x => x.VendorID == model.Vendor.ID).OrderByDescending(x => x).ToListAsync();
+                    model.Posts =
+                        new List<Post>(); // await _context.Posts.Where(x => x.VendorID == model.Vendor.ID).OrderByDescending(x => x).ToListAsync();
                     break;
                 default: //AllFeed
-                     model.Posts = new List<Post>();// await _context.Posts.Take(5).OrderByDescending(x => x).ToListAsync();
+                    model.Posts =
+                        new List<Post>(); // await _context.Posts.Take(5).OrderByDescending(x => x).ToListAsync();
                     break;
             }
-           
+
             return View(model);
         }
     }

@@ -7,12 +7,13 @@ namespace FromLocalsToLocals.Utilities.Helpers
 {
     public static class MapMethods
     {
-        public static async Task<Tuple<double,double>> ConvertAddressToLocationAsync(string address)
+        public static async Task<Tuple<double, double>> ConvertAddressToLocationAsync(string address)
         {
             Console.WriteLine(address);
             try
             {
-                var uri = Config.Host + "forward?access_key=" + Config.MapApiKey + "&query=" + address + "&limit=1&output=json";
+                var uri = Config.Host + "forward?access_key=" + Config.MapApiKey + "&query=" + address +
+                          "&limit=1&output=json";
 
                 var client = new HttpClient();
                 var response = await client.GetAsync(uri);
@@ -21,7 +22,8 @@ namespace FromLocalsToLocals.Utilities.Helpers
 
                 var o = JObject.Parse(responseBody);
 
-                var data = Tuple.Create((double) o.SelectToken("data[0].latitude") , (double) o.SelectToken("data[0].longitude"));
+                var data = Tuple.Create((double) o.SelectToken("data[0].latitude"),
+                    (double) o.SelectToken("data[0].longitude"));
 
                 return data;
             }
@@ -33,5 +35,4 @@ namespace FromLocalsToLocals.Utilities.Helpers
             return null;
         }
     }
-
 }

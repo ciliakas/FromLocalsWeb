@@ -1,9 +1,7 @@
-﻿@model FromLocalsToLocals.Contracts.Entities.Vendor
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@model Vendor
 @inject UserManager<AppUser> userManager
 @inject IViewLocalizer _localizer
 @{
-
     ViewData["Title"] = _localizer["Details"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -15,21 +13,25 @@
 
 }
 @using static FromLocalsToLocals.Web.Utilities.TimeCalculator
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Newtonsoft.Json
+@using FromLocalsToLocals.Web.ViewModels
+@using FromLocalsToLocals.Utilities.Enums
 
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="~/css/Posts.css" />
-<link rel="stylesheet" href="~/css/details.css" type="text/css" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="~/css/Posts.css"/>
+<link rel="stylesheet" href="~/css/details.css" type="text/css"/>
 
 <div class="row mt-4">
     <div class="col1 m-lg-5 d-flex justify-content-center">
         @if (Model.Image == null)
         {
-            <img src="~/Assets/localSeller.png" class="serviceImage" />
+            <img src="~/Assets/localSeller.png" class="serviceImage"/>
         }
         else
         {
-            <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" class="serviceImage" />
+            <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" class="serviceImage"/>
         }
     </div>
     <div class="col2 m-3">
@@ -38,7 +40,7 @@
                 <div class="col-9">
                     <div class="row">
 
-                        <p class="text-muted text-uppercase">@_localizer[@Model.VendorTypeDb]</p>
+                        <p class="text-muted text-uppercase">@_localizer[Model.VendorTypeDb]</p>
 
                     </div>
                     <div class="row" style="margin-top: -15px;">
@@ -55,9 +57,9 @@
                     </div>
                 </div>
             </div>
-            <hr />
+            <hr/>
             <div class="row">
-                @if (string.IsNullOrEmpty(@Model.About))
+                @if (string.IsNullOrEmpty(Model.About))
                 {
                     <p class="font-italic">@_localizer["No description provided"]</p>
                 }
@@ -68,16 +70,16 @@
             </div>
             @if (currentUser != null && !currentUser.Vendors.Any(x => x.ID == Model.ID))
             {
-                <hr />
+                <hr/>
                 <div class="row">
                     <div class="col mr-2 ml-2">
                         @if (currentUser.Following.Any(x => x.VendorID == Model.ID))
                         {
-                            <button data-follow="false" data-id="@Model.ID" class="btn btn-outline-primary w-100" id="followButn" onclick="followBtnClick(this,@Model.ID)">@_localizer["Unfollow"]</button>
+                            <button data-follow="false" data-id="@Model.ID" class="btn btn-outline-primary w-100" id="followButn" onclick="followBtnClick(this, @Model.ID)">@_localizer["Unfollow"]</button>
                         }
                         else
                         {
-                            <button data-follow="true" data-id="@Model.ID" class="btn btn-primary w-100" id="followButn" onclick="followBtnClick(this,@Model.ID)">@_localizer["Follow"]</button>
+                            <button data-follow="true" data-id="@Model.ID" class="btn btn-primary w-100" id="followButn" onclick="followBtnClick(this, @Model.ID)">@_localizer["Follow"]</button>
                         }
                     </div>
                     <div class="col mr-2 ml-2">
@@ -85,7 +87,7 @@
                     </div>
                 </div>
             }
-            <hr />
+            <hr/>
             <div class="row mt-1 mb-3">
                 <h4>@_localizer["Working Hours"]</h4>
             </div>
@@ -95,26 +97,33 @@
                     <div class="dayColumn">
                         @switch (item.Day)
                         {
-                            case 1:<p>@_localizer["Monday"]</p>
-                            break;
+                            case 1:
+                                <p>@_localizer["Monday"]</p>
+                                break;
 
-                            case 2:<p>@_localizer["Tuesday"]</p>
-                            break;
+                            case 2:
+                                <p>@_localizer["Tuesday"]</p>
+                                break;
 
-                            case 3:<p>@_localizer["Wednesday"]</p>
-                            break;
+                            case 3:
+                                <p>@_localizer["Wednesday"]</p>
+                                break;
 
-                            case 4:<p>@_localizer["Thursday"]</p>
-                            break;
+                            case 4:
+                                <p>@_localizer["Thursday"]</p>
+                                break;
 
-                            case 5:<p>@_localizer["Friday"]</p>
-                            break;
+                            case 5:
+                                <p>@_localizer["Friday"]</p>
+                                break;
 
-                            case 6:<p>@_localizer["Saturday"]</p>
-                            break;
+                            case 6:
+                                <p>@_localizer["Saturday"]</p>
+                                break;
 
-                            default:<p>@_localizer["Sunday"]</p>
-                            break;
+                            default:
+                                <p>@_localizer["Sunday"]</p>
+                                break;
                         }
                     </div>
                     <div class="hourColumn">
@@ -130,26 +139,28 @@
                 </div>
             }
 
-        <div class="row">
-            <div class="btn-group btn-group-lg w-100" role="group" aria-label="Large button group">
-                <button class="btn btn-outline-dark w-100 tabsText" id="address" onclick="showMap()" style="white-space: nowrap;">Address</button>
-                <button id="feedBtn" class="btn btn-outline-dark w-100 tabsText" onclick="showFeed()" style="white-space: nowrap;">News Feed</button>
-                <a class="btn btn-outline-dark w-100 tabsText" href=@("/Reviews/Reviews/Vendor%2F"+ @Model.ID.ToString()) style="white-space: nowrap;">Reviews</a>
+            <div class="row">
+                <div class="btn-group btn-group-lg w-100" role="group" aria-label="Large button group">
+                    <button class="btn btn-outline-dark w-100 tabsText" id="address" onclick="showMap()" style="white-space: nowrap;">Address</button>
+                    <button id="feedBtn" class="btn btn-outline-dark w-100 tabsText" onclick="showFeed()" style="white-space: nowrap;">News Feed</button>
+                    <a class="btn btn-outline-dark w-100 tabsText" href=@("/Reviews/Reviews/Vendor%2F" + Model.ID) style="white-space: nowrap;">Reviews</a>
+                </div>
+
             </div>
 
-        </div>
-
-            <div class="row mt-3 mb-3" id="map" style="height:250px;">
-                <p><b>@_localizer["Address:&nbsp;"]</b>@Model.Address</p>
-                <div id="mapid" style="width: 100%; height: 90%;"></div>
+            <div class="row mt-3 mb-3" id="map" style="height: 250px;">
+                <p>
+                    <b>@_localizer["Address:&nbsp;"]</b>@Model.Address
+                </p>
+                <div id="mapid" style="height: 90%; width: 100%;"></div>
             </div>
 
-            <div class="row mt-3 mb-3" id="feed" style="display:none">
+            <div class="row mt-3 mb-3" id="feed" style="display: none">
                 @if (userForFeed != null)
                 {
-                    @await Component.InvokeAsync("CreatePost", new FromLocalsToLocals.Web.ViewModels.CreatePostVM { User = userForFeed, DisplayInDetails = true, VendorTitle = Model.Title })
+                    @await Component.InvokeAsync("CreatePost", new CreatePostVM {User = userForFeed, DisplayInDetails = true, VendorTitle = Model.Title})
                 }
-                @await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Web.ViewModels.FeedVM { ActiveUser = userForFeed, ActiveTab = FromLocalsToLocals.Utilities.Enums.FeedTabs.VendorFeed, DisplayInDetails = true, Vendor = Model })
+                @await Component.InvokeAsync("NewsFeed", new FeedVM {ActiveUser = userForFeed, ActiveTab = FeedTabs.VendorFeed, DisplayInDetails = true, Vendor = Model})
             </div>
         </div>
     </div>
@@ -157,7 +168,7 @@
 
 
 <script>
-    var vendor = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+    var vendor = @Html.Raw(JsonConvert.SerializeObject(Model));
     var center = [vendor.Latitude, vendor.Longitude];
     var zoom = 13;
 </script>
@@ -168,6 +179,7 @@
     var mapas = document.getElementById("map");
     var feed = document.getElementById("feed");
     marker.addTo(map);
+
     function showMap() {
         if (mapas.style.display == "none") {
             feed.style.display = "none";
@@ -176,6 +188,7 @@
             $("#map").toggle("slow");
         }
     }
+
     function showFeed() {
         if (feed.style.display == "none") {
             mapas.style.display = "none";

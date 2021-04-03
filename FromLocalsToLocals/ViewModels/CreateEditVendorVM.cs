@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Collections.Generic;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace FromLocalsToLocals.Web.ViewModels
 {
     public class CreateEditVendorVM
     {
-        public CreateEditVendorVM() { }
+        public CreateEditVendorVM()
+        {
+        }
 
         public CreateEditVendorVM(Vendor vendor, List<WorkHours> workHours)
         {
@@ -23,18 +25,13 @@ namespace FromLocalsToLocals.Web.ViewModels
 
         public int ID { get; set; }
 
-        [Required]
-        [Display(Name = "Title")]
-        public string Title { get; set; }
+        [Required] [Display(Name = "Title")] public string Title { get; set; }
 
-        [Display(Name = "About")]
-        public string About { get; set; }
+        [Display(Name = "About")] public string About { get; set; }
 
         public string Link { get; set; }
 
-        [Required]
-        [Display(Name = "Address")]
-        public string Address { get; set; }
+        [Required] [Display(Name = "Address")] public string Address { get; set; }
 
         [Required]
         [Display(Name = "VendorType")]
@@ -52,15 +49,11 @@ namespace FromLocalsToLocals.Web.ViewModels
             vendor.VendorType = VendorType;
 
             if (Image != null)
-            {
                 using (var target = new MemoryStream())
                 {
                     Image.CopyTo(target);
                     vendor.Image = target.ToArray();
                 }
-            }
-
         }
-
     }
 }

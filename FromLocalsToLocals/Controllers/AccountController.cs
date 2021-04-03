@@ -111,16 +111,16 @@ namespace FromLocalsToLocals.Web.Controllers
                 {
                     var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
 
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("index", "home");
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+                    ModelState.AddModelError(string.Empty, _localizer["Invalid Login Attempt"]);
                 }
-                ModelState.AddModelError(string.Empty, _localizer["Invalid Login Attempt"]);
-            }
 
                 return View(model);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 await e.ExceptionSender();
                 return View("Error");
@@ -268,19 +268,19 @@ namespace FromLocalsToLocals.Web.Controllers
             };
 
             Func<string, Func<bool>, bool> InvalidPassword = (err, action) =>
-              {
-                  if (action())
-                  {
-                      ModelState.AddModelError("", err);
-                      return true;
-                  }
-                  return false;
-              };
+            {
+                if (action())
+                {
+                    ModelState.AddModelError("", err);
+                    return true;
+                }
+                return false;
+            };
 
             if (InvalidPassword(_localizer["Please, fill all fields"],
-                                () => { return StringArrNull(new string[] { model.Password, model.NewPassword, model.ConfirmPassword });} ) ||
+                                () => { return StringArrNull(new string[] { model.Password, model.NewPassword, model.ConfirmPassword }); }) ||
                 InvalidPassword(_localizer["Password must be at least 6 characters long"], () => { return model.NewPassword.Length < Config.minPasswordLength; }) ||
-                InvalidPassword(_localizer["Passwords do not match"], () => { return model.NewPassword != model.ConfirmPassword; })) 
+                InvalidPassword(_localizer["Passwords do not match"], () => { return model.NewPassword != model.ConfirmPassword; }))
             {
                 return RedirectToAction("Profile");
             }
@@ -377,7 +377,7 @@ namespace FromLocalsToLocals.Web.Controllers
                     return View();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 await e.ExceptionSender();
                 return View("Error");
@@ -400,7 +400,7 @@ namespace FromLocalsToLocals.Web.Controllers
                     return View("ForgotPasswordConfirmation");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 await e.ExceptionSender();
                 return View("Error");
@@ -417,11 +417,11 @@ namespace FromLocalsToLocals.Web.Controllers
                 var to = new EmailAddress(model.Email, _localizer["Dear User"]);
                 var plainTextContent = "";
 
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user); 
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-             
+
                 var callbackUrl = Url.Action("ResetPassword", "Account",
-                new { user = user , code = code }, protocol: Request.Scheme);
+                new { user = user, code = code }, protocol: Request.Scheme);
 
                 var htmlContent = SendMail.htmlCodeForEmails + "</td></tr><tr><td class=\"content\"><h3> Please confirm your account by clicking this link: " + " <a href =\""
                  + callbackUrl + "\">link</a> </body></html>" +

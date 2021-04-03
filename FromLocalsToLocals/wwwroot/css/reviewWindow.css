@@ -1,15 +1,10 @@
-﻿ul li:nth-child(n+11) {
-    display: none;
-}
+﻿ul li:nth-child(n + 11) { display: none; }
 
 /* For desktop: */
-.reviewColumn {
-    width: 66.66%;
-}
+
+.reviewColumn { width: 66.66%; }
 
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
-    [class*="reviewColumn"] {
-        width: 100%;
-    }
+    [class*="reviewColumn"] { width: 100%; }
 }

@@ -1,6 +1,6 @@
-﻿using FromLocalsToLocals.Web.ViewModels;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Web.ViewComponents
 {

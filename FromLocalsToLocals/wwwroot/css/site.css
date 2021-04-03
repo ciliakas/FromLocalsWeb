@@ -3,26 +3,25 @@ for details on configuring this project to bundle and minify static web assets. 
 
 
 a.navbar-brand {
-    white-space: normal;
     text-align: center;
+    white-space: normal;
     word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
-a {
-    color: #0366d6;
-}
+
+a { color: #0366d6; }
 
 .btn-primary {
-    color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
+    color: #fff;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
+    color: #fff;
 }
 
 p {
@@ -32,46 +31,38 @@ p {
 
 p.average {
     color: green;
-    font-weight: bold;
     font-size: 65px;
+    font-weight: bold;
 }
 
 span.five {
     color: dimgray;
-    font-weight: bold;
     font-size: 65px;
+    font-weight: bold;
 }
 
 /* Reviews list template*/
+
 card.reviewsDisplay {
     overflow: hidden;
     word-wrap: break-word;
 }
 
-.checked {
-    color: orange;
-}
+.checked { color: orange; }
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
-    font-size: 14px;
-}
+
+html { font-size: 14px; }
 
 @media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+    html { font-size: 16px; }
 }
 
 
-.border-bottom {
-    border-bottom: 1px solid #e5e5e5;
-}
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
 
-.box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
 button.accept-policy {
     font-size: 1rem;
@@ -80,61 +71,64 @@ button.accept-policy {
 
 /* Sticky footer styles
 -------------------------------------------------- */
+
 html {
-    position: relative;
     min-height: 100%;
+    position: relative;
 }
 
 body {
+    background-color: whitesmoke;
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background-color: whitesmoke;
 }
 
 .footer {
-    position: absolute;
     bottom: 0;
-    width: 100%;
-    white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    white-space: nowrap;
+    width: 100%;
 }
 
 
 /*Leaflet marker custom control ("popup")*/
+
 .info {
-    padding: 6px 8px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 5px;
-    width:200px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    padding: 6px 8px;
+    width: 200px;
 }
 
 .info h4 {
-    margin: 0 0 5px;
     color: #916814;
-    font-weight:bolder;
+    font-weight: bolder;
+    margin: 0 0 5px;
 }
 
 /*Close button */
+
 button.boxclose {
-    float: right;
-    cursor: pointer;
-    color: #fff;
-    margin: 2px;
+    background: #4a1515;
     border: 1px solid #AEAEAE;
     border-radius: 30px;
-    background: #4a1515;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    float: right;
     font-size: 31px;
     font-weight: bold;
-    display: inline-block;
     line-height: 0px;
+    margin: 2px;
     padding: 11px 3px;
 }
 
 .boxclose:before {
-    content: "×";
     color: white;
+    content: "×";
 }
 
 .star {
@@ -151,57 +145,47 @@ button.boxclose {
     /* the style for a selected star */
     content: '\2605'; /* filled star */
 }
-        
+
 .stars {
     counter-reset: rateme 0;
     font-size: 2.0rem;
     font-weight: 900;
 }
 
-.star.rated {
-    counter-increment: rateme 1;
-}
+.star.rated { counter-increment: rateme 1; }
 
-img.userImage.mr-3{
-    border-radius: 50%;
-}
+img.userImage.mr-3 { border-radius: 50%; }
 
 .center {
-    position: absolute;
     left: 25%;
+    position: absolute;
     top: 10%;
 }
 
 
-.time {
-    margin-left: auto;
-}
+.time { margin-left: auto; }
 
 .report-post {
     background-color: #CCBA8B;
 }
 
 .loader {
-    border-top: 16px solid #cc9900;
-    border-right: 16px solid #666699;
+    animation: spin 2s linear infinite;
     border-bottom: 16px solid #339966;
     border-left: 16px solid #cc6600;
     border-radius: 50%;
-    width: 120px;
+    border-right: 16px solid #666699;
+    border-top: 16px solid #cc9900;
     height: 120px;
-    animation: spin 2s linear infinite;
-    top: 50%;
     left: 50%;
-    position: absolute;
     margin: -68px 0px 0px -68px;
+    position: absolute;
+    top: 50%;
+    width: 120px;
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
+    0% { transform: rotate(0deg); }
 
-    100% {
-        transform: rotate(360deg);
-    }
+    100% { transform: rotate(360deg); }
 }

@@ -1,6 +1,4 @@
-﻿
-
-namespace FromLocalsToLocals.Utilities.Enums
+﻿namespace FromLocalsToLocals.Utilities.Enums
 {
     public enum FeedTabs
     {

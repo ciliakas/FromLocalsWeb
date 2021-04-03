@@ -1,5 +1,3 @@
-using System;
-
 namespace FromLocalsToLocals.Web.ViewModels
 {
     public class ErrorViewModel

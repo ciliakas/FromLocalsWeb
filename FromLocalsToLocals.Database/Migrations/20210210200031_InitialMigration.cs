@@ -9,481 +9,475 @@ namespace FromLocalsToLocals.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
+                "AspNetRoles",
+                table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>("text", nullable: false),
+                    Name = table.Column<string>("character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>("character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>("text", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_AspNetRoles", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
+                "AspNetUsers",
+                table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Image = table.Column<byte[]>(type: "bytea", nullable: true),
-                    VendorsCount = table.Column<int>(type: "integer", nullable: false),
-                    Subscribe = table.Column<bool>(type: "boolean", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<string>("text", nullable: false),
+                    Image = table.Column<byte[]>("bytea", nullable: true),
+                    VendorsCount = table.Column<int>("integer", nullable: false),
+                    Subscribe = table.Column<bool>("boolean", nullable: false),
+                    UserName = table.Column<string>("character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>("character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>("character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>("character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>("boolean", nullable: false),
+                    PasswordHash = table.Column<string>("text", nullable: true),
+                    SecurityStamp = table.Column<string>("text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>("text", nullable: true),
+                    PhoneNumber = table.Column<string>("text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>("boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>("boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>("timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>("boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>("integer", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_AspNetUsers", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
-                columns: table => new
+                "AspNetRoleClaims",
+                table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    RoleId = table.Column<string>("text", nullable: false),
+                    ClaimType = table.Column<string>("text", nullable: true),
+                    ClaimValue = table.Column<string>("text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        x => x.RoleId,
+                        "AspNetRoles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
-                columns: table => new
+                "AspNetUserClaims",
+                table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>("text", nullable: false),
+                    ClaimType = table.Column<string>("text", nullable: true),
+                    ClaimValue = table.Column<string>("text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
-                columns: table => new
+                "AspNetUserLogins",
+                table => new
                 {
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    ProviderKey = table.Column<string>(type: "text", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    LoginProvider = table.Column<string>("text", nullable: false),
+                    ProviderKey = table.Column<string>("text", nullable: false),
+                    ProviderDisplayName = table.Column<string>("text", nullable: true),
+                    UserId = table.Column<string>("text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
-                columns: table => new
+                "AspNetUserRoles",
+                table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>("text", nullable: false),
+                    RoleId = table.Column<string>("text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        x => x.RoleId,
+                        "AspNetRoles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
-                columns: table => new
+                "AspNetUserTokens",
+                table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>("text", nullable: false),
+                    LoginProvider = table.Column<string>("text", nullable: false),
+                    Name = table.Column<string>("text", nullable: false),
+                    Value = table.Column<string>("text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vendors",
-                columns: table => new
+                "Vendors",
+                table => new
                 {
-                    ID = table.Column<int>(type: "integer", nullable: false)
+                    ID = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    UserID = table.Column<string>(type: "text", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    About = table.Column<string>(type: "text", nullable: true),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    DateCreated = table.Column<string>(type: "text", nullable: false),
-                    Latitude = table.Column<double>(type: "double precision", nullable: false),
-                    Longitude = table.Column<double>(type: "double precision", nullable: false),
-                    VendorType = table.Column<string>(type: "text", nullable: true),
-                    Popularity = table.Column<int>(type: "integer", nullable: false),
-                    LastClickDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Image = table.Column<byte[]>(type: "bytea", nullable: true)
+                    UserID = table.Column<string>("text", nullable: false),
+                    Title = table.Column<string>("text", nullable: false),
+                    About = table.Column<string>("text", nullable: true),
+                    Address = table.Column<string>("text", nullable: false),
+                    DateCreated = table.Column<string>("text", nullable: false),
+                    Latitude = table.Column<double>("double precision", nullable: false),
+                    Longitude = table.Column<double>("double precision", nullable: false),
+                    VendorType = table.Column<string>("text", nullable: true),
+                    Popularity = table.Column<int>("integer", nullable: false),
+                    LastClickDate = table.Column<DateTime>("timestamp without time zone", nullable: false),
+                    Image = table.Column<byte[]>("bytea", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vendors", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Vendors_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_Vendors_AspNetUsers_UserID",
+                        x => x.UserID,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Contacts",
-                columns: table => new
+                "Contacts",
+                table => new
                 {
-                    ID = table.Column<int>(type: "integer", nullable: false)
+                    ID = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    UserRead = table.Column<bool>(type: "boolean", nullable: false),
-                    ReceiverRead = table.Column<bool>(type: "boolean", nullable: false),
-                    UserID = table.Column<string>(type: "text", nullable: false),
-                    ReceiverID = table.Column<int>(type: "integer", nullable: false)
+                    UserRead = table.Column<bool>("boolean", nullable: false),
+                    ReceiverRead = table.Column<bool>("boolean", nullable: false),
+                    UserID = table.Column<string>("text", nullable: false),
+                    ReceiverID = table.Column<int>("integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contacts", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Contacts_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_Contacts_AspNetUsers_UserID",
+                        x => x.UserID,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Contacts_Vendors_ReceiverID",
-                        column: x => x.ReceiverID,
-                        principalTable: "Vendors",
-                        principalColumn: "ID",
+                        "FK_Contacts_Vendors_ReceiverID",
+                        x => x.ReceiverID,
+                        "Vendors",
+                        "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Followers",
-                columns: table => new
+                "Followers",
+                table => new
                 {
-                    UserID = table.Column<string>(type: "text", nullable: false),
-                    VendorID = table.Column<int>(type: "integer", nullable: false)
+                    UserID = table.Column<string>("text", nullable: false),
+                    VendorID = table.Column<int>("integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Followers", x => new { x.UserID, x.VendorID });
                     table.ForeignKey(
-                        name: "FK_Followers_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_Followers_AspNetUsers_UserID",
+                        x => x.UserID,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Followers_Vendors_VendorID",
-                        column: x => x.VendorID,
-                        principalTable: "Vendors",
-                        principalColumn: "ID",
+                        "FK_Followers_Vendors_VendorID",
+                        x => x.VendorID,
+                        "Vendors",
+                        "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
+                "Posts",
+                table => new
                 {
-                    PostID = table.Column<int>(type: "integer", nullable: false)
+                    PostID = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    VendorID = table.Column<int>(type: "integer", nullable: false),
-                    Date = table.Column<string>(type: "text", nullable: true),
-                    Text = table.Column<string>(type: "text", nullable: true),
-                    Image = table.Column<byte[]>(type: "bytea", nullable: true)
+                    VendorID = table.Column<int>("integer", nullable: false),
+                    Date = table.Column<string>("text", nullable: true),
+                    Text = table.Column<string>("text", nullable: true),
+                    Image = table.Column<byte[]>("bytea", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.PostID);
                     table.ForeignKey(
-                        name: "FK_Posts_Vendors_VendorID",
-                        column: x => x.VendorID,
-                        principalTable: "Vendors",
-                        principalColumn: "ID",
+                        "FK_Posts_Vendors_VendorID",
+                        x => x.VendorID,
+                        "Vendors",
+                        "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
-                columns: table => new
+                "Reviews",
+                table => new
                 {
-                    ID = table.Column<int>(type: "integer", nullable: false)
+                    ID = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    VendorID = table.Column<int>(type: "integer", nullable: false),
-                    CommentID = table.Column<int>(type: "integer", nullable: false),
-                    SenderUsername = table.Column<string>(type: "text", nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    Stars = table.Column<int>(type: "integer", nullable: false),
-                    Date = table.Column<string>(type: "text", nullable: false),
-                    Reply = table.Column<string>(type: "text", nullable: true),
-                    ReplySender = table.Column<string>(type: "text", nullable: true),
-                    ReplyDate = table.Column<string>(type: "text", nullable: true)
+                    VendorID = table.Column<int>("integer", nullable: false),
+                    CommentID = table.Column<int>("integer", nullable: false),
+                    SenderUsername = table.Column<string>("text", nullable: false),
+                    Text = table.Column<string>("text", nullable: false),
+                    Stars = table.Column<int>("integer", nullable: false),
+                    Date = table.Column<string>("text", nullable: false),
+                    Reply = table.Column<string>("text", nullable: true),
+                    ReplySender = table.Column<string>("text", nullable: true),
+                    ReplyDate = table.Column<string>("text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Reviews_Vendors_VendorID",
-                        column: x => x.VendorID,
-                        principalTable: "Vendors",
-                        principalColumn: "ID",
+                        "FK_Reviews_Vendors_VendorID",
+                        x => x.VendorID,
+                        "Vendors",
+                        "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "VendorWorkHours",
-                columns: table => new
+                "VendorWorkHours",
+                table => new
                 {
-                    ID = table.Column<int>(type: "integer", nullable: false)
+                    ID = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    IsWorking = table.Column<bool>(type: "boolean", nullable: false),
-                    VendorID = table.Column<int>(type: "integer", nullable: false),
-                    Day = table.Column<int>(type: "integer", nullable: false),
-                    OpenTime = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    CloseTime = table.Column<TimeSpan>(type: "interval", nullable: false)
+                    IsWorking = table.Column<bool>("boolean", nullable: false),
+                    VendorID = table.Column<int>("integer", nullable: false),
+                    Day = table.Column<int>("integer", nullable: false),
+                    OpenTime = table.Column<TimeSpan>("interval", nullable: false),
+                    CloseTime = table.Column<TimeSpan>("interval", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VendorWorkHours", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_VendorWorkHours_Vendors_VendorID",
-                        column: x => x.VendorID,
-                        principalTable: "Vendors",
-                        principalColumn: "ID",
+                        "FK_VendorWorkHours_Vendors_VendorID",
+                        x => x.VendorID,
+                        "Vendors",
+                        "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Messages",
-                columns: table => new
+                "Messages",
+                table => new
                 {
-                    ID = table.Column<int>(type: "integer", nullable: false)
+                    ID = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<string>(type: "text", nullable: true),
-                    IsUserSender = table.Column<bool>(type: "boolean", nullable: false),
-                    ContactID = table.Column<int>(type: "integer", nullable: false)
+                    Text = table.Column<string>("text", nullable: false),
+                    Date = table.Column<string>("text", nullable: true),
+                    IsUserSender = table.Column<bool>("boolean", nullable: false),
+                    ContactID = table.Column<int>("integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Messages_Contacts_ContactID",
-                        column: x => x.ContactID,
-                        principalTable: "Contacts",
-                        principalColumn: "ID",
+                        "FK_Messages_Contacts_ContactID",
+                        x => x.ContactID,
+                        "Contacts",
+                        "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
+                "Notifications",
+                table => new
                 {
-                    NotiId = table.Column<int>(type: "integer", nullable: false)
+                    NotiId = table.Column<int>("integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    OwnerId = table.Column<string>(type: "text", nullable: true),
-                    VendorId = table.Column<int>(type: "integer", nullable: false),
-                    Url = table.Column<string>(type: "text", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    NotiBody = table.Column<string>(type: "text", nullable: true),
-                    ReviewID = table.Column<int>(type: "integer", nullable: true)
+                    OwnerId = table.Column<string>("text", nullable: true),
+                    VendorId = table.Column<int>("integer", nullable: false),
+                    Url = table.Column<string>("text", nullable: true),
+                    CreatedDate = table.Column<DateTime>("timestamp without time zone", nullable: false),
+                    NotiBody = table.Column<string>("text", nullable: true),
+                    ReviewID = table.Column<int>("integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notifications", x => x.NotiId);
                     table.ForeignKey(
-                        name: "FK_Notifications_Reviews_ReviewID",
-                        column: x => x.ReviewID,
-                        principalTable: "Reviews",
-                        principalColumn: "ID",
+                        "FK_Notifications_Reviews_ReviewID",
+                        x => x.ReviewID,
+                        "Reviews",
+                        "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoleClaims_RoleId",
-                table: "AspNetRoleClaims",
-                column: "RoleId");
+                "IX_AspNetRoleClaims_RoleId",
+                "AspNetRoleClaims",
+                "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName",
+                "RoleNameIndex",
+                "AspNetRoles",
+                "NormalizedName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_UserId",
-                table: "AspNetUserClaims",
-                column: "UserId");
+                "IX_AspNetUserClaims_UserId",
+                "AspNetUserClaims",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId");
+                "IX_AspNetUserLogins_UserId",
+                "AspNetUserLogins",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId",
-                table: "AspNetUserRoles",
-                column: "RoleId");
+                "IX_AspNetUserRoles_RoleId",
+                "AspNetUserRoles",
+                "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                table: "AspNetUsers",
-                column: "NormalizedEmail");
+                "EmailIndex",
+                "AspNetUsers",
+                "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
+                "UserNameIndex",
+                "AspNetUsers",
+                "NormalizedUserName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contacts_ReceiverID",
-                table: "Contacts",
-                column: "ReceiverID");
+                "IX_Contacts_ReceiverID",
+                "Contacts",
+                "ReceiverID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contacts_UserID",
-                table: "Contacts",
-                column: "UserID");
+                "IX_Contacts_UserID",
+                "Contacts",
+                "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Followers_VendorID",
-                table: "Followers",
-                column: "VendorID");
+                "IX_Followers_VendorID",
+                "Followers",
+                "VendorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ContactID",
-                table: "Messages",
-                column: "ContactID");
+                "IX_Messages_ContactID",
+                "Messages",
+                "ContactID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifications_ReviewID",
-                table: "Notifications",
-                column: "ReviewID");
+                "IX_Notifications_ReviewID",
+                "Notifications",
+                "ReviewID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_VendorID",
-                table: "Posts",
-                column: "VendorID");
+                "IX_Posts_VendorID",
+                "Posts",
+                "VendorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_VendorID",
-                table: "Reviews",
-                column: "VendorID");
+                "IX_Reviews_VendorID",
+                "Reviews",
+                "VendorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vendors_UserID",
-                table: "Vendors",
-                column: "UserID");
+                "IX_Vendors_UserID",
+                "Vendors",
+                "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VendorWorkHours_VendorID",
-                table: "VendorWorkHours",
-                column: "VendorID");
+                "IX_VendorWorkHours_VendorID",
+                "VendorWorkHours",
+                "VendorID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
+                "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
+                "AspNetUserClaims");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
+                "AspNetUserLogins");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
+                "AspNetUserRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
+                "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Followers");
+                "Followers");
 
             migrationBuilder.DropTable(
-                name: "Messages");
+                "Messages");
 
             migrationBuilder.DropTable(
-                name: "Notifications");
+                "Notifications");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                "Posts");
 
             migrationBuilder.DropTable(
-                name: "VendorWorkHours");
+                "VendorWorkHours");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Contacts");
+                "Contacts");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                "Reviews");
 
             migrationBuilder.DropTable(
-                name: "Vendors");
+                "Vendors");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                "AspNetUsers");
         }
     }
 }

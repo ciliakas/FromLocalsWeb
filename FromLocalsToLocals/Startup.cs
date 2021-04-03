@@ -1,25 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Services.Ado;
+using FromLocalsToLocals.Services.EF;
+using FromLocalsToLocals.Utilities;
+using FromLocalsToLocals.Web.Utilities;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NToastNotify;
-using Microsoft.AspNetCore.Mvc.Razor;
-using System.Globalization;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Localization;
-using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Database;
-using FromLocalsToLocals.Web.Utilities;
-using FromLocalsToLocals.Services.EF;
-using FromLocalsToLocals.Services.Ado;
-using Hangfire;
-using Hangfire.MemoryStorage;
-using FromLocalsToLocals.Utilities;
+using NToastNotify;
 
 namespace FromLocalsToLocals.Web
 {
@@ -46,16 +46,18 @@ namespace FromLocalsToLocals.Web
                 options.CheckConsentNeeded = context => true;
                 //options.MinimumSameSitePolicy = SameSiteMode.None;
             });
- 
+
 
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
-            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
 
             services.Configure<RequestLocalizationOptions>(opts =>
             {
-                var supportedCultures = new List<CultureInfo> {
-                new CultureInfo("en"),
-                new CultureInfo("lt"),
+                var supportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en"),
+                    new CultureInfo("lt")
                 };
                 opts.DefaultRequestCulture = new RequestCulture("en");
                 opts.SupportedCultures = supportedCultures;
@@ -63,7 +65,7 @@ namespace FromLocalsToLocals.Web
                 opts.RequestCultureProviders = new List<IRequestCultureProvider>
                 {
                     new QueryStringRequestCultureProvider(),
-                new CookieRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
                 };
             });
             services.AddControllersWithViews();
@@ -92,7 +94,7 @@ namespace FromLocalsToLocals.Web
             });
 
 
-            services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
+            services.AddMvc().AddNToastNotifyToastr(new ToastrOptions
             {
                 ProgressBar = false,
                 PositionClass = ToastPositions.BottomCenter
@@ -109,15 +111,14 @@ namespace FromLocalsToLocals.Web
             services.AddSignalR();
 
             services.AddHangfire(configuration =>
-            configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-               .UseSimpleAssemblyNameTypeSerializer()
-               .UseRecommendedSerializerSettings()
-               .UseMemoryStorage());
+                configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseMemoryStorage());
 
 
             // Add the processing server as IHostedService
             services.AddHangfireServer();
-
         }
 
 
@@ -128,12 +129,8 @@ namespace FromLocalsToLocals.Web
             //RecurringJob.AddOrUpdate(() => sendAll.SendingAll(), Cron.MinuteInterval(1));
 
 
-
             app.UseCookiePolicy();
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -145,16 +142,16 @@ namespace FromLocalsToLocals.Web
 
             app.UseNToastNotify();
 
-            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+            app.UseRequestLocalization(app.ApplicationServices
+                .GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<NotiHub>("/notiHub");
                 endpoints.MapHub<MessageHub>("/msgHub");
-
             });
         }
     }

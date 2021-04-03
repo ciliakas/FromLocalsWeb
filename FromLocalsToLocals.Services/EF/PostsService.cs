@@ -1,13 +1,13 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Services.EF
 {
@@ -20,26 +20,26 @@ namespace FromLocalsToLocals.Services.EF
             _context = context;
         }
 
-        public async Task CreatePost(string text, Vendor vendor , IFormFile image)
+        public async Task CreatePost(string text, Vendor vendor, IFormFile image)
         {
-             var post = new Post(text, vendor, image.ConvertToBytes());
+            var post = new Post(text, vendor, image.ConvertToBytes());
 
-             _context.Posts.Add(post);
-             await _context.SaveChangesAsync();
-             //await _vendorService.AddPostAsync(selectedVendor, post);
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+            //await _vendorService.AddPostAsync(selectedVendor, post);
         }
 
         public async Task<IActionResult> GetAllPostsAsync(int skip, int take)
         {
             try
             {
-                return new JsonResult(await _context.Posts.OrderByDescending(x => x).Skip(skip).Take(take).ToListAsync());
+                return new JsonResult(
+                    await _context.Posts.OrderByDescending(x => x).Skip(skip).Take(take).ToListAsync());
             }
             catch
             {
                 throw new Exception("Something unexpected happened while trying to load posts");
             }
-
         }
 
         public async Task<IActionResult> GetFollowingPostsAsync(string userId, int skip, int take)
@@ -48,18 +48,13 @@ namespace FromLocalsToLocals.Services.EF
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
                 var listOfPosts = new List<Post>();
-                foreach(var follower in user.Following)
-                {
-                    foreach(var p in follower.Vendor.Posts)
-                    {
-                        listOfPosts.Add(p);
-                    }
-                }
+                foreach (var follower in user.Following)
+                foreach (var p in follower.Vendor.Posts)
+                    listOfPosts.Add(p);
 
                 listOfPosts = listOfPosts.OrderByDescending(x => x.Date).Skip(skip).Take(take).ToList();
 
                 return new JsonResult(listOfPosts);
-
             }
             catch
             {
@@ -71,7 +66,8 @@ namespace FromLocalsToLocals.Services.EF
         {
             try
             {
-                return new  JsonResult(await _context.Posts.Where(x => x.VendorID == vendorId).OrderByDescending(x => x).Skip(skip).Take(take).ToListAsync());
+                return new JsonResult(await _context.Posts.Where(x => x.VendorID == vendorId).OrderByDescending(x => x)
+                    .Skip(skip).Take(take).ToListAsync());
             }
             catch
             {

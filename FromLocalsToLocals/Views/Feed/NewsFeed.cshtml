@@ -1,4 +1,5 @@
-﻿@model FromLocalsToLocals.Web.ViewModels.FeedVM
+﻿@using FromLocalsToLocals.Web.ViewModels
+@model FromLocalsToLocals.Web.ViewModels.FeedVM
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 @inject UserManager<AppUser> userManager
@@ -9,7 +10,7 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="~/css/Posts.css">
-<div style="display: flex;background: #343a40;margin:-25px -15px 0px -15px;padding:10px;">
+<div style="background: #343a40; display: flex; margin: -25px -15px 0px -15px; padding: 10px;">
     @if (user != null)
     {
         <a class="text-center text-white" style="font-size: 19px; width: 50%;" href="/Feed/SwitchTabs?tabname=MyFeed">My Feed</a>
@@ -19,7 +20,6 @@
 
 @if (user != null && user.Vendors.Count > 0)
 {
-    @await Component.InvokeAsync("CreatePost", new FromLocalsToLocals.Web.ViewModels.CreatePostVM { User = user, DisplayInDetails = false })
+    @await Component.InvokeAsync("CreatePost", new CreatePostVM {User = user, DisplayInDetails = false})
 }
-@await Component.InvokeAsync("NewsFeed", new FromLocalsToLocals.Web.ViewModels.FeedVM { ActiveUser = user, DisplayInDetails = false })
-
+@await Component.InvokeAsync("NewsFeed", new FeedVM {ActiveUser = user, DisplayInDetails = false})

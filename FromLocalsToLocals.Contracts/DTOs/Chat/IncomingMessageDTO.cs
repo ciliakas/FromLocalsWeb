@@ -1,5 +1,4 @@
-﻿
-namespace FromLocalsToLocals.Contracts.DTO
+﻿namespace FromLocalsToLocals.Contracts.DTO
 {
     public class IncomingMessageDTO
     {

@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
@@ -10,26 +8,29 @@ namespace FromLocalsToLocals.Utilities
 {
     public static class HtmlDropDownExtensions
     {
-        public static MvcHtmlString EnumDropDownList<TEnum>(this HtmlHelper htmlHelper, string name, TEnum selectedValue)
+        public static MvcHtmlString EnumDropDownList<TEnum>(this HtmlHelper htmlHelper, string name,
+            TEnum selectedValue)
         {
             var values = Enum.GetValues(typeof(TEnum))
                 .Cast<TEnum>();
 
-           var items =
+            var items =
                 from value in values
                 select new SelectListItem
                 {
                     Text = value.ToString(),
                     Value = value.ToString(),
-                    Selected = (value.Equals(selectedValue))
+                    Selected = value.Equals(selectedValue)
                 };
 
             return htmlHelper.DropDownList(
                 name,
                 items
-                );
+            );
         }
-        public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression)
+
+        public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TEnum>> expression)
         {
             var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
             var enumValues = Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
@@ -45,7 +46,7 @@ namespace FromLocalsToLocals.Utilities
             return htmlHelper.DropDownListFor(
                 expression,
                 newListOfEnumValues
-                );
+            );
         }
     }
 }

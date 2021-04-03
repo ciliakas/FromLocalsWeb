@@ -24,17 +24,17 @@
                                         }
                                         else
                                         {
-                                            <input type="hidden" asp-for="@Model.VendorTitle" value="@Model.VendorTitle" />
+                                            <input type="hidden" asp-for="@Model.VendorTitle" value="@Model.VendorTitle"/>
                                         }
-                                        <input type="hidden" asp-for="@Model.PostBackUrl" value="@Html.ViewContext.HttpContext.Request.Path.Value.ToString()" />
+                                        <input type="hidden" asp-for="@Model.PostBackUrl" value="@Html.ViewContext.HttpContext.Request.Path.Value"/>
 
                                     </div>
                                     <div class="timeline-content">
-                                        <textarea asp-for="@Model.Text" style="width:100%" placeholder="What's new?"></textarea>
+                                        <textarea asp-for="@Model.Text" style="width: 100%" placeholder="What's new?"></textarea>
                                     </div>
                                     <div class="timeline-footer">
                                         <div class="=row">
-                                            <label class="btn btn-primary" style="margin:0px;">
+                                            <label class="btn btn-primary" style="margin: 0px;">
                                                 <i class="fa fa-image"></i>
                                                 <span id="selectPhotoBtnText">Add Photo</span>
                                                 <input onchange="imageUpload(this)" id="imageInput" type="file" style="display: none;" name="image" asp-for="Image">
