@@ -1,10 +1,10 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using FromLocalsToLocals.Database;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
+using FromLocalsToLocals.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace FromLocalsToLocals.Services.EF
 {
@@ -17,7 +17,7 @@ namespace FromLocalsToLocals.Services.EF
             _context = context;
         }
 
-        public async Task AddReplyAsync(int id, int index ,string text, string sender)
+        public async Task AddReplyAsync(int id, int index, string text, string sender)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace FromLocalsToLocals.Services.EF
 
         public Task<Review> GetReviewAsync(int id, int index)
         {
-            return _context.Reviews.FirstOrDefaultAsync(x => (x.VendorID == id) && (x.CommentID == index));
+            return _context.Reviews.FirstOrDefaultAsync(x => x.VendorID == id && x.CommentID == index);
         }
 
         public async Task<List<Review>> GetReviewsAsync(int id)

@@ -1,6 +1,5 @@
-﻿
-namespace FromLocalsToLocals.Contracts.DTO {
-    
+﻿namespace FromLocalsToLocals.Contracts.DTO
+{
     public class OutGoingMessageDTO
     {
         public string Message { get; set; }
@@ -9,7 +8,5 @@ namespace FromLocalsToLocals.Contracts.DTO {
         public byte[] Image { get; set; }
         public string VendorTitle { get; set; }
         public string UserToSendId { get; set; }
-    
     }
-    
 }

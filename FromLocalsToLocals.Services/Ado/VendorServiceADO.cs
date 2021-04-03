@@ -1,11 +1,9 @@
-﻿
-
+﻿using System.Data;
+using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using System.Data;
-using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Services.Ado
 {
@@ -20,14 +18,15 @@ namespace FromLocalsToLocals.Services.Ado
 
         public async Task UpdateVendorAsync(Vendor vendor)
         {
-            try 
+            try
             {
                 using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
                 {
                     connection.Open();
 
-                    NpgsqlCommand update = new NpgsqlCommand("UPDATE \"Vendors\" " +
-                        "SET = \"Title\" = @Title, \"About\" = @About, \"Address\" = @Address, \"VendorType\" = @VendorType, \"Image\" = @Image, WHERE \"ID\" = @Id", connection);
+                    var update = new NpgsqlCommand("UPDATE \"Vendors\" " +
+                                                   "SET = \"Title\" = @Title, \"About\" = @About, \"Address\" = @Address, \"VendorType\" = @VendorType, \"Image\" = @Image, WHERE \"ID\" = @Id",
+                        connection);
 
                     update.Parameters.AddWithValue("@Id", vendor.ID);
                     update.Parameters.AddWithValue("@Title", vendor.Title);
@@ -37,13 +36,15 @@ namespace FromLocalsToLocals.Services.Ado
                     update.Parameters.AddWithValue("@Image", vendor.Image);
 
 
-                    NpgsqlDataAdapter dataAdapter = new NpgsqlDataAdapter("SELECT ID, Title, About, Address, VendorType, Image FROM \"Vendors\"", connection);
+                    var dataAdapter =
+                        new NpgsqlDataAdapter("SELECT ID, Title, About, Address, VendorType, Image FROM \"Vendors\"",
+                            connection);
                     dataAdapter.UpdateCommand = update;
 
-                    DataSet dataSet = new DataSet();
+                    var dataSet = new DataSet();
                     dataAdapter.Fill(dataSet, "\"Vendors\"");
 
-                    DataTable dataTable = new DataTable();
+                    var dataTable = new DataTable();
                     dataTable = dataSet.Tables["\"Vendors\""];
 
                     dataAdapter.Update(dataTable);
@@ -51,7 +52,7 @@ namespace FromLocalsToLocals.Services.Ado
                 }
             }
 
-            catch(NpgsqlException e)
+            catch (NpgsqlException e)
             {
                 await e.ExceptionSender();
             }
@@ -61,11 +62,12 @@ namespace FromLocalsToLocals.Services.Ado
         {
             try
             {
-                using (NpgsqlConnection connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
+                using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
                 {
                     connection.Open();
 
-                    using(var insert = new NpgsqlCommand("INSERT INTO \"VendorWorkHours\" (\"ID\", \"VendorID\", \"IsWorking\", \"Day\", \"OpenTime\", \"CloseTime\")" +
+                    using (var insert = new NpgsqlCommand(
+                        "INSERT INTO \"VendorWorkHours\" (\"ID\", \"VendorID\", \"IsWorking\", \"Day\", \"OpenTime\", \"CloseTime\")" +
                         "VALUES (DEFAULT, @VendorID, @IsWorking, @Day, @OpentTime, @CloseTime)", connection))
                     {
                         insert.Parameters.AddWithValue("@VendorID", workHours.VendorID);
@@ -89,7 +91,7 @@ namespace FromLocalsToLocals.Services.Ado
         {
             try
             {
-                using (NpgsqlConnection connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
+                using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("AppDbContext")))
                 {
                     connection.Open();
 

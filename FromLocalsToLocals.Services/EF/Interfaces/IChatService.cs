@@ -1,6 +1,6 @@
-﻿using FromLocalsToLocals.Contracts.DTO;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.DTO;
 using FromLocalsToLocals.Contracts.Entities;
-using System.Threading.Tasks;
 
 namespace FromLocalsToLocals.Services.EF
 {

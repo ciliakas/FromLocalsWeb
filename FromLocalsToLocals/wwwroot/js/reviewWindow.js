@@ -1,44 +1,44 @@
 ﻿function readMore() {
-    $('#allReviews li:hidden').slice(0, 10).show();
-    if ($('#allReviews li').length == $('#allReviews li:visible').length) {
+    $("#allReviews li:hidden").slice(0, 10).show();
+    if ($("#allReviews li").length == $("#allReviews li:visible").length) {
         document.getElementById("readMoreBtn").hidden = true;
     }
 }
 
 function checkInput() {
-    var stars = document.querySelector('.stars').getAttribute('data-rating');
+    var stars = document.querySelector(".stars").getAttribute("data-rating");
     var text = (document.getElementById("userComment").value).trim();
 
-    if (stars == 0 || text == '') {
+    if (stars == 0 || text == "") {
         document.getElementById("postComment").disabled = true;
-    }
-    else {
+    } else {
         document.getElementById("postComment").disabled = false;
     }
 }
 
 //initial setup
-document.addEventListener('DOMContentLoaded', function () {
-    let stars = document.querySelectorAll('.star');
-    stars.forEach(function (star) {
-        star.addEventListener('click', setRating);
-    });
+document.addEventListener("DOMContentLoaded",
+    function() {
+        let stars = document.querySelectorAll(".star");
+        stars.forEach(function(star) {
+            star.addEventListener("click", setRating);
+        });
 
-    let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
-    let target = stars[rating - 1];
-    target.dispatchEvent(new MouseEvent('click'));
-});
+        let rating = parseInt(document.querySelector(".stars").getAttribute("data-rating"));
+        let target = stars[rating - 1];
+        target.dispatchEvent(new MouseEvent("click"));
+    });
 
 function setRating(ev) {
     let span = ev.currentTarget;
-    let stars = document.querySelectorAll('.star');
+    let stars = document.querySelectorAll(".star");
     let match = false;
     let num = 0;
-    stars.forEach(function (star, index) {
+    stars.forEach(function(star, index) {
         if (match) {
-            star.classList.remove('rated');
+            star.classList.remove("rated");
         } else {
-            star.classList.add('rated');
+            star.classList.add("rated");
         }
         //are we currently looking at the span that was clicked
         if (star === span) {
@@ -46,7 +46,7 @@ function setRating(ev) {
             num = index + 1;
         }
     });
-    document.querySelector('.stars').setAttribute('data-rating', num);
+    document.querySelector(".stars").setAttribute("data-rating", num);
     checkInput();
 }
 
@@ -65,47 +65,47 @@ function sortList(arg) {
         switch (arg) {
 
             // reviews by newest
-            case 1:
-                for (i = 0; i < (b.length - 1); i++) {
-                    shouldSwitch = false;
+        case 1:
+            for (i = 0; i < (b.length - 1); i++) {
+                shouldSwitch = false;
 
-                    var date1 = getDate(b, i);
-                    var date2 = getDate(b, i + 1);
+                var date1 = getDate(b, i);
+                var date2 = getDate(b, i + 1);
 
-                    if (date1 < date2) {
-                        shouldSwitch = true;
-                        break;
-                    }
+                if (date1 < date2) {
+                    shouldSwitch = true;
+                    break;
                 }
-                break;
+            }
+            break;
 
-            // reviews by oldest
-            case 2:
-                for (i = 0; i < (b.length - 1); i++) {
-                    shouldSwitch = false;
+        // reviews by oldest
+        case 2:
+            for (i = 0; i < (b.length - 1); i++) {
+                shouldSwitch = false;
 
-                    var date1 = getDate(b, i);
-                    var date2 = getDate(b, i + 1);
+                var date1 = getDate(b, i);
+                var date2 = getDate(b, i + 1);
 
-                    if (date1 > date2) {
-                        shouldSwitch = true;
-                        break;
-                    }
+                if (date1 > date2) {
+                    shouldSwitch = true;
+                    break;
                 }
-                break;
-            default:
-                for (i = 0; i < (b.length - 1); i++) {
-                    shouldSwitch = false;
+            }
+            break;
+        default:
+            for (i = 0; i < (b.length - 1); i++) {
+                shouldSwitch = false;
 
-                    rating = getStarRating(b, i);
-                    rating1 = getStarRating(b, i + 1);
+                rating = getStarRating(b, i);
+                rating1 = getStarRating(b, i + 1);
 
-                    if (rating < rating1) {
-                        shouldSwitch = true;
-                        break;
-                    }
+                if (rating < rating1) {
+                    shouldSwitch = true;
+                    break;
                 }
-                break;
+            }
+            break;
         }
 
         if (shouldSwitch) {
@@ -119,10 +119,10 @@ function sortList(arg) {
 
 function getDate(arr, index) {
     var x = arr[index].getElementsByTagName("SMALL");
-    return x[0].getAttribute('data-val');
+    return x[0].getAttribute("data-val");
 }
 
 function getStarRating(arr, index) {
     var x = arr[index].getElementsByTagName("P");
-    return x[0].getAttribute('data-rating');
+    return x[0].getAttribute("data-rating");
 }

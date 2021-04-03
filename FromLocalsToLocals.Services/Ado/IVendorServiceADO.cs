@@ -1,5 +1,5 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
 
 namespace FromLocalsToLocals.Services.Ado
 {

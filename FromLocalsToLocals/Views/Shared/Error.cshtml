@@ -1,81 +1,64 @@
-﻿
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 @{
     ViewData["Title"] = "Error";
 }
 <style>
 
-    .page_404 img {
-            width: 100%;
-    }
+    .page_404 img { width: 100%; }
 
     .four_zero_four_bg {
         background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
-        height: 400px;
         background-position: center;
+        height: 400px;
     }
 
 
-        .four_zero_four_bg h1 {
-            font-size: 80px;
-        }
+    .four_zero_four_bg h1 { font-size: 80px; }
 
-        .four_zero_four_bg h3 {
-            font-size: 80px;
-        }
+    .four_zero_four_bg h3 { font-size: 80px; }
 
     .link_404 {
-        color: #fff !important;
-        padding: 10px 20px;
         background: #39ac31;
+        color: #fff !important;
         display: inline-block;
-        text-align: center;
         margin: 20px 0px;
-        
+        padding: 10px 20px;
+        text-align: center;
     }
 
-    .contant_box_404 {
-        margin-top: -50px;
-    }
+    .contant_box_404 { margin-top: -50px; }
 
-    footer {
-        display: none;
-    }
+    footer { display: none; }
 
 
-    header {
-        display: none;
-    }
+    header { display: none; }
 
 
 </style>
 
-            <div class="row justify-content-center">
-                <div class="col-sm-12 ">
-                    <div class="justify-content-center ">
-                        <div class="four_zero_four_bg justify-content-center">
-                            <h1 class="text-center ">404</h1>
+<div class="row justify-content-center">
+    <div class="col-sm-12 ">
+        <div class="justify-content-center ">
+            <div class="four_zero_four_bg justify-content-center">
+                <h1 class="text-center ">404</h1>
 
-                        </div>
-
-                        <div class="contant_box_404 justify-content-center">
-                            <h3 class="h2 text-md-center">
-                                Look like you're lost
-                            </h3>
-
-                            <p class="text-md-center">the page you are looking for not available!</p>
-
-                            <div class="text-center">
-                                <a href="https://localhost:44373/" class="link_404">Go to Home</a>
-                                <a href="https://localhost:44373/Home/ReportBug" class="link_404">Report</a>
-                            </div>
-
-
-
-                        </div>
-                    </div>
-                </div>
             </div>
 
+            <div class="contant_box_404 justify-content-center">
+                <h3 class="h2 text-md-center">
+                    Look like you're lost
+                </h3>
 
+                <p class="text-md-center">the page you are looking for not available!</p>
+
+                <div class="text-center">
+                    <a href="https://localhost:44373/" class="link_404">Go to Home</a>
+                    <a href="https://localhost:44373/Home/ReportBug" class="link_404">Report</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

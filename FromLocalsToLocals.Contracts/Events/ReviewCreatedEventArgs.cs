@@ -1,5 +1,5 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using System;
+﻿using System;
+using FromLocalsToLocals.Contracts.Entities;
 
 namespace FromLocalsToLocals.Contracts.Events
 {

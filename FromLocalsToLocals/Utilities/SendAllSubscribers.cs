@@ -1,7 +1,7 @@
-using FromLocalsToLocals.Database;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Database;
 
 namespace FromLocalsToLocals.Utilities
 {
@@ -20,30 +20,18 @@ namespace FromLocalsToLocals.Utilities
             var vendors = _context.Vendors;
             var newVendorsList = _context.Vendors.OrderByDescending(v => v.DateCreated).Take(3);
 
-            StringBuilder msg = new StringBuilder();
+            var msg = new StringBuilder();
 
             if (vendors == null)
-            {
                 msg.Append("At this time there is not new vendors");
-            }
             else
-            {
                 foreach (var u in users)
-                {
-
                     if (u.Subscribe)
                     {
                         foreach (var v in newVendorsList)
-                        {
-                            msg.Append(v.Title.ToString() + "    Vendor type: " + v.VendorType + " <br>");
-                        }
+                            msg.Append(v.Title + "    Vendor type: " + v.VendorType + " <br>");
                         await SendMail.NewsLetterSender(msg.ToString(), u.Email);
                     }
-                }
-            }
         }
-
-
-
     }
 }

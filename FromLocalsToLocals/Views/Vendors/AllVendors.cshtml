@@ -1,8 +1,7 @@
-﻿@model FromLocalsToLocals.Web.ViewModels.VendorTypeViewModel
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model FromLocalsToLocals.Web.ViewModels.VendorTypeViewModel
 @inject IViewLocalizer _localizer
 @inject UserManager<AppUser> usermanager
-@using Microsoft.EntityFrameworkCore
 
 @{
     ViewData["Title"] = _localizer["All Services"];
@@ -14,7 +13,7 @@
     var vendorType = Html.ViewContext.HttpContext.Request.Query["vendorType"];
     var searchString = Html.ViewContext.HttpContext.Request.Query["searchString"];
     var itemCount = Html.ViewContext.HttpContext.Request.Query["itemCount"];
-    var itemCountDouble = (!string.IsNullOrEmpty(itemCount)) ? double.Parse(itemCount) : 8;
+    var itemCountDouble = !string.IsNullOrEmpty(itemCount) ? double.Parse(itemCount) : 8;
 
     var user = await usermanager.GetUserAsync(User);
 }
@@ -29,40 +28,42 @@
     var vendorCount = Model.Vendors.Count;
 }
 <h3 class="mt-4 mb-2" style="text-align: center;">@_localizer["New Services"]</h3>
-<p class="mt-2" style="text-align: center; font-size: 18px;">@_localizer["Services in the past month registered on our site"]</p>
-<hr />
+<p class="mt-2" style="font-size: 18px; text-align: center;">@_localizer["Services in the past month registered on our site"]</p>
+<hr/>
 @if (Model.NewVendors.Count() == 0)
 {
-    <p class="mt-2 mb-2 text-center" style="font-size: 21px; border-radius: 7px;">@_localizer["No new services:"]<br /><br /><b>@_localizer["But there might be some soon!"]</b></p>
-    <hr />
+    <p class="mt-2 mb-2 text-center" style="border-radius: 7px; font-size: 21px;">
+        @_localizer["No new services:"]<br/><br/><b>@_localizer["But there might be some soon!"]</b>
+    </p>
+    <hr/>
 }
 else
 {
     <div class="row" style="background-color: #CCBA8B;">
         @foreach (var vendor in Model.NewVendors)
         {
-            <div class="col-sm-@(12 / itemsInRow) mb-3 mt-3 d-flex justify-content-center" style="min-width:300px;">
-                <div class="card" data-aos="fade-up" style="width:inherit; height:inherit; background-color: #F7F7F7;">
+            <div class="col-sm-@(12 / itemsInRow) mb-3 mt-3 d-flex justify-content-center" style="min-width: 300px;">
+                <div class="card" data-aos="fade-up" style="background-color: #F7F7F7; height: inherit; width: inherit;">
                     @if (vendor.Image == null)
                     {
-                        <img src="~/Assets/localSeller.png" class="mt-3 card-picture"  />
+                        <img src="~/Assets/localSeller.png" class="mt-3 card-picture"/>
                     }
                     else
                     {
-                        <img src="data:image;base64,@System.Convert.ToBase64String(vendor.Image)" class="mt-3 card-picture" />
+                        <img src="data:image;base64,@Convert.ToBase64String(vendor.Image)" class="mt-3 card-picture"/>
                     }
                     <div class="card-body">
-                        <h5 class="card-title" style="margin:0px;">@vendor.Title</h5>
-                        <hr />
-                        <p class="text-muted text-uppercase">@_localizer[@vendor.VendorTypeDb]</p>
-                        <hr />
+                        <h5 class="card-title" style="margin: 0px;">@vendor.Title</h5>
+                        <hr/>
+                        <p class="text-muted text-uppercase">@_localizer[vendor.VendorTypeDb]</p>
+                        <hr/>
                         @if (vendor.ReviewsCount.Sum() == 0)
                         {
                             <p class="font-italic">@_localizer["No Reviews"]</p>
                         }
                         else
                         {
-                            @switch (@Math.Round(vendor.ReviewsAverage))
+                            @switch (Math.Round(vendor.ReviewsAverage))
                             {
                                 case 5:
                                     <p class="ml-3 ">
@@ -116,12 +117,16 @@ else
                                     break;
                             }
                         }
-                        <hr />
-                        <div class="navbar" style="align-content:center">
+                        <hr/>
+                        <div class="navbar" style="align-content: center">
                             <a asp-route-id="@vendor.ID" asp-controller="Vendors" asp-action="Details"
-                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Read More"]</a>
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">
+                                @_localizer["Read More"]
+                            </a>
                             <a asp-route-id="Vendor/@vendor.ID" asp-controller="Reviews" asp-action="Reviews"
-                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Reviews"]</a>
+                               class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">
+                                @_localizer["Reviews"]
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -131,18 +136,18 @@ else
     </div>
 }
 <h3 class="mt-4" style="text-align: center;"> @_localizer["All Services"]</h3>
-<p class="mt-2" style="text-align: center; font-size: 18px;">@_localizer["Experience all the finest products around you"]</p>
-<hr />
+<p class="mt-2" style="font-size: 18px; text-align: center;">@_localizer["Experience all the finest products around you"]</p>
+<hr/>
 <p>
-    <a type="button" data-toggle="collapse" href="#serviceFilter" role="button" aria-expanded="false" aria-controls="serviceFilter" 
+    <a type="button" data-toggle="collapse" href="#serviceFilter" role="button" aria-expanded="false" aria-controls="serviceFilter"
        style="color: black; font-size: 19px;">
-        <img src="~/Assets/filter.png" class="mr-2" style="width:30px; height:30px;" /> @_localizer["Filters"]
+        <img src="~/Assets/filter.png" class="mr-2" style="height: 30px; width: 30px;"/> @_localizer["Filters"]
     </a>
 </p>
 <div class="collapse" id="serviceFilter">
     <form asp-action="AllVendors" method="get" class="container-fluid">
         <div class="row">
-            <select asp-for="VendorType" asp-items="Model.Types" class="btn btn-primary dropdown-toggle m-3" data-toggle="dropdown" 
+            <select asp-for="VendorType" asp-items="Model.Types" class="btn btn-primary dropdown-toggle m-3" data-toggle="dropdown"
                     style="background-color: #CCBA8B; border: 3px #CCBA8B;">
                 <option value="">@_localizer["All"]</option>
             </select>
@@ -153,46 +158,46 @@ else
             </select>
         </div>
         <div class="row">
-            <input type="text" class="m-3" name="searchString" placeholder=@_localizer["Title"] /><p class="mt-3">@_localizer["Items:"]</p>
-            <input type="number" class="mb-3 mt-3" min="1" max="50" name="itemCount" value=@itemCountDouble style="width: 50px;" />
+            <input type="text" class="m-3" name="searchString" placeholder=@_localizer["Title"]/>
+            <p class="mt-3">@_localizer["Items:"]</p>
+            <input type="number" class="mb-3 mt-3" min="1" max="50" name="itemCount" value="@itemCountDouble" style="width: 50px;"/>
         </div>
         <div class="row">
             <input class="btn btn-primary m-3" type="submit" value=@_localizer["Filter"]
-                   style="float:right; width: 100px; background-color: #CCBA8B; border: 3px #CCBA8B;" />
+                   style="background-color: #CCBA8B; border: 3px #CCBA8B; float: right; width: 100px;"/>
         </div>
     </form>
 </div>
-<hr />
+<hr/>
 
-    @if (vendorCount == 0)
+@if (vendorCount == 0)
+{
+    <div class="row d-flex justify-content-center">
+        <img src="~/Assets/suchEmpty.png" style="width: 80%;"/>
+    </div>
+}
+else
+{
+    @for (var i = 0; i < rows; i++)
     {
-
-        <div class="row d-flex justify-content-center">
-            <img src="~/Assets/suchEmpty.png" style="width:80%;" />
-        </div>
-    }
-    else
-    {
-        @for (int i = 0; i < rows; i++)
-        {
-            <div class="row">
-                @for (int j = 0; j < itemsInRow && i * itemsInRow + j < vendorCount; j++)
-                {
-                    <div class="col-sm-@(12 / itemsInRow) mb-2 d-flex justify-content-center">
-                        <div class="card" data-aos="fade-up" style="width:inherit; height:inherit; background-color: #F7F7F7;">
-                            @if (Model.Vendors[i * itemsInRow + j].Image == null)
-                            {
-                                <img src="~/Assets/localSeller.png" class="mt-3" style="width:160px ; height:150px; border-radius: 50%; align-self:center;" />
-                            }
-                            else
-                            {
-                                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Vendors[i * itemsInRow + j].Image)" class="mt-3" style="width:160px; height: 150px; border-radius: 50%; align-self:center;" />
-                            }
-                                <div class="card-body">
-                                <h5 class="card-title" style="margin:0px;">@Model.Vendors[i * itemsInRow + j].Title</h5>
-                                <hr />
-                                <p class="text-muted text-uppercase">@_localizer[@Model.Vendors[i * itemsInRow + j].VendorTypeDb]</p>
-                                <hr />
+        <div class="row">
+            @for (var j = 0; j < itemsInRow && i * itemsInRow + j < vendorCount; j++)
+            {
+                <div class="col-sm-@(12 / itemsInRow) mb-2 d-flex justify-content-center">
+                    <div class="card" data-aos="fade-up" style="background-color: #F7F7F7; height: inherit; width: inherit;">
+                        @if (Model.Vendors[i * itemsInRow + j].Image == null)
+                        {
+                            <img src="~/Assets/localSeller.png" class="mt-3" style="align-self: center; border-radius: 50%; height: 150px; width: 160px;"/>
+                        }
+                        else
+                        {
+                            <img src="data:image;base64,@Convert.ToBase64String(Model.Vendors[i * itemsInRow + j].Image)" class="mt-3" style="align-self: center; border-radius: 50%; height: 150px; width: 160px;"/>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title" style="margin: 0px;">@Model.Vendors[i * itemsInRow + j].Title</h5>
+                            <hr/>
+                            <p class="text-muted text-uppercase">@_localizer[Model.Vendors[i * itemsInRow + j].VendorTypeDb]</p>
+                            <hr/>
 
                             @if (Model.Vendors[i * itemsInRow + j].ReviewsCount.Sum() == 0)
                             {
@@ -200,7 +205,7 @@ else
                             }
                             else
                             {
-                                @switch (@Math.Round(Model.Vendors[i * itemsInRow + j].ReviewsAverage))
+                                @switch (Math.Round(Model.Vendors[i * itemsInRow + j].ReviewsAverage))
                                 {
                                     case 5:
                                         <p class="ml-3 ">
@@ -254,12 +259,16 @@ else
                                         break;
                                 }
                             }
-                            <hr />
-                            <div class="navbar" style="align-content:center">
+                            <hr/>
+                            <div class="navbar" style="align-content: center">
                                 <a asp-route-id="@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Vendors" asp-action="Details"
-                                   class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Read More"]</a>
+                                   class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">
+                                    @_localizer["Read More"]
+                                </a>
                                 <a asp-route-id="Vendor/@Model.Vendors[i * itemsInRow + j].ID" asp-controller="Reviews" asp-action="Reviews"
-                                   class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">@_localizer["Reviews"]</a>
+                                   class="btn btn-primary" style="background-color: #CCBA8B; border: 2px #CCBA8B;">
+                                    @_localizer["Reviews"]
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -268,22 +277,23 @@ else
         </div>
     }
 }
-<hr />
+<hr/>
 
 <ul class="pagination justify-content-center">
     <li class="page-item @prevDisabled">
         <a class="page-link"
-        href="@Url.Action("AllVendors", new {itemCount=itemCount, searchString = searchString , vendorType=vendorType , page = (Model.Vendors.PageIndex - 1) } )">
-        <<</a>
+           href="@Url.Action("AllVendors", new {itemCount, searchString, vendorType, page = Model.Vendors.PageIndex - 1})">
+            <<
+        </a>
     </li>
-    @for (int i = 1; i <= Model.Vendors.TotalPages; i++)
+    @for (var i = 1; i <= Model.Vendors.TotalPages; i++)
     {
         <li class="@(i == Model.Vendors.PageIndex ? "page-item active" : "page-item")">
-            <a class="page-link" href="@Url.Action("AllVendors", new {itemCount=itemCount, searchString = searchString , vendorType=vendorType , page = i })">@i</a>
+            <a class="page-link" href="@Url.Action("AllVendors", new {itemCount, searchString, vendorType, page = i})">@i</a>
         </li>
     }
     <li class="page-item @nextDisabled">
-        <a class="page-link" href="@Url.Action("AllVendors", new {itemCount=itemCount, searchString = searchString , vendorType=vendorType ,page = (Model.Vendors.PageIndex + 1) } )">>></a>
+        <a class="page-link" href="@Url.Action("AllVendors", new {itemCount, searchString, vendorType, page = Model.Vendors.PageIndex + 1})">>></a>
     </li>
 </ul>
 

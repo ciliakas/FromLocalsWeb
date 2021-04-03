@@ -1,11 +1,11 @@
-﻿using FromLocalsToLocals.Utilities.Helpers;
-using Microsoft.AspNetCore.Http;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Utilities.Helpers;
+using Microsoft.AspNetCore.Http;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace FromLocalsToLocals.Utilities
 {
@@ -13,45 +13,37 @@ namespace FromLocalsToLocals.Utilities
     {
         public static T ParseEnum<T>(this string value) where T : Enum
         {
-            return (T)Enum.Parse(typeof(T), value, true);
+            return (T) Enum.Parse(typeof(T), value, true);
         }
 
         public static bool ValidImage(this IFormFile image)
         {
             if (image != null)
-            {
                 if (image.Length > 0)
                 {
                     var ext = Path.GetExtension(image.FileName).ToLowerInvariant();
 
-                    if (string.IsNullOrEmpty(ext) || Config.permittedExtensions.Contains(ext))
-                    {
-                        return true;
-                    }
+                    if (string.IsNullOrEmpty(ext) || Config.permittedExtensions.Contains(ext)) return true;
                 }
-            }
+
             return false;
         }
 
         public static byte[] ConvertToBytes(this IFormFile image)
         {
             if (image != null)
-            {
                 if (image.Length > 0)
                 {
                     var ext = Path.GetExtension(image.FileName).ToLowerInvariant();
 
                     if (string.IsNullOrEmpty(ext) || Config.permittedExtensions.Contains(ext))
-                    {
                         using (var target = new MemoryStream())
                         {
                             image.CopyTo(target);
                             return target.ToArray();
-                        
                         }
-                    }
                 }
-            }
+
             return null;
         }
 
@@ -66,7 +58,7 @@ namespace FromLocalsToLocals.Utilities
             var plainTextContent = "We have this exception:";
 
 
-            var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body> " + e.ToString();
+            var htmlContent = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body> " + e;
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
         }

@@ -1,6 +1,6 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
 
 namespace FromLocalsToLocals.Services.EF
 {

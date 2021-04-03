@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer _localizer
+﻿@inject IViewLocalizer _localizer
+@using Microsoft.AspNetCore.Mvc.Localization
 @model FromLocalsToLocals.Web.ViewModels.LoginVM
 @{
     ViewData["Title"] = _localizer["User Login"];
@@ -41,7 +41,7 @@
                                                 <span class="fa fa-user " style="width: 20px;"></span>
                                             </span>
                                         </div>
-                                        <input asp-for="Username" class="form-control" placeholder=@_localizer["Username"] aria-label="Username" aria-describedby="basic-addon1" />
+                                        <input asp-for="Username" class="form-control" placeholder=@_localizer["Username"] aria-label="Username" aria-describedby="basic-addon1"/>
                                     </div>
                                 </div>
                                 <div class="form-group, wrapper mt-3 mb-3">
@@ -51,7 +51,7 @@
                                                 <span class="fa fa-lock" style="width: 20px;"></span>
                                             </span>
                                         </div>
-                                        <input asp-for="Password" class="form-control" placeholder=@_localizer["Password"] aria-label="Password" aria-describedby="basic-addon2" />
+                                        <input asp-for="Password" class="form-control" placeholder=@_localizer["Password"] aria-label="Password" aria-describedby="basic-addon2"/>
 
                                     </div>
                                 </div>
@@ -61,19 +61,19 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <div class="checkbox">
-                                                <input asp-for="RememberMe" /> @_localizer["Remember me"]
+                                                <input asp-for="RememberMe"/> @_localizer["Remember me"]
                                             </div>
                                         </div>
                                     </div>
                                     <div style="text-align: right;">
-                                        <p class="mt-3">@Html.ActionLink("" + @_localizer["Forgot your password?"].Value, "ForgotPassword")</p>
+                                        <p class="mt-3">@Html.ActionLink("" + _localizer["Forgot your password?"].Value, "ForgotPassword")</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">@_localizer["Login"]</button>
                                 <a href='/' class="Button btn btn-outline-danger waves-effect ml-auto">@_localizer["Close"]</a>
-</div>
+                            </div>
                         }
                     </div>
                 </div>
@@ -87,7 +87,7 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         $('#modalForm').modal('show');
     });
 </script>

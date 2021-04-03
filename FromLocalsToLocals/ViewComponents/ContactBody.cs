@@ -1,7 +1,7 @@
-﻿using FromLocalsToLocals.Contracts.Entities;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using FromLocalsToLocals.Contracts.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FromLocalsToLocals.Web.ViewComponents
 {
@@ -19,22 +19,21 @@ namespace FromLocalsToLocals.Web.ViewComponents
                 image = contact.Vendor.Image;
             }
 
-            if (contact.Messages== null || contact.Messages.Count == 0)
-            {
+            if (contact.Messages == null || contact.Messages.Count == 0)
                 return View(new ContactBodyVM(contact.ID, title, image, "No Messages", "", true, true));
-            }
 
             var lastMsg = contact.Messages.OrderByDescending(x => x.Date).Take(1).First();
 
-            var contactBodyVM = new ContactBodyVM(contact.ID, title,image,lastMsg.Text,
-                                                     lastMsg.Date,isRead,userTab);
+            var contactBodyVM = new ContactBodyVM(contact.ID, title, image, lastMsg.Text,
+                lastMsg.Date, isRead, userTab);
 
             return View(contactBodyVM);
         }
 
         public class ContactBodyVM
         {
-            public ContactBodyVM(int contactId , string title, byte[] image, string lastMsg,string date,bool isRead, bool userTab)
+            public ContactBodyVM(int contactId, string title, byte[] image, string lastMsg, string date, bool isRead,
+                bool userTab)
             {
                 ContactID = contactId;
                 UserTab = userTab;
@@ -54,6 +53,5 @@ namespace FromLocalsToLocals.Web.ViewComponents
             public string Date { get; set; }
             public bool IsRead { get; set; }
         }
-
     }
 }

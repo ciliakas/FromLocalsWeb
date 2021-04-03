@@ -12,6 +12,5 @@ namespace FromLocalsToLocals.Web.ViewModels
         public byte[] Image { get; set; }
 
         public Contact Contact { get; set; }
-
     }
 }

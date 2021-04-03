@@ -2,13 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace FromLocalsToLocals.Contracts.Entities
 {
     public class Contact
     {
         public Contact()
-        { Messages = new List<Message>(); }
+        {
+            Messages = new List<Message>();
+        }
 
         public Contact(AppUser user, Vendor receiver, bool userRead, bool receiverRead)
         {
@@ -26,16 +27,14 @@ namespace FromLocalsToLocals.Contracts.Entities
         public bool ReceiverRead { get; set; }
 
 
-
         public string UserID { get; set; }
-        [ForeignKey("UserID")]
-        public virtual AppUser User { get; set; }
+
+        [ForeignKey("UserID")] public virtual AppUser User { get; set; }
 
         public int ReceiverID { get; set; }
-        [ForeignKey("ReceiverID")]
-        public virtual Vendor Vendor { get; set; }
+
+        [ForeignKey("ReceiverID")] public virtual Vendor Vendor { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
-
     }
 }
