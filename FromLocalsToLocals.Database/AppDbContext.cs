@@ -27,10 +27,8 @@ namespace FromLocalsToLocals.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Follower>()
-                .HasKey(bc => new {bc.UserID, bc.VendorID});
-            modelBuilder.Entity<Follower>()
-                .HasOne(u => u.User)
+            modelBuilder.Entity<Follower>().HasKey(bc => new { bc.UserID, bc.VendorID });
+            modelBuilder.Entity<Follower>().HasOne(u => u.User)
                 .WithMany(u => u.Following)
                 .HasForeignKey(bc => bc.UserID).IsRequired().OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Follower>()
