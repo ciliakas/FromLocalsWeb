@@ -28,12 +28,12 @@ namespace FromLocalsToLocals.Web.Controllers
             return View();
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateReport()
-        {
-
-        }
+        // [HttpPost]
+        // [Authorize(Roles = "Admin")]
+        // public async Task<IActionResult> CreateReport()
+        // {
+        //
+        // }
 
 
 
