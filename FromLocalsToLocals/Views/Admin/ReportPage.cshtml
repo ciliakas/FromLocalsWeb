@@ -7,26 +7,28 @@
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReportModal">
     Launch demo report
 </button>
-<h1>Model.Reports.Count</h1>
+<h1>Total amount of reports: @Model.Reports.Count</h1>
 @if (Model.Reports != null)
 {
     foreach (var report in Model.Reports)
     {
-        <div class="row justify-content-center">
-            <div class="card report-post text-dark mt-3 mb-3 col-9">
-                <div class="card-header">
-                    @report.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss UTC")
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">@Enum.GetName(typeof(ReportCategories), report.Category)</h5>
-                    <p class="card-text">@report.UserId</p>
-                    <p class="card-text">@report.Href</p>
-                    <a href="#" class="btn btn-primary">Go to</a>
-                    <a href="#" class="btn btn-danger">Remove post</a>
-                    <a href="#" class="btn btn-success">Decline review</a>
-                </div>
+<form type="post">
+    <div class="row justify-content-center">
+        <div class="card report-post text-dark mt-3 mb-3 col-9">
+            <div class="card-header">
+                @report.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss UTC")
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@Enum.GetName(typeof(ReportCategories), report.Category)</h5>
+                <p class="card-text">@report.UserId</p>
+                <p class="card-text">@report.Href</p>
+                <a class="btn text-light btn-primary">Go to</a>
+                <a href="#" class="btn btn-danger">Remove post</a>
+                <button asp-controller="Admin" asp-action="DeleteReport" asp-route-id="@report.Id" class="btn btn-success">Decline review</button>
             </div>
         </div>
+    </div>
+</form>
     }
 }
 <div class="row justify-content-center">
@@ -56,7 +58,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!--Report Modal -->
 <div class="modal fade" id="createReportModal" tabindex="-1" role="dialog" aria-labelledby="createReportModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

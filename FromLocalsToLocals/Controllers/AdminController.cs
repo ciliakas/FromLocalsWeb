@@ -7,6 +7,7 @@ using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +18,12 @@ namespace FromLocalsToLocals.Web.Controllers
     {
         private readonly AppDbContext _context;
         public List<Report> Reports { get; set; }
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public AdminController(AppDbContext context)
+        public AdminController(AppDbContext context, SignInManager<AppUser> signInManager)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
         [Authorize(Roles = "Admin")]
@@ -29,13 +32,19 @@ namespace FromLocalsToLocals.Web.Controllers
             return View();
         }
 
+        private async Task<AdminViewModel> ReadReviews()
+        {
+            var model = new AdminViewModel();
+            var reports = await _context.Reports.ToListAsync() ?? new List<Report>();
+            model.Reports = reports;
+            return model;
+        }
+
         [HttpGet]
         public async Task<IActionResult> ReportPage()
         {
-            var model = new AdminViewModel();
-            var reports = await _context.Reports.ToListAsync();
-            model.Reports = reports;
 
+            var model = await ReadReviews();
             return View(model);
         }
 
@@ -44,22 +53,28 @@ namespace FromLocalsToLocals.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ReportPage(AdminViewModel model)
         {
+            var username = _signInManager.IsSignedIn(User) ? User.Identity.Name : "Guest";
             var report = new Report
             {
                 Category = model.Category,
                 CreatedDate = DateTime.UtcNow,
-                UserId = "Guest",
+                
+                UserId = username,
                 Href = Request.GetEncodedUrl()
             };
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
-            // var reports = await _context.Reports.ToListAsync();
-            // var model = new AdminViewModel
-            // {
-            //     Reports = reports
-            // };
-            // return View(model);
             return await ReportPage();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteReport(int id)
+        {
+            var item = _context.Reports.FirstOrDefaultAsync(x => x.Id == id);
+            _context.Reports.Remove(item.Result);
+            await _context.SaveChangesAsync();
+            var model = await ReadReviews();
+            return View("ReportPage", model);
         }
 
     }
