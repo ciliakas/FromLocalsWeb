@@ -7,8 +7,10 @@ using FromLocalsToLocals.Contracts.Entities;
 
 namespace FromLocalsToLocals.Web.ViewModels
 {
-    public class AdminViewModel : Controller
+    public class AdminViewModel
     {
-       public List<Report> Reports { get; set; }
+        public List<Report> Reports { get; set; }
+
+        public int Category { get; set; }
     }
 }

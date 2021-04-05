@@ -29,34 +29,33 @@ namespace FromLocalsToLocals.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult>  ReportPage()
+        public IActionResult ReportPage()
         {
-           // var reports = await _context.Reports.ToListAsync();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ReportPage(AdminViewModel model)
+        {
+            var report = new Report
+            {
+                Category = model.Category,
+                CreatedDate = DateTime.Now,
+                UserId = "Useris",
+                Href = "google.com"
+            };
+            await _context.Reports.AddAsync(report);
+            await _context.SaveChangesAsync();
+            // var reports = await _context.Reports.ToListAsync();
             // var model = new AdminViewModel
             // {
             //     Reports = reports
             // };
             // return View(model);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public IActionResult CreateReport()
-        {
-            var report = new Report();
-            report.CreatedDate = DateTime.Now;
-            report.Category = 1;
-            report.Id = 4;
-            report.UserId = "useris";
-            report.Href = "google.com";
-            _context.Reports.Add(report);
-            Console.WriteLine("\n\n\n\nPridejau i db");
-
             return View();
         }
-
-
 
     }
 }
