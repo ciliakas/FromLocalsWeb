@@ -21,8 +21,8 @@
             <div class="card-body">
                 <h5 class="card-title">@Enum.GetName(typeof(ReportCategories), report.Category)</h5>
                 <p class="card-text">@report.UserId</p>
-                <p class="card-text">@report.Href</p>
-                <a class="btn text-light btn-primary">Go to</a>
+                <p class="card-text"></p>
+                <a asp-route="@report.Href" class="btn text-light btn-primary">Go to</a>
                 <a href="#" class="btn btn-danger">Remove post</a>
                 <button asp-controller="Admin" asp-action="DeleteReport" asp-route-id="@report.Id" class="btn btn-success">Decline review</button>
             </div>
