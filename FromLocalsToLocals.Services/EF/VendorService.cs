@@ -163,6 +163,21 @@ namespace FromLocalsToLocals.Services.EF
             }
         }
 
+        public async Task ChangeListingAsync(Listing vendorListing)
+        {
+            try
+            {
+                var row = _context.Listings.FirstOrDefault(x =>
+                    x.VendorID == vendorListing.VendorID && x.ListingID == vendorListing.ListingID);
+                vendorListing.SetListing(row);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
         public async Task UpdateAsync(Vendor vendor)
         {
             try
