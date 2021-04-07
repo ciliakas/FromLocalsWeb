@@ -72,7 +72,10 @@ namespace FromLocalsToLocals.Services.EF
             var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
 
             if (vendor != null)
+            {
                 vendor.VendorHours = _context.VendorWorkHours.Where(x => x.VendorID == id).OrderBy(y => y.Day).ToList();
+                vendor.VendorListing = _context.Listings.Where(x => x.VendorID == id).OrderBy(y => y.ListingID).ToList();
+            }
             return vendor;
         }
 
