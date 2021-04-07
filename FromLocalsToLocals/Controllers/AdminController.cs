@@ -64,17 +64,19 @@ namespace FromLocalsToLocals.Web.Controllers
             };
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
-            return await ReportPage();
+            return RedirectToAction("ReportSuccess", "Home");
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteReport(int id)
         {
             var item = _context.Reports.FirstOrDefaultAsync(x => x.Id == id);
             _context.Reports.Remove(item.Result);
             await _context.SaveChangesAsync();
-            var model = await ReadReviews();
-            return View("ReportPage", model);
+           var model = await ReadReviews();
+           return View("ReportPage", model);
+
         }
 
     }
