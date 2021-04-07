@@ -117,6 +117,19 @@ namespace FromLocalsToLocals.Services.EF
             }
         }
 
+        public async Task AddListingAsync(Listing vendorListing)
+        {
+            try
+            {
+                _context.Listings.Add(vendorListing);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
         public async Task UpdatePopularityAsync(Vendor vendor)
         {
             try

@@ -7,6 +7,15 @@ namespace FromLocalsToLocals.Contracts.Entities
 {
     public class Listing
     {
+        public Listing(int vendorID, string name, decimal price, byte[] image, string description)
+        {
+            VendorID = vendorID;
+            Name = name;
+            Price = price;
+            Image = image;
+            Description = description;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ListingID { get; set; }
