@@ -41,6 +41,7 @@ namespace FromLocalsToLocals.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ReportPage()
         {
 
@@ -50,13 +51,12 @@ namespace FromLocalsToLocals.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ReportPage(AdminViewModel model)
+        public async Task<IActionResult> CreateReport(int category)
         {
             var username = _signInManager.IsSignedIn(User) ? User.Identity.Name : "Guest";
             var report = new Report
             {
-                Category = model.Category,
+                Category = category,
                 CreatedDate = DateTime.UtcNow,
                 
                 UserId = username,

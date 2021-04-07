@@ -6,15 +6,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FromLocalsToLocals</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <script src="~/lib/jquery/dist/jquery.js"></script>
-    <link href="~/notification/ikr.notification.css" rel="stylesheet"/>
+    <link href="~/notification/ikr.notification.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/css/homeNavbar.css"/>
+    <link rel="stylesheet" href="~/css/homeNavbar.css" />
 
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
 
@@ -22,14 +22,14 @@
     @*!--LeafLet CSS and Script-->*@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
           integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-          crossorigin=""/>
+          crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin=""></script>
 
     @*<!--LeafLet.MarkerCluster CSS and Script-->*@
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 </head>
 
@@ -62,7 +62,7 @@
                         <li class="nav-item text-center">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="Create">@_localizer["Add Service"]</a>
                         </li>
-                       
+
                     }
                     @if (User.IsInRole("Admin"))
                     {
@@ -85,7 +85,7 @@
                     {
                         <li class="nav-item text-center mt-2 mr-2" style="list-style: none;" id="tabChatIcon">
                             <a asp-controller="Chat" asp-route-tabname="ISent" asp-action="Index">
-                                <img src="~/Assets/message.png" style="height: 30px; width: 30px;"/>
+                                <img src="~/Assets/message.png" style="height: 30px; width: 30px;" />
                             </a>
                         </li>
                         <li class="nav-item text-center" style="list-style: none;">
@@ -94,7 +94,7 @@
                     }
                     <li class="nav-item text-center">
                         <a class="nav-link text-dark">
-                            <partial name="_SelectLanguagePartial"/>
+                            <partial name="_SelectLanguagePartial" />
                         </a>
                     </li>
                     <li class="nav-item text-center mt-2">
@@ -130,25 +130,56 @@
                 </ul>
             </div>
         </nav>
-        <partial name="_CookieConsentPartial"/>
-</header>
+        <partial name="_CookieConsentPartial" />
+    </header>
 
-<div class="container-fluid">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
-<footer class="border-top footer text-muted">
-    <div class="d-flex justify-content-between mr-3 ml-3">
-        <p>&copy; 2020 FromLocalsToLocals</p>
-        <a class="text-right" asp-area="" asp-controller="Home" asp-action="ReportBug"> @_localizer["Found a bug?"]</a>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
-</footer>
+    <footer class="border-top footer text-muted">
+        <div class="d-flex justify-content-between mr-3 ml-3">
+            <p>&copy; 2020 FromLocalsToLocals</p>
+            <a class="text-right" asp-area="" asp-controller="Home" asp-action="ReportBug"> @_localizer["Found a bug?"]</a>
+        </div>
+    </footer>
 
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/notification/ikr.notificationPlugin.js"></script>
-@RenderSection("Scripts", false)
+    <!--Report Modal -->
+    <div class="modal fade" id="createReportModal" tabindex="-1" role="dialog" aria-labelledby="createReportModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Report post</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="category">Choose a category:</label>
+
+                        <select name="category" id="category">
+                            <option value="0">Inappropriate</option>
+                            <option value="1">Spam</option>
+                            <option value="2">Scam</option>
+                            <option value="3">Nudity</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" asp-controller="Admin" asp-action="CreateReport" asp-route-category="1" class="btn btn-primary">Send report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/notification/ikr.notificationPlugin.js"></script>
+    @RenderSection("Scripts", false)
 </body>
 </html>
 
@@ -160,7 +191,7 @@
             url: "/Notification/GetNotifications",
             traditional: true,
             contentType: "application/json;charset=utf-8",
-            success: function(oData) {
+            success: function (oData) {
                 data = JSON.parse(oData);
 
                 $("#noti_Container").ikrNotificationCount({
@@ -171,12 +202,12 @@
                     Date: "CreatedDate"
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
             }
         });
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#noti_Container").ikrNotificationSetup();
         getNotifications();
         navbarModificationsOnResize();
