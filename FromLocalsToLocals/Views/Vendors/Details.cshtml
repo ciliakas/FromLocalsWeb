@@ -7,7 +7,10 @@
 
     var userForFeed = await userManager.GetUserAsync(User);
     var currentUser = await userManager.GetUserAsync(User);
-    if (userForFeed != null && userForFeed.Id != Model.User.Id) userForFeed = null;
+    if (userForFeed != null && Model.User != null && userForFeed.Id != Model.User.Id)
+    {
+        userForFeed = null;
+    }
 
     var timeSpan = new TimeSpan(0);
 
@@ -68,7 +71,7 @@
                     <p class="font-italic">@Model.About</p>
                 }
             </div>
-            @if (currentUser != null && !currentUser.Vendors.Any(x => x.ID == Model.ID))
+            @if (currentUser != null && currentUser.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID))
             {
                 <hr/>
                 <div class="row">
