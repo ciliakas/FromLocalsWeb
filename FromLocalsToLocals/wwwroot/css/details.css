@@ -1,19 +1,34 @@
-﻿.dayColumn { width: 30%; }
-
-.hourColumn { width: 70%; }
-
-.collapse.navbar-collapse.myNav a { border-bottom: 3px solid transparent; }
-
-.collapse.navbar-collapse.myNav a:hover {
-    border-bottom: 3px solid white;
-    border-radius: 2px;
+﻿.dayColumn {
+    width: 30%;
 }
 
-.col1 { width: 40%; }
+.hourColumn {
+    width: 70%;
+}
 
-.col2 { width: 47%; }
+.fullWidth {
+    width: 100%;
+}
+
+.collapse.navbar-collapse.myNav a {
+    border-bottom: 3px solid transparent;
+}
+
+    .collapse.navbar-collapse.myNav a:hover {
+        border-bottom: 3px solid white;
+        border-radius: 2px;
+    }
+
+.col1 {
+    width: 40%;
+}
+
+.col2 {
+    width: 47%;
+}
 
 .serviceImage {
+    box-shadow: 0 0 15px #0a0a0a;
     box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
     height: 420px;
     max-width: 100%;
@@ -21,9 +36,13 @@
 
 @media only screen and (max-width: 768px) {
     /* For larger mobile phones: */
-    [class*="hourColumn"] { width: 50%; }
+    [class*="hourColumn"] {
+        width: 50%;
+    }
 
-    [class*="dayColumn"] { width: 50%; }
+    [class*="dayColumn"] {
+        width: 50%;
+    }
 
     [class*="serviceImage"] {
         height: 70%;
@@ -32,13 +51,19 @@
         margin-top: 15%;
     }
 
-    [class*="col1"] { width: 100%; }
+    [class*="col1"] {
+        width: 100%;
+    }
 
-    [class*="col2"] { width: 100%; }
+    [class*="col2"] {
+        width: 100%;
+    }
 }
 
 
-.tabsText { font-weight: 800; }
+.tabsText {
+    font-weight: 800;
+}
 
 @media (max-width: 320px) {
     .tabsText {
