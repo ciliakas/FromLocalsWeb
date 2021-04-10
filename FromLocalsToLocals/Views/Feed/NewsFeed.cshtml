@@ -1,6 +1,6 @@
 ﻿@using FromLocalsToLocals.Web.ViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
 @model FromLocalsToLocals.Web.ViewModels.FeedVM
-﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 @inject UserManager<AppUser> userManager
 
@@ -18,7 +18,7 @@
     }
 </div>
 
-@if (user != null && user.Vendors.Count > 0)
+@if (user?.Vendors != null && user.Vendors.Count > 0)
 {
     @await Component.InvokeAsync("CreatePost", new CreatePostVM {User = user, DisplayInDetails = false})
 }
