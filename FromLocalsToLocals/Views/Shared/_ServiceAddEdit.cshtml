@@ -1,8 +1,11 @@
 ﻿@model FromLocalsToLocals.Web.ViewModels.CreateEditVendorVM
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
+@{ var listings = new[] { new { id = 1, price = 2.50, name = "Apple", desc = "Shitty apple" }, new { id = 2, price = 1.35, name = "Pear", desc = "Nice pear" } };}
 
+<link rel="stylesheet" href="~/css/details.css" type="text/css" />
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCPxOjZ_WSRa0zBceLwlDmTfLoJha8MYYg"></script>
+<script src="~/js/listings.js"></script>
 
 <div class="row">
     <div class="col-sm">
@@ -13,19 +16,70 @@
         <form asp-action="@Html.ViewContext.RouteData.Values["action"]" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label mt-3"></label>
-                <input asp-for="Title" class="form-control" placeholder=@_localizer["Type title..."]/>
+                <label asp-for="Title" class="control-label mt-3">@_localizer["Title"]</label>
+                <input asp-for="Title" class="form-control" placeholder=@_localizer["Type title..."] />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="About" class="control-label"></label>
+                <label asp-for="About" class="control-label">@_localizer["About"]</label>
                 <textarea asp-for="About" class="form-control" rows="3" placeholder=@_localizer["Tell us about your shop..."] maxlength="80"></textarea>
                 <span asp-validation-for="About" class="text-danger"></span>
             </div>
-            <hr/>
+            <hr />
+            <p>
+                <a type="button" data-toggle="collapse" href="#listingsPanel" role="button" aria-expanded="true"
+                   aria-controls="listingsPanel" style="color: black; font-size: 19px;">
+                    @_localizer["Listings"]
+                </a>
+            </p>
+            <div class="collapse show mt-2" id="listingsPanel">
+                @foreach (var item in listings)
+                {
+                    <div class="row fullWidth">
+                        <div class="col-3 col-xl-2">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpDRne-mV4-kggc0luoYHgIiJBhB06cKZO5Q&usqp=CAU" width="64" height="64" alt="listing image" />
+                        </div>
+                        <div class="row col-9 col-xl-10">
+                            <div class="col-12 spaceBetween">
+                                <p>
+                                    @item.name
+                                </p>
+                                <p>
+                                    @item.price €
+                                </p>
+                                <button onclick="handleClick(this, '@item.name', '@item.price', '@item.desc')" type="button" data-toggle="collapse" href="#editPanel"
+                                        role="button" aria-expanded="true" aria-controls="editPanel" id="@("editListing" + item.id)"
+                                        class="btn btn-primary">
+                                    Edit
+                                </button>
+                            </div>
+                            <div class="col-12 font-italic">
+                                @(string.IsNullOrEmpty(item.desc)? _localizer["No description provided"] : _localizer[item.desc])
+                            </div>
+                            <div class="collapse show mt-2" id="@("editPanel" + item.id)">
+                                Change image
+                                <input value="@item.name" />
+                                <input value="@item.price" />
+                                <input value="@item.desc" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="collapse show mt-2" id="editPanelx">
+                    Change image
+                    <input id="editName" />
+                    <input id="editPrice" />
+                    <input id="editDesc" />
+
+                </div>
+                <button type="button" id="add" class="btn btn-success" onclick="handleClick(this)">Another one</button>
+                <button type="button" id="save" class="btn btn-success" onclick="handleClick(this)">Save Changes</button>
+            </div>
+            <hr />
             <p>
                 <a type="button" data-toggle="collapse" href="#workHoursPanel" role="button" aria-expanded="true" aria-controls="workHoursPanel" style="color: black; font-size: 19px;">
-                    <img src="~/Assets/workHours.png" class="mr-2" style="height: 25px; width: 30px;"/> @_localizer["Choose your working hours"]
+                    <img src="~/Assets/workHours.png" class="mr-2" style="height: 25px; width: 30px;" /> @_localizer["Choose your working hours"]
                 </a>
             </p>
             <div class="collapse show mt-2" id="workHoursPanel">
@@ -33,13 +87,13 @@
                     @for (var i = 0; i < 7; i++)
                     {
                         <div class="row" name="dayRow">
-                            <input asp-for="VendorHours[i].Day" value=@(i + 1) hidden/>
+                            <input asp-for="VendorHours[i].Day" value=@(i + 1) hidden />
                             @if (Model != null && Model.VendorHours[i].IsWorking)
                             {
                                 <div class="col-4">
                                     <div class="form-group" name="workDate">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" asp-for="VendorHours[i].IsWorking" id="@i" checked/>
+                                            <input class="form-check-input" type="checkbox" asp-for="VendorHours[i].IsWorking" id="@i" checked />
                                             @switch (i)
                                             {
                                                 case 0:
@@ -115,7 +169,7 @@
                                 <div class="col-4">
                                     <div class="form-group" name="workDate">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" asp-for="VendorHours[i].IsWorking" id="@i"/>
+                                            <input class="form-check-input" type="checkbox" asp-for="VendorHours[i].IsWorking" id="@i" />
                                             @switch (i)
                                             {
                                                 case 0:
@@ -176,7 +230,7 @@
                     }
                 </div>
             </div>
-            <hr/>
+            <hr />
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <div>
@@ -194,11 +248,11 @@
 
             <div class="form-group">
                 <div class="form-group mx-sm-3" style="background-color: white; border-radius: 4px;">
-                    <input asp-for="Image" class="form-control-file" type="file"/>
+                    <input asp-for="Image" class="form-control-file" type="file" />
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value=@_localizer["Confirm"] class="btn btn-success"/>
+                <input type="submit" value=@_localizer["Confirm"] class="btn btn-success" />
             </div>
         </form>
     </div>
@@ -208,7 +262,7 @@
     var center = [55.385550, 24.046824];
     var zoom = 6.4;
 
-    $("input").change(function() {
+    $("input").change(function () {
         var panelFromHours = ".fromH_" + $(this).attr('id');
         var panelToHours = ".toH_" + $(this).attr('id');
 
