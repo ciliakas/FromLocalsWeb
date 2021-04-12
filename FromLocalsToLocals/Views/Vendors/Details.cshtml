@@ -7,7 +7,10 @@
 
     var userForFeed = await userManager.GetUserAsync(User);
     var currentUser = await userManager.GetUserAsync(User);
-    if (userForFeed != null && userForFeed.Id != Model.User.Id) userForFeed = null;
+    if (userForFeed != null && userForFeed.Id != Model.UserID)
+    {
+        userForFeed = null;
+    }
 
     var timeSpan = new TimeSpan(0);
 
@@ -68,7 +71,7 @@
                     <p class="font-italic">@Model.About</p>
                 }
             </div>
-            @if (currentUser != null && !currentUser.Vendors.Any(x => x.ID == Model.ID))
+            @if (currentUser?.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID))
             {
                 <hr/>
                 <div class="row">
@@ -169,35 +172,6 @@
 <a href="" class="mr-4" type="button" data-toggle="modal" data-target="#createReportModal">Report</a>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="createReportModal" tabindex="-1" role="dialog" aria-labelledby="createReportModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Report post</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <label for="category">Choose a category:</label>
-
-                    <select name="category" id="category">
-                        <option value="0">Inappropriate</option>
-                        <option value="1">Spam</option>
-                        <option value="2">Scam</option>
-                        <option value="3">Nudity</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Send report</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script>
     var vendor = @Html.Raw(JsonConvert.SerializeObject(Model));
