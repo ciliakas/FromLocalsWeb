@@ -28,23 +28,15 @@
 
 <div class="row mt-4">
     <div class="col1 m-lg-5 d-flex justify-content-center">
-        @if (Model.Image == null)
-        {
-            <img src="~/Assets/localSeller.png" class="serviceImage" alt="Local Seller" />
-        }
-        else
-        {
-            <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" class="serviceImage" alt="" />
-        }
+        <img src="@(Model.Image == null? "/Assets/localSeller.png"
+                      : "data:image;base64," + Convert.ToBase64String(Model.Image))" class="serviceImage" alt="Service image" />
     </div>
     <div class="col2 m-3">
         <div class="m-4">
             <div class="row">
                 <div class="col-9">
                     <div class="row">
-
                         <p class="text-muted text-uppercase">@_localizer[Model.VendorTypeDb]</p>
-
                     </div>
                     <div class="row" style="margin-top: -15px;">
                         <h2>@Model.Title</h2>
@@ -80,34 +72,35 @@
                 </div>
             }
             <hr />
-            <div class="row">
-                @if (string.IsNullOrEmpty(Model.About))
-                {
-                    <p class="font-italic">@_localizer["No description provided"]</p>
-                }
-                else
-                {
-                    <p class="font-italic">@Model.About</p>
-                }
+            <div class="row font-italic">
+                @(string.IsNullOrEmpty(Model.About) ? _localizer["No description provided"] : _localizer[Model.About])
             </div>
             <hr />
             <div class="row mt-1 mb-3">
                 <h4>@_localizer["Listings"]</h4>
             </div>
-            <div class="row">
-                <div class="fullWidth">
-                    @foreach (var item in new[] { new { name = "Apple" }, new { name = "Pear" } })
-                    {
-                        <div>
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpDRne-mV4-kggc0luoYHgIiJBhB06cKZO5Q&usqp=CAU" width="64" alt="listing image" />
-                            Price Description Name @item.name
+            @foreach (var item in new[] { new { id = 1, price = 2.50, name = "Apple", desc = "Shitty apple" }, new { id = 1, price = 1.35, name = "Pear", desc = "Nice pear" } })
+            {
+                <div class="row fullWidth">
+                    <div class="col-2">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpDRne-mV4-kggc0luoYHgIiJBhB06cKZO5Q&usqp=CAU" width="64" height="64" alt="listing image" />
+                    </div>
+                    <div class="row col-10">
+                        <div class="col-12 spaceBetween">
+                            <p>
+                                @item.name
+                            </p>
+                            <p>
+                                @item.price €
+                            </p>
                         </div>
-                    }
+                        <div class="col-12 font-italic">
+                            @(string.IsNullOrEmpty(item.desc)? _localizer["No description provided"] : _localizer[item.desc])
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-
-            <hr />
+                <hr />
+            }
             <div class="row mt-1 mb-3">
                 <h4>@_localizer["Working Hours"]</h4>
             </div>

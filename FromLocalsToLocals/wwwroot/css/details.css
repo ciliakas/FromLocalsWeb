@@ -10,6 +10,17 @@
     width: 100%;
 }
 
+.spaceBetween {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.listingImage {
+    width: 64pt;
+    height: 64pt;
+}
+
 .collapse.navbar-collapse.myNav a {
     border-bottom: 3px solid transparent;
 }
