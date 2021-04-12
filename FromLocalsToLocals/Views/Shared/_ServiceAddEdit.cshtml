@@ -46,35 +46,28 @@
                                 </p>
                                 <p>
                                     @item.price €
+                                    <button onclick="handleEditClick(this, '@item.name', '@item.price', '@item.desc')" type="button" 
+                                            data-toggle="collapse" data-target="#editPanel" role="button" aria-expanded="false"
+                                            aria-controls="editPanel" id="@("editListing" + item.id)" class="btn btn-primary">
+                                        @_localizer["Edit"]
+                                    </button>
                                 </p>
-                                <button onclick="handleClick(this, '@item.name', '@item.price', '@item.desc')" type="button" data-toggle="collapse" href="#editPanel"
-                                        role="button" aria-expanded="true" aria-controls="editPanel" id="@("editListing" + item.id)"
-                                        class="btn btn-primary">
-                                    Edit
-                                </button>
                             </div>
                             <div class="col-12 font-italic">
                                 @(string.IsNullOrEmpty(item.desc)? _localizer["No description provided"] : _localizer[item.desc])
                             </div>
-                            <div class="collapse show mt-2" id="@("editPanel" + item.id)">
-                                Change image
-                                <input value="@item.name" />
-                                <input value="@item.price" />
-                                <input value="@item.desc" />
-                            </div>
                         </div>
                     </div>
                 }
-
-                <div class="collapse show mt-2" id="editPanelx">
+                <div class="collapse mt-2" id="editPanel">
                     Change image
-                    <input id="editName" />
-                    <input id="editPrice" />
-                    <input id="editDesc" />
-
+                    <input id="editName" placeholder="@_localizer["Name"]"/>
+                    <input id="editPrice" placeholder="@_localizer["Price"]"/>
+                    <input id="editDesc" placeholder="@_localizer["Description"]"/>
                 </div>
-                <button type="button" id="add" class="btn btn-success" onclick="handleClick(this)">Another one</button>
-                <button type="button" id="save" class="btn btn-success" onclick="handleClick(this)">Save Changes</button>
+                <button type="button" id="add" class="btn btn-success"  data-toggle="collapse" data-target="#editPanel" 
+                        role="button" aria-expanded="false" aria-controls="editPanel" onClick="handleAddClick(this)">Another one</button>
+                <button type="button" id="save" class="btn btn-success">Save Changes</button>
             </div>
             <hr />
             <p>

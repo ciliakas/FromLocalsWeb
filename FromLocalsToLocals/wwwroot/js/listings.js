@@ -1,22 +1,34 @@
 ﻿
+var handleAddClick = (e) => {
 
+    if (document.getElementById("add").innerText === "Cancel") {
+        e.innerText = "Edit";
+        e.className = "btn btn-primary";
+        changeButtonState(false, e.id);
+    } else {
+        e.innerText = "Cancel";
+        e.className = "btn btn-danger";
+        changeButtonState(true, e.id);
+    }
+}
 
-var handleClick = (e, name, price, desc) => {
+var handleEditClick = (e, name, price, desc) => {
     var formName = document.getElementById("editName");
     var formPrice = document.getElementById("editPrice");
     var formDesc = document.getElementById("editDesc");
     //get id, create the form, show the form with given info?
-    // disable all other edit buttons
-    //e.disabled = true;
-    //console.log(e.id);
     formName.value = name;
     formPrice.value = price;
     formDesc.value = desc;
+    //console.log(e);
+    //console.log(e.className);
     if (document.getElementById("add").disabled === true) {
         e.innerText = "Edit";
+        e.className = "btn btn-primary";
         changeButtonState(false, e.id);
     } else {
         e.innerText = "Cancel";
+        e.className = "btn btn-danger";
         changeButtonState(true, e.id);
     }
 }
@@ -26,7 +38,6 @@ var changeButtonState = (state, buttonToExclude) => {
     while (true) {
         i++;
         // cia reiketu gauti man listingu id's
-        console.log("editListing" + i);
         if (buttonToExclude === "editListing" + i) {
             continue;
         }
@@ -34,12 +45,9 @@ var changeButtonState = (state, buttonToExclude) => {
         if (button === null || button === undefined) {
             break;
         }
-        //var state = button.disabled;
         button.disabled = state;
     }
-    document.getElementById("add").disabled = state;
-}
-
-var disableButtons = () => {
-
+    if (buttonToExclude !== "add") {
+        document.getElementById("add").disabled = state;
+    }
 }
