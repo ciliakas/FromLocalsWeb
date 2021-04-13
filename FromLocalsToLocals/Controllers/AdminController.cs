@@ -51,7 +51,7 @@ namespace FromLocalsToLocals.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReport(int category)
+        public async Task<IActionResult> CreateReport(int category, string url)
         {
             var username = _signInManager.IsSignedIn(User) ? User.Identity.Name : "Guest";
             var report = new Report
@@ -60,7 +60,10 @@ namespace FromLocalsToLocals.Web.Controllers
                 CreatedDate = DateTime.UtcNow,
                 
                 UserId = username,
-                Href = Request.GetEncodedUrl()
+               // Href = Request.GetEncodedUrl()
+                //Href = HttpContext.Request.Path.Value
+                //Href = HttpContext.Request.PathBase.Value
+                Href = url
             };
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
