@@ -41,17 +41,17 @@
                         </div>
                         <div class="row col-9 col-xl-10">
                             <div class="col-12 spaceBetween">
-                                <p>
+                                <div>
                                     @item.name
-                                </p>
-                                <p>
+                                </div>
+                                <div>
                                     @item.price €
                                     <button onclick="handleEditClick(this, '@item.name', '@item.price', '@item.desc')" type="button" 
                                             data-toggle="collapse" data-target="#editPanel" role="button" aria-expanded="false"
                                             aria-controls="editPanel" id="@("editListing" + item.id)" class="btn btn-primary">
                                         @_localizer["Edit"]
                                     </button>
-                                </p>
+                                </div>
                             </div>
                             <div class="col-12 font-italic">
                                 @(string.IsNullOrEmpty(item.desc)? _localizer["No description provided"] : _localizer[item.desc])

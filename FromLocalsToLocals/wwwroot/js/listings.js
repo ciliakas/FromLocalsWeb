@@ -1,9 +1,15 @@
 ﻿
 var handleAddClick = (e) => {
+    var formName = document.getElementById("editName");
+    var formPrice = document.getElementById("editPrice");
+    var formDesc = document.getElementById("editDesc");
+    formName.value = "";
+    formPrice.value = "";
+    formDesc.value = "";
 
     if (document.getElementById("add").innerText === "Cancel") {
-        e.innerText = "Edit";
-        e.className = "btn btn-primary";
+        e.innerText = "Another one";
+        e.className = "btn btn-success";
         changeButtonState(false, e.id);
     } else {
         e.innerText = "Cancel";
