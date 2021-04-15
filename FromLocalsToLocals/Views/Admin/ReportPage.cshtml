@@ -1,12 +1,36 @@
-﻿
+﻿@using FromLocalsToLocals.Utilities.Enums
+@model FromLocalsToLocals.Web.ViewModels.AdminViewModel
+
 <div class="row justify-content-center">
     <h3 class="mt-5 mb-2">Amount of received reports: ę</h3>
 </div>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReportModal">
     Launch demo report
 </button>
-
-
+<h1>Total amount of reports: @Model.Reports.Count</h1>
+@if (Model.Reports != null)
+{
+    foreach (var report in Model.Reports)
+    {
+<form type="post">
+    <div class="row justify-content-center">
+        <div class="card report-post text-dark mt-3 mb-3 col-9">
+            <div class="card-header">
+                @report.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss UTC")
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@Enum.GetName(typeof(ReportCategories), report.Category)</h5>
+                <p class="card-text">@report.UserId</p>
+                <p class="card-text"></p>
+                <a asp-route="@report.Href" class="btn text-light btn-primary">Go to</a>
+                <a href="#" class="btn btn-danger">Remove post</a>
+                <button asp-controller="Admin" asp-action="DeleteReport" asp-route-id="@report.Id" class="btn btn-success">Decline review</button>
+            </div>
+        </div>
+    </div>
+</form>
+    }
+}
 <div class="row justify-content-center">
     <div class="card report-post text-dark mt-3 mb-3 col-9">
         <div class="card-header">
@@ -34,11 +58,11 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!--Report Modal -->
 <div class="modal fade" id="createReportModal" tabindex="-1" role="dialog" aria-labelledby="createReportModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post">
+            <form asp-action="@Html.ViewContext.RouteData.Values["action"]" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Report post</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -48,12 +72,12 @@
                 <div class="modal-body">
                     <label for="category">Choose a category:</label>
 
-                    <select name="category" id="category">
+                    <select asp-for="@Model.Category" name="category" id="category">
                         <option value="0">Inappropriate</option>
                         <option value="1">Spam</option>
                         <option value="2">Scam</option>
                         <option value="3">Nudity</option>
-                    </select> 
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

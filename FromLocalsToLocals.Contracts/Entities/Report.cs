@@ -1,13 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace FromLocalsToLocals.Contracts.Entities
 {
     public class Report
     {
+        public Report()
+        {
+        }
+
+        public Report(DateTime created, string userId, int category, string href)
+        {
+            CreatedDate = created;
+            UserId = userId;
+            Category = category;
+            Href = href;
+        }
+
         [Key] [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
