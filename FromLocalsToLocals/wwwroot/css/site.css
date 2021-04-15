@@ -165,6 +165,10 @@ img.userImage.mr-3 { border-radius: 50%; }
 
 .time { margin-left: auto; }
 
+.report-post {
+    background-color: #CCBA8B;
+}
+
 .loader {
     animation: spin 2s linear infinite;
     border-bottom: 16px solid #339966;

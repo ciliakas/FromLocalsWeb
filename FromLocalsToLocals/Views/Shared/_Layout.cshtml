@@ -34,28 +34,46 @@
 </head>
 
 <body>
-<header>
-    @await Component.InvokeAsync("NToastNotify")
-    <nav class="navbar navbar-expand-lg navbar-toggleable-sm navbar-light" style="background-color: #CCBA8B; font-size: 17px;">
-        <div id="navHeader" style="display: flex; flex-wrap: wrap;">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="~/Assets/appLogo.png" width="90" height="40"/>
-            </a>
-        </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item text-center">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@_localizer["Home"]</a>
-                </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="AllVendors">@_localizer["All Services"]</a>
-                </li>
-                @if (signInManager.IsSignedIn(User))
-                {
+    <header>
+        @await Component.InvokeAsync("NToastNotify")
+        <nav class="navbar navbar-expand-lg navbar-toggleable-sm navbar-light" style="background-color: #CCBA8B; font-size: 17px;">
+            <div id="navHeader" style="display:flex;flex-wrap:wrap;">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/Assets/appLogo.png" width="90" height="40" />
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item text-center">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@_localizer["Home"]</a>
+                    </li>
+                    <li class="nav-item text-center">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="AllVendors">@_localizer["All Services"]</a>
+                    </li>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="MyVendors">@_localizer["My Services"]</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="Create">@_localizer["Add Service"]</a>
+                        </li>
+                       
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ReportPage">@_localizer["Admin page"]</a>
+                        </li>
+                    }
+                    <li class="nav-item text-center">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">@_localizer["About Us"]</a>
+                    </li>
+
                     <li class="nav-item text-center">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Vendors" asp-action="MyVendors">@_localizer["My Services"]</a>
                     </li>

@@ -159,4 +159,7 @@
   <data name="Registration" xml:space="preserve">
     <value>Registracija</value>
   </data>
+  <data name="Admin Page" xml:space="preserve">
+    <value>Administratoriaus Puslapis</value>
+  </data>
 </root>
