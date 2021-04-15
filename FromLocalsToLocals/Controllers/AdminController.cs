@@ -41,6 +41,7 @@ namespace FromLocalsToLocals.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ReportPage()
         {
 
@@ -50,31 +51,35 @@ namespace FromLocalsToLocals.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ReportPage(AdminViewModel model)
+        public async Task<IActionResult> CreateReport(int category, string url)
         {
             var username = _signInManager.IsSignedIn(User) ? User.Identity.Name : "Guest";
             var report = new Report
             {
-                Category = model.Category,
+                Category = category,
                 CreatedDate = DateTime.UtcNow,
                 
                 UserId = username,
-                Href = Request.GetEncodedUrl()
+               // Href = Request.GetEncodedUrl()
+                //Href = HttpContext.Request.Path.Value
+                //Href = HttpContext.Request.PathBase.Value
+                Href = url
             };
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
-            return await ReportPage();
+            return RedirectToAction("ReportSuccess", "Home");
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteReport(int id)
         {
             var item = _context.Reports.FirstOrDefaultAsync(x => x.Id == id);
             _context.Reports.Remove(item.Result);
             await _context.SaveChangesAsync();
-            var model = await ReadReviews();
-            return View("ReportPage", model);
+           var model = await ReadReviews();
+           return View("ReportPage", model);
+
         }
 
     }
