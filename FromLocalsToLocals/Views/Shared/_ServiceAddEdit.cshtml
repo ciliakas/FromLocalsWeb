@@ -1,7 +1,14 @@
 ﻿@model FromLocalsToLocals.Web.ViewModels.CreateEditVendorVM
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
-@{ var listings = new[] { new { id = 1, price = 2.50, name = "Apple", desc = "Shitty apple" }, new { id = 2, price = 1.35, name = "Pear", desc = "Nice pear" } };}
+@{
+    var listing1 = new Listing(1, "Apple", 2.50m, null, "What a round apple");
+    var listing2 = new Listing(2, "Pear", 1.35m, null, "");
+    var listing3 = new Listing(3, "Orange", 3.35m, null, "");
+    //var listings = new[] { new { id = 1, price = 2.50, name = "Apple", desc = "Shitty apple" }, new { id = 2, price = 1.35, name = "Pear", desc = "Nice pear" } };
+    var listings = new List<Listing> { listing1, listing2 };
+
+}
 
 <link rel="stylesheet" href="~/css/details.css" type="text/css" />
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCPxOjZ_WSRa0zBceLwlDmTfLoJha8MYYg"></script>
@@ -42,35 +49,39 @@
                         <div class="row col-9 col-xl-10">
                             <div class="col-12 spaceBetween">
                                 <div>
-                                    @item.name
+                                    <text id="name=@item.VendorID">@item.Name</text>
                                 </div>
                                 <div>
-                                    @item.price €
-                                    <button onclick="handleEditClick(this, '@item.name', '@item.price', '@item.desc')" type="button" 
+                                    <text id="price=@item.VendorID">@item.Price</text>
+                                    <text> €</text>
+                                    <button onclick="handleEditClick(this, @item.VendorID)" type="button"
                                             data-toggle="collapse" data-target="#editPanel" role="button" aria-expanded="false"
-                                            aria-controls="editPanel" id="@("editListing" + item.id)" class="btn btn-primary">
+                                            aria-controls="editPanel" id="@("editListing" + item.VendorID)" class="btn btn-primary">
                                         @_localizer["Edit"]
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-12 font-italic">
-                                @(string.IsNullOrEmpty(item.desc)? _localizer["No description provided"] : _localizer[item.desc])
+                            <div id="desc=@item.VendorID" class="col-12 font-italic">
+                                @(string.IsNullOrEmpty(item.Description) ? _localizer["No description provided"] : _localizer[item.Description])
                             </div>
                         </div>
                     </div>
                 }
                 <div class="collapse mt-2" id="editPanel">
                     Change image
-                    <input id="editName" placeholder="@_localizer["Name"]"/>
-                    <input id="editPrice" placeholder="@_localizer["Price"]"/>
-                    <input id="editDesc" placeholder="@_localizer["Description"]"/>
+                    <input id="editName" placeholder="@_localizer["Name"]" />
+                    <input id="editPrice" placeholder="@_localizer["Price"]" />
+                    <input id="editDesc" placeholder="@_localizer["Description"]" />
                 </div>
-                <button type="button" id="add" class="btn btn-success"  data-toggle="collapse" data-target="#editPanel" 
-                        role="button" aria-expanded="false" aria-controls="editPanel" onClick="handleAddClick(this)">Another one</button>
-                <button type="button" id="save" class="btn btn-success">Save Changes</button>
+                <button type="button" id="add" class="btn btn-success" data-toggle="collapse" data-target="#editPanel"
+                        role="button" aria-expanded="false" aria-controls="editPanel" onClick="handleAddClick(this)">
+                    Another one
+                </button>
+                <button type="button" id="save" class="btn btn-success" onclick="handleSaveClick(this)">Save Changes</button>
             </div>
             <hr />
             <p>
+                s
                 <a type="button" data-toggle="collapse" href="#workHoursPanel" role="button" aria-expanded="true" aria-controls="workHoursPanel" style="color: black; font-size: 19px;">
                     <img src="~/Assets/workHours.png" class="mr-2" style="height: 25px; width: 30px;" /> @_localizer["Choose your working hours"]
                 </a>

@@ -13,7 +13,7 @@ namespace FromLocalsToLocals.Web.ViewModels
         {
         }
 
-        public CreateEditVendorVM(Vendor vendor, List<WorkHours> workHours)
+        public CreateEditVendorVM(Vendor vendor, List<WorkHours> workHours, List<Listing> vendorListing)
         {
             ID = vendor.ID;
             Title = vendor.Title;
@@ -21,6 +21,7 @@ namespace FromLocalsToLocals.Web.ViewModels
             Address = vendor.Address;
             VendorType = vendor.VendorType;
             VendorHours = workHours;
+            VendorListing = vendorListing;
         }
 
         public int ID { get; set; }
@@ -40,6 +41,8 @@ namespace FromLocalsToLocals.Web.ViewModels
         public IFormFile Image { get; set; }
 
         public List<WorkHours> VendorHours { get; set; }
+
+        public List<Listing> VendorListing { get; set; }
 
         public void SetValuesToVendor(Vendor vendor)
         {
