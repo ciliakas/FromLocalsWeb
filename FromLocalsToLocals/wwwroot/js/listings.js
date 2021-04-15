@@ -17,9 +17,20 @@ var handleSaveClick = (e) => {
             document.getElementById("price=" + j).innerHTML = formPrice.value;
             document.getElementById("desc=" + j).innerHTML = formDesc.value;
 
+            if (document.getElementById("desc=" + j).innerHTML === "") {
+                document.getElementById("desc=" + j).innerHTML = "No description provided";
+            }
+
+            button.innerText = "Edit";
+            button.className = "btn btn-primary";
+            changeButtonState(false, "editListing" + j);
+
             break;
         }
     }
+    //class="collapse show mt-2" id="listingsPanel"
+    document.getElementById("editPanel").className = "collapse mt-2";
+    e.disabled = true;
 }
 
 
@@ -34,10 +45,12 @@ var handleAddClick = (e) => {
     if (document.getElementById("add").innerText === "Cancel") {
         e.innerText = "Another one";
         e.className = "btn btn-success";
+        document.getElementById("save").disabled = true;
         changeButtonState(false, e.id);
     } else {
         e.innerText = "Cancel";
         e.className = "btn btn-danger";
+        document.getElementById("save").disabled = false;
         changeButtonState(true, e.id);
     }
 }
@@ -60,10 +73,12 @@ var handleEditClick = (e, id) => {
     if (document.getElementById("add").disabled === true) {
         e.innerText = "Edit";
         e.className = "btn btn-primary";
+        document.getElementById("save").disabled = true;
         changeButtonState(false, e.id);
     } else {
         e.innerText = "Cancel";
         e.className = "btn btn-danger";
+        document.getElementById("save").disabled = false;
         changeButtonState(true, e.id);
     }
 }
