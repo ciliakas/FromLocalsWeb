@@ -7,6 +7,10 @@ var handleSaveClick = (e) => {
 
     // einam per edit buttonus, randam kuris enabled, ir to id ir zinom kad reikia keist
     // jei reikes addint, tai dar atskira logika
+
+    document.getElementById("editPanel").className = "collapse mt-2";
+    e.disabled = true;
+
     for (var j = 0; j < 100; j++) {
         var button = document.getElementById("editListing" + j);
         if (button === null || button === undefined) {
@@ -25,12 +29,48 @@ var handleSaveClick = (e) => {
             button.className = "btn btn-primary";
             changeButtonState(false, "editListing" + j);
 
-            break;
+            return;
         }
     }
-    //class="collapse show mt-2" id="listingsPanel"
-    document.getElementById("editPanel").className = "collapse mt-2";
-    e.disabled = true;
+    document.getElementById("add").innerText = "Another one";
+    document.getElementById("add").className = "btn btn-success";
+    document.getElementById("save").disabled = true;
+
+    //id = "name=@item.VendorID"
+    var listings = document.getElementById("listings");
+    var newId = getLastId();
+    var newDiv = document.getElementById("div=" + (newId - 1)).cloneNode(true);
+    newDiv.id = "div=" + newId;
+
+    var divToChange = newDiv.childNodes[3].childNodes;
+    console.log(divToChange);
+    console.log(divToChange[1].childNodes[3].childNodes);
+    //name
+    divToChange[1].childNodes[1].childNodes[1].id = "name=" + newId;
+    divToChange[1].childNodes[1].childNodes[1].textContent = formName.value;
+    //price
+    divToChange[1].childNodes[3].childNodes[1].id = "price=" + newId;
+    divToChange[1].childNodes[3].childNodes[1].textContent = formPrice.value;
+    //button
+    divToChange[1].childNodes[3].childNodes[5].id = "editListing" + newId;
+    //desc
+    divToChange[3].innerHTML = formDesc.value;
+    divToChange[3].id = "desc=" + newId;
+
+    listings.appendChild(newDiv);
+    changeButtonState(false, e.id);
+}
+
+var getLastId = () => {
+    var i = 0;
+    for (var j = 0; j < 100; j++) {
+        var button = document.getElementById("editListing" + j);
+        if (button === null || button === undefined) {
+            continue;
+        }
+        i = j;
+    }
+    return i + 1;
 }
 
 

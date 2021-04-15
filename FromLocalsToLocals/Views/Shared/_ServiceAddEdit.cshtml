@@ -40,33 +40,35 @@
                 </a>
             </p>
             <div class="collapse show mt-2" id="listingsPanel">
-                @foreach (var item in listings)
-                {
-                    <div class="row fullWidth">
-                        <div class="col-3 col-xl-2">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpDRne-mV4-kggc0luoYHgIiJBhB06cKZO5Q&usqp=CAU" width="64" height="64" alt="listing image" />
-                        </div>
-                        <div class="row col-9 col-xl-10">
-                            <div class="col-12 spaceBetween">
-                                <div>
-                                    <text id="name=@item.VendorID">@item.Name</text>
+                <div id="listings">
+                    @foreach (var item in listings)
+                    {
+                        <div id="div=@item.VendorID" class="row fullWidth">
+                            <div class="col-3 col-xl-2">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpDRne-mV4-kggc0luoYHgIiJBhB06cKZO5Q&usqp=CAU" width="64" height="64" alt="listing image" />
+                            </div>
+                            <div class="row col-9 col-xl-10">
+                                <div class="col-12 spaceBetween">
+                                    <div>
+                                        <text id="name=@item.VendorID">@item.Name</text>
+                                    </div>
+                                    <div>
+                                        <text id="price=@item.VendorID">@item.Price</text>
+                                        <text> €</text>
+                                        <button onclick="handleEditClick(this, @item.VendorID)" type="button"
+                                                data-toggle="collapse" data-target="#editPanel" role="button" aria-expanded="false"
+                                                aria-controls="editPanel" id="@("editListing" + item.VendorID)" class="btn btn-primary">
+                                            @_localizer["Edit"]
+                                        </button>
+                                    </div>
                                 </div>
-                                <div>
-                                    <text id="price=@item.VendorID">@item.Price</text>
-                                    <text> €</text>
-                                    <button onclick="handleEditClick(this, @item.VendorID)" type="button"
-                                            data-toggle="collapse" data-target="#editPanel" role="button" aria-expanded="false"
-                                            aria-controls="editPanel" id="@("editListing" + item.VendorID)" class="btn btn-primary">
-                                        @_localizer["Edit"]
-                                    </button>
+                                <div id="desc=@item.VendorID" class="col-12 font-italic">
+                                    @(string.IsNullOrEmpty(item.Description) ? _localizer["No description provided"] : _localizer[item.Description])
                                 </div>
                             </div>
-                            <div id="desc=@item.VendorID" class="col-12 font-italic">
-                                @(string.IsNullOrEmpty(item.Description) ? _localizer["No description provided"] : _localizer[item.Description])
-                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
                 <div class="collapse mt-2" id="editPanel">
                     Change image
                     <input id="editName" placeholder="@_localizer["Name"]" />
@@ -78,7 +80,9 @@
                     Another one
                 </button>
                 <button type="button" id="save" class="btn btn-success" data-toggle="collapse" data-target="#editPanel" disabled
-                    role="button" aria-expanded="false" aria-controls="editPanel" onclick="handleSaveClick(this)">Save Changes</button>
+                        role="button" aria-expanded="false" aria-controls="editPanel" onclick="handleSaveClick(this)">
+                    Save Changes
+                </button>
             </div>
             <hr />
             <p>
