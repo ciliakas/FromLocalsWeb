@@ -10,283 +10,285 @@
 <link rel="stylesheet" href="~/css/reviewWindow.css">
 
 <body>
-<h2 class="text-center mt-4">@_localizer["Reviews about"] "@Model.Vendor.Title"</h2>
-<hr/>
-<div class="container-fluid">
-<div class="row align-content-lg-start">
-<div class="reviewColumn ml-3 mr-3">
-<div class="row">
-    @if (Model.Reviews.Count() != 0)
-    {
-        <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#sortOptions" aria-expanded="false" aria-controls="sortOptions">
-                @_localizer["Sort By"]
-            </button>
-            <div class="collapse" id="sortOptions">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(0)">@_localizer["Best reviewed"]</button>
-                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(1)">@_localizer["Newest"]</button>
-                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(2)">@_localizer["Oldest"]</button>
-                </div>
-            </div>
-        </p>
-    }
-    <div class="card w-100 mr-2 ml-2 pre-scrollable" id="reviewsDisplay">
-        <ul class="list-group list-group-flush" id="allReviews">
-            @if (Model.Reviews.Count() == 0)
-            {
-                <li class="list-group-item font-italic">@_localizer["No reviews"]</li>
-            }
-            else
-            {
-                var i = 0;
-                @foreach (var item in Model.Reviews)
-                {
-                    var commentDate = CalcRelativeTime(item.Item1.Date);
-                    <li class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <div class="d-flex">
-                                @if (item.Item2 != null)
-                                {
-                                    <img src="data:image;base64,@Convert.ToBase64String(item.Item2)" class="userImage mr-3" style="height: 32px; width: 32px;"/>
-                                }
-                                else
-                                {
-                                    <img src="~/Assets/profile.png" class="userImage mr-3" style="height: 32px; width: 32px;"/>
-                                }
-                                <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.SenderUsername)</h5>
-                                @switch (item.Item1.Stars)
-                                {
-                                    case 5:
-                                        <p class="ml-3" data-rating="@item.Item1.Stars">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                        </p>
-                                        break;
-                                    case 4:
-                                        <p class="ml-3" data-rating="@item.Item1.Stars">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                        </p>
-                                        break;
-                                    case 3:
-                                        <p class="ml-3" data-rating="@item.Item1.Stars">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                        </p>
-                                        break;
-                                    case 2:
-                                        <p class="ml-3" data-rating="@item.Item1.Stars">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                        </p>
-                                        break;
-                                    default:
-                                        <p class="ml-3" data-rating="@item.Item1.Stars">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                        </p>
-                                        break;
-                                }
+    <h2 class="text-center mt-4">@_localizer["Reviews about"] "@Model.Vendor.Title"</h2>
+    <hr />
+    <div class="container-fluid">
+        <div class="row align-content-lg-start">
+            <div class="reviewColumn ml-3 mr-3">
+                <div class="row">
+                    @if (Model.Reviews.Count() != 0)
+                    {
+                        <p>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#sortOptions" aria-expanded="false" aria-controls="sortOptions">
+                                @_localizer["Sort By"]
+                            </button>
+                            <div class="collapse" id="sortOptions">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(0)">@_localizer["Best reviewed"]</button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(1)">@_localizer["Newest"]</button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="sortList(2)">@_localizer["Oldest"]</button>
+                                </div>
                             </div>
-                        </div>
-                        <p class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.Text)</p>
-                        <small data-val="@item.Item1.Date">Posted @Html.DisplayFor(modelItem => commentDate)</small>
-                        @if (userManager.GetUserId(User) == Model.Vendor.UserID)
-                        {
-                            @if (item.Item1.Reply != "")
+                        </p>
+                    }
+                    <div class="card w-100 mr-2 ml-2 pre-scrollable" id="reviewsDisplay">
+                        <ul class="list-group list-group-flush" id="allReviews">
+                            @if (Model.Reviews.Count() == 0)
                             {
-                                var replyDate = CalcRelativeTime(item.Item1.ReplyDate);
-                                <div class="mt-3 mb-3">
-                                    <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#k_@i" aria-expanded="false" aria-controls="k_@i">
-                                        @_localizer["Show reply"]
-                                    </button>
-                                </div>
-                                <div class="collapse" id="k_@i">
-                                    <div style="background-color: whitesmoke; border-radius: 4px; margin-left: 10%;">
-                                        <div class="row">
-                                            <div class="container m-3">
-                                                <div class="d-flex">
-                                                    @if (Model.Vendor.Image != null)
-                                                    {
-                                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Vendor.Image)" class="userImage mr-3" style="height: 32px; width: 32px;"/>
-                                                    }
-                                                    else
-                                                    {
-                                                        <img src="~/Assets/localSeller.png" class="mr-3" style="height: 32px; width: 32px;"/>
-                                                    }
-                                                    <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.ReplySender)</h5>
-                                                </div>
-                                                <p class="mt-3">@Html.DisplayFor(modelItem => item.Item1.Reply)</p>
-                                                <small>@_localizer["Posted "]@Html.DisplayFor(modelItem => replyDate)</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <li class="list-group-item font-italic">@_localizer["No reviews"]</li>
                             }
                             else
                             {
-                                <form method="post">
-                                    <div class="form-inline mt-3" style="margin-left: 20%; width: 80%;">
-                                        <textarea class="form-control mr-3" placeholder="Write a reply..." name="vendorReply" style="width: 85%;"></textarea>
-                                        <div class="input-group-prepend">
-                                            <button class="input-group-text mb-4 btn btn-outline-secondary" type="submit" name="postReview" value="@i">@_localizer["Post"]</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            }
-                        }
-                        else
-                        {
-                            @if (item.Item1.Reply != "")
-                            {
-                                var replyDate = CalcRelativeTime(item.Item1.ReplyDate);
-                                <div class="mt-3 mb-3">
-                                    <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#k_@i" aria-expanded="false" aria-controls="k_@i">
-                                        @_localizer["Show reply"]
-                                    </button>
-                                </div>
-                                <div class="collapse" id="k_@i">
-                                    <div style="background-color: whitesmoke; border-radius: 4px; margin-left: 10%;">
-                                        <div class="row">
-                                            <div class="container m-3">
-                                                <div class="d-flex">
-                                                    @if (Model.Vendor.Image != null)
-                                                    {
-                                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Vendor.Image)" class="userImage mr-3" style="height: 32px; width: 32px;"/>
-                                                    }
-                                                    else
-                                                    {
-                                                        <img src="~/Assets/profile.png" class="mr-3" style="height: 32px; width: 32px;"/>
-                                                    }
-                                                    <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.ReplySender)</h5>
-                                                </div>
-                                                <p class="mt-3">@Html.DisplayFor(modelItem => item.Item1.Reply)</p>
-                                                <small>@_localizer["Posted"] @Html.DisplayFor(modelItem => replyDate)</small>
+                                var i = 0;
+                                @foreach (var item in Model.Reviews)
+                                {
+                                    var commentDate = CalcRelativeTime(item.Item1.Date);
+                                    <li class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <div class="d-flex">
+                                                @if (item.Item2 != null)
+                                                {
+                                                    <img src="data:image;base64,@Convert.ToBase64String(item.Item2)" class="userImage mr-3" style="height: 32px; width: 32px;" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Assets/profile.png" class="userImage mr-3" style="height: 32px; width: 32px;" />
+                                                }
+                                                <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.SenderUsername)</h5>
+                                                @switch (item.Item1.Stars)
+                                                {
+                                                    case 5:
+                                                        <p class="ml-3" data-rating="@item.Item1.Stars">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                        </p>
+                                                        break;
+                                                    case 4:
+                                                        <p class="ml-3" data-rating="@item.Item1.Stars">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star"></span>
+                                                        </p>
+                                                        break;
+                                                    case 3:
+                                                        <p class="ml-3" data-rating="@item.Item1.Stars">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                        </p>
+                                                        break;
+                                                    case 2:
+                                                        <p class="ml-3" data-rating="@item.Item1.Stars">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                        </p>
+                                                        break;
+                                                    default:
+                                                        <p class="ml-3" data-rating="@item.Item1.Stars">
+                                                            <span class="fa fa-star checked"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                            <span class="fa fa-star"></span>
+                                                        </p>
+                                                        break;
+                                                }
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <p class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.Text)</p>
+                                        <small data-val="@item.Item1.Date">Posted @Html.DisplayFor(modelItem => commentDate)</small>
+                                        <a href="" type="button" data-toggle="modal" data-target="#createReportModal">Report</a>
+                                        @if (userManager.GetUserId(User) == Model.Vendor.UserID)
+                                        {
+                                            @if (item.Item1.Reply != "")
+                                            {
+                                                var replyDate = CalcRelativeTime(item.Item1.ReplyDate);
+                                                <div class="mt-3 mb-3">
+                                                    <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#k_@i" aria-expanded="false" aria-controls="k_@i">
+                                                        @_localizer["Show reply"]
+                                                    </button>
+                                                </div>
+                                                <div class="collapse" id="k_@i">
+                                                    <div style="background-color: whitesmoke; border-radius: 4px; margin-left: 10%;">
+                                                        <div class="row">
+                                                            <div class="container m-3">
+                                                                <div class="d-flex">
+                                                                    @if (Model.Vendor.Image != null)
+                                                                    {
+                                                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Vendor.Image)" class="userImage mr-3" style="height: 32px; width: 32px;" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="~/Assets/localSeller.png" class="mr-3" style="height: 32px; width: 32px;" />
+                                                                    }
+                                                                    <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.ReplySender)</h5>
+                                                                </div>
+                                                                <p class="mt-3">@Html.DisplayFor(modelItem => item.Item1.Reply)</p>
+                                                                <small>@_localizer["Posted "]@Html.DisplayFor(modelItem => replyDate)</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <form method="post">
+                                                    <div class="form-inline mt-3" style="margin-left: 20%; width: 80%;">
+                                                        <textarea class="form-control mr-3" placeholder="Write a reply..." name="vendorReply" style="width: 85%;"></textarea>
+                                                        <div class="input-group-prepend">
+                                                            <button class="input-group-text mb-4 btn btn-outline-secondary" type="submit" name="postReview" value="@i">@_localizer["Post"]</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @if (item.Item1.Reply != "")
+                                            {
+                                                var replyDate = CalcRelativeTime(item.Item1.ReplyDate);
+                                                <div class="mt-3 mb-3">
+                                                    <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#k_@i" aria-expanded="false" aria-controls="k_@i">
+                                                        @_localizer["Show reply"]
+                                                    </button>
+                                                </div>
+                                                <div class="collapse" id="k_@i">
+                                                    <div style="background-color: whitesmoke; border-radius: 4px; margin-left: 10%;">
+                                                        <div class="row">
+                                                            <div class="container m-3">
+                                                                <div class="d-flex">
+                                                                    @if (Model.Vendor.Image != null)
+                                                                    {
+                                                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Vendor.Image)" class="userImage mr-3" style="height: 32px; width: 32px;" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="~/Assets/profile.png" class="mr-3" style="height: 32px; width: 32px;" />
+                                                                    }
+                                                                    <h5 class="mb-1"> @Html.DisplayFor(modelItem => item.Item1.ReplySender)</h5>
+                                                                </div>
+                                                                <p class="mt-3">@Html.DisplayFor(modelItem => item.Item1.Reply)</p>
+                                                                <small>@_localizer["Posted"] @Html.DisplayFor(modelItem => replyDate)</small>
+                                                                <a href="" type="button" data-toggle="modal" data-target="#createReportModal">Report</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </li>
+                                    i++;
+                                }
                             }
+                        </ul>
+                        @if (Model.Reviews.Count() > 10)
+                        {
+                            <button class="btn btn-link" id="readMoreBtn" style="width: 10%;" onclick="readMore()">@_localizer["... more"]</button>
                         }
-                    </li>
-                    i++;
+                    </div>
+                </div>
+                <hr class="mr-3" />
+                @if (userManager.GetUserId(User) != Model.Vendor.UserID)
+                {
+                    <form method="post">
+                        <p class="mt-3 mb-3" style="font-size: 20px; text-align: center;">@_localizer["Leave a review"]</p>
+                        <div class="form-group mr-3">
+                            <div class="stars" data-rating="0" style="text-align: center;">
+                                <span class="star"></span>
+                                <span class="star"></span>
+                                <span class="star"></span>
+                                <span class="star"></span>
+                                <span class="star"></span>
+                            </div>
+                            <textarea name="starRating" id="starCount" hidden></textarea>
+                            <textarea name="listItemCount" id="listItemCount" hidden></textarea>
+                            <textarea name="comment" class="form-control mb-3 mt-3" rows="3" id="userComment" oninput="checkInput()"></textarea>
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Cannot post an empty review!">
+                                <button type="submit" class="btn btn-success" id="postComment" onclick="handlePost()" disabled>@_localizer["Comment"]</button>
+                            </span>
+                        </div>
+                    </form>
                 }
-            }
-        </ul>
-        @if (Model.Reviews.Count() > 10)
-        {
-            <button class="btn btn-link" id="readMoreBtn" style="width: 10%;" onclick="readMore()">@_localizer["... more"]</button>
-        }
-    </div>
-</div>
-<hr class="mr-3"/>
-@if (userManager.GetUserId(User) != Model.Vendor.UserID)
-{
-    <form method="post">
-        <p class="mt-3 mb-3" style="font-size: 20px; text-align: center;">@_localizer["Leave a review"]</p>
-        <div class="form-group mr-3">
-            <div class="stars" data-rating="0" style="text-align: center;">
-                <span class="star"></span>
-                <span class="star"></span>
-                <span class="star"></span>
-                <span class="star"></span>
-                <span class="star"></span>
             </div>
-            <textarea name="starRating" id="starCount" hidden></textarea>
-            <textarea name="listItemCount" id="listItemCount" hidden></textarea>
-            <textarea name="comment" class="form-control mb-3 mt-3" rows="3" id="userComment" oninput="checkInput()"></textarea>
-            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Cannot post an empty review!">
-                <button type="submit" class="btn btn-success" id="postComment" onclick="handlePost()" disabled>@_localizer["Comment"]</button>
-            </span>
-        </div>
-    </form>
-}
-</div>
 
-<div class="col float-lg-right mb-3">
-    <div class="row float-lg-right">
-        <div class="container float-lg-right">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted" style="font-size: 25px; text-align: center;">@_localizer["Overall"]</h6>
-                    <p class="average" style="text-align: center;" id="average">
-                        @Model.Vendor.ReviewsAverage.ToString("0.0")<span class="five">/5</span>
-                    </p>
-                </div>
+            <div class="col float-lg-right mb-3">
+                <div class="row float-lg-right">
+                    <div class="container float-lg-right">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted" style="font-size: 25px; text-align: center;">@_localizer["Overall"]</h6>
+                                <p class="average" style="text-align: center;" id="average">
+                                    @Model.Vendor.ReviewsAverage.ToString("0.0")<span class="five">/5</span>
+                                </p>
+                            </div>
 
-                <!-- Total reviews-->
-                <div class="card-header" style="text-align: center;">
-                    @_localizer["Based on"] @Model.Vendor.ReviewsCount.Sum() @_localizer["reviews."]
+                            <!-- Total reviews-->
+                            <div class="card-header" style="text-align: center;">
+                                @_localizer["Based on"] @Model.Vendor.ReviewsCount.Sum() @_localizer["reviews."]
+                            </div>
+                            <ul class="list-group list-group-flush" onload="updateRatingCounts()">
+                                <!-- 5 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[4]) @_localizer["review(s)"]
+                                </li>
+                                <!-- 4 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[3]) @_localizer["review(s)"]
+                                </li>
+                                <!-- 3 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[2]) @_localizer["review(s)"]
+                                </li>
+                                <!-- 2 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[1]) @_localizer["review(s)"]
+                                </li>
+                                <!-- 1 star reviews-->
+                                <li class="list-group-item">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[0]) @_localizer["review(s)"]
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <ul class="list-group list-group-flush" onload="updateRatingCounts()">
-                    <!-- 5 star reviews-->
-                    <li class="list-group-item">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[4]) @_localizer["review(s)"]
-                    </li>
-                    <!-- 4 star reviews-->
-                    <li class="list-group-item">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[3]) @_localizer["review(s)"]
-                    </li>
-                    <!-- 3 star reviews-->
-                    <li class="list-group-item">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[2]) @_localizer["review(s)"]
-                    </li>
-                    <!-- 2 star reviews-->
-                    <li class="list-group-item">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[1]) @_localizer["review(s)"]
-                    </li>
-                    <!-- 1 star reviews-->
-                    <li class="list-group-item">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        @Html.DisplayFor(modelItem => Model.Vendor.ReviewsCount[0]) @_localizer["review(s)"]
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
-</div>
-</div>
-</div>
 </body>
 <script src="~/js/reviewWindow.js"></script>
 <script>

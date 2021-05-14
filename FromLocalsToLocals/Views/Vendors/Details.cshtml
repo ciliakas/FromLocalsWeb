@@ -7,7 +7,8 @@
 
     var userForFeed = await userManager.GetUserAsync(User);
     var currentUser = await userManager.GetUserAsync(User);
-    if (userForFeed != null && Model.User != null && userForFeed.Id != Model.User.Id)
+    if (userForFeed != null && userForFeed.Id != Model.UserID)
+    //if (userForFeed != null && Model.User != null && userForFeed.Id != Model.User.Id)
     {
         userForFeed = null;
     }
@@ -71,7 +72,9 @@
                     <p class="font-italic">@Model.About</p>
                 }
             </div>
-            @if (currentUser != null /*&& currentUser.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID)*/)
+            @if (currentUser?.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID))
+            <!--if (currentUser != null /*&& currentUser.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID)*/)-->
+
             {
                 <hr/>
                 <div class="row">
@@ -167,6 +170,9 @@
             </div>
         </div>
     </div>
+</div>
+<div class="row justify-content-end">
+<a href="" class="mr-4" type="button" data-toggle="modal" data-target="#createReportModal">Report</a>
 </div>
 
 
