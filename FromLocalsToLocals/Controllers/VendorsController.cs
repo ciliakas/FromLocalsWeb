@@ -169,6 +169,14 @@ namespace FromLocalsToLocals.Web.Controllers
                             await _vendorServiceADO.InsertWorkHoursAsync(workHours);
                         }
 
+                    var serviceListing = model.VendorListing;
+                    foreach (var elem in serviceListing)
+                    {
+                        var vendorListing = new Listing(vendor.ID, elem.Name, elem.Price, elem.Image, elem.Description);
+                        await _vendorService.AddListingAsync(vendorListing);
+                    }
+
+
                     _toastNotification.AddSuccessToastMessage(_localizer["Service Created"]);
                     return RedirectToAction("MyVendors");
                 }
@@ -195,7 +203,9 @@ namespace FromLocalsToLocals.Web.Controllers
 
             var workHours = _context.VendorWorkHours.Where(x => x.VendorID == vendor.ID).OrderBy(y => y.Day).ToList();
 
-            return View(new CreateEditVendorVM(vendor, workHours));
+            var vendorListing = _context.Listings.Where(x => x.VendorID == vendor.ID).OrderBy(y => y.ListingID).ToList();
+
+            return View(new CreateEditVendorVM(vendor, workHours, vendorListing));
         }
 
         [HttpPost]

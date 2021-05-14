@@ -77,6 +77,8 @@ namespace FromLocalsToLocals.Contracts.Entities
 
         [JsonIgnore] [IgnoreDataMember] public virtual ICollection<WorkHours> VendorHours { get; set; }
 
+        [JsonIgnore] [IgnoreDataMember] public virtual ICollection<Listing> VendorListing { get; set; }
+
         [NotMapped] public int FollowerCount { get; set; }
 
         #region IEquatable

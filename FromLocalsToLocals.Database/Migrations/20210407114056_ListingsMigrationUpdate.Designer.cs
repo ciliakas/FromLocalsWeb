@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FromLocalsToLocals.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210210200031_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210407114056_ListingsMigrationUpdate")]
+    partial class ListingsMigrationUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -136,6 +136,33 @@ namespace FromLocalsToLocals.Database.Migrations
                     b.HasIndex("VendorID");
 
                     b.ToTable("Followers");
+                });
+
+            modelBuilder.Entity("FromLocalsToLocals.Contracts.Entities.Listing", b =>
+                {
+                    b.Property<int>("ListingID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseSerialColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("VendorID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ListingID");
+
+                    b.ToTable("Listings");
                 });
 
             modelBuilder.Entity("FromLocalsToLocals.Contracts.Entities.Message", b =>

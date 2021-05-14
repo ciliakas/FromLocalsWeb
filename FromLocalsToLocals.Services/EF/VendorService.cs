@@ -72,7 +72,10 @@ namespace FromLocalsToLocals.Services.EF
             var vendor = await _context.Vendors.FirstOrDefaultAsync(m => m.ID == id);
 
             if (vendor != null)
+            {
                 vendor.VendorHours = _context.VendorWorkHours.Where(x => x.VendorID == id).OrderBy(y => y.Day).ToList();
+                vendor.VendorListing = _context.Listings.Where(x => x.VendorID == id).OrderBy(y => y.ListingID).ToList();
+            }
             return vendor;
         }
 
@@ -117,6 +120,32 @@ namespace FromLocalsToLocals.Services.EF
             }
         }
 
+        public async Task AddListingAsync(Listing vendorListing)
+        {
+            try
+            {
+                _context.Listings.Add(vendorListing);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
+        public async Task RemoveListingAsync(Listing vendorListing)
+        {
+            try
+            {
+                _context.Listings.Remove(vendorListing);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
         public async Task UpdatePopularityAsync(Vendor vendor)
         {
             try
@@ -139,6 +168,21 @@ namespace FromLocalsToLocals.Services.EF
                 var row = _context.VendorWorkHours.FirstOrDefault(x =>
                     x.VendorID == workHours.VendorID && x.Day == workHours.Day);
                 workHours.SetWorkHours(row);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                await e.ExceptionSender();
+            }
+        }
+
+        public async Task ChangeListingAsync(Listing vendorListing)
+        {
+            try
+            {
+                var row = _context.Listings.FirstOrDefault(x =>
+                    x.VendorID == vendorListing.VendorID && x.ListingID == vendorListing.ListingID);
+                vendorListing.SetListing(row);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException e)

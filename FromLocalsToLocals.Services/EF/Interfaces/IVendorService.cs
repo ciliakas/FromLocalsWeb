@@ -20,6 +20,7 @@ namespace FromLocalsToLocals.Services.EF
         Task AddWorkHoursAsync(WorkHours workHours);
         Task ChangeWorkHoursAsync(WorkHours workHours);
 
+        Task AddListingAsync(Listing vendorListing);
 
         Task UpdateAsync(Vendor vendor);
         Task DeleteAsync(Vendor vendor);
