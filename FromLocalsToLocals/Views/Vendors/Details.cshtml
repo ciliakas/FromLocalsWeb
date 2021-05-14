@@ -8,6 +8,7 @@
     var userForFeed = await userManager.GetUserAsync(User);
     var currentUser = await userManager.GetUserAsync(User);
     if (userForFeed != null && userForFeed.Id != Model.UserID)
+    //if (userForFeed != null && Model.User != null && userForFeed.Id != Model.User.Id)
     {
         userForFeed = null;
     }
@@ -72,11 +73,13 @@
                 }
             </div>
             @if (currentUser?.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID))
+            <!--if (currentUser != null /*&& currentUser.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID)*/)-->
+
             {
                 <hr/>
                 <div class="row">
                     <div class="col mr-2 ml-2">
-                        @if (currentUser.Following.Any(x => x.VendorID == Model.ID))
+                        @if (currentUser.Following != null && currentUser.Following.Any(x => x.VendorID == Model.ID))
                         {
                             <button data-follow="false" data-id="@Model.ID" class="btn btn-outline-primary w-100" id="followButn" onclick="followBtnClick(this, @Model.ID)">@_localizer["Unfollow"]</button>
                         }

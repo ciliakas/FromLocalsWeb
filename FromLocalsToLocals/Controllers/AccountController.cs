@@ -127,10 +127,10 @@ namespace FromLocalsToLocals.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> FollowingAsync()
+        public async Task<IActionResult> Following()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(user.Following.ToList());
+            return View(user.Following == null ? new List<Follower>() : user.Following.ToList());
         }
         public async Task<IActionResult> Profile()
         {
