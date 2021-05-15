@@ -161,7 +161,31 @@ img.userImage.mr-3 { border-radius: 50%; }
     position: absolute;
     top: 10%;
 }
+.alignleft {
+    float: left;
+}
 
+.alignright {
+    float: right;
+}
+
+.card-picture {
+    align-self: center;
+    border-radius: 50%;
+    height: 150px;
+    width: 160px;
+}
+
+.swipeCard {
+    transition: 0.45s ease-out; /* adding animation */
+    position: relative;
+}
+
+.swipeCard .hidden {
+    transform: rotate(-45deg);
+    opacity: 0;
+    left: -220px; /* making out of the visible area */
+}
 
 .time { margin-left: auto; }
 

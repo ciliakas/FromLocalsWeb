@@ -72,9 +72,8 @@
                     <p class="font-italic">@Model.About</p>
                 }
             </div>
-            @if (currentUser?.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID))
             <!--if (currentUser != null /*&& currentUser.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID)*/)-->
-
+            @if (currentUser?.Vendors != null && currentUser.Vendors.All(x => x.ID != Model.ID))
             {
                 <hr/>
                 <div class="row">

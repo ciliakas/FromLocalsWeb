@@ -1,0 +1,64 @@
+﻿<!--<row class="justify-content-end mb-5">
+    <div class="container-fluid">
+        <a class="btn btn-sm btn-primary text-light" data-toggle="popover" title="Help"
+           data-content="There you get service suggestions by distance from you. To see another service press 'Skip',
+            to get more details about currently shown service press 'Select'">
+            <b>i</b>
+        </a>
+    </div>
+</row>-->
+
+
+<div class="row justify-content-center mt-5" style="overflow:hidden;">
+    <div class="swipeCard card text-center bg-success text-light border-dark" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Fresh salad stall</h5>
+            <p class="card-text alignleft">Produce</p>
+            <p class="card-text alignright">1.2 km</p>
+            <div style="clear: both;"></div>
+            <hr class="mt-0" />
+            <img alt="Vendor image" src="~/Assets/localSeller.png" class="card-picture" />
+            <hr class="mt-3" />
+            <p class="card-text alignleft">Tomas</p>
+            <p class="card-text alignright">4.2/5</p>
+            <div style="clear: both;"></div>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <hr class="mt-0" />
+            <a id="skip" class="btn btn-light text-dark mr-5" style="width: 4.5rem;">Skip</a>
+            <a asp-route-id="11" asp-controller="Vendors" asp-action="Details" class="btn btn-light text-dark ml-5" style="width: 4.5rem;">Select</a>
+            <br />
+            <button data-toggle="modal" data-target="#createReportModal" class="btn btn-sm btn-dark mt-4">!</button>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-5">
+    <div class="swipeCard card text-center bg-warning text-light border-dark" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Fresh salad stall</h5>
+            <p class="card-text alignleft">Produce</p>
+            <p class="card-text alignright">1.2 km</p>
+            <div style="clear: both;"></div>
+            <hr class="mt-0" />
+            <img alt="Vendor image" src="~/Assets/localSeller.png" class="card-picture" />
+            <hr class="mt-3" />
+            <p class="card-text alignleft">Tomas</p>
+            <p class="card-text alignright">4.2/5</p>
+            <div style="clear: both;"></div>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <hr class="mt-0" />
+            <a class="skip btn btn-light text-dark mr-5" style="width: 4.5rem;">Skip</a>
+            <a asp-route-id="11" asp-controller="Vendors" asp-action="Details" class="btn btn-light text-dark ml-5" style="width: 4.5rem;">Select</a>
+            <br />
+            <button data-toggle="modal" data-target="#createReportModal" class="btn btn-sm btn-dark mt-4">!</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#skip").click(function () {
+        var cards = document.getElementsByClassName("swipeCard");
+        cards[0].classList.add("hidden"); // toggle CSS class on click
+    });
+</script>
+
