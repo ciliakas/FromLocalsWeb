@@ -9,7 +9,7 @@
 </row>-->
 
 
-<div class="row justify-content-center mt-5" style="overflow:hidden;">
+<div class="row justify-content-center mt-5">
     <div class="swipeCard card text-center bg-success text-light border-dark" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">Fresh salad stall</h5>
@@ -24,7 +24,7 @@
             <div style="clear: both;"></div>
             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             <hr class="mt-0" />
-            <a id="skip" class="btn btn-light text-dark mr-5" style="width: 4.5rem;">Skip</a>
+            <a type="button" class="skip btn btn-light text-dark mr-5" style="width: 4.5rem;">Skip</a>
             <a asp-route-id="11" asp-controller="Vendors" asp-action="Details" class="btn btn-light text-dark ml-5" style="width: 4.5rem;">Select</a>
             <br />
             <button data-toggle="modal" data-target="#createReportModal" class="btn btn-sm btn-dark mt-4">!</button>
@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center mt-5  nextSwipeCard">
     <div class="swipeCard card text-center bg-warning text-light border-dark" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">Fresh salad stall</h5>
@@ -56,9 +56,19 @@
 </div>
 
 <script>
-    $("#skip").click(function () {
+    $(".skip").click(function () {
         var cards = document.getElementsByClassName("swipeCard");
-        cards[0].classList.add("hidden"); // toggle CSS class on click
+        var rows = document.getElementsByClassName("row");
+        console.log(cards.length);
+       // $(".swipeCard:first").addClass("hidden");
+        cards[0].classList.add("hidden");
+        setTimeout(function() {
+            rows[0].remove();
+            console.log(cards.length);
+            if (cards.length > 0) {
+                rows[0].classList.remove("nextSwipeCard");
+            }
+        }, 500);
     });
 </script>
 
