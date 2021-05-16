@@ -177,13 +177,20 @@ img.userImage.mr-3 { border-radius: 50%; }
 }
 
 .swipeCard {
-    transition: 0.45s ease-out; /* adding animation */
+    transition: 0.5s ease-out; /* adding animation */
 }
 
 .swipeCard.hidden {
-    left: -250px; /* making out of the visible area */
-    transform: rotate(-45deg);
+    position: absolute;
+    left: 25%;
+    transform: rotate(-70deg);
     opacity: 0;
+}
+
+.row.transition {
+    position: absolute;
+    left: 30%;
+    z-index: 10;
 }
 
 .nextSwipeCard {
