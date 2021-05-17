@@ -7,16 +7,21 @@ using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Web.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FromLocalsToLocals.Web.Controllers
 {
     public class SwipeCardController : Controller
     {
+        private readonly AppDbContext _context;
         private readonly IVendorService _vendorService;
+        private readonly UserManager<AppUser> _userManager;
 
-        public SwipeCardController(IVendorService vendorService)
+        public SwipeCardController(UserManager<AppUser> userManager, AppDbContext context, IVendorService vendorService)
         {
+            _userManager = userManager;
+            _context = context;
             _vendorService = vendorService;
         }
 
@@ -31,19 +36,39 @@ namespace FromLocalsToLocals.Web.Controllers
             return (6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3))))/1000;
         }
 
+        public string GetUserNameById(string UserID)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == UserID);
+            return user.UserName;
+        }
+
         public async Task<SwipecardVM> GetSwipeCards()
         {
             var model = new SwipecardVM();
             var vendors = await _vendorService.GetVendorsAsync();
 
-            var swipecards = vendors.Select(x => new SwipeCard { Id = x.ID ,Title = x.Title, Image = x.Image, VendorType = x.VendorType, VendorName = x.UserID, Description = x.About, Distance = GetDistance(x.Longitude, x.Latitude, 25.231710, 54.719540) });
+            var swipeCards = vendors.Select(x => new SwipeCard
+            {
+                Id = x.ID,
+                Title = x.Title,
+                Image = x.Image,
+                VendorType = x.VendorType,
+                VendorName = GetUserNameById(x.UserID),
+                Description = x.About,
+                Distance = GetDistance(x.Longitude, x.Latitude, 25.273820, 54.676050),
+                ReviewsAverage = x.ReviewsAverage
+            });
 
-            model.Swipecards = swipecards.OrderBy(x => x.Distance).ToList();
+            model.Swipecards = swipeCards.OrderBy(x => x.Distance).ToList();
             return model;
         }
         public async Task<IActionResult> SwipeCard()
         {
             var model = await GetSwipeCards();
+            foreach (var x in model.Swipecards)
+            {
+                Console.WriteLine("user: " + x.VendorName + " Service: " + x.Title + " Distance: " + x.Distance);
+            }
             return View(model);
         }
     }
