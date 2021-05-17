@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Services.EF;
+using FromLocalsToLocals.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FromLocalsToLocals.Web.Controllers
@@ -30,21 +31,22 @@ namespace FromLocalsToLocals.Web.Controllers
             return (6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3))))/1000;
         }
 
-        public async Task<List<SwipeCard>> GetSwipeCards()
+        public async Task<SwipecardVM> GetSwipeCards()
         {
+            var model = new SwipecardVM();
             var vendors = await _vendorService.GetVendorsAsync();
 
             var swipecards = vendors.Select(x => new SwipeCard { Id = x.ID ,Title = x.Title, Image = x.Image, VendorType = x.VendorType, VendorName = x.UserID, Description = x.About, Distance = GetDistance(x.Longitude, x.Latitude, 25.231710, 54.719540) });
-            return swipecards.OrderBy(x=>x.Distance).ToList();
+
+            model.Swipecards = swipecards.OrderBy(x => x.Distance).ToList();
+            return model;
         }
         public async Task<IActionResult> SwipeCard()
         {
-            var swipecards = await GetSwipeCards();
-            foreach (var x in swipecards)
-            {
-                Console.WriteLine("Pavadinimas " + x.Title + " Atstumas: " + x.Distance);
-            }
-            return View();
+            var model = await GetSwipeCards();
+            Console.WriteLine(model.Swipecards[0].Title);
+            Console.WriteLine(model.Swipecards[0].Distance);
+            return View(model);
         }
     }
 }
