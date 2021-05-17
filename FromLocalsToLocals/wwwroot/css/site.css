@@ -138,7 +138,7 @@ button.boxclose {
 }
 
 .star.rated::before {
-    /* the style for a selected star */
+  /* the style for a selected star */
 
   content: '\2605';
 }
@@ -217,7 +217,7 @@ img.userImage.mr-3 { border-radius: 50%; }
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
+  0% { transform: rotate(0deg); }
 
-    100% { transform: rotate(360deg); }
+  100% { transform: rotate(360deg); }
 }
