@@ -2,151 +2,153 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-    text-align:  center;
-    white-space:  normal;
-    word-break:  break-all;
+     text-align: center;
+     white-space: normal;
+     word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 
-a { color:  #0366d6; }
+a { color: #0366d6; }
 
 .btn-primary {
-    background-color:  #1b6ec2;
-    border-color:  #1861ac;
-    color:  #fff;
+     background-color: #1b6ec2;
+     border-color: #1861ac;
+     color: #fff;
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-    background-color:  #1b6ec2;
-    border-color:  #1861ac;
-    color:  #fff;
+     background-color: #1b6ec2;
+     border-color: #1861ac;
+     color: #fff;
 }
 
 p {
-    margin-right:  20px;
-    text-align:  justify;
+     margin-right: 20px;
+     text-align: justify;
 }
 
 p.average {
-    color:  green;
-    font-size:  65px;
-    font-weight:  bold;
+     color: green;
+     font-size: 65px;
+     font-weight: bold;
 }
 
 span.five {
-    color:  dimgray;
-    font-size:  65px;
-    font-weight:  bold;
+     color: dimgray;
+     font-size: 65px;
+     font-weight: bold;
 }
 
 /* Reviews list template */
 
 card.reviewsDisplay {
-    overflow:  hidden;
-    word-wrap:  break-word;
+     overflow: hidden;
+     word-wrap: break-word;
 }
 
-.checked { color:  orange; }
+.checked { color: orange; }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 
-@media (min-width:  768px) {
-    html { font-size:  16px; }
+@media (min-width: 768px) {
+     html { font-size: 16px; }
 }
 
-.border-bottom { border-bottom:  1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
 
-.box-shadow { box-shadow:  0 0.25rem 0.75rem rgba(0, 0, 0, 0.05); }
+.box-shadow { box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05); }
 
 button.accept-policy {
-    font-size:  1rem;
-    line-height:  inherit;
+     font-size: 1rem;
+     line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 
 html {
-    min-height:  100%;
-    position:  relative;
-    font-size:  14px;
+     min-height: 100%;
+     position: relative;
+     font-size: 14px;
 }
 
 body {
-    background-color:  whitesmoke;
-    margin-bottom:  60px;
+     background-color: whitesmoke;
+     margin-bottom: 60px;
 }
 
 .footer {
-    bottom:  0;
-    line-height:  60px; 
-    position:  absolute;
-    white-space:  nowrap;
-    width:  100%;
+     bottom: 0;
+     line-height: 60px; 
+     position: absolute;
+     white-space: nowrap;
+     width: 100%;
 }
 
 
 /*Leaflet marker custom control ("popup")*/
 
 .info {
-    background:  rgba(255, 255, 255, 0.8);
-    border-radius:  5px;
-    box-shadow:  0 0 15px rgba(0, 0, 0, 0.2);
-    font:  14px/16px Arial, Helvetica, sans-serif;
-    padding:  6px 8px;
-    width:  200px;
+     background: rgba(255, 255, 255, 0.8);
+     border-radius: 5px;
+     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+     font: 14px/16px Arial, Helvetica, sans-serif;
+     padding: 6px 8px;
+     width: 200px;
 }
 
 .info h4 {
-    color:  #916814;
-    font-weight:  bolder;
-    margin:  0 0 5px;
+     color: #916814;
+     font-weight: bolder;
+     margin: 0 0 5px;
 }
 
 /*Close button */
 
 button.boxclose {
-    background:  #4a1515;
-    border:  1px solid #AEAEAE;
-    border-radius:  30px;
-    color:  #fff;
-    cursor:  pointer;
-    display:  inline-block;
-    float:  right;
-    font-size:  31px;
-    font-weight:  bold;
-    line-height:  0px;
-    margin:  2px;
-    padding:  11px 3px;
+     background: #4a1515;
+     border: 1px solid #AEAEAE;
+     border-radius: 30px;
+     color: #fff;
+     cursor: pointer;
+     display: inline-block;
+     float: right;
+     font-size: 31px;
+     font-weight: bold;
+     line-height: 0px;
+     margin: 2px;
+     padding: 11px 3px;
 }
 
 .boxclose:before {
-    color: white;
-    content: "×";
+     color: white;
+     content: "×";
 }
 
 .star {
-    color: orange;
-    font-size: 2.0rem;
+     color: orange;
+     font-size: 2.0rem;
 }
 
 .star::before {
-    content: '\2606'; /* star outline */
-    cursor: pointer;
+     content: '\2606'; /* star outline */
+     cursor: pointer;
 }
 
 .star.rated::before {
+
     /* the style for a selected star */
-    content: '\2605'; /* filled star */
+
+     content: '\2605'; 
 }
 
 .stars {
-    counter-reset: rateme 0;
-    font-size: 2.0rem;
-    font-weight: 900;
+     counter-reset: rateme 0;
+     font-size: 2.0rem;
+     font-weight: 900;
 }
 
 .star.rated { counter-increment: rateme 1; }
@@ -154,69 +156,69 @@ button.boxclose {
 img.userImage.mr-3 { border-radius: 50%; }
 
 .center {
-    left: 25%;
-    position: absolute;
-    top: 10%;
+     left: 25%;
+     position: absolute;
+     top: 10%;
 }
 .alignleft {
-    float: left;
+     float: left;
 }
 
 .alignright {
-    float: right;
+     float: right;
 }
 
 .card-picture {
-    align-self: center;
-    border-radius: 50%;
-    height: 150px;
-    width: 160px;
+     align-self: center;
+     border-radius: 50%;
+     height: 150px;
+     width: 160px;
 }
 
 .swipeCard {
-    transition: 0.5s ease-out; /* adding animation */
+     transition: 0.5s ease-out; 
 }
 
 .swipeCard.hidden {
-    position: absolute;
-    left: 25%;
-    transform: rotate(-70deg);
-    opacity: 0;
+     position: absolute;
+     left: 25%;
+     transform: rotate(-70deg);
+     opacity: 0;
 }
 
 .row.transition {
-    position: absolute;
-    left: 30%;
-    z-index: 10;
+     position: absolute;
+     left: 30%;
+     z-index: 10;
 }
 
 .nextSwipeCard {
-    visibility: hidden;
+     visibility: hidden;
 }
 
 .time { margin-left: auto; }
 
 .report-post {
-    background-color: #CCBA8B;
+     background-color: #CCBA8B;
 }
 
 .loader {
-    animation: spin 2s linear infinite;
-    border-bottom: 16px solid #339966;
-    border-left: 16px solid #cc6600;
-    border-radius: 50%;
-    border-right: 16px solid #666699;
-    border-top: 16px solid #cc9900;
-    height: 120px;
-    left: 50%;
-    margin: -68px 0px 0px -68px;
-    position: absolute;
-    top: 50%;
-    width: 120px;
+     animation: spin 2s linear infinite;
+     border-bottom: 16px solid #339966;
+     border-left: 16px solid #cc6600;
+     border-radius: 50%;
+     border-right: 16px solid #666699;
+     border-top: 16px solid #cc9900;
+     height: 120px;
+     left: 50%;
+     margin: -68px 0px 0px -68px;
+     position: absolute;
+     top: 50%;
+     width: 120px;
 }
 
 @keyframes spin {
-    0% { transform:  rotate(0deg); }
+    0% { transform: rotate(0deg); }
 
-    100% { transform:  rotate(360deg); }
+    100% { transform: rotate(360deg); }
 }
