@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using FromLocalsToLocals.Contracts.Entities;
@@ -37,12 +35,12 @@ namespace FromLocalsToLocals.Web.Controllers
         public string GetUserNameById(string UserID)
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == UserID);
-            return user.UserName;
+            return user != null ? user.UserName : "Vendor";
         }
 
-        public async Task<SwipecardVM> GetSwipeCards()
+        public async Task<SwipeCardVM> GetSwipeCards()
         {
-            var model = new SwipecardVM();
+            var model = new SwipeCardVM();
             var vendors = await _vendorService.GetVendorsAsync();
 
             var swipeCards = vendors.Select(x => new SwipeCard
@@ -57,7 +55,7 @@ namespace FromLocalsToLocals.Web.Controllers
                 ReviewsAverage = x.ReviewsAverage
             });
 
-            model.Swipecards = swipeCards.OrderBy(x => x.Distance).ToList();
+            model.SwipeCards = swipeCards.OrderBy(x => x.Distance).ToList();
             return model;
         }
         public async Task<IActionResult> SwipeCard()
