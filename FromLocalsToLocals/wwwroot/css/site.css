@@ -1,129 +1,126 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-
 a.navbar-brand {
-    text-align: center;
-    white-space: normal;
-    word-break: break-all;
+    text-align:  center;
+    white-space:  normal;
+    word-break:  break-all;
 }
 
 /* Provide sufficient contrast against white background */
 
-a { color: #0366d6; }
+a { color:  #0366d6; }
 
 .btn-primary {
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-    color: #fff;
+    background-color:  #1b6ec2;
+    border-color:  #1861ac;
+    color:  #fff;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-    color: #fff;
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color:  #1b6ec2;
+    border-color:  #1861ac;
+    color:  #fff;
 }
 
 p {
-    margin-right: 20px;
-    text-align: justify;
+    margin-right:  20px;
+    text-align:  justify;
 }
 
 p.average {
-    color: green;
-    font-size: 65px;
-    font-weight: bold;
+    color:  green;
+    font-size:  65px;
+    font-weight:  bold;
 }
 
 span.five {
-    color: dimgray;
-    font-size: 65px;
-    font-weight: bold;
+    color:  dimgray;
+    font-size:  65px;
+    font-weight:  bold;
 }
 
-/* Reviews list template*/
+/* Reviews list template */
 
 card.reviewsDisplay {
-    overflow: hidden;
-    word-wrap: break-word;
+    overflow:  hidden;
+    word-wrap:  break-word;
 }
 
-.checked { color: orange; }
+.checked { color:  orange; }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 
-html { font-size: 14px; }
-
-@media (min-width: 768px) {
-    html { font-size: 16px; }
+@media (min-width:  768px) {
+    html { font-size:  16px; }
 }
 
+.border-bottom { border-bottom:  1px solid #e5e5e5; }
 
-.border-bottom { border-bottom: 1px solid #e5e5e5; }
-
-.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+.box-shadow { box-shadow:  0 0.25rem 0.75rem rgba(0, 0, 0, 0.05); }
 
 button.accept-policy {
-    font-size: 1rem;
-    line-height: inherit;
+    font-size:  1rem;
+    line-height:  inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 
 html {
-    min-height: 100%;
-    position: relative;
+    min-height:  100%;
+    position:  relative;
+    font-size:  14px;
 }
 
 body {
-    background-color: whitesmoke;
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    background-color:  whitesmoke;
+    margin-bottom:  60px;
 }
 
 .footer {
-    bottom: 0;
-    line-height: 60px; /* Vertically center the text there */
-    position: absolute;
-    white-space: nowrap;
-    width: 100%;
+    bottom:  0;
+    line-height:  60px; 
+    position:  absolute;
+    white-space:  nowrap;
+    width:  100%;
 }
 
 
 /*Leaflet marker custom control ("popup")*/
 
 .info {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    font: 14px/16px Arial, Helvetica, sans-serif;
-    padding: 6px 8px;
-    width: 200px;
+    background:  rgba(255, 255, 255, 0.8);
+    border-radius:  5px;
+    box-shadow:  0 0 15px rgba(0, 0, 0, 0.2);
+    font:  14px/16px Arial, Helvetica, sans-serif;
+    padding:  6px 8px;
+    width:  200px;
 }
 
 .info h4 {
-    color: #916814;
-    font-weight: bolder;
-    margin: 0 0 5px;
+    color:  #916814;
+    font-weight:  bolder;
+    margin:  0 0 5px;
 }
 
 /*Close button */
 
 button.boxclose {
-    background: #4a1515;
-    border: 1px solid #AEAEAE;
-    border-radius: 30px;
-    color: #fff;
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-    font-size: 31px;
-    font-weight: bold;
-    line-height: 0px;
-    margin: 2px;
-    padding: 11px 3px;
+    background:  #4a1515;
+    border:  1px solid #AEAEAE;
+    border-radius:  30px;
+    color:  #fff;
+    cursor:  pointer;
+    display:  inline-block;
+    float:  right;
+    font-size:  31px;
+    font-weight:  bold;
+    line-height:  0px;
+    margin:  2px;
+    padding:  11px 3px;
 }
 
 .boxclose:before {
@@ -219,7 +216,7 @@ img.userImage.mr-3 { border-radius: 50%; }
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
+    0% { transform:  rotate(0deg); }
 
-    100% { transform: rotate(360deg); }
+    100% { transform:  rotate(360deg); }
 }

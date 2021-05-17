@@ -35,7 +35,7 @@ namespace FromLocalsToLocals.Web.Controllers
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager,
         AppDbContext context, IToastNotification toastNotification,
-                                 IOptions<SendGridAccount>  userOptions, IStringLocalizer<AccountController> localizer)
+                                 IOptions<SendGridAccount> userOptions, IStringLocalizer<AccountController> localizer)
         {
             _context = context;
             _localizer = localizer;
