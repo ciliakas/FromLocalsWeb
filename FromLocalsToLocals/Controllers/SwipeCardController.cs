@@ -5,7 +5,6 @@ using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Database;
 using FromLocalsToLocals.Services.EF;
 using FromLocalsToLocals.Web.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FromLocalsToLocals.Web.Controllers
