@@ -1,4 +1,5 @@
-﻿<!--<row class="justify-content-end mb-5">
+﻿@model FromLocalsToLocals.Web.ViewModels.SwipeCardVM
+<!--<row class="justify-content-end mb-5">
     <div class="container-fluid">
         <a class="btn btn-sm btn-primary text-light" data-toggle="popover" title="Help"
            data-content="There you get service suggestions by distance from you. To see another service press 'Skip',
@@ -8,75 +9,74 @@
     </div>
 </row>-->
 
-
+@{
+    var firstCard = Model.SwipeCards[0];
+}
 <div class="row justify-content-center mt-5">
-    <div class="swipeCard card text-center bg-success text-light border-dark" style="width: 18rem;">
+    <div class="swipeCard card text-center bg-success text-light border-dark" style="width: 18rem; min-height: 35rem;">
         <div class="card-body">
-            <h5 class="card-title">Fresh salad stall</h5>
-            <p class="card-text alignleft">Produce</p>
-            <p class="card-text alignright">1.2 km</p>
+            <h5 class="card-title">@firstCard.Title</h5>
+            <p class="card-text alignleft">@firstCard.VendorType</p>
+            <p class="card-text alignright">@firstCard.Distance.ToString("0.00") km</p>
             <div style="clear: both;"></div>
             <hr class="mt-0" />
-            <img alt="Vendor image" src="~/Assets/localSeller.png" class="card-picture" />
+            @if (firstCard.Image == null)
+            {
+                <img alt="default vendor image" src="~/Assets/localSeller.png" class="mt-3 card-picture"/>
+            }
+            else
+            {
+                <img alt="vendor image" src="data:image;base64,@Convert.ToBase64String(firstCard.Image)" class="mt-3 card-picture"/>
+            }
             <hr class="mt-3" />
-            <p class="card-text alignleft">Tomas</p>
-            <p class="card-text alignright">4.2/5</p>
+            <p class="card-text alignleft">@firstCard.VendorName</p>
+            <p class="card-text alignright">@firstCard.ReviewsAverage/5</p>
             <div style="clear: both;"></div>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p class="card-text">@firstCard.Description</p>
             <hr class="mt-0" />
+            <br/>
             <a type="button" class="skip btn btn-light text-dark mr-5" style="width: 4.5rem;">Skip</a>
-            <a asp-route-id="11" asp-controller="Vendors" asp-action="Details" class="btn btn-light text-dark ml-5" style="width: 4.5rem;">Select</a>
+            <a asp-route-id="@firstCard.Id" asp-controller="Vendors" asp-action="Details" class="btn btn-light text-dark ml-5" style="width: 4.5rem;">Select</a>
             <br />
             <button data-toggle="modal" data-target="#createReportModal" class="btn btn-sm btn-dark mt-4">!</button>
         </div>
     </div>
 </div>
 
-<div class="row justify-content-center mt-5">
-    <div class="swipeCard card text-center bg-success text-light border-dark" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Fresh salad stall</h5>
-            <p class="card-text alignleft">Produce</p>
-            <p class="card-text alignright">1.2 km</p>
-            <div style="clear: both;"></div>
-            <hr class="mt-0" />
-            <img alt="Vendor image" src="~/Assets/localSeller.png" class="card-picture" />
-            <hr class="mt-3" />
-            <p class="card-text alignleft">Tomas</p>
-            <p class="card-text alignright">4.2/5</p>
-            <div style="clear: both;"></div>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <hr class="mt-0" />
-            <a type="button" class="skip btn btn-light text-dark mr-5" style="width: 4.5rem;">Skip</a>
-            <a asp-route-id="11" asp-controller="Vendors" asp-action="Details" class="btn btn-light text-dark ml-5" style="width: 4.5rem;">Select</a>
-            <br />
-            <button data-toggle="modal" data-target="#createReportModal" class="btn btn-sm btn-dark mt-4">!</button>
+@foreach(var card in Model.SwipeCards.Skip(1))
+{
+    <div class="row justify-content-center mt-5 nextSwipeCard">
+        <div class="swipeCard card text-center bg-success text-light border-dark" style="width: 18rem; min-height: 35rem;">
+            <div class="card-body">
+                <h5 class="card-title">@card.Title</h5>
+                <p class="card-text alignleft">@card.VendorType</p>
+                <p class="card-text alignright">@card.Distance.ToString("0.00") km</p>
+                <div style="clear: both;"></div>
+                <hr class="mt-0" />
+                @if (card.Image == null)
+                {
+                    <img alt="default vendor image" src="~/Assets/localSeller.png" class="mt-3 card-picture"/>
+                }
+                else
+                {
+                    <img alt="vendor image" src="data:image;base64,@Convert.ToBase64String(card.Image)" class="mt-3 card-picture"/>
+                }
+                <hr class="mt-3" />
+                <p class="card-text alignleft">@card.VendorName</p>
+                <p class="card-text alignright">@card.ReviewsAverage/5</p>
+                <div style="clear: both;"></div>
+                <p class="card-text">@card.Description</p>
+                <hr class="mt-0" />
+                <br/>
+                <a type="button" class="skip btn btn-light text-dark mr-5" style="width: 4.5rem;">Skip</a>
+                <a asp-route-id="@card.Id" asp-controller="Vendors" asp-action="Details" class="btn btn-light text-dark ml-5" style="width: 4.5rem;">Select</a>
+                <br />
+                <button data-toggle="modal" data-target="#createReportModal" class="btn btn-sm btn-dark mt-4">!</button>
+            </div>
         </div>
     </div>
-</div>
+}
 
-<div class="row justify-content-center mt-5  nextSwipeCard">
-    <div class="swipeCard card text-center bg-warning text-dark border-dark" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Fresh salad stall</h5>
-            <p class="card-text alignleft">Produce</p>
-            <p class="card-text alignright">1.2 km</p>
-            <div style="clear: both;"></div>
-            <hr class="mt-0" />
-            <img alt="Vendor image" src="~/Assets/localSeller.png" class="card-picture" />
-            <hr class="mt-3" />
-            <p class="card-text alignleft">Tomas</p>
-            <p class="card-text alignright">4.2/5</p>
-            <div style="clear: both;"></div>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <hr class="mt-0" />
-            <a class="skip btn btn-light text-dark mr-5" style="width: 4.5rem;">Skip</a>
-            <a asp-route-id="11" asp-controller="Vendors" asp-action="Details" class="btn btn-light text-dark ml-5" style="width: 4.5rem;">Select</a>
-            <br />
-            <button data-toggle="modal" data-target="#createReportModal" class="btn btn-sm btn-dark mt-4">!</button>
-        </div>
-    </div>
-</div>
 
 <div class="row justify-content-center mt-5  nextSwipeCard">
     <div class="swipeCard card text-center bg-success text-light border-dark" style="width: 18rem;">
