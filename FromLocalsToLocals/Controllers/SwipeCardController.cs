@@ -14,11 +14,13 @@ namespace FromLocalsToLocals.Web.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IVendorService _vendorService;
+        private readonly IReviewsService _reviewsService;
 
-        public SwipeCardController(UserManager<AppUser> userManager, AppDbContext context, IVendorService vendorService)
+        public SwipeCardController(AppDbContext context, IVendorService vendorService, IReviewsService reviewsService)
         {
             _context = context;
             _vendorService = vendorService;
+            _reviewsService = reviewsService;
         }
 
         public double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
@@ -38,6 +40,13 @@ namespace FromLocalsToLocals.Web.Controllers
             return user != null ? user.UserName : "Vendor";
         }
 
+        public double GetAverageScore(int ID)
+        {
+            var reviews = _context.Reviews.ToList();
+            double result = (from x in reviews where x.VendorID == ID select x.Stars).DefaultIfEmpty().Average();
+            return Math.Round(result, 1, MidpointRounding.AwayFromZero);
+        }
+
         public async Task<SwipeCardVM> GetSwipeCards()
         {
             var model = new SwipeCardVM();
@@ -52,7 +61,7 @@ namespace FromLocalsToLocals.Web.Controllers
                 VendorName = GetUserNameById(x.UserID),
                 Description = x.About,
                 Distance = GetDistance(x.Longitude, x.Latitude, 25.273820, 54.676050),
-                ReviewsAverage = x.ReviewsAverage
+                ReviewsAverage = GetAverageScore(x.ID)
             });
 
             model.SwipeCards = swipeCards.OrderBy(x => x.Distance).ToList();
