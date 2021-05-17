@@ -44,8 +44,6 @@ namespace FromLocalsToLocals.Web.Controllers
         public async Task<IActionResult> SwipeCard()
         {
             var model = await GetSwipeCards();
-            Console.WriteLine(model.Swipecards[0].Title);
-            Console.WriteLine(model.Swipecards[0].Distance);
             return View(model);
         }
     }
