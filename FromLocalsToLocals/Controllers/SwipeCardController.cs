@@ -14,13 +14,11 @@ namespace FromLocalsToLocals.Web.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IVendorService _vendorService;
-        private readonly IReviewsService _reviewsService;
 
-        public SwipeCardController(AppDbContext context, IVendorService vendorService, IReviewsService reviewsService)
+        public SwipeCardController(AppDbContext context, IVendorService vendorService)
         {
             _context = context;
             _vendorService = vendorService;
-            _reviewsService = reviewsService;
         }
 
         public double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
