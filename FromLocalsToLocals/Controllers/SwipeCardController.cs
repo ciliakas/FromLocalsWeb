@@ -16,11 +16,9 @@ namespace FromLocalsToLocals.Web.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IVendorService _vendorService;
-        private readonly UserManager<AppUser> _userManager;
 
         public SwipeCardController(UserManager<AppUser> userManager, AppDbContext context, IVendorService vendorService)
         {
-            _userManager = userManager;
             _context = context;
             _vendorService = vendorService;
         }
@@ -65,10 +63,6 @@ namespace FromLocalsToLocals.Web.Controllers
         public async Task<IActionResult> SwipeCard()
         {
             var model = await GetSwipeCards();
-            foreach (var x in model.Swipecards)
-            {
-                Console.WriteLine("user: " + x.VendorName + " Service: " + x.Title + " Distance: " + x.Distance);
-            }
             return View(model);
         }
     }
