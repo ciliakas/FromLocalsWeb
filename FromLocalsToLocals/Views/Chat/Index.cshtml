@@ -1,7 +1,7 @@
 ﻿@using Newtonsoft.Json
 @model Tuple<AppUser, bool, Contact>
 
-<link href="~/css/chat.css" rel="stylesheet"/>
+<link href="~/css/chat.css" rel="stylesheet" />
 <div class="container mt-4">
     <div class="row" style="border: solid 1px gray; border-top: solid 2px green;">
         <div class="col-md-4" style="border-right: 1px solid gray;">
@@ -15,7 +15,7 @@
             </div>
 
             <div class="inbox_chat" id="inbox_chat">
-                @if (Model.Item2 && Model.Item3 != null)
+                @if (Model.Item2 && Model.Item3 != null && Model.Item1.Contacts != null)
                 {
                     IEnumerable<Contact> contacts = Model.Item1.Contacts;
                     if (Model.Item3.Messages != null)
@@ -26,55 +26,59 @@
                     }
                     foreach (var c in contacts)
                     {
-                        @await Component.InvokeAsync("ContactBody", new {contact = c, title = c.Vendor.Title, image = c.Vendor.Image, userTab = true})
+                        @await Component.InvokeAsync("ContactBody", new { contact = c, title = c.Vendor.Title, image = c.Vendor.Image, userTab = true })
                         ;
                     }
                 }
                 else
                 {
                     <div class="accordion active" id="listOfVendors">
-                        @foreach (var v in Model.Item1.Vendors)
+                        @if (Model.Item1.Vendors != null)
                         {
-                            if (v.Contacts.Count > 0)
+                            foreach (var v in Model.Item1.Vendors)
                             {
-                                var contacts = v.Contacts.Where(x => x.Messages.Count > 0)
-                                    .OrderBy(x => x.Messages.OrderBy(y => y.Date).FirstOrDefault().Date)
-                                    .Concat(v.Contacts.Where(x => x.Messages.Count == 0)).ToList();
-                                <div class="card">
-                                    <div class="card-header" id="@v.Title H">
-                                        <h5 class="mb-0">
-                                            <button class="btn" type="button" data-toggle="collapse" data-target="#@v.Title" aria-expanded="true" aria-controls="collapseOne">
-                                                @if (v.Image != null)
-                                                {
-                                                    <img src="data:image;base64,@Convert.ToBase64String(v.Image)" alt="avatar" id="@v.Title-img" class="img-circle" style="height: 50px; width: 50px;"/>
-                                                }
-                                                else
-                                                {
-                                                    <img src="~/Assets/appLogo.png" id="@v.Title-img" alt="avatar" class="img-circle" style="height: 50px; width: 50px;"/>
-                                                }
-                                                @v.Title
-                                            </button>
-                                        </h5>
-                                    </div>
-
-                                    <div id="@v.Title" class="collapse" aria-labelledby="@v.Title H" data-parent="#listOfVendors">
-                                        <div class="card-body">
-                                            <ul>
-                                                @foreach (var c in contacts)
-                                                {
-                                                    if (c.Messages.Count > 0)
+                                if (v.Contacts.Count > 0)
+                                {
+                                    var contacts = v.Contacts.Where(x => x.Messages.Count > 0)
+                                        .OrderBy(x => x.Messages.OrderBy(y => y.Date).FirstOrDefault().Date)
+                                        .Concat(v.Contacts.Where(x => x.Messages.Count == 0)).ToList();
+                                    <div class="card">
+                                        <div class="card-header" id="@v.Title H">
+                                            <h5 class="mb-0">
+                                                <button class="btn" type="button" data-toggle="collapse" data-target="#@v.Title" aria-expanded="true" aria-controls="collapseOne">
+                                                    @if (v.Image != null)
                                                     {
-                                                        <li>
-                                                            @await Component.InvokeAsync("ContactBody", new {contact = c, title = c.User.UserName, image = c.User.Image, userTab = false})
-                                                        </li>
+                                                        <img src="data:image;base64,@Convert.ToBase64String(v.Image)" alt="avatar" id="@v.Title-img" class="img-circle" style="height: 50px; width: 50px;" />
                                                     }
-                                                }
-                                            </ul>
+                                                    else
+                                                    {
+                                                        <img src="~/Assets/appLogo.png" id="@v.Title-img" alt="avatar" class="img-circle" style="height: 50px; width: 50px;" />
+                                                    }
+                                                    @v.Title
+                                                </button>
+                                            </h5>
+                                        </div>
+
+                                        <div id="@v.Title" class="collapse" aria-labelledby="@v.Title H" data-parent="#listOfVendors">
+                                            <div class="card-body">
+                                                <ul>
+                                                    @foreach (var c in contacts)
+                                                    {
+                                                        if (c.Messages.Count > 0)
+                                                        {
+                                                            <li>
+                                                                @await Component.InvokeAsync("ContactBody", new { contact = c, title = c.User.UserName, image = c.User.Image, userTab = false })
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
                             }
                         }
+
                     </div>
                 }
             </div>
@@ -91,11 +95,11 @@
                         <p style="text-align: center">SELECT A CONVERSATION</p>
                     }
                 </span>
-            </div><hr/>
+            </div><hr />
             <div class="msg_history" id="msg_history">
                 @if (Model.Item3.ID != -1)
                 {
-                    @await Component.InvokeAsync("Messages", new {contact = Model.Item3, isUserTab = true})
+                    @await Component.InvokeAsync("Messages", new { contact = Model.Item3, isUserTab = true })
                     ;
                 }
 

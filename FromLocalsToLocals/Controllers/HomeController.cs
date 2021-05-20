@@ -66,10 +66,15 @@ namespace FromLocalsToLocals.Web.Controllers
             return View();
         }
 
+        public IActionResult ReportSuccess()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         [HttpPost]
@@ -116,7 +121,7 @@ namespace FromLocalsToLocals.Web.Controllers
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions {Expires = DateTimeOffset.UtcNow.AddDays(30)}
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(30) }
             );
 
             return LocalRedirect(returnUrl);
