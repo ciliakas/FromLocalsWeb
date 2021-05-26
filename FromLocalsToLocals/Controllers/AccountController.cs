@@ -7,6 +7,7 @@ using FromLocalsToLocals.Contracts.Entities;
 using FromLocalsToLocals.Utilities;
 using FromLocalsToLocals.Utilities.Helpers;
 using FromLocalsToLocals.Database;
+using FromLocalsToLocals.Utilities.Enums;
 using FromLocalsToLocals.Web.ViewModels;
 using FromLocalsToLocals.Web.Utilities;
 using Geocoding;
@@ -25,19 +26,21 @@ namespace FromLocalsToLocals.Web.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IToastNotification _toastNotification;
         private readonly SendGridAccount _userOptions;
         private readonly IStringLocalizer<AccountController> _localizer;
         private readonly AppDbContext _context;
 
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                                 AppDbContext context, IToastNotification toastNotification,
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager,
+        AppDbContext context, IToastNotification toastNotification,
                                  IOptions<SendGridAccount> userOptions, IStringLocalizer<AccountController> localizer)
         {
             _context = context;
             _localizer = localizer;
             _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _toastNotification = toastNotification;
             _userOptions = userOptions.Value;
@@ -78,6 +81,12 @@ namespace FromLocalsToLocals.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Basic.ToString()));
+                    if (model.Email == "admin2@gmail.com")
+                    {
+                        await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+                    }
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
                 }
@@ -118,10 +127,10 @@ namespace FromLocalsToLocals.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> FollowingAsync()
+        public async Task<IActionResult> Following()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(user.Following.ToList());
+            return View(user.Following == null ? new List<Follower>() : user.Following.ToList());
         }
         public async Task<IActionResult> Profile()
         {

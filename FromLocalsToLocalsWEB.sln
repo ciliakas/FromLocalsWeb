@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FromLocalsToLocals.Utilitie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FromLocalsToLocals.Database", "FromLocalsToLocals.Database\FromLocalsToLocals.Database.csproj", "{AD9D7BF4-E4A2-4A2D-90EE-6269DDF84008}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FromLocalsToLocals.xunit", "FromLocalsToLocals.xunit\FromLocalsToLocals.xunit.csproj", "{EFDFB1CA-ADB7-4782-9705-9C64D24628F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AD9D7BF4-E4A2-4A2D-90EE-6269DDF84008}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD9D7BF4-E4A2-4A2D-90EE-6269DDF84008}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD9D7BF4-E4A2-4A2D-90EE-6269DDF84008}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFDFB1CA-ADB7-4782-9705-9C64D24628F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFDFB1CA-ADB7-4782-9705-9C64D24628F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFDFB1CA-ADB7-4782-9705-9C64D24628F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFDFB1CA-ADB7-4782-9705-9C64D24628F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
