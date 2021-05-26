@@ -58,11 +58,7 @@ namespace FromLocalsToLocals.Web.Controllers
             {
                 Category = category,
                 CreatedDate = DateTime.UtcNow,
-                
                 UserId = username,
-               // Href = Request.GetEncodedUrl()
-                //Href = HttpContext.Request.Path.Value
-                //Href = HttpContext.Request.PathBase.Value
                 Href = url
             };
             await _context.Reports.AddAsync(report);
@@ -77,9 +73,8 @@ namespace FromLocalsToLocals.Web.Controllers
             var item = _context.Reports.FirstOrDefaultAsync(x => x.Id == id);
             _context.Reports.Remove(item.Result);
             await _context.SaveChangesAsync();
-           var model = await ReadReviews();
-           return View("ReportPage", model);
-
+            var model = await ReadReviews();
+            return View("ReportPage", model);
         }
 
     }
