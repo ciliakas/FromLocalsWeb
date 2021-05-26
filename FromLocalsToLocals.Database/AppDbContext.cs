@@ -22,6 +22,7 @@ namespace FromLocalsToLocals.Database
         public DbSet<WorkHours> VendorWorkHours { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
